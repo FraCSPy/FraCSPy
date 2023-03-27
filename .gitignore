@@ -1,0 +1,45 @@
+# OS generated files #
+.*.swp
+*.py[cod]
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/*
+static/*
+db.sqlite3
+
+# Build #
+build
+dist
+.eggs/*
+
+
+# Documentation #
+docs/build
+docs/source/api/generated
+docs/source/gallery
+docs/source/examples
+
+# Pylint #
+pylint_plot.py
+pylintrc
+
+# PyTorch Models #
+*.pt
+*.net
+
+# NPZ Files
+*.npz
+*.csv
+
+# Figure files
+*.eps
+*.png
+*.jpeg
+
+.cache
+Notebooks/.ipynb_checkpoints

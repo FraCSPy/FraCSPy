@@ -1,0 +1,31 @@
+name: pyfrac
+channels:
+  - pytorch
+  - conda-forge
+  - numba
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - numpy==1.21.0
+  - scipy>=1.4.0
+  - cudatoolkit=11.6
+  - numba
+  - icc_rt
+  - matplotlib
+  - ipython
+  - jupyter
+  - pytorch==1.12.0=py3.9_cuda11.6_cudnn8.3.2_0
+  - torchvision
+  - torchaudio
+  - tqdm
+  - scikit-learn
+  - scikit-fmm
+  - pip:
+    - torchsummary
+    - segyio
+    - bm3d
+    - setuptools_scm
+    - git+https://github.com/pylops/pylops@dev
+    - git+https://github.com/pylops/pyproximal@dev
+

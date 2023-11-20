@@ -2,7 +2,7 @@
 # 
 # Installer for pyfrac
 # 
-# Run: ./install_pyfrac.sh
+# Run: ./install_pysofi.sh
 # 
 # C. Birnie, 13/04/2023
 

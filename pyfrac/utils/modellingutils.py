@@ -91,7 +91,12 @@ def comp_source_loc(orig_xyz,
     return n_source_xyz
 
 
-def get_recs_on_face(nrpF, nx, dx, rec_buffer=6, npad=30, freesurface=True):
+def get_recs_on_face(nrpF,
+                     nx,
+                     dx,
+                     rec_buffer=6,
+                     npad=30,
+                     freesurface=True):
     """ Taking into account padding and free surface
 
     Parameters
@@ -146,3 +151,4 @@ def get_recs_on_face(nrpF, nx, dx, rec_buffer=6, npad=30, freesurface=True):
     nr = gridded_recs.shape[1]
 
     return gridded_recs, nr
+

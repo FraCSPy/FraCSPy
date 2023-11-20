@@ -9,7 +9,11 @@ Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: Unlicense
 Classifier: Natural Language :: English
 Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: torch
 Provides-Extra: test
+Requires-Dist: torch; extra == "test"
+Requires-Dist: pytest==4.5.0; extra == "test"
+Requires-Dist: mock==3.0.5; extra == "test"
 
 # pyfrac
 

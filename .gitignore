@@ -43,3 +43,6 @@ pylintrc
 
 .cache
 Notebooks/.ipynb_checkpoints
+*-checkpoint.ipynb
+
+FDModelling

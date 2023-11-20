@@ -470,6 +470,8 @@ class Kirchhoff(LinearOperator):
             origin = np.array([y[0], x[0], z[0]])
         return ndims, shiftdim, dims, ny, nx, nz, ns, nr, dy, dx, dz, dsamp, origin
 
+
+
     @staticmethod
     def _traveltime_table(
         z: NDArray,
@@ -626,6 +628,92 @@ class Kirchhoff(LinearOperator):
             trav_srcs_grad,
             trav_recs_grad,
         )
+
+
+    @staticmethod
+    def _rayangles_table(
+        z: NDArray,
+        x: NDArray,
+        srcs: NDArray,
+        recs: NDArray,
+        vel: Union[float, NDArray],
+        y: Optional[NDArray] = None,
+        mode: str = "eikonal",
+    ) -> Tuple[NDArray, NDArray, NDArray, NDArray]:
+        r"""Traveltime table
+
+        Compute traveltimes along the source-subsurface-receivers triplet
+        in 2- or 3-dimensional media given a constant or depth- and space variable
+        velocity.
+
+        Parameters
+        ----------
+        z : :obj:`numpy.ndarray`
+            Depth axis
+        x : :obj:`numpy.ndarray`
+            Spatial axis
+        srcs : :obj:`numpy.ndarray`
+            Sources in array of size :math:`\lbrack 2 (3) \times n_s \rbrack`
+        recs : :obj:`numpy.ndarray`
+            Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`
+        vel : :obj:`numpy.ndarray` or :obj:`float`
+            Velocity model of size :math:`\lbrack (n_y \times)\, n_x
+            \times n_z \rbrack` (or constant)
+        y : :obj:`numpy.ndarray`
+            Additional spatial axis (for 3-dimensional problems)
+        mode : :obj:`numpy.ndarray`, optional
+            Computation mode (``eikonal``, ``analytic`` - only for constant velocity)
+
+        Returns
+        -------
+
+        """
+        # define geometry
+        (
+            ndims,
+            shiftdim,
+            dims,
+            ny,
+            nx,
+            nz,
+            ns,
+            nr,
+            _,
+            _,
+            _,
+            dsamp,
+            origin,
+        ) = Kirchhoff._identify_geometry(z, x, srcs, recs, y=y)
+
+        # compute TTTS
+        (trav_srcs,
+         trav_recs,
+         dist_srcs,
+         dist_recs,
+         trav_srcs_grad,
+         trav_recs_grad,
+        ) = Kirchhoff._traveltime_table(z, x, srcs, recs, vel, y=y, mode=mode)
+
+        # compute ray angles - 2D VERSION
+        if ndims == 2:
+            # 2d with vertical
+            angle_srcs = np.arctan2(
+                trav_srcs_grad[0], trav_srcs_grad[1]
+            ).reshape(np.prod(dims), ns)
+            angle_recs = np.arctan2(
+                trav_recs_grad[0], trav_recs_grad[1]
+            ).reshape(np.prod(dims), nr)
+            cosangle_srcs = np.cos(angle_srcs)
+            cosangle_recs = np.cos(angle_recs)
+
+
+        return (
+            angle_srcs,
+            angle_recs,
+            cosangle_srcs,
+            cosangle_recs,
+            )
+
 
     def _wavelet_reshaping(
         self,

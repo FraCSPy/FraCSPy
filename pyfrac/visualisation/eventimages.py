@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 from .plotting_support import explode_volume
 
 
-def locimage3d(mig, x0, y0, title=''):
+def locimage3d(mig, x0, y0, title='', p=99.9):
     fig, axs = explode_volume(mig.transpose(2, 0, 1),
-                              p=99.9,
+                              p=p,
                               x=x0, y=y0)
     fig.suptitle(title, fontsize=18)
     fig.tight_layout()

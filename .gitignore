@@ -16,7 +16,7 @@ db.sqlite3
 build
 dist
 .eggs/*
-
+*.zip
 
 # Documentation #
 docs/build

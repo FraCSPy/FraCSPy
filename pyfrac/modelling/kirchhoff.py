@@ -247,13 +247,7 @@ class Kirchhoff(LinearOperator):
         y: Optional[NDArray] = None,
         mode: str = "eikonal",
         wavfilter: bool = False,
-        dynamic: bool = False,
         trav: Optional[NDArray] = None,
-        amp: Optional[NDArray] = None,
-        aperture: Optional[Tuple[float, float]] = None,
-        angleaperture: Union[float, Tuple[float, float]] = 90.0,
-        anglerefl: Optional[NDArray] = None,
-        snell: Optional[Tuple[float, float]] = None,
         engine: str = "numpy",
         dtype: DTypeLike = "float64",
         name: str = "K",
@@ -298,68 +292,19 @@ class Kirchhoff(LinearOperator):
             pass
 
         # compute traveltime
-        self.dynamic = dynamic
         self.travsrcrec = True  # use separate tables for src and rec traveltimes
         if mode in ["analytic", "eikonal", "byot"]:
             if mode in ["analytic", "eikonal"]:
                 # compute traveltime table
-                (
-                    self.trav_srcs,
-                    self.trav_recs,
-                    self.dist_srcs,
-                    self.dist_recs,
-                    trav_srcs_grad,
-                    trav_recs_grad,
-                ) = Kirchhoff._traveltime_table(z, x, srcs, recs, vel, y=y, mode=mode)
-                if self.dynamic:
-                    # need to add a scalar in the denominator of amplitude term to avoid
-                    # division by 0, currently set to 1/100 of max distance to avoid having
-                    # to large scaling around the source. This number may change in future
-                    # or left to the user to define
-                    epsdist = 1e-2
-                    self.maxdist = epsdist * (
-                        np.max(self.dist_srcs) + np.max(self.dist_recs)
-                    )
-                    # compute angles
-                    if self.ndims == 2:
-                        # 2d with vertical
-                        if anglerefl is None:
-                            self.angle_srcs = np.arctan2(
-                                trav_srcs_grad[0], trav_srcs_grad[1]
-                            ).reshape(np.prod(dims), ns)
-                            self.angle_recs = np.arctan2(
-                                trav_recs_grad[0], trav_recs_grad[1]
-                            ).reshape(np.prod(dims), nr)
-                            self.cosangle_srcs = np.cos(self.angle_srcs)
-                            self.cosangle_recs = np.cos(self.angle_recs)
-                        else:
-                            # TODO: 2D with normal
-                            raise NotImplementedError(
-                                "angle scaling with anglerefl currently not available"
-                            )
-                    else:
-                        # TODO: 3D
-                        raise NotImplementedError(
-                            "dynamic=True currently not available in 3D"
-                        )
+                self.trav_recs = Kirchhoff._traveltime_table(z, x, recs, vel, y=y, mode=mode)
+
             else:
                 if isinstance(trav, tuple):
                     self.trav_srcs, self.trav_recs = trav
                 else:
                     self.travsrcrec = False
                     self.trav = trav
-                if self.dynamic:
-                    if isinstance(amp, tuple):
-                        self.amp_srcs, self.amp_recs = amp
-                    else:
-                        self.amp = amp
-                    # in byot mode, angleaperture and snell checks are not performed
-                    self.angle_srcs = np.ones(
-                        (self.ny * self.nx * self.nz, ns), dtype=dtype
-                    )
-                    self.angle_recs = np.ones(
-                        (self.ny * self.nx * self.nz, nr), dtype=dtype
-                    )
+
         else:
             raise NotImplementedError("method must be analytic, eikonal or byot")
 
@@ -378,36 +323,6 @@ class Kirchhoff(LinearOperator):
         self.cop = Convolve1D(
             (ns * nr, self.nt), h=self.wav, offset=wavcenter, axis=1, dtype=dtype
         )
-
-        # create fixed-size aperture taper for all apertures
-        self.aperturetap = taper(41, 20, "hanning")[20:]
-
-        # define aperture
-        if aperture is not None:
-            warnings.warn(
-                "Aperture is currently defined as ratio of offset over depth, "
-                "and may be not ideal for highly heterogenous media"
-            )
-        self.aperture = (
-            (2 * self.nx / self.nz,)
-            if aperture is None
-            else _value_or_sized_to_array(aperture)
-        )
-        if len(self.aperture) == 1:
-            self.aperture = np.array([0.8 * self.aperture[0], self.aperture[0]])
-
-        # define angle aperture and snell law
-        angleaperture = [0.0, 1000.0] if angleaperture is None else angleaperture
-        self.angleaperture = np.deg2rad(_value_or_sized_to_array(angleaperture))
-        if len(self.angleaperture) == 1:
-            self.angleaperture = np.array(
-                [0.8 * self.angleaperture[0], self.angleaperture[0]]
-            )
-        self.snell = (
-            (np.pi,) if snell is None else np.deg2rad(_value_or_sized_to_array(snell))
-        )
-        if len(self.snell) == 1:
-            self.snell = np.array([0.8 * self.snell[0], self.snell[0]])
 
         # dimensions
         self.ns, self.nr = ns, nr
@@ -470,18 +385,15 @@ class Kirchhoff(LinearOperator):
             origin = np.array([y[0], x[0], z[0]])
         return ndims, shiftdim, dims, ny, nx, nz, ns, nr, dy, dx, dz, dsamp, origin
 
-
-
     @staticmethod
     def _traveltime_table(
         z: NDArray,
         x: NDArray,
-        srcs: NDArray,
         recs: NDArray,
         vel: Union[float, NDArray],
         y: Optional[NDArray] = None,
         mode: str = "eikonal",
-    ) -> Tuple[NDArray, NDArray, NDArray, NDArray, NDArray, NDArray]:
+    ) -> NDArray:
         r"""Traveltime table
 
         Compute traveltimes along the source-subsurface-receivers triplet
@@ -494,8 +406,6 @@ class Kirchhoff(LinearOperator):
             Depth axis
         x : :obj:`numpy.ndarray`
             Spatial axis
-        srcs : :obj:`numpy.ndarray`
-            Sources in array of size :math:`\lbrack 2 (3) \times n_s \rbrack`
         recs : :obj:`numpy.ndarray`
             Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`
         vel : :obj:`numpy.ndarray` or :obj:`float`
@@ -508,23 +418,8 @@ class Kirchhoff(LinearOperator):
 
         Returns
         -------
-        trav_srcs : :obj:`numpy.ndarray`
-            Source-to-subsurface traveltime table of size
-            :math:`\lbrack (n_y*) n_x n_z \times n_s \rbrack`
         trav_recs : :obj:`numpy.ndarray`
             Receiver-to-subsurface traveltime table of size
-            :math:`\lbrack (n_y) n_x n_z \times n_r \rbrack`
-        dist_srcs : :obj:`numpy.ndarray`
-            Source-to-subsurface distance table of size
-            :math:`\lbrack (n_y*) n_x n_z \times n_s \rbrack`
-        dist_recs : :obj:`numpy.ndarray`
-            Receiver-to-subsurface distance table of size
-            :math:`\lbrack (n_y) n_x n_z \times n_r \rbrack`
-        trav_srcs_gradient : :obj:`numpy.ndarray`
-            Source-to-subsurface traveltime gradient table of size
-            :math:`\lbrack (n_y*) n_x n_z \times n_s \rbrack`
-        trav_recs_gradient : :obj:`numpy.ndarray`
-            Receiver-to-subsurface traveltime gradient table of size
             :math:`\lbrack (n_y) n_x n_z \times n_r \rbrack`
 
         """
@@ -543,7 +438,7 @@ class Kirchhoff(LinearOperator):
             _,
             dsamp,
             origin,
-        ) = Kirchhoff._identify_geometry(z, x, srcs, recs, y=y)
+        ) = Kirchhoff._identify_geometry(z, x, recs, recs, y=y)
 
         # compute traveltimes
         if mode == "analytic":
@@ -558,44 +453,18 @@ class Kirchhoff(LinearOperator):
                 Y, X, Z = np.meshgrid(y, x, z, indexing="ij")
                 Y, X, Z = Y.ravel(), X.ravel(), Z.ravel()
 
-            dist_srcs2 = np.zeros((ny * nx * nz, ns))
             dist_recs2 = np.zeros((ny * nx * nz, nr))
-            for isrc, src in enumerate(srcs.T):
-                dist_srcs2[:, isrc] = (X - src[0 + shiftdim]) ** 2 + (
-                    Z - src[1 + shiftdim]
-                ) ** 2
-                if ndims == 3:
-                    dist_srcs2[:, isrc] += (Y - src[0]) ** 2
             for irec, rec in enumerate(recs.T):
                 dist_recs2[:, irec] = (X - rec[0 + shiftdim]) ** 2 + (
                     Z - rec[1 + shiftdim]
                 ) ** 2
                 if ndims == 3:
                     dist_recs2[:, irec] += (Y - rec[0]) ** 2
-
-            trav_srcs = np.sqrt(dist_srcs2) / vel
             trav_recs = np.sqrt(dist_recs2) / vel
-
-            dist_srcs = trav_srcs * vel
-            dist_recs = trav_recs * vel
 
         elif mode == "eikonal":
             if skfmm is not None:
-                dist_srcs = np.zeros((ny * nx * nz, ns))
-                dist_recs = np.zeros((ny * nx * nz, nr))
-                trav_srcs = np.zeros((ny * nx * nz, ns))
-                trav_recs = np.zeros((ny * nx * nz, nr))
-                for isrc, src in enumerate(srcs.T):
-                    src = np.round((src - origin) / dsamp).astype(np.int32)
-                    phi = np.ones_like(vel)
-                    if ndims == 2:
-                        phi[src[0], src[1]] = -1
-                    else:
-                        phi[src[0], src[1], src[2]] = -1
-                    dist_srcs[:, isrc] = (skfmm.distance(phi=phi, dx=dsamp)).ravel()
-                    trav_srcs[:, isrc] = (
-                        skfmm.travel_time(phi=phi, speed=vel, dx=dsamp)
-                    ).ravel()
+                trav_recs = np.zeros((ny * nx * nz, nr), dtype=np.float32)
                 for irec, rec in enumerate(recs.T):
                     rec = np.round((rec - origin) / dsamp).astype(np.int32)
                     phi = np.ones_like(vel)
@@ -603,7 +472,6 @@ class Kirchhoff(LinearOperator):
                         phi[rec[0], rec[1]] = -1
                     else:
                         phi[rec[0], rec[1], rec[2]] = -1
-                    dist_recs[:, irec] = (skfmm.distance(phi=phi, dx=dsamp)).ravel()
                     trav_recs[:, irec] = (
                         skfmm.travel_time(phi=phi, speed=vel, dx=dsamp)
                     ).ravel()
@@ -612,108 +480,7 @@ class Kirchhoff(LinearOperator):
         else:
             raise NotImplementedError("method must be analytic or eikonal")
 
-        # compute traveltime gradients at image points
-        trav_srcs_grad = np.gradient(
-            trav_srcs.reshape(*dims, ns), axis=np.arange(ndims)
-        )
-        trav_recs_grad = np.gradient(
-            trav_recs.reshape(*dims, nr), axis=np.arange(ndims)
-        )
-
-        return (
-            trav_srcs,
-            trav_recs,
-            dist_srcs,
-            dist_recs,
-            trav_srcs_grad,
-            trav_recs_grad,
-        )
-
-
-    @staticmethod
-    def _rayangles_table(
-        z: NDArray,
-        x: NDArray,
-        srcs: NDArray,
-        recs: NDArray,
-        vel: Union[float, NDArray],
-        y: Optional[NDArray] = None,
-        mode: str = "eikonal",
-    ) -> Tuple[NDArray, NDArray, NDArray, NDArray]:
-        r"""Traveltime table
-
-        Compute traveltimes along the source-subsurface-receivers triplet
-        in 2- or 3-dimensional media given a constant or depth- and space variable
-        velocity.
-
-        Parameters
-        ----------
-        z : :obj:`numpy.ndarray`
-            Depth axis
-        x : :obj:`numpy.ndarray`
-            Spatial axis
-        srcs : :obj:`numpy.ndarray`
-            Sources in array of size :math:`\lbrack 2 (3) \times n_s \rbrack`
-        recs : :obj:`numpy.ndarray`
-            Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`
-        vel : :obj:`numpy.ndarray` or :obj:`float`
-            Velocity model of size :math:`\lbrack (n_y \times)\, n_x
-            \times n_z \rbrack` (or constant)
-        y : :obj:`numpy.ndarray`
-            Additional spatial axis (for 3-dimensional problems)
-        mode : :obj:`numpy.ndarray`, optional
-            Computation mode (``eikonal``, ``analytic`` - only for constant velocity)
-
-        Returns
-        -------
-
-        """
-        # define geometry
-        (
-            ndims,
-            shiftdim,
-            dims,
-            ny,
-            nx,
-            nz,
-            ns,
-            nr,
-            _,
-            _,
-            _,
-            dsamp,
-            origin,
-        ) = Kirchhoff._identify_geometry(z, x, srcs, recs, y=y)
-
-        # compute TTTS
-        (trav_srcs,
-         trav_recs,
-         dist_srcs,
-         dist_recs,
-         trav_srcs_grad,
-         trav_recs_grad,
-        ) = Kirchhoff._traveltime_table(z, x, srcs, recs, vel, y=y, mode=mode)
-
-        # compute ray angles - 2D VERSION
-        if ndims == 2:
-            # 2d with vertical
-            angle_srcs = np.arctan2(
-                trav_srcs_grad[0], trav_srcs_grad[1]
-            ).reshape(np.prod(dims), ns)
-            angle_recs = np.arctan2(
-                trav_recs_grad[0], trav_recs_grad[1]
-            ).reshape(np.prod(dims), nr)
-            cosangle_srcs = np.cos(angle_srcs)
-            cosangle_recs = np.cos(angle_recs)
-
-
-        return (
-            angle_srcs,
-            angle_recs,
-            cosangle_srcs,
-            cosangle_recs,
-            )
-
+        return trav_recs
 
     def _wavelet_reshaping(
         self,

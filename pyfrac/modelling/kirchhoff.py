@@ -331,13 +331,7 @@ class Kirchhoff(LinearOperator):
         dims = tuple(dims) if self.ndims == 2 else (dims[0] * dims[1], dims[2])
         dimsd = (nr, self.nt)
         super().__init__(dtype=np.dtype(dtype), dims=dims, dimsd=dimsd, name=name)
-        # save velocity if using dynamic to compute amplitudes
-        if self.dynamic:
-            self.vel = (
-                vel.flatten()
-                if not isinstance(vel, (float, int))
-                else vel * np.ones(np.prod(dims))
-            )
+
         self._register_multiplications(engine)
 
     @staticmethod
@@ -454,6 +448,9 @@ class Kirchhoff(LinearOperator):
                 Y, X, Z = Y.ravel(), X.ravel(), Z.ravel()
 
             dist_recs2 = np.zeros((ny * nx * nz, nr))
+            print(nx, ny, nz)
+            print(dist_recs2.shape)
+
             for irec, rec in enumerate(recs.T):
                 dist_recs2[:, irec] = (X - rec[0 + shiftdim]) ** 2 + (
                     Z - rec[1 + shiftdim]
@@ -461,6 +458,7 @@ class Kirchhoff(LinearOperator):
                 if ndims == 3:
                     dist_recs2[:, irec] += (Y - rec[0]) ** 2
             trav_recs = np.sqrt(dist_recs2) / vel
+            print(trav_recs.shape)
 
         elif mode == "eikonal":
             if skfmm is not None:
@@ -471,6 +469,7 @@ class Kirchhoff(LinearOperator):
                     if ndims == 2:
                         phi[rec[0], rec[1]] = -1
                     else:
+                        print(rec)
                         phi[rec[0], rec[1], rec[2]] = -1
                     trav_recs[:, irec] = (
                         skfmm.travel_time(phi=phi, speed=vel, dx=dsamp)
@@ -480,6 +479,7 @@ class Kirchhoff(LinearOperator):
         else:
             raise NotImplementedError("method must be analytic or eikonal")
 
+        print(trav_recs.shape)
         return trav_recs
 
     def _wavelet_reshaping(

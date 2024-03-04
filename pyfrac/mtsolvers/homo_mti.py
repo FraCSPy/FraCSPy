@@ -89,7 +89,7 @@ def pwave_Greens_comp(gamma_sourceangles,
                       vel,
                       MT_comp_dict,
                       comp_gamma_ind,
-                       omega_p,
+                      omega_p,
                       ):
     '''
 

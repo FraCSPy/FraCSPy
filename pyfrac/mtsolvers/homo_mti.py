@@ -47,8 +47,9 @@ def collect_source_angles(x,y,z, reclocs, nc=3):
         gamma_sourceangles[2, irec] = delta_z / total_distance
 
         # At rec loc total distance is zero < CANT DIVIDE BY ZERO!
-        rl = np.argwhere(total_distance == 0)[0]
-        gamma_sourceangles[:, irec, rl[0], rl[1], rl[2]] = 0
+        rl = np.argwhere(total_distance == 0)
+        if len(rl) > 0:
+            gamma_sourceangles[:, irec, rl[0][0], rl[0][1], rl[0][2]] = 0
 
     return gamma_sourceangles, dist_table
 
@@ -56,9 +57,9 @@ def collect_source_angles(x,y,z, reclocs, nc=3):
 def pwave_zcomp_Greens(gamma_sourceangles,
                        dist_table,
                        sloc_ind,
-                       omega_p,
                        vel,
-                       MT_comp_dict):
+                       MT_comp_dict,
+                       omega_p):
 
     nr = gamma_sourceangles.shape[1]
 
@@ -81,3 +82,119 @@ def pwave_zcomp_Greens(gamma_sourceangles,
             G_z[el_indic, irec] = all_scaler * gamma_elements * dist_sloc[irec]**-1
 
     return G_z
+
+def pwave_Greens_comp(gamma_sourceangles,
+                      dist_table,
+                      sloc_ind,
+                      vel,
+                      MT_comp_dict,
+                      comp_gamma_ind,
+                       omega_p,
+                      ):
+    '''
+
+    Parameters
+    ----------
+    gamma_sourceangles
+    dist_table: :obj:`numpy.ndarray`
+        Travel distance table from all possible source locs (reference grid) to receivers,
+    sloc_ind: :list
+        Index of source location, [sxi, syi, szi], wrt reference grid indices
+    omega_p
+    vel
+    MT_comp_dict
+    comp_gamma_ind : :obj:`numpy.ndarray`
+        Gamma index related to velocity direction, 0=x, 1=y, 2=z
+
+    Returns
+    -------
+
+    '''
+    nr = gamma_sourceangles.shape[1]
+
+    # SLICE ON SOURCE LOC
+    dist_sloc = dist_table[:, sloc_ind[0], sloc_ind[1], sloc_ind[2]]
+    gamma_sloc = gamma_sourceangles[:, :, sloc_ind[0], sloc_ind[1], sloc_ind[2]]
+
+    # INITIALISE G
+    G = np.zeros([6, nr])  # Z-component
+    all_scaler = omega_p / (4 * np.pi * np.mean(vel) ** 3)
+
+    for irec in range(nr):
+        for cmp_dict in MT_comp_dict:
+            el_indic = cmp_dict['elementID']
+            p_gamma_ind, q_gamma_ind = cmp_dict['pq']
+
+            gamma_elements = gamma_sloc[comp_gamma_ind,irec] * gamma_sloc[p_gamma_ind,irec] * gamma_sloc[q_gamma_ind,irec]
+
+            G[el_indic, irec] = all_scaler * gamma_elements * dist_sloc[irec]**-1
+
+    return G
+
+def multicomp_Greens_Pwave(nxyz,
+                           nr,
+                           gamma_sourceangles,
+                           dist_table,
+                           vel,
+                           MT_comp_dict,
+                           omega_p,
+                           ):
+
+    nx,ny,nz = nxyz
+
+    Gx = np.zeros([6, nr, nx, ny, nz])
+    Gy = np.zeros([6, nr, nx, ny, nz])
+    Gz = np.zeros([6, nr, nx, ny, nz])
+
+    for ix in range(nx):
+        for iy in range(ny):
+            for iz in range(nz):
+                Gx[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
+                                                             dist_table,
+                                                             [ix, iy, iz],
+                                                             vel,
+                                                             MT_comp_dict,
+                                                             comp_gamma_ind=0,
+                                                             omega_p=omega_p)
+
+                Gy[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
+                                                             dist_table,
+                                                             [ix, iy, iz],
+                                                             vel,
+                                                             MT_comp_dict,
+                                                             comp_gamma_ind=1,
+                                                             omega_p=omega_p)
+
+                Gz[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
+                                                             dist_table,
+                                                             [ix, iy, iz],
+                                                             vel,
+                                                             MT_comp_dict,
+                                                             comp_gamma_ind=2,
+                                                             omega_p=omega_p)
+    return Gx, Gy, Gz
+
+
+def singlecomp_Greens_Pwave(nxyz,
+                            nr,
+                            gamma_sourceangles,
+                            dist_table,
+                            vel,
+                            MT_comp_dict,
+                            omega_p,
+                            ):
+
+    nx,ny,nz = nxyz
+    Gz = np.zeros([6, nr, nx, ny, nz])
+
+    for ix in range(nx):
+        for iy in range(ny):
+            for iz in range(nz):
+                Gz[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
+                                                         dist_table,
+                                                         [ix, iy, iz],
+                                                         vel,
+                                                         MT_comp_dict,
+                                                         comp_gamma_ind=2,
+                                                         omega_p=omega_p)
+    return Gz

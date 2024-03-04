@@ -282,36 +282,16 @@ class Kirchhoff(LinearOperator):
         self.dt = t[1] - t[0]
         self.nt = len(t)
 
-        # store ix-iy locations of sources and receivers
-        dx = x[1] - x[0]
-        if self.ndims == 2:
-            self.six = np.tile((srcs[0] - x[0]) // dx, (nr, 1)).T.astype(int).ravel()
-            self.rix = np.tile((recs[0] - x[0]) // dx, (ns, 1)).astype(int).ravel()
-        elif self.ndims == 3:
-            # TODO: 3D normalized distances
-            pass
-
         # compute traveltime
         self.travsrcrec = True  # use separate tables for src and rec traveltimes
         if mode in ["analytic", "eikonal", "byot"]:
             if mode in ["analytic", "eikonal"]:
                 # compute traveltime table
                 self.trav_recs = Kirchhoff._traveltime_table(z, x, recs, vel, y=y, mode=mode)
-
             else:
-                if isinstance(trav, tuple):
-                    self.trav_srcs, self.trav_recs = trav
-                else:
-                    self.travsrcrec = False
-                    self.trav = trav
-
+                self.trav_recs = trav
         else:
             raise NotImplementedError("method must be analytic, eikonal or byot")
-
-        # pre-compute traveltime indices if total traveltime is used
-        if not self.travsrcrec:
-            self.itrav = (self.trav / self.dt).astype("int32")
-            self.travd = self.trav / self.dt - self.itrav
 
         # create wavelet operator
         if wavfilter:
@@ -448,8 +428,6 @@ class Kirchhoff(LinearOperator):
                 Y, X, Z = Y.ravel(), X.ravel(), Z.ravel()
 
             dist_recs2 = np.zeros((ny * nx * nz, nr))
-            print(nx, ny, nz)
-            print(dist_recs2.shape)
 
             for irec, rec in enumerate(recs.T):
                 dist_recs2[:, irec] = (X - rec[0 + shiftdim]) ** 2 + (
@@ -458,7 +436,6 @@ class Kirchhoff(LinearOperator):
                 if ndims == 3:
                     dist_recs2[:, irec] += (Y - rec[0]) ** 2
             trav_recs = np.sqrt(dist_recs2) / vel
-            print(trav_recs.shape)
 
         elif mode == "eikonal":
             if skfmm is not None:
@@ -469,7 +446,6 @@ class Kirchhoff(LinearOperator):
                     if ndims == 2:
                         phi[rec[0], rec[1]] = -1
                     else:
-                        print(rec)
                         phi[rec[0], rec[1], rec[2]] = -1
                     trav_recs[:, irec] = (
                         skfmm.travel_time(phi=phi, speed=vel, dx=dsamp)
@@ -479,7 +455,6 @@ class Kirchhoff(LinearOperator):
         else:
             raise NotImplementedError("method must be analytic or eikonal")
 
-        print(trav_recs.shape)
         return trav_recs
 
     def _wavelet_reshaping(

@@ -18,24 +18,6 @@ dist
 .eggs/*
 *.zip
 
-# Documentation #
-docs/build
-docs/source/api/generated
-docs/source/gallery
-docs/source/examples
-
-# Pylint #
-pylint_plot.py
-pylintrc
-
-# PyTorch Models #
-*.pt
-*.net
-
-# NPZ Files
-*.npz
-*.csv
-
 # Figure files
 *.eps
 *.png
@@ -46,3 +28,8 @@ Notebooks/.ipynb_checkpoints
 *-checkpoint.ipynb
 
 FDModelling
+# logs
+*log*
+
+# Snaps
+data/pyfrac_SOFIModelling/outputs/snap

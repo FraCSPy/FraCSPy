@@ -4,6 +4,8 @@ Borrowed from Matteo
 import numpy as np
 import matplotlib.pyplot as plt
 
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+
 
 def plotting_style():
     """Plotting syle
@@ -113,6 +115,7 @@ def clim(data, ratio=95):
 
 def explode_volume(volume, t=None, x=None, y=None,
                    figsize=(8, 8), cmap='bone', clipval=None, p=98,
+                   cbar=True, cbarlabel='',
                    tlim=None, xlim=None, ylim=None,
                    tcrop=None, xcrop=None, ycrop=None,
                    labels=('[s]', '[km]', '[km]'),
@@ -232,7 +235,7 @@ def explode_volume(volume, t=None, x=None, y=None,
         ax.set_ylim(tcrop[1], tcrop[0])
 
     # top plot
-    ax_top.imshow(volume[t].T, extent=[xlim[0], xlim[1], ylim[1], ylim[0]], **opts)
+    c = ax_top.imshow(volume[t].T, extent=[xlim[0], xlim[1], ylim[1], ylim[0]], **opts)
     ax_top.axvline(x=xline, **linespec)
     ax_top.axhline(y=yline, **linespec)
     ax_top.invert_yaxis()
@@ -240,6 +243,11 @@ def explode_volume(volume, t=None, x=None, y=None,
         ax_top.set_xlim(xcrop)
     if ycrop is not None:
         ax_top.set_ylim(ycrop[1], ycrop[0])
+    if cbar:
+        ax_topright = fig.add_subplot(gs[0, 1], sharex=ax)
+        ax_topright.axis('off')
+        cbaxes = inset_axes(ax_topright, width="3%", height="90%", loc=2)
+        plt.colorbar(c, cax=cbaxes, orientation="vertical", shrink=0.75, label=cbarlabel)
 
     # right plot
     ax_right.imshow(volume[:, x], extent=[ylim[0], ylim[1], tlim[1], tlim[0]], **opts)

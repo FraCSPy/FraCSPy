@@ -1,3 +1,5 @@
+import numpy as np
+from pyfrac.locationsolvers.localisationutils import get_max_locs
 
 
 def get_mt_computation_dict():
@@ -19,4 +21,25 @@ def get_mt_computation_dict():
                     ]
 
     return MT_comp_dict
+
+
+def get_mt_at_loc(mt_image_set, location_indices):
+    mxx = mt_image_set[0][location_indices[0], location_indices[1], location_indices[2]]
+    myy = mt_image_set[1][location_indices[0], location_indices[1], location_indices[2]]
+    mzz = mt_image_set[2][location_indices[0], location_indices[1], location_indices[2]]
+    mxy = mt_image_set[3][location_indices[0], location_indices[1], location_indices[2]]
+    mxz = mt_image_set[4][location_indices[0], location_indices[1], location_indices[2]]
+    myz = mt_image_set[5][location_indices[0], location_indices[1], location_indices[2]]
+
+    return (mxx,myy,mzz,mxy,mxz,myz)
+
+
+def expected_sloc_from_mtwi(mt_image_set, nforhc=5, rem_edge=True, edgebuf=1, absval=True):
+    energy_images = np.sum(abs(mt_image_set), axis=0)
+    hc, hcs = get_max_locs(energy_images,
+                           n_max=nforhc,
+                           rem_edge=rem_edge,
+                           edgebuf=edgebuf,
+                           absval=absval)
+    return hc, hcs
 

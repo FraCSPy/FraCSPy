@@ -2,12 +2,12 @@
 
 A single toolbox of python procedures for the full microseismic pipeline from modelling to post-event analysis.
 This library is a single location leveraging the excellent work of other scientists (/software developers) and 
-adapts them for the specific usecase of microseismic monitoring.
+adapts them for the specific use case of microseismic monitoring.
 
 Some functionalities include:
 - modelling script generation (for accompanying SOFI3D),
-- standard signal processing,
-- event imaging
+- event imaging,
+- moment tensor inversion
 
 Some python libraries that are heavily utilised include:
 - pylops

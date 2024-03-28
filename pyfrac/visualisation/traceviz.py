@@ -47,17 +47,23 @@ def traceimage(data, norm_indiv=False, figsize=[12, 6], cbar=True, climQ=90, cma
 
     return ax
 
-def multiwiggleplot(datalist, norm_indiv=True, figsize=[12, 6], rec_label=True, xhline=True):
+def multiwiggleplot(datalist, norm_indiv=True, figsize=[12, 6], rec_label=True, xhline=True, givencolors=False):
     ntr = np.shape(datalist[0])[0]  # num of traces
     fig, axs = plt.subplots(ntr, 1, figsize=figsize, sharex=True)
     clist = ['k','r','b','g']
     for i, ax in enumerate(axs):
         if norm_indiv:
             for ci,data in enumerate(datalist):
-                ax.plot(data[i] / np.max(abs(data[i])), clist[ci]);
+                if givencolors:
+                    ax.plot(data[i] / np.max(abs(data[i])), clist[ci]);
+                else:
+                    ax.plot(data[i] / np.max(abs(data[i])));
         else:
             for ci,data in enumerate(datalist):
-                ax.plot(data[i], clist[ci]);
+                if givencolors:
+                    ax.plot(data[i], clist[ci]);
+                else:
+                    ax.plot(data[i]);
         if rec_label: ax.set_ylabel(i)
     for ax in axs:
         ax.set_xlim([0, len(data[0])]);

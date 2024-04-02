@@ -1,0 +1,109 @@
+#-----------------------------------------------------------------
+#      JSON PARAMETER FILE FOR SOFI3D
+#-----------------------------------------------------------------
+# description: example of json input file
+# description/name of the model: homogeneous full space (hh.c)
+#
+
+ 
+{
+ 
+"Checkpoints" : "comment",
+    "CHECKPTREAD" : "0",
+    "CHECKPTWRITE" : "0",
+    "CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
+ 
+"FD order" : "comment",
+    "FDORDER" : "4",
+    "FDORDER_TIME" : "2",
+    "FDCOEFF" : "2",
+    "fdcoeff values: Taylor=1, Holberg=2" : "comment",
+ 
+"Q-approximation" : "comment",
+    "L" : "0",
+    "FREF" : "5.0",
+    "FL1" : "5.0",
+    "TAU" : "0.00001",
+ 
+"Receiver" : "comment",
+    "SEISMO" : "4",
+    "READREC" : "1",
+    "REC_FILE" : "/home/birniece/Documents/Projects/MicroseismicModelling/MicroseismicProcessing/data/pyfrac_SOFIModelling/inputs/griddedarray_xzy_20m.dat",
+    "REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
+    "NGEOPH" : "1",
+    "REC_ARRAY" : "0", # No array as it is read from the rec file
+ 
+"Snapshots" : "comment",
+        "SNAP" : "4",
+        "TSNAP1" : "5.00e-04",
+        "TSNAP2" : "5.00e-01",
+        "TSNAPINC" : "5.00e-02",
+        "IDX" : "2",
+        "IDY" : "2",
+        "IDZ" : "2",
+        "SNAP_FORMAT" : "3",
+        "SNAP_FILE" : "./outputs/snap/MT-90-90-180_Homogeneous_griddedarray",
+        "SNAP_PLANE" : "2",
+ 
+"Seismograms" : "comment",
+    "NDT, NDTSHIFT" : "2, 0",
+    "SEIS_FORMAT" : "2",
+    "SEIS_FILE" : "./outputs/su/MT-90-90-180_Homogeneous_griddedarray",
+ 
+"Monitoring the simulation" : "comment",
+    "LOG_FILE" : "./outputs/log/MT-90-90-180_Homogeneous_griddedarray.log",
+    "LOG" : "1",
+    "OUT_SOURCE_WAVELET" : "1",
+    "OUT_TIMESTEP_INFO" : "10",
+    
+ 
+"Time Stepping" : "comment",
+    "TIME" : "1.000",
+    "DT" : "5.00e-04",
+ 
+"3-D Grid" : "comment",
+    "NX" : "112",
+    "NY" : "120",
+    "NZ" : "128",
+    "DX" : "5.0000",  # meters
+    "DY" : "5.0000",  # meters
+    "DZ" : "5.0000",  # meters
+
+ 
+"Model" : "comment",
+    "READMOD" : "1", # Read from file
+    "MFILE" : "/home/birniece/Documents/Projects/MicroseismicModelling/MicroseismicProcessing/data/pyfrac_SOFIModelling/inputs/models/Homogeneous_xyz",
+    "WRITE_MODELFILES" : "2",
+ 
+"Domain Decomposition" : "comment",
+    "NPROCX" : "2",
+    "NPROCY" : "2",
+    "NPROCZ" : "2",
+    
+ 
+"Source" : "comment",
+    "SOURCE_SHAPE" : "1",  # Ricker
+    "SOURCE_TYPE" : "6",  # Explosive
+    "SRCREC" : "1",  # Read from file
+    "AMON" : "1",
+    "STR" : "90.00",  # Strike
+    "DIP" : "90.00",  # Dip
+    "RAKE" : "180.00",  # Rake
+    "SOURCE_FILE" : "/home/birniece/Documents/Projects/MicroseismicModelling/MicroseismicProcessing/data/pyfrac_SOFIModelling/inputs/centralsource.dat",
+    "RUN_MULTIPLE_SHOTS" : "0",
+    "PLANE_WAVE_ANGLE" : "0.0",
+    "TS" : "0.05",  # Duration of source-signal
+    
+ 
+"Boundary Conditions" : "comment",
+    "FREE_SURF" : "1",
+    "ABS_TYPE" : "1",
+    "FW" : "30",
+    "DAMPING" : "4.0",
+    "FPML" : "20.0",
+    "VPPML" : "3500.0",
+    "NPOWER" : "4.0",
+    "K_MAX_CPML" : "1.0",
+    "BOUNDARY" : "0",
+ 
+}

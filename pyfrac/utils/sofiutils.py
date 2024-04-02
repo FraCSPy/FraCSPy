@@ -32,6 +32,9 @@ ${snapmergepath} %s
 # Clean up the snap files (for memory purposes)
 rm -rf ./outputs/snap/**.0*
 rm -rf ./outputs/snap/**.1*
+
+# Clean up the distributed models
+rm -rf ./inputs/models/**.SOFI3D.**
 ''' % (os.path.join(sofimaster, 'sofi3D'),
        num_procs,
        sofi_param_file,

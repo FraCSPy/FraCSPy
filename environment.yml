@@ -22,6 +22,10 @@ dependencies:
   - scikit-learn
   - scikit-fmm
   - sphinx
+  - pydata-sphinx-theme
+  - sphinx-gallery
+  - numpydoc
+  - nbsphinx
   - pip:
     - torchsummary
     - openpyxl

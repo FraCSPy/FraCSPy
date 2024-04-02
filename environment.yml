@@ -9,19 +9,19 @@ dependencies:
   - pip
   - numpy==1.21.0
   - scipy>=1.4.0
-  - cudatoolkit=11.6
   - pandas
   - numba
   - icc_rt
   - matplotlib
   - ipython
   - jupyter
-  - pytorch==1.12.0=py3.9_cuda11.6_cudnn8.3.2_0
+  - pytorch
   - torchvision
   - torchaudio
   - tqdm
   - scikit-learn
   - scikit-fmm
+  - sphinx
   - pip:
     - torchsummary
     - openpyxl

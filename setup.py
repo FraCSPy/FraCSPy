@@ -61,7 +61,7 @@ setup(
     tests_require=test_deps,
     extras_require=extras_require,
     long_description=open('README.md').read(),
-    version='0.0.1',
+    version='0.0.2',
     #use_scm_version={
     #    "write_to": "pydenoise/_version.py",
     #    "relative_to": __file__,

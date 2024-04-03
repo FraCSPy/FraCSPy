@@ -1,4 +1,4 @@
-# OS generated files #
+# OS generated files
 .*.swp
 *.py[cod]
 .DS_Store
@@ -12,10 +12,11 @@ Thumbs.db
 static/*
 db.sqlite3
 
-# Build #
+# Build
 build
 dist
-.eggs/*
+.eggs/
+*.egg-info/
 *.zip
 
 # Figure files
@@ -23,12 +24,14 @@ dist
 *.png
 *.jpeg
 
+# Cache
 .cache
 Notebooks/.ipynb_checkpoints
+Notebooks/*/.ipynb_checkpoints
 *-checkpoint.ipynb
-
 FDModelling
-# logs
+
+# Logs
 *log*
 
 # Snaps

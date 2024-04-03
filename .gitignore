@@ -32,7 +32,7 @@ Notebooks/*/.ipynb_checkpoints
 FDModelling
 
 # Logs
-*log*
+#*log*
 
 # Snaps
 data/pyfrac_SOFIModelling/outputs/snap

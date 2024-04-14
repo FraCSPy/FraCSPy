@@ -1,1 +1,3 @@
-Pyortho is a python package for local signal-and-noise orthogonalization and local similarity calculation. The local orthogonalization method is a fundamental seismic data analysis algorithm and has a wide range of applications. More examples will be continuously updated.
+## Description
+
+**test_pyortho_localortho2d** is a Python package for the Damped Rank Reduction (DRR) method with local signal-and-noise orthogonalization and local similarity calculation.

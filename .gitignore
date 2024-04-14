@@ -27,10 +27,15 @@ dist
 Notebooks/.ipynb_checkpoints
 *-checkpoint.ipynb
 
-FDModelling
 # logs
 *log*
 
-# Snaps
+# Snaps & Logs
 data/pyfrac_SOFIModelling/outputs/snap
 data/pyfrac_SOFIModelling/outputs/log
+
+# Documentation #
+docs/build
+docs/source/api/generated
+docs/source/gallery
+docs/source/examples

@@ -16,4 +16,19 @@ Location Determination
     lsqr_migration
     fista_migration
 
+.. currentmodule:: pyfrac.locationsolvers.crosscorr_imaging
+
+.. autosummary::
+   :toctree: generated/
+
+    XcorrObjFunc
+    xcorr_imaging
+
+.. currentmodule:: pyfrac.locationsolvers.localisationutils
+
+.. autosummary::
+   :toctree: generated/
+
+    get_max_locs
+
 

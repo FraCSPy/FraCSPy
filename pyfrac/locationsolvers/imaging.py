@@ -5,7 +5,7 @@ from pylops.optimization.sparsity  import *
 
 
 def migration(Op, data, n_xyz, nforhc=10):
-    ''' Perfect inverse < impossible in reality
+    ''' Kirchhoff migration for microseismic source location
 
     Parameters
     ----------
@@ -16,6 +16,8 @@ def migration(Op, data, n_xyz, nforhc=10):
 
     Returns
     -------
+    migrated - Migrated volume
+    hc - determined hypocentral location
 
     '''
     nx, ny, nz = n_xyz
@@ -25,19 +27,21 @@ def migration(Op, data, n_xyz, nforhc=10):
 
 
 def lsqr_migration(Op, data, n_xyz, niter=100, nforhc=10, verbose=True):
-    '''
+    '''  LSQR Kirchhoff-based inversion for microseismic source location
 
     Parameters
     ----------
-    Op
-    data
-    n_xyz
-    niter
-    nforhc
-    verbose
+    Op - PyLops Kirchhoff operator
+    data - seismic data [nr,nt]
+    n_xyz - dimensions of subsurface model/migrated image
+    niter - number of iterations for inversion, default 100
+    nforhc - number of points for hypocenter, default 10
+    verbose - run in verbose mode, default True
 
     Returns
     -------
+    inv - inverted volume
+    hc - determined hypocentral location
 
     '''
     nx, ny, nz = n_xyz
@@ -47,6 +51,23 @@ def lsqr_migration(Op, data, n_xyz, niter=100, nforhc=10, verbose=True):
 
 
 def fista_migration(Op, data, n_xyz, niter=100, fista_eps=1e2, nforhc=10, verbose=True):
+    '''  FISTA Kirchhoff-based inversion for microseismic source location
+
+    Parameters
+    ----------
+    Op - PyLops Kirchhoff operator
+    data - seismic data [nr,nt]
+    n_xyz - dimensions of subsurface model/migrated image
+    niter - number of iterations for inversion, default 100
+    nforhc - number of points for hypocenter, default 10
+    verbose - run in verbose mode, default True
+
+    Returns
+    -------
+    migrated - FISTA inversion volume
+    hc - determined hypocentral location
+
+    '''
     nx, ny, nz = n_xyz
     with pylops.disabled_ndarray_multiplication():
         fista_mig = fista(Op, data.flatten(), niter=niter, eps=fista_eps, show=verbose)[0].reshape(nx, ny, nz)

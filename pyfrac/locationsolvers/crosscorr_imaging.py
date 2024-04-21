@@ -6,7 +6,8 @@ import pylops
 
 
 def XcorrObjFunc(x,y):
-    """ Cross-correlation objective function
+    ''' Cross-correlation objective function
+
     Parameters
     ----------
     x : torch.tensor
@@ -17,7 +18,8 @@ def XcorrObjFunc(x,y):
     -------
     type
         description
-    """
+        
+    '''
     x = x/torch.linalg.norm(x)
     y = y/torch.linalg.norm(y)
     loss = - torch.sum(torch.mul(x,y))

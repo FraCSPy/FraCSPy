@@ -18,6 +18,7 @@ Welcome to pyfracdocs's documentation!
 
    api/index.rst
    gallery/index.rst
+   tutorials/index.rst
 
 Indices and tables
 ==================

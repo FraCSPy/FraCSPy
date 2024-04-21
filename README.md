@@ -5,7 +5,7 @@ This library is a single location leveraging the excellent work of other scienti
 
 Some functionalities include:
 
-- modelling script generation (for accompanying SOFI3D)
+- modelling script generation (for accompanying [SOFI3D](https://docs.csc.fi/apps/sofi3d/))
 - event imaging
 - moment tensor inversion
 
@@ -31,8 +31,9 @@ This will also install xai_ssd in developer mode so you can change the source co
 
 Then activate the environment:
 
-    source activate pyfrac
-
+```bash
+source activate pyfrac
+```
 
 On Windows, using miniforge prompt:
 
@@ -50,3 +51,32 @@ If you need to add/change packages:
 conda deactivate
 conda remove -n pyfrac -all
 ```
+
+## Documentation
+
+The latest stable documentation based on [Sphinx](https://www.sphinx-doc.org) is available online at: <>
+
+One can also build the documentation locally:
+
+```bash
+cd docs
+make html
+```
+
+If you want to rebuild the documentation:
+
+```bash
+make clean
+make html
+```
+
+After a successful build, one can serve the documentation website locally:
+
+```bash
+cd build/html
+python -m http.server
+```
+
+and open in browser: <http://localhost:8000>
+
+**Note:** check the exact port number in the output

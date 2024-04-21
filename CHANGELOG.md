@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.2-beta.5] - 2024-04-21
+
+### Added
+
+- added noise to inverse crime example so it's not so boring
+- added beachball plotting functionality, leveraging heavily obspy
+- added MT matrix visualisation plot and helper function to manipulate mt into matrix
+- added tutorial script
+
+### Changed
+
+- updated plotting functions and wrote examples
+- updated README: added documentation-related info
+
+### Fixed
+
+- cleaning up example notebook and adding necessary note on obspy fm definition
+- removed reproduced docs directories from cache
+- .gitignore to exclude some .rst files and tutorials
+- .gitignore to avoid `*log*` deletion
+- comments in `crosscorr_imaging.py`
+
 ## [0.0.2-beta.4] - 2024-04-03
 
 ### Added

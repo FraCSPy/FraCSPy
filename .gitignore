@@ -30,8 +30,11 @@ Notebooks/.ipynb_checkpoints
 Notebooks/*/.ipynb_checkpoints
 *-checkpoint.ipynb
 
+# Backup
+backup/
+
 # logs
-*log*
+#*log* - it is dangerous to mask like this
 
 # Snaps & Logs
 data/pyfrac_SOFIModelling/outputs/snap
@@ -42,3 +45,5 @@ docs/build
 docs/source/api/generated
 docs/source/gallery
 docs/source/examples
+docs/source/tutorials
+*execution_times.rst

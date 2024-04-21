@@ -105,6 +105,12 @@ def MTBeachball(mt, ax):
     Returns
     -------
 
+    Notes
+    -----
+    Must first convert the moment tensor into the obspy required format: NM x 6 (M11, M22, M33, M12, M13, M23 -
+    the six independent components of the moment tensor, where the coordinate system is 1,2,3 = Up,South,East
+    which equals r,theta,phi - Harvard/Global CMT convention). The relation to Aki and Richards x,y,z equals
+    North,East,Down convention is as follows: Mrr=Mzz, Mtt=Mxx, Mpp=Myy, Mrt=Mxz, Mrp=-Myz, Mtp=-Mxy
     '''
     Mrr = mt[2]
     Mtt = mt[0]
@@ -160,6 +166,6 @@ def MTBeachball_comparisonplot(mt, mt_est):
     fig, axs = plt.subplots(1, 2, figsize=[10, 5])
     MTBeachball(mt, axs[0])
     MTBeachball(mt_est, axs[1])
-    axs[0].set_title('True MT', va='center', ha='center', fontweight='bold', fontsize=14)
-    axs[1].set_title('Estimated MT', va='center', ha='center', fontweight='bold', fontsize=14)
+    axs[0].set_title('True Focal Mechanism', va='center', ha='center', fontweight='bold', fontsize=14)
+    axs[1].set_title('Estimated Focal Mechanism', va='center', ha='center', fontweight='bold', fontsize=14)
     fig.tight_layout()

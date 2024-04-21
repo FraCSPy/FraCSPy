@@ -49,7 +49,7 @@ def MTMatrixplot(mt, ax, cmap=None, title=True):
     mt : numpy array [1x6]
         Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
     ax: pyplot axis
-        Figure axis on wich to plot, e.g., fig,ax = plt.subplots(1,1)
+        Figure axis on which to plot, e.g., fig,ax = plt.subplots(1,1)
     cmap : pyplot colorbar
         [optional], default matplotlib.cm.Spectral
     title : bool
@@ -74,15 +74,15 @@ def MTMatrixplot(mt, ax, cmap=None, title=True):
     ax.set_xlim([0.25 ,3.75]); ax.set_ylim([3.75 ,0.25]);
 
     # Add text showing MT values
-    ax.text(1 ,1 ,'%.1f ' %mt_matrix[0 ,0], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(2 ,2 ,'%.1f ' %mt_matrix[1 ,1], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(3 ,3 ,'%.1f ' %mt_matrix[2 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(1 ,2 ,'%.1f ' %mt_matrix[0 ,1], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(2 ,1 ,'%.1f ' %mt_matrix[0 ,1], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(1 ,3 ,'%.1f ' %mt_matrix[0 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(3 ,1 ,'%.1f ' %mt_matrix[0 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(3 ,2 ,'%.1f ' %mt_matrix[1 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
-    ax.text(2 ,3 ,'%.1f ' %mt_matrix[1 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
+    ax.text(1 ,1 ,'%.1e ' %mt_matrix[0 ,0], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(2 ,2 ,'%.1e ' %mt_matrix[1 ,1], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(3 ,3 ,'%.1e ' %mt_matrix[2 ,2], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(1 ,2 ,'%.1e ' %mt_matrix[0 ,1], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(2 ,1 ,'%.1e ' %mt_matrix[0 ,1], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(1 ,3 ,'%.1e ' %mt_matrix[0 ,2], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(3 ,1 ,'%.1e ' %mt_matrix[0 ,2], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(3 ,2 ,'%.1e ' %mt_matrix[1 ,2], va='center', ha='center', fontweight='bold', fontsize=12)
+    ax.text(2 ,3 ,'%.1e ' %mt_matrix[1 ,2], va='center', ha='center', fontweight='bold', fontsize=12)
 
     # Title
     if title:
@@ -100,7 +100,7 @@ def MTBeachball(mt, ax):
     mt : numpy array [1x6]
         Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
     ax: pyplot axis
-        Figure axis on wich to plot, e.g., fig,ax = plt.subplots(1,1)
+        Figure axis on which to plot, e.g., fig,ax = plt.subplots(1,1)
 
     Returns
     -------

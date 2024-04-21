@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+from obspy.imaging.beachball import beach
 
 
 def _mt4plt(mt):
@@ -17,7 +18,6 @@ def _mt4plt(mt):
         Moment Tensor matrix
     mat_mt4plt : numpy array [5x5]
         Padded Moment Tensor matrix for visualisation purposes
-
     '''
     # Define MT matrix
     mat_mt = np.empty([3 ,3])
@@ -41,7 +41,7 @@ def _mt4plt(mt):
     return mat_mt, mat_mt4plt
 
 
-def MTMatrixplot(mt, ax, cmap=None):
+def MTMatrixplot(mt, ax, cmap=None, title=True):
     '''
 
     Parameters
@@ -52,6 +52,8 @@ def MTMatrixplot(mt, ax, cmap=None):
         Figure axis on wich to plot, e.g., fig,ax = plt.subplots(1,1)
     cmap : pyplot colorbar
         [optional], default matplotlib.cm.Spectral
+    title : bool
+        [optional] include title 'Source Moment Tensor'
 
     Returns
     -------
@@ -63,6 +65,7 @@ def MTMatrixplot(mt, ax, cmap=None):
 
     mt_matrix, mat_mt4plt = _mt4plt(mt)
     ax.imshow(mat_mt4plt, cmap=cmap, vmin=-1, vmax=1)
+
     # Add lines around matrix
     linlocs = [0.5 ,1.5 ,2.5 ,3.5]
     for loc in linlocs:
@@ -82,6 +85,81 @@ def MTMatrixplot(mt, ax, cmap=None):
     ax.text(2 ,3 ,'%.1f ' %mt_matrix[1 ,2], va='center', ha='center', fontweight='bold', fontsize=14)
 
     # Title
-    ax.text(2 ,0.25 ,'Source Moment Tensor', va='center', ha='center', fontweight='bold', fontsize=14)
+    if title:
+        ax.text(2 ,0.25 ,'Source Moment Tensor', va='center', ha='center', fontweight='bold', fontsize=14)
+    # White background and removing axis
     ax.set_facecolor('w')
     ax.axis('off')
+
+
+def MTBeachball(mt, ax):
+    ''' Generating beachball plot of the 6 component moment tensor, heavily leveraging obspy!
+
+    Parameters
+    ----------
+    mt : numpy array [1x6]
+        Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+    ax: pyplot axis
+        Figure axis on wich to plot, e.g., fig,ax = plt.subplots(1,1)
+
+    Returns
+    -------
+
+    '''
+    Mrr = mt[2]
+    Mtt = mt[0]
+    Mpp = mt[1]
+    Mrt = mt[4]
+    Mrp = -1 * mt[5]
+    Mtp = -1 * mt[3]
+
+    NMmatrix = [Mrr, Mtt, Mpp, Mrt, Mrp, Mtp]
+
+    # plot the collection
+    collection = beach(fm=NMmatrix)
+    ax.add_collection(collection)
+    ax.autoscale_view(tight=False,)
+    ax.axis('off')
+
+
+def MTMatrix_comparisonplot(mt, mt_est):
+    ''' Matrix heatmap comparison figure between a known and estimated moment tensor
+
+    Parameters
+    ----------
+    mt : numpy array [1x6]
+        Known Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+    mt_est : numpy array [1x6]
+        Estimated Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+
+    Returns
+    -------
+
+    '''
+    fig, axs = plt.subplots(1, 2, figsize=[10, 5])
+    MTMatrixplot(mt, axs[0], title=False)
+    MTMatrixplot(mt_est, axs[1], title=False)
+    axs[0].text(2, 0.25, 'True MT', va='center', ha='center', fontweight='bold', fontsize=14)
+    axs[1].text(2, 0.25, 'Estimated MT', va='center', ha='center', fontweight='bold', fontsize=14)
+
+
+def MTBeachball_comparisonplot(mt, mt_est):
+    ''' Beachball comparison figure between a known and estimated moment tensor
+
+    Parameters
+    ----------
+    mt : numpy array [1x6]
+        Known Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+    mt_est : numpy array [1x6]
+        Estimated Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+
+    Returns
+    -------
+
+    '''
+    fig, axs = plt.subplots(1, 2, figsize=[10, 5])
+    MTBeachball(mt, axs[0])
+    MTBeachball(mt_est, axs[1])
+    axs[0].set_title('True MT', va='center', ha='center', fontweight='bold', fontsize=14)
+    axs[1].set_title('Estimated MT', va='center', ha='center', fontweight='bold', fontsize=14)
+    fig.tight_layout()

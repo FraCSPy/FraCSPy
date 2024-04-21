@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.000** total execution time for 1 file **from all galleries**:
+**00:14.024** total execution time for 1 file **from all galleries**:
 
 .. container::
 
@@ -32,6 +32,6 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_sourcelocation_lsqr.py` (``../../examples/sourcelocation_lsqr.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_tutorials_sourcelocation_lsqr.py` (``../../tutorials/sourcelocation_lsqr.py``)
+     - 00:14.024
      - 0.0

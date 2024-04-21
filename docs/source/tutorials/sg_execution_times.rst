@@ -1,12 +1,12 @@
 
 :orphan:
 
-.. _sphx_glr_gallery_sg_execution_times:
+.. _sphx_glr_tutorials_sg_execution_times:
 
 
 Computation times
 =================
-**00:11.655** total execution time for 1 file **from gallery**:
+**00:14.024** total execution time for 1 file **from tutorials**:
 
 .. container::
 
@@ -32,6 +32,6 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_sourcelocation_lsqr.py` (``sourcelocation_lsqr.py``)
-     - 00:11.655
+   * - :ref:`sphx_glr_tutorials_sourcelocation_lsqr.py` (``sourcelocation_lsqr.py``)
+     - 00:14.024
      - 0.0

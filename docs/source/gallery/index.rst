@@ -15,30 +15,7 @@ Below is a gallery of examples which use pyfrac for microseismic monitoring purp
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="LSQR Kirchhoff-based Inversion for Source Location">
-
-.. only:: html
-
-  .. image:: /gallery/images/thumb/sphx_glr_sourcelocation_lsqr_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_sourcelocation_lsqr.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">LSQR Kirchhoff-based Inversion for Source Location</div>
     </div>
-
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /gallery/sourcelocation_lsqr
 
 
 

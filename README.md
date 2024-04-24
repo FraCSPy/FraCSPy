@@ -79,4 +79,10 @@ python -m http.server
 
 and open in browser: <http://localhost:8000>
 
+To build/rebuild documentation on Windows you can simply run
+
+```cmd
+build_docs.bat
+```
+
 **Note:** check the exact port number in the output

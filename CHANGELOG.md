@@ -9,19 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- added noise to inverse crime example so it's not so boring
-- added beachball plotting functionality, leveraging heavily obspy
+- noise to inverse crime example so it's not so boring
+- moment tensor plotting options: beachball and heatmap
 - added MT matrix visualisation plot and helper function to manipulate mt into matrix
+- examples on using the newly added plotting
+- added tutorials into index.rst for documentation
 - added tutorial script
 
 ### Changed
 
-- updated plotting functions and wrote examples
+- cleaned up MTAI notebook to remove unnecessary imports
+- uncommented tutorials lines of documentation conf.py
+- updated plotting functions
 - updated README: added documentation-related info
 
 ### Fixed
 
-- cleaning up example notebook and adding necessary note on obspy fm definition
 - removed reproduced docs directories from cache
 - .gitignore to exclude some .rst files and tutorials
 - .gitignore to avoid `*log*` deletion

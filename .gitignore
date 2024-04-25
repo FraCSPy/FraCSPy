@@ -26,8 +26,7 @@ dist
 
 # Cache
 .cache
-Notebooks/.ipynb_checkpoints
-Notebooks/*/.ipynb_checkpoints
+.ipynb_checkpoints/
 *-checkpoint.ipynb
 
 # Backup

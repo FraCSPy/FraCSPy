@@ -14,6 +14,8 @@ dependencies:
   - icc_rt
   - matplotlib
   - pylops
+  - ipython
+  - jupyter
   - pytorch
   - torchvision
   - torchaudio
@@ -21,7 +23,13 @@ dependencies:
   - scikit-learn
   - scikit-fmm
   - obspy
+  - sphinx
+  - pydata-sphinx-theme
+  - sphinx-gallery
+  - numpydoc
+  - nbsphinx
   - pip:
     - torchinfo
     - openpyxl
     - segyio
+    - setuptools_scm

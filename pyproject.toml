@@ -17,7 +17,7 @@ authors = [
     {name = "Matteo Ravasi", email = "matteo.ravasi@kaust.edu.sa"},
 ]
 license = {file = "LICENSE.md"}
-keywords = ["algebra", "inverse problems", "proximal", "convex optimization", "large-scale optimization"]
+keywords = ["geophysics", "signal processing", "microseismic"]
 classifiers = [
     "Development Status :: 1 - Planning",
     "Intended Audience :: Developers",

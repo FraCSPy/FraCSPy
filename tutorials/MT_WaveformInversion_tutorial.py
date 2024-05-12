@@ -39,18 +39,19 @@ where
 For more information on the above equation, please refer to [LINK TO MTAI DOCUMENTATION].
 
 In comparison to the Amplitude-Based Moment Tensor Inversion, in this waveform-based approach we do not pick the
-amplitudes of the p-wave and therefore, do not need knowledge of the source location.
+amplitudes of the p-wave and therefore, do not need knowledge of the source location. Instead, we solve for the
+MT kernels, e.g., :math:`M_{xx}` , :math:`M_{xy}` , :math:`M_{xz}`, etc., across a subsurface area of interest.
+The resulting product, as you will see, is six MT kernel images.
 
-In the following example, we solve
 
 The workflow consists of:
-- reading and pre-processing the seismic data
-- setting up the problem (subsurface models)
-- Obtain traveltimes & ray angles
-- Computing Greens functions for the subsurface area of interest
-- Make the combined Kirchhoff-MT operator
-- Jointly solve for the location and MT with a least squares solver
-- _[Bonus]_ Jointly solve for the location and MT with a FISTA solver
+    - reading and pre-processing the seismic data
+    - setting up the problem (subsurface models)
+    - Obtain traveltimes & ray angles
+    - Computing Greens functions for the subsurface area of interest
+    - Make the combined Kirchhoff-MT operator
+    - Jointly solve for the location and MT with a least squares solver
+    - _[Bonus]_ Jointly solve for the location and MT with a FISTA solver
 
 
 
@@ -177,7 +178,7 @@ plt.plot(wav)
 ###############################################################################
 # Make cube area of interest as can't consider the full subsurface body
 hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi = 15, 13, 11  # half window lengths in x, y, z
-winc_x, winc_y, winc_z = nx//2, ny//2, nz//2  # Center points of the area of interest
+winc_x, winc_y, winc_z = nx//2, ny//2, 2*nz//3  # Center points of the area of interest
 # Defining area of interest
 xsi, xfi = winc_x-hwin_nx_aoi, winc_x+hwin_nx_aoi+1   # start/end index of x-region of interest
 ysi, yfi = winc_y-hwin_ny_aoi, winc_y+hwin_ny_aoi+1   # start/end index of y-region of interest
@@ -237,15 +238,15 @@ mt_adj = adjoint_mtmodelling(FD_data, Mstack_Op, nxyz)
 mt_inv = lsqr_mtsolver(FD_data, Mstack_Op, nxyz)
 
 exp_sloc, _ = expected_sloc_from_mtwi(mt_inv)
-print('Expected Source Location: \n', exp_sloc)
+print('Expected Source Location (AOI coord. ref.): \n', exp_sloc)
 mt_at_loc = get_mt_at_loc(mt_inv, [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
 print('MT at expected Source Location (full): \n', mt_at_loc)
 print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
 
 clim = 1e-4
-locimage3d(mt_inv[0], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim])
-locimage3d(mt_inv[1], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim])
-locimage3d(mt_inv[2], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim])
-locimage3d(mt_inv[3], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim])
-locimage3d(mt_inv[4], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim])
-locimage3d(mt_inv[5], exp_sloc[0]-xsi, exp_sloc[1]-ysi, exp_sloc[2]-zsi, clipval=[-clim, clim]);
+locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+locimage3d(mt_inv[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+locimage3d(mt_inv[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+locimage3d(mt_inv[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim]);

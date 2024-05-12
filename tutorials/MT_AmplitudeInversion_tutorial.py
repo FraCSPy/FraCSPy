@@ -90,7 +90,7 @@ vz = read_seis(os.path.join(data_dir, 'outputs/su/%s_vy.txt'%expname),
                nr=nr)
 
 dt = 1e-3  # SOFI3D Time sampling rate
-t_shift = 167  # Time shift required to align FD data to zero for Kirchhoff operators
+t_shift = 160  # Time shift required to align FD data to zero for Kirchhoff operators
 tdur = 500  # Recording duration
 efd_scaler = np.max(abs(vz))    # Scaler to make data more friendly
 vz = vz[:, t_shift:t_shift+tdur]*efd_scaler

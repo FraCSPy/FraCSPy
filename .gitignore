@@ -18,6 +18,7 @@ dist
 .eggs/
 *.egg-info/
 *.zip
+pyfrac/version.py
 
 # Figure files
 *.eps

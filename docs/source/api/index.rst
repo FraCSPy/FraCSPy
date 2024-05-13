@@ -1,9 +1,9 @@
 .. _api:
 
-PyPrac API
+PyFrac API
 ==========
 
-The Application Programming Interface (API) of PyPrac mirrors the usual microseismic workflow
+The Application Programming Interface (API) of PyFrac mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:
 
 * *XX*: xxx
@@ -55,4 +55,18 @@ Utilities
 
     get_max_locs
 
+
+Moment Tensor Inversion
+--------------------------
+
+Source Location Known
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: pyfrac.mtsolvers.mtai
+
+.. autosummary::
+   :toctree: generated/
+
+    frwrd_mtmodelling
+    lsqr_mtsolver
 

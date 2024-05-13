@@ -3,7 +3,7 @@ import sys
 import os
 import datetime
 from sphinx_gallery.sorting import ExampleTitleSortKey
-from pylops import __version__
+# from pyfrac import __version__
 
 # Sphinx needs to be able to import the package to use autodoc and get the version number
 sys.path.insert(0, os.path.abspath("../../pyfrac"))
@@ -21,7 +21,6 @@ extensions = [
     "numpydoc",
     "nbsphinx",
     "sphinx_gallery.gen_gallery",
-    # 'sphinx.ext.napoleon',
 ]
 
 # intersphinx configuration
@@ -32,8 +31,7 @@ intersphinx_mapping = {
     "sklearn": ("http://scikit-learn.org/stable/", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "matplotlib": ("https://matplotlib.org/", None),
-    "pyfftw": ("https://pyfftw.readthedocs.io/en/latest/", None),
-    "spgl1": ("https://spgl1.readthedocs.io/en/latest/", None),
+    "pylops": ("https://pylops.readthedocs.io/en/latest/", None),
 }
 
 # Generate autodoc stubs with summaries from code
@@ -83,20 +81,19 @@ templates_path = ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "**.ipynb", "**.md5"]
 source_suffix = ".rst"
 
-
 # The encoding of source files.
 source_encoding = "utf-8-sig"
 master_doc = "index"
+
+# Version
+version = 'X' # __version__
+if len(version.split("+")) > 1 or version == "unknown":
+    version = "dev"
 
 # General information about the project
 year = datetime.date.today().year
 project = "PyFrac"
 copyright = "{}, PyFrac Development Team".format(year)
-
-# Version
-version = __version__
-if len(version.split("+")) > 1 or version == "unknown":
-    version = "dev"
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
@@ -104,27 +101,27 @@ rst_epilog = """
 """.format(
     year=year
 )
-# html_static_path = ["_static"]
-# html_last_updated_fmt = "%b %d, %Y"
-# html_title = "PyLops"
-# html_short_title = "PyLops"
-# html_logo = "_static/pylops.png"
+html_static_path = ["_static"]
+html_last_updated_fmt = "%b %d, %Y"
+html_title = "PyFrac"
+html_short_title = "PyFrac"
+# html_logo = "_static/pyfrac.png"
 # html_favicon = "_static/favicon.ico"
-# html_extra_path = []
-# pygments_style = "default"
-# add_function_parentheses = False
-# html_show_sourcelink = False
-# html_show_sphinx = True
-# html_show_copyright = True
+html_extra_path = []
+pygments_style = "default"
+add_function_parentheses = False
+html_show_sourcelink = False
+html_show_sphinx = True
+html_show_copyright = True
 
-# # Theme config
-# html_theme = "pydata_sphinx_theme"
+# Theme config
+html_theme = "pydata_sphinx_theme"
 # html_theme_options = {
 #     "logo_only": True,
 #     "display_version": True,
 #     "logo": {
-#         "image_light": "pylops_b.png",
-#         "image_dark": "pylops.png",
+#         "image_light": "pyfrac.png",
+#         "image_dark": "pyfrac.png",
 #     }
 # }
 # html_css_files = [
@@ -152,7 +149,7 @@ html_context = {
     ),
     "github_project": "PyFrac",
     "github_repo": "pyfrac",
-    "github_version": "master",
+    "github_version": "main",
 }
 
 

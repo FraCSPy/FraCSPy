@@ -8,8 +8,6 @@ pylops
 ipython
 jupyter
 pytorch
-torchvision
-torchaudio
 tqdm
 scikit-learn
 scikit-fmm
@@ -19,7 +17,4 @@ pydata-sphinx-theme
 sphinx-gallery
 numpydoc
 nbsphinx
-torchinfo
-openpyxl
-segyio
 setuptools_scm

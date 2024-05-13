@@ -5,7 +5,7 @@ channels:
   - numba
   - defaults
 dependencies:
-  - python=3.9
+  - python>=3.8
   - pip
   - numpy
   - scipy
@@ -15,13 +15,7 @@ dependencies:
   - matplotlib
   - pylops
   - pytorch
-  - torchvision
-  - torchaudio
   - tqdm
   - scikit-learn
   - scikit-fmm
   - obspy
-  - pip:
-    - torchinfo
-    - openpyxl
-    - segyio

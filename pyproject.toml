@@ -1,0 +1,53 @@
+[build-system]
+requires = [
+    "setuptools >= 65",
+    "setuptools_scm[toml]",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyfrac"
+description = "A python package for general microseismic modelling, monitoring and analysis"
+readme = "README.md"
+authors = [
+    {name = "Claire Emma Birnie", email = "claire.birnie@kaust.edu.sa"},
+    {name = "Denis Anikiev", email = "denis.anikiev@gfz-potsdam.de"},
+    {name = "Omar Sad Aly", email = "omar.sadaly@kaust.edu.sa"},
+    {name = "Matteo Ravasi", email = "matteo.ravasi@kaust.edu.sa"},
+]
+license = {file = "LICENSE.md"}
+keywords = ["geophysics", "signal processing", "microseismic"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "numpy >= 1.15.0",
+    "scipy >= 1.8.0",
+    "pylops >= 2.0.0",
+    "torch",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.setuptools.packages.find]
+exclude = ["pytests"]
+
+[tool.setuptools_scm]
+version_file = "pyfrac/version.py"

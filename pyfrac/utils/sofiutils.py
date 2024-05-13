@@ -1,4 +1,21 @@
 import os
+import numpy as np
+
+
+def read_seis(seisfile, nr):
+    # s_wave_file = os.path.join(data_path,'test.bin.curl')
+    seis_flat = np.loadtxt(seisfile)
+
+    # determine number of timesamples and ensure it saved fully
+    nt = int(seis_flat.shape[0] / nr)
+    try:
+        seis_flat.reshape((nr, nt))
+    except:
+        print('Not good dims \n nt:%i nr:%i \n vz flat:%i' % (nt, nr, seis_flat.shape[0]))
+
+    # Resample to 2D
+    seis = seis_flat[:nt * nr].reshape((nr, nt))
+    return seis
 
 
 def write_SOFIrunScript(sofimaster, num_procs, sofi_param_file, outfile, write=True):

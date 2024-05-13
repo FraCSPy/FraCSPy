@@ -29,9 +29,13 @@ dist
 Notebooks/.ipynb_checkpoints
 Notebooks/*/.ipynb_checkpoints
 *-checkpoint.ipynb
+data/pyfrac_SOFIModelling/inputs/.ipynb_checkpoints
 
 # Backup
 backup/
+
+# MPI data
+mpi_scripts/ToC2ME_mpi/TTdata
 
 # logs
 #*log* - it is dangerous to mask like this

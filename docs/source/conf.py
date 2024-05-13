@@ -124,9 +124,9 @@ html_theme = "pydata_sphinx_theme"
 #         "image_dark": "pyfrac.png",
 #     }
 # }
-# html_css_files = [
-#     'css/custom.css',
-# ]
+html_css_files = [
+    'css/custom.css',
+]
 
 html_context = {
     "menu_links_name": "Repository",
@@ -153,6 +153,7 @@ html_context = {
 }
 
 
-# # Load the custom CSS files (needs sphinx >= 1.6 for this to work)
-# def setup(app):
-#     app.add_css_file("style.css")
+# Load the custom CSS files (needs sphinx >= 1.6 for this to work)
+def setup(app):
+    app.add_css_file("st"
+                     "yle.css")

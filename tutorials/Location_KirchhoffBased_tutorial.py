@@ -38,7 +38,6 @@ from pylops.utils.wavelets import ricker
 
 import pyfrac
 
-from pyfrac.locationsolvers.imaging import *
 from pyfrac.visualisation.eventimages import locimage3d
 from pyfrac.utils.sofiutils import read_seis
 
@@ -171,6 +170,7 @@ microseismic[sx, sy, sz] = 1.
 frwddata_1d = Op @ microseismic.flatten().squeeze()
 frwddata  = frwddata_1d.reshape(nr,nt)
 
+
 ###############################################################################
 # Let's compare the data across the full array
 
@@ -202,10 +202,8 @@ plt.tight_layout()
 # the source location is likely to be a smoothed product, as opposed
 # # to the desired single location.
 
-migrated, mig_hc = migration(Op,
-                             vz,
-                             [nx,ny,nz],
-                             nforhc=10)
+migrated, mig_hc = pyfrac.locationsolvers.imaging.migration(
+    Op, vz, [nx,ny,nz], nforhc=10)
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', mig_hc)
 
@@ -231,11 +229,8 @@ plt.tight_layout()
 #
 # Let's start with th least-squares solution
 
-inv, inv_hc = lsqr_migration(Op,
-                             vz,
-                             [nx,ny,nz],
-                             nforhc=10,
-                             verbose=False)
+inv, inv_hc = pyfrac.locationsolvers.imaging.lsqr_migration(
+    Op, vz, [nx,ny,nz], nforhc=10, verbose=False)
 print('True Hypo-Center:', [sx,sy,sz])
 print('LSQR Inversion Hypo-Centers:', inv_hc)
 
@@ -249,7 +244,8 @@ plt.tight_layout()
 ###############################################################################
 # We move on now to the sparsity-promoting solution
 
-fista, fista_hc = fista_migration(Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
+fista, fista_hc = pyfrac.locationsolvers.imaging.fista_migration(
+    Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
 print('True Hypo-Center:', [sx,sy,sz])
 print('FISTA Inversion Hypo-Centers:', fista_hc)
 

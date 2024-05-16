@@ -114,7 +114,7 @@ ax.plot(wavt, wav, 'k', lw=2)
 ax.set_xlabel('t [s]')
 ax.set_title('Wavelet')
 ax.grid('on')
-ax.grid('on')
+plt.tight_layout()
 
 ###############################################################################
 # Second, we define our modelling operator; as part of the initialization process,
@@ -246,7 +246,7 @@ plt.tight_layout()
 
 fista, fista_hc = pyfrac.locationsolvers.imaging.fista_migration(
     Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
-print('True Hypo-Center:', [sx,sy,sz])
+print('True Hypo-Center:', [sx, sy, sz])
 print('FISTA Inversion Hypo-Centers:', fista_hc)
 
 fig, axs = locimage3d(fista,

@@ -7,11 +7,13 @@ matplotlib
 pylops
 ipython
 jupyter
-pytorch
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
 tqdm
 scikit-learn
 scikit-fmm
 obspy
+pytest
 sphinx
 pydata-sphinx-theme
 sphinx-gallery

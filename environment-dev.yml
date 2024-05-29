@@ -14,8 +14,17 @@ dependencies:
   - icc_rt
   - matplotlib
   - pylops
+  - ipython
+  - jupyter
   - pytorch
   - tqdm
   - scikit-learn
   - scikit-fmm
   - obspy
+  - sphinx
+  - pydata-sphinx-theme
+  - sphinx-gallery
+  - numpydoc
+  - nbsphinx
+  - pip:
+    - setuptools_scm

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - doc-ghpages
 
 permissions:
     contents: write
@@ -25,9 +24,9 @@ jobs:
       - name: Build docs
         run: |
           sphinx-build -b html ./docs/source ./docs/build
-      #- name: Deploy to GitHub Pages
-      #  uses: peaceiris/actions-gh-pages@v3
-        # with:
-        #  publish_branch: gh-pages
-        #  personal_token: ${{ secrets.GITHUB_TOKEN }}
-        #  publish_dir: ./docs/build/
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/

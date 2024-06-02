@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-
+      - doc-ghpages
+      
 permissions:
     contents: write
 jobs:

@@ -15,6 +15,7 @@ dependencies:
   - matplotlib
   - pylops
   - ipython
+  - pytest
   - jupyter
   - pytorch
   - tqdm

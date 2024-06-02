@@ -1,4 +1,4 @@
-name: pyfrac
+name: fracspy
 channels:
   - pytorch
   - conda-forge

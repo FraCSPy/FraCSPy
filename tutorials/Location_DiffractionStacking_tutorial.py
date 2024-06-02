@@ -1,45 +1,49 @@
 r"""
-Kirchhoff-Based Localisation - Single component
+Diffraction Stacking Localisation - Simple scenario
 ===============================================
-This tutorial illustrates how to perform source localisation using a Kirchhoff-based
-modelling operator.
+This tutorial illustrates how to perform source localisation using a diffraction stacking based on semblance.
 
-To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed
-sources) using the following integral relation:
+In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as 
 
 .. math::
-        d(\mathbf{x_r}, t) =
-        w(t) * \int\limits_V G(\mathbf{x_r}, \mathbf{x}, t) m(\mathbf{x})\,\mathrm{d}\mathbf{x}
+        t(\mathbf{x_r},\mathbf{x_s}) = \frac{d(\mathbf{x_r},\mathbf{x_s})}{v}
 
-where :math:`m(\mathbf{x})` represents the source distribution at every location in the subsurface
-(and effectively parametrises the source strength), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
-Green's function and finally  :math:`w(t)` is the source wavelet. In our implementation, the following high-frequency
-approximation of the Green's function is adopted:
+where :math:`d(\mathbf{x_r},\mathbf{x_s})` is the distance between the source and receiver, and :math:`v` is velocity (e.g. P-wave velocity :math:`v_p`).
 
-.. math::
-    G(\mathbf{x_r}, \mathbf{x}, \omega) = a(\mathbf{x_r}, \mathbf{x})
-        e^{j \omega t(\mathbf{x_r}, \mathbf{x})}
+The waveforms are computed using the FD modelling.
 
-where :math:`t(\mathbf{x_r}, \mathbf{x})` is the traveltime and :math:`a(\mathbf{x_r}, \mathbf{x})` is the amplitude.
-However, we currently discard the amplitude component.
-
-In this tutorial we will consider the a simple scenario where the subsurface is homogenous, as such we can compute an
-analytical expression for the traveltime. Similarly, an eikonal solver can also be used in this scenario as well as in
-more complex cases when we deal with heterogenous media.
+Stacking 
 
 """
+
+###############################################################################
+# Load all necessary packages
+# ---------------------------
 
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-
+# Import fracspy
+import pyfrac as fp
+# Import modelling utils
+#from fp.modelling.kirchhoff import Kirchhoff
+from fp.utils.sofiutils import read_seis
+# Import diffraction stacking utils
+from fp.locationsolvers.localisationutils import dist2rec
+from fp.locationsolvers.imaging import diffraction_stacking
+# Import visualization utils
+from fp.visualisation.traceviz import traceimage
+from fp.visualisation.eventimages import locimage3d
+# Import pylops
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
 
-import pyfrac
 
-from pyfrac.visualisation.eventimages import locimage3d
-from pyfrac.utils.sofiutils import read_seis
+#from pylops.utils import dottest
+#from pylops.utils.wavelets import ricker
+#import pyfrac
+
+
 
 
 ###############################################################################
@@ -94,7 +98,7 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 ###############################################################################
 # Let's now double-check that the data has been loaded correctly.
 
-ax = pyfrac.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+ax = fp.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 ax.set_title('SOFI FD data - Vertical Component')
 plt.tight_layout()
 
@@ -121,7 +125,7 @@ plt.tight_layout()
 # an eikonal solver is used here to compute the traveltimes from each subsurface
 # point to each receiver.
 
-Op = pyfrac.modelling.kirchhoff.Kirchhoff(
+Op = fp.modelling.kirchhoff.Kirchhoff(
         z=z,
         x=x,
         y=y,
@@ -202,7 +206,7 @@ plt.tight_layout()
 # the source location is likely to be a smoothed product, as opposed
 # # to the desired single location.
 
-migrated, mig_hc = pyfrac.locationsolvers.imaging.migration(
+migrated, mig_hc = fp.locationsolvers.imaging.migration(
     Op, vz, [nx,ny,nz], nforhc=10)
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', mig_hc)
@@ -229,7 +233,7 @@ plt.tight_layout()
 #
 # Let's start with th least-squares solution
 
-inv, inv_hc = pyfrac.locationsolvers.imaging.lsqr_migration(
+inv, inv_hc = fp.locationsolvers.imaging.lsqr_migration(
     Op, vz, [nx,ny,nz], nforhc=10, verbose=False)
 print('True Hypo-Center:', [sx,sy,sz])
 print('LSQR Inversion Hypo-Centers:', inv_hc)
@@ -244,7 +248,7 @@ plt.tight_layout()
 ###############################################################################
 # We move on now to the sparsity-promoting solution
 
-fista, fista_hc = pyfrac.locationsolvers.imaging.fista_migration(
+fista, fista_hc = fp.locationsolvers.imaging.fista_migration(
     Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
 print('True Hypo-Center:', [sx, sy, sz])
 print('FISTA Inversion Hypo-Centers:', fista_hc)

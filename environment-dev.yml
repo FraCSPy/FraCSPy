@@ -1,4 +1,4 @@
-name: pyfrac
+name: fracspy
 channels:
   - pytorch
   - conda-forge
@@ -26,5 +26,6 @@ dependencies:
   - sphinx-gallery
   - numpydoc
   - nbsphinx
+  - spyder
   - pip:
     - setuptools_scm

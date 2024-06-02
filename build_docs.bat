@@ -1,4 +1,4 @@
-:: Windows script for building pyfrac documentation
+:: Windows script for building fracspy documentation
 :: This script uses docs/Makefile to build the sphinx documentation
 :: Run: build_docs.bat from cmd
 :: D. Anikiev, 24/04/2024

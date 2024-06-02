@@ -1,12 +1,14 @@
-# PyFrac
+# FraCSPy
 
-A single toolbox of python procedures for the full microseismic pipeline from modelling to post-event analysis.
-This library is a single location leveraging the excellent work of other scientists (/software developers) and adapts them for the specific use case of microseismic monitoring.
+FraCSPy stands for Python Framework for Conventional microSeismic Processing.
+
+It is a single python toolbox for the full microseismic pipeline from modelling to post-event analysis.
+This library is a single location leveraging the excellent work of other scientists (software developers) and adapts them for the specific use case of microseismic monitoring.
 
 Some functionalities include:
 
 - modelling script generation (for accompanying [SOFI3D](https://docs.csc.fi/apps/sofi3d/))
-- event imaging
+- event imaging: detection, location
 - moment tensor inversion
 
 Some python libraries that are heavily utilised include:
@@ -17,39 +19,55 @@ Some python libraries that are heavily utilised include:
 
 Installation requires [Conda](https://conda.io) package manager, e.g. one can use [miniforge](https://github.com/conda-forge/miniforge).
 
-## Install
-
-Create a new conda env with all the required packages:
-
-On Linux, from terminal:
+## Install using pip
 
 ```bash
-./install_pyfrac.sh
+pip install fracspy
 ```
 
-This will also install xai_ssd in developer mode so you can change the source code and it will be updated automatically within the conda env.
+## Install using conda
 
-Then activate the environment:
+### Linux
+
+Simply run
 
 ```bash
-source activate pyfrac
+make install
 ```
 
-On Windows, using miniforge prompt:
+It will create a new conda environment `fracspy` with all the required packages:
+
+Similarly, on Linux you can run:
+
+```bash
+./install.sh
+```
+
+### Windows
+
+On Windows, the best way is to use [miniforge](https://github.com/conda-forge/miniforge) prompt and run:
 
 ```cmd
-install_pyfrac.bat
+install.bat
+```
+
+It will install the package to environment `fracspy` and activate it.
+
+To install development version use
+
+```cmd
+install-dev.bat
 ```
 
 Now you are ready to use the package.
 
-## Uninstall
+### Uninstall
 
 If you need to add/change packages:
 
 ```bash
 conda deactivate
-conda remove -n pyfrac -all
+conda remove -n fracspy -all
 ```
 
 ## Documentation

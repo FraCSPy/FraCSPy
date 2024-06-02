@@ -24,18 +24,17 @@ pyfrac/version.py
 *.eps
 *.png
 *.jpeg
+*.jpg
 
 # Cache
 .cache
 .ipynb_checkpoints/
 __pycache__/
 *-checkpoint.ipynb
+.virtual_documents/
 
 # Backup
 backup/
-
-# logs
-#*log* - it is dangerous to mask like this
 
 # Snaps & Logs
 data/pyfrac_SOFIModelling/outputs/snap

@@ -1,12 +1,13 @@
-:: Windows installer script for pyfrac
-:: This script creates a Conda environment based on an "environment.yml" file and installs pyfrac
-:: Run: install_pyfrac.bat from cmd
-:: D. Anikiev, 03/04/2024
+:: Windows installer script for fracspy
+:: This script creates a Conda environment based on the "environment.yml" file and installs fracspy
+:: Run: install.bat from cmd
+:: D. Anikiev, 30/05/2024
 
 @echo off
 
 set ENV_YAML=environment.yml
-set ENV_NAME=pyfrac
+set ENV_NAME=fracspy
+set PACKAGE_NAME=fracspy
 
 :: Check for Conda Installation
 where conda >nul 2>nul
@@ -51,12 +52,12 @@ if %ERRORLEVEL% equ 0 (
     pause
 )
 
-echo Installing pyfrac...
+echo Installing %PACKAGE_NAME%...
 call pip install -e .
 if %ERRORLEVEL% equ 0 (    
-    echo Successfully installed pyfrac.
+    echo Successfully installed %PACKAGE_NAME%.
 ) else (
-    echo Failed to installed pyfrac. Please check the error messages above.
+    echo Failed to installed %PACKAGE_NAME%. Please check the error messages above.
     pause
     exit /b 5
 )

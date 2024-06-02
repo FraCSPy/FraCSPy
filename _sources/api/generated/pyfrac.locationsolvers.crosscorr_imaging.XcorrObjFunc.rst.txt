@@ -1,0 +1,12 @@
+﻿pyfrac.locationsolvers.crosscorr\_imaging.XcorrObjFunc
+======================================================
+
+.. currentmodule:: pyfrac.locationsolvers.crosscorr_imaging
+
+.. autofunction:: XcorrObjFunc
+
+.. include:: backreferences/pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

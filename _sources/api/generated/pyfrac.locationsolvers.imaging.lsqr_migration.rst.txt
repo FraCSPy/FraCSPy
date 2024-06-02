@@ -1,0 +1,12 @@
+﻿pyfrac.locationsolvers.imaging.lsqr\_migration
+==============================================
+
+.. currentmodule:: pyfrac.locationsolvers.imaging
+
+.. autofunction:: lsqr_migration
+
+.. include:: backreferences/pyfrac.locationsolvers.imaging.lsqr_migration.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

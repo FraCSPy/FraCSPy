@@ -1,0 +1,12 @@
+﻿pyfrac.mtsolvers.mtai.lsqr\_mtsolver
+====================================
+
+.. currentmodule:: pyfrac.mtsolvers.mtai
+
+.. autofunction:: lsqr_mtsolver
+
+.. include:: backreferences/pyfrac.mtsolvers.mtai.lsqr_mtsolver.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

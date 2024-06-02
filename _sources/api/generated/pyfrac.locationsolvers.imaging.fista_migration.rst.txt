@@ -1,0 +1,12 @@
+﻿pyfrac.locationsolvers.imaging.fista\_migration
+===============================================
+
+.. currentmodule:: pyfrac.locationsolvers.imaging
+
+.. autofunction:: fista_migration
+
+.. include:: backreferences/pyfrac.locationsolvers.imaging.fista_migration.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -1,32 +1,62 @@
 import os
+import numpy as np
 import svgwrite
-from svgwrite import cm, mm
 from PIL import Image
 import cairosvg
 import matplotlib.pyplot as plt
 from io import BytesIO
 import matplotlib.image as mpimg
 
+def ricker_wavelet(t, a=1):
+  """
+  This function generates a Ricker wavelet with a specific alpha parameter.
+
+  Args:
+      t (numpy.ndarray): A numpy array representing time.
+      a (float, optional): Alpha parameter controlling the wavelet's shape. Defaults to 6.
+
+  Returns:
+      numpy.ndarray: A numpy array representing the Ricker wavelet.
+  """
+  return (1 - 2*(a*t)**2) * np.exp(-a**2 * t**2)
+
 def create_svg_logo(filename):
     dwg = svgwrite.Drawing(filename, profile='tiny', size=("500px", "200px"))
-
+    
     # Background
     dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white"))
-
+    
     # Define colors
     text_color = "black"    
-
+    
+    # Define time range and number of points
+    t_min = -4
+    t_max = 4
+    num_points = 200
+    t = np.linspace(t_min, t_max, num_points)
+    
+    # Generate Ricker wavelet and adjust shape
+    y = 97 - 15*ricker_wavelet(t,a=1)    
+    t = t*6 + 168;
+    
+    # Convert data to SVG path format
+    wavelet_path = "M" + " ".join([f"{x},{y}" for x, y in zip(t, y)])   
+    
+    # Add ricker wavelet path
+    dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2)) 
+    
     # Add text
     dwg.add(dwg.text("FraCSPy", insert=(50, 120), font_family="Poppins", font_size="100px", fill=text_color))    
-
+    
     # Create magnifying glass handle for 'a'
     handle_coords = [(187, 143), (175, 112)]
     dwg.add(dwg.line(start=handle_coords[0], end=handle_coords[1], stroke=text_color, stroke_width=9))
        
-    # Add curved stroke    
+    # Add curved stroke to mimic a lens flare
     stroke_path = "M155,90 Q155,78 165,78 Q157,81 155,90"
     dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2))
-        
+    
+    # Save
     dwg.save()
 
 

@@ -5,6 +5,8 @@ from numpy.testing import assert_array_almost_equal
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
 from pyfrac.modelling.kirchhoff import Kirchhoff
+from pyfrac.modelling.trueamp_kirchhoff import TAKirchhoff
+
 
 PAR = {
     "ny": 3,
@@ -18,16 +20,6 @@ PAR = {
     "nry": 3,
     "nrx": 2,
 }
-
-# Check if skfmm is available and by-pass tests using it otherwise. This is
-# currently required for Travis as since we moved to Python3.8 it has
-# stopped working
-try:
-    import skfmm  # noqa: F401
-
-    skfmm_enabled = True
-except ImportError:
-    skfmm_enabled = False
 
 v0 = 500
 y = np.arange(PAR["ny"]) * PAR["dy"]
@@ -104,7 +96,7 @@ def test_identify_geometry():
 
 @pytest.mark.parametrize("par", [(par1), (par2), (par3),])
 def test_kirchhoff2d(par):
-    """Dot-test for Kirchhoff operator"""
+    """Dot-test for 2D Kirchhoff operator"""
     vel = v0 * np.ones((PAR["nx"], PAR["nz"]))
 
     if par["mode"] == "byot":
@@ -115,17 +107,88 @@ def test_kirchhoff2d(par):
     else:
         trav = None
 
-    if skfmm_enabled or par["mode"] != "eikonal":
-        Dop = Kirchhoff(
-            z,
-            x,
-            t,
-            r2d,
-            vel if par["mode"] == "eikonal" else v0,
-            wav,
-            wavc,
-            y=None,
-            trav=trav,
-            mode=par["mode"],
+    Dop = Kirchhoff(
+        z,
+        x,
+        t,
+        r2d,
+        vel if par["mode"] == "eikonal" else v0,
+        wav,
+        wavc,
+        trav=trav,
+        mode=par["mode"],
+    )
+    assert dottest(Dop, PAR["nrx"] * PAR["nt"], PAR["nz"] * PAR["nx"], atol=1e-3)
+
+
+@pytest.mark.parametrize("par", [(par1), (par2), (par3),])
+def test_kirchhoff3d(par):
+    """Dot-test for 3D Kirchhoff operator"""
+    vel = v0 * np.ones((PAR["ny"], PAR["nx"], PAR["nz"]))
+
+    if par["mode"] == "byot":
+        trav = Kirchhoff._traveltime_table(
+            z, x, r3d, v0, y=y, mode="analytic"
         )
-        assert dottest(Dop, PAR["nrx"] * PAR["nt"], PAR["nz"] * PAR["nx"], atol=1e-3)
+        trav = trav.reshape(PAR["ny"] * PAR["nx"] * PAR["nz"], PAR["nry"] * PAR["nrx"])
+    else:
+        trav = None
+
+    Dop = Kirchhoff(
+        z,
+        x,
+        t,
+        r3d,
+        vel if par["mode"] == "eikonal" else v0,
+        wav,
+        wavc,
+        y=y,
+        trav=trav,
+        mode=par["mode"],
+    )
+    assert dottest(Dop, PAR["nry"] * PAR["nrx"] * PAR["nt"], PAR["ny"] * PAR["nx"] * PAR["nz"], atol=1e-3)
+
+
+@pytest.mark.parametrize("par", [(par3),])
+def test_takirchhoff2d(par):
+    """Dot-test for 2D True-amplitude Kirchhoff operator"""
+    trav = Kirchhoff._traveltime_table(
+        z, x, r2d, v0, mode="analytic"
+    )
+    trav = trav.reshape(PAR["nx"] * PAR["nz"], PAR["nrx"])
+    amp = 1. / (trav + 1e-5)
+
+    Dop = TAKirchhoff(
+        z,
+        x,
+        t,
+        r2d,
+        wav,
+        wavc,
+        trav=trav,
+        amp=amp,
+    )
+    assert dottest(Dop, PAR["nrx"] * PAR["nt"], PAR["nz"] * PAR["nx"], atol=1e-3)
+
+
+@pytest.mark.parametrize("par", [(par3), ])
+def test_takirchhoff3d(par):
+    """Dot-test for 3D True-amplitude Kirchhoff operator"""
+    trav = Kirchhoff._traveltime_table(
+        z, x, r3d, v0, y=y, mode="analytic"
+    )
+    trav = trav.reshape(PAR["ny"] * PAR["nx"] * PAR["nz"], PAR["nry"] * PAR["nrx"])
+    amp = 1. / (trav + 1e-5)
+
+    Dop = TAKirchhoff(
+        z,
+        x,
+        t,
+        r3d,
+        wav,
+        wavc,
+        y=y,
+        trav=trav,
+        amp=amp,
+    )
+    assert dottest(Dop, PAR["nry"] * PAR["nrx"] * PAR["nt"], PAR["ny"] * PAR["nx"] * PAR["nz"], atol=1e-3)

@@ -3,7 +3,6 @@ __all__ = ["Kirchhoff"]
 
 import logging
 import os
-import warnings
 from typing import Optional, Tuple, Union
 
 import numpy as np
@@ -11,9 +10,7 @@ import numpy as np
 from pylops import LinearOperator
 from pylops.signalprocessing import Convolve1D
 from pylops.utils import deps
-from pylops.utils._internal import _value_or_sized_to_array
 from pylops.utils.decorators import reshaped
-from pylops.utils.tapers import taper
 from pylops.utils.typing import DTypeLike, NDArray
 
 skfmm_message = deps.skfmm_import("the kirchhoff module")
@@ -38,7 +35,7 @@ class Kirchhoff(LinearOperator):
     r"""Kirchhoff single-sided, demigration operator.
 
     Kirchhoff-based demigration/migration operator for single-sided propagation (from
-    subsurface to surface). Uses a high-frequency approximation of  Green's function
+    subsurface to surface). Uses a high-frequency approximation of Green's function
     propagators based on ``trav``.
 
     Parameters
@@ -68,7 +65,7 @@ class Kirchhoff(LinearOperator):
         Apply wavelet filter (``True``) or not (``False``)
     trav : :obj:`numpy.ndarray` or :obj:`tuple`, optional
         Traveltime table of size
-        :math:`\lbrack (n_y) n_x n_z \times n_r \rbrack` (to be provided if ``mode='byot'``). 
+        :math:`\lbrack (n_y) n_x n_z \times n_r \rbrack` (to be provided if ``mode='byot'``).
     engine : :obj:`str`, optional
         Engine used for computations (``numpy`` or ``numba``).
     dtype : :obj:`str`, optional
@@ -93,7 +90,7 @@ class Kirchhoff(LinearOperator):
     -----
     The Kirchhoff single-sided demigration operator synthesizes seismic data given a
     propagation velocity model :math:`v` and a source distribution :math:`m`.
-    In forward mode [1]_, [2]_:
+    In forward mode:
 
     .. math::
         d(\mathbf{x_r}, \mathbf{x_s}, t) =
@@ -119,20 +116,13 @@ class Kirchhoff(LinearOperator):
       source-receiver pair and the Green's functions are implemented from traveltime
       look-up tables, placing the source distribution values at corresponding source-to-receiver
       time in the data.
-    * ``byot``: bring your own tables. Traveltime table are provided
+    * ``byot``: bring your own tables. The traveltime table is provided
       directly by user using ``trav`` input parameter.
 
     Finally, the adjoint of the demigration operator is a *migration* operator which
     projects the data in the model domain creating an image of the source distribution.
 
-    .. [1] Bleistein, N., Cohen, J.K., and Stockwell, J.W..
-       "Mathematics of Multidimensional Seismic Imaging, Migration and
-       Inversion", 2000.
-
-    .. [2] Santos, L.T., Schleicher, J., Tygel, M., and Hubral, P.
-       "Seismic modeling by demigration", Geophysics, 65(4), pp. 1281-1289, 2000.
-
-    .. [3] Safron, L. "Multicomponent least-squares Kirchhoff depth migration",
+    .. [1] Safron, L. "Multicomponent least-squares Kirchhoff depth migration",
        MSc Thesis, 2018.
 
     """
@@ -342,8 +332,8 @@ class Kirchhoff(LinearOperator):
 
         return trav_recs
 
+    @staticmethod
     def _wavelet_reshaping(
-        self,
         wav: NDArray,
         dt: float,
         dimrec: int,

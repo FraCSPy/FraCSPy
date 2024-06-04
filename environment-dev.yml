@@ -25,7 +25,10 @@ dependencies:
   - pydata-sphinx-theme
   - sphinx-gallery
   - numpydoc
-  - nbsphinx
-  - spyder
+  - nbsphinx  
+  - svgwrite
+  - pillow
   - pip:
     - setuptools_scm
+    - cairosvg
+    

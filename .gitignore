@@ -25,6 +25,8 @@ pyfrac/version.py
 *.png
 *.jpeg
 *.jpg
+*.tiff
+*.svg
 
 # Cache
 .cache
@@ -32,6 +34,7 @@ pyfrac/version.py
 __pycache__/
 *-checkpoint.ipynb
 .virtual_documents/
+.spyproject/
 
 # Backup
 backup/

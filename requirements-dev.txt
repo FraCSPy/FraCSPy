@@ -17,5 +17,7 @@ pydata-sphinx-theme
 sphinx-gallery
 numpydoc
 nbsphinx
-spyder
+svgwrite
+cairosvg
+pillow
 setuptools_scm

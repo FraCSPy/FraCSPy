@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**05:07.640** total execution time for 7 files **from all galleries**:
+**05:16.815** total execution time for 7 files **from all galleries**:
 
 .. container::
 
@@ -33,23 +33,23 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py` (``../../tutorials/Location_KirchhoffBased_tutorial.py``)
-     - 02:52.292
+     - 03:00.711
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py` (``../../tutorials/MT_WaveformInversion_tutorial.py``)
-     - 01:46.273
+     - 01:47.424
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/MT_AmplitudeInversion_tutorial.py``)
-     - 00:27.389
+     - 00:27.033
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``../../examples/plot_ComparingBeachballs.py``)
-     - 00:00.995
+     - 00:00.979
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``../../examples/plot_ComparingMTmatrices.py``)
-     - 00:00.625
+     - 00:00.603
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``../../examples/plot_MTmatrix.py``)
      - 00:00.040
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``../../examples/plot_Beachball.py``)
-     - 00:00.026
+     - 00:00.025
      - 0.0

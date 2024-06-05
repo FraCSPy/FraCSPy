@@ -174,7 +174,7 @@ array. The data are modelled using the SOFI3D Finite Difference package.
 
     143
 
-    <matplotlib.image.AxesImage object at 0x7fad074bb2b0>
+    <matplotlib.image.AxesImage object at 0x7fdc7cf36b00>
 
 
 
@@ -264,7 +264,7 @@ These are required for the Green's functions
     /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:47: RuntimeWarning: invalid value encountered in divide
       gamma_sourceangles[2, irec] = delta_z / total_distance
 
-    [<matplotlib.lines.Line2D object at 0x7fad07511060>]
+    [<matplotlib.lines.Line2D object at 0x7fdc7d10e470>]
 
 
 
@@ -499,7 +499,7 @@ Jointly solve for the location and MT with a least squares solver
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 46.273 seconds)
+   **Total running time of the script:** (1 minutes 47.424 seconds)
 
 
 .. _sphx_glr_download_tutorials_MT_WaveformInversion_tutorial.py:

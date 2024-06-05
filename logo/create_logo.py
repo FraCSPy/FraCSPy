@@ -21,7 +21,8 @@ def ricker_wavelet(t, a=1):
   return (1 - 2*(a*t)**2) * np.exp(-a**2 * t**2)
 
 def create_svg_logo(filename):
-    dwg = svgwrite.Drawing(filename, profile='tiny', size=("500px", "200px"))
+    #dwg = svgwrite.Drawing(filename, profile='tiny', size=("500px", "200px"))
+    dwg = svgwrite.Drawing(filename, profile='tiny', size=("400px", "100px"))
     
     # Background
     dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white"))
@@ -36,8 +37,13 @@ def create_svg_logo(filename):
     t = np.linspace(t_min, t_max, num_points)
     
     # Generate Ricker wavelet and adjust shape
-    y = 97 - 15*ricker_wavelet(t,a=1)    
-    t = t*6 + 168;
+    wavelet = ricker_wavelet(t)
+    distorted_wavelet = wavelet*(max(t)-t)*4 + t
+    #y = 97 - 15*ricker_wavelet(t,a=1)
+    #y = 97 - distorted_wavelet
+    y = 52 - distorted_wavelet
+    #t = t*6 + 168;
+    t = t*6 + 113;
     
     # Convert data to SVG path format
     wavelet_path = "M" + " ".join([f"{x},{y}" for x, y in zip(t, y)])   
@@ -46,14 +52,18 @@ def create_svg_logo(filename):
     dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2)) 
     
     # Add text
-    dwg.add(dwg.text("FraCSPy", insert=(50, 120), font_family="Poppins", font_size="100px", fill=text_color))    
+    #dwg.add(dwg.text("FraCSPy", insert=(50, 120), font_family="Poppins", font_size="100px", fill=text_color))    
+    dwg.add(dwg.text("FraCSPy", insert=(-5, 73), font_family="Poppins", font_size="100px", fill=text_color))    
     
     # Create magnifying glass handle for 'a'
-    handle_coords = [(187, 143), (175, 112)]
+    #handle_coords = [(187, 143), (175, 112)]
+    #handle_coords = [(132, 100), (120, 69)]    
+    handle_coords = [(131, 97), (120, 69)]    
     dwg.add(dwg.line(start=handle_coords[0], end=handle_coords[1], stroke=text_color, stroke_width=9))
        
     # Add curved stroke to mimic a lens flare
-    stroke_path = "M155,90 Q155,78 165,78 Q157,81 155,90"
+    #stroke_path = "M155,90 Q155,78 165,78 Q157,81 155,90"
+    stroke_path = "M100,45 Q100,33 110,33 Q102,36 100,45"
     dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2))
     
     # Save
@@ -65,7 +75,8 @@ def convert_svg(svg_file, output_file, output_format, dpi=300, high_res_png=None
         cairosvg.svg2eps(url=svg_file, write_to=output_file)
     else:
         # Set dimensions to match desired DPI with increased resolution for smoothness
-        svg_width, svg_height = 500, 200  # Size defined in SVG creation
+        #svg_width, svg_height = 500, 200  # Size defined in SVG creation
+        svg_width, svg_height = 400, 100  # Size defined in SVG creation
         scale_factor = dpi / 96.0  # SVG default DPI is 96
         upscale_factor = 2  # Increase resolution by a factor of 2 for smoothness
         

@@ -24,6 +24,14 @@ Modelling
 
     Kirchhoff
 
+.. currentmodule:: pyfrac.modelling.trueamp_kirchhoff
+
+.. autosummary::
+   :toctree: generated/
+
+    TAKirchhoff
+
+
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
 

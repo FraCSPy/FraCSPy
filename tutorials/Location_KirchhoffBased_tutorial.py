@@ -126,7 +126,6 @@ Op = pyfrac.modelling.kirchhoff.Kirchhoff(
         x=x,
         y=y,
         t=t,
-        srcs=recs[:, :1],
         recs=recs,
         vel=1000 * np.ones_like(mod),
         wav=wav,

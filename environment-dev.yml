@@ -1,4 +1,4 @@
-name: pyfrac
+name: fracspy
 channels:
   - pytorch
   - conda-forge
@@ -26,6 +26,10 @@ dependencies:
   - pydata-sphinx-theme
   - sphinx-gallery
   - numpydoc
-  - nbsphinx
+  - nbsphinx  
+  - svgwrite
+  - pillow
   - pip:
     - setuptools_scm
+    - cairosvg
+    

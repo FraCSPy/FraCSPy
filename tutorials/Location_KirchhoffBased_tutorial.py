@@ -12,7 +12,7 @@ sources) using the following integral relation:
         w(t) * \int\limits_V G(\mathbf{x_r}, \mathbf{x}, t) m(\mathbf{x})\,\mathrm{d}\mathbf{x}
 
 where :math:`m(\mathbf{x})` represents the source distribution at every location in the subsurface
-(and effectively parametrises the source strenght), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
+(and effectively parametrises the source strength), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
 Green's function and finally  :math:`w(t)` is the source wavelet. In our implementation, the following high-frequency
 approximation of the Green's function is adopted:
 

@@ -1,7 +1,6 @@
 import numpy as np
 from pyfrac.locationsolvers.localisationutils import get_max_locs
 
-
 def get_mt_computation_dict():
     '''
     elementID < indicing style
@@ -43,3 +42,9 @@ def expected_sloc_from_mtwi(mt_image_set, nforhc=5, rem_edge=True, edgebuf=1, ab
                            absval=absval)
     return hc, hcs
 
+# Determine seismic moment m0 and local magnitude mw
+def get_magnitude(mt):
+    mt_array = np.array(mt)  # Convert the list to a NumPy array
+    m0 = np.sqrt(np.sum(mt_array ** 2))  # Use NumPy functions for better performance
+    mw = ((2/3)*(np.log10(m0) - 9.1))
+    return m0, mw

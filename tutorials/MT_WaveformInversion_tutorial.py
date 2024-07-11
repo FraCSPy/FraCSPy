@@ -42,14 +42,14 @@ To summarize, we will apply the following workflow:
 import os
 import matplotlib.pyplot as plt
 
-import pyfrac
+import fracspy
 
 from pylops.utils.wavelets import ricker
-from pyfrac.utils.sofiutils import read_seis
-from pyfrac.modelling.kirchhoff import Kirchhoff
-from pyfrac.mtsolvers.mtwi import *
-from pyfrac.mtsolvers.homo_mti import collect_source_angles, multicomp_Greens_Pwave
-from pyfrac.mtsolvers.mtutils import get_mt_computation_dict, get_mt_at_loc, expected_sloc_from_mtwi
+from fracspy.utils.sofiutils import read_seis
+from fracspy.modelling.kirchhoff import Kirchhoff
+from fracspy.mtsolvers.mtwi import *
+from fracspy.mtsolvers.homo_mti import collect_source_angles, multicomp_Greens_Pwave
+from fracspy.mtsolvers.mtutils import get_mt_computation_dict, get_mt_at_loc, expected_sloc_from_mtwi
 
 
 ###############################################################################
@@ -237,16 +237,16 @@ print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decima
 # inverse approaches.
 
 clim = 1
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_adj[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_adj[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-pyfrac.visualisation.eventimages.locimage3d(mt_inv[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+fracspy.visualisation.eventimages.locimage3d(mt_inv[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])

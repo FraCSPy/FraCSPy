@@ -7,7 +7,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyfrac"
+name = "fracspy"
 description = "A python package for general microseismic modelling, monitoring and analysis"
 readme = "README.md"
 authors = [
@@ -50,4 +50,4 @@ test = [
 exclude = ["pytests"]
 
 [tool.setuptools_scm]
-version_file = "pyfrac/version.py"
+version_file = "fracspy/version.py"

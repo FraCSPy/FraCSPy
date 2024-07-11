@@ -24,10 +24,10 @@ dev-install:
 	$(PIP) install -r requirements-dev.txt && $(PIP) install -e .
 
 install_conda:
-	conda env create -f environment.yml && conda activate pyfrac && pip install .
+	conda env create -f environment.yml && conda activate fracspy && pip install .
 
 dev-install_conda:
-	conda env create -f environment-dev.yml && conda activate pyfrac && pip install -e .
+	conda env create -f environment-dev.yml && conda activate fracspy && pip install -e .
 
 tests:
 	make pythoncheck
@@ -44,7 +44,7 @@ servedoc:
 	$(PYTHON) -m http.server --directory docs/build/html/
 
 lint:
-	flake8 docs/ examples/ pyfrac/ pytests/ tutorials/
+	flake8 docs/ examples/ fracspy/ pytests/ tutorials/
 
 typeannot:
-	mypy pyfrac/
+	mypy fracspy/

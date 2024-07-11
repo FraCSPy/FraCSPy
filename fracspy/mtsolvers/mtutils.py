@@ -1,5 +1,5 @@
 import numpy as np
-from pyfrac.locationsolvers.localisationutils import get_max_locs
+from fracspy.locationsolvers.localisationutils import get_max_locs
 
 def get_mt_computation_dict():
     '''

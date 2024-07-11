@@ -13,7 +13,7 @@ from pylops.utils import deps
 from pylops.utils.decorators import reshaped
 from pylops.utils.typing import DTypeLike, NDArray
 
-from pyfrac.modelling.kirchhoff import Kirchhoff
+from fracspy.modelling.kirchhoff import Kirchhoff
 
 jit_message = deps.numba_import("the kirchhoff module")
 

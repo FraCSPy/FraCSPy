@@ -24,16 +24,16 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 # Import fracspy
-import pyfrac as fp
+import fracspy as fp
 # Import modelling utils
-from pyfrac.modelling.kirchhoff import Kirchhoff
-from pyfrac.utils.sofiutils import read_seis
+from fracspy.modelling.kirchhoff import Kirchhoff
+from fracspy.utils.sofiutils import read_seis
 # Import diffraction stacking utils
-from pyfrac.locationsolvers.localisationutils import dist2rec
-from pyfrac.locationsolvers.imaging import diffraction_stacking
+from fracspy.locationsolvers.localisationutils import dist2rec
+from fracspy.locationsolvers.imaging import diffraction_stacking
 # Import visualization utils
-from pyfrac.visualisation.traceviz import traceimage
-from pyfrac.visualisation.eventimages import locimage3d
+from fracspy.visualisation.traceviz import traceimage
+from fracspy.visualisation.eventimages import locimage3d
 # Import pylops
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker

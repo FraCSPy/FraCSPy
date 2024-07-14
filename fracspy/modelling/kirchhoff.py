@@ -313,7 +313,7 @@ class Kirchhoff(LinearOperator):
             trav_recs = np.sqrt(dist_recs2) / vel
 
         elif mode == "eikonal":
-            if skfmm is not None:
+            if skfmm_message is None:
                 trav_recs = np.zeros((ny * nx * nz, nr), dtype=np.float32)
                 for irec, rec in enumerate(recs.T):
                     rec = np.round((rec - origin) / dsamp).astype(np.int32)

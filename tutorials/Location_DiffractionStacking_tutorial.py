@@ -1,6 +1,6 @@
 r"""
 Diffraction Stacking Localisation - Simple scenario
-===============================================
+=======================================================
 This tutorial illustrates how to perform source localisation using a diffraction stacking based on semblance.
 
 In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as 
@@ -98,7 +98,6 @@ Op = Kirchhoff(z=z,
                x=x, 
                y=y, 
                t=t, 
-               srcs=recs[:, :1], 
                recs=recs, 
                vel=vel, 
                wav=wav, 

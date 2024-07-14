@@ -3,4 +3,4 @@
 Gallery
 -------
 
-Below is a gallery of examples which use pyfrac for microseismic monitoring purposes.
+Below is a gallery of examples which use FraCSPy for microseismic monitoring purposes.

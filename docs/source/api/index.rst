@@ -1,7 +1,7 @@
 .. _api:
 
 FraCSPy API
-==========
+===============
 
 The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:

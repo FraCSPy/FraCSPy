@@ -1,6 +1,6 @@
 r"""
 Diffraction Stacking Localisation - Simple scenario
-=======================================================
+===================================================
 This tutorial illustrates how to perform source localisation using a diffraction stacking based on semblance.
 
 In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as 
@@ -122,7 +122,7 @@ print(frwddata.shape)
 
 ###############################################################################
 # Diffraction stacking
-# ---------------------------
+# --------------------
 
 # Define search grid
 gx = x

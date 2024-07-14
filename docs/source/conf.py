@@ -3,7 +3,7 @@ import sys
 import os
 import datetime
 from sphinx_gallery.sorting import ExampleTitleSortKey
-# from fracspy import __version__
+from fracspy import __version__
 
 # Sphinx needs to be able to import the package to use autodoc and get the version number
 sys.path.insert(0, os.path.abspath("../../fracspy"))
@@ -86,7 +86,7 @@ source_encoding = "utf-8-sig"
 master_doc = "index"
 
 # Version
-version = 'X' # __version__
+version = __version__
 if len(version.split("+")) > 1 or version == "unknown":
     version = "dev"
 

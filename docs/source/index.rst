@@ -1,5 +1,5 @@
 FraCSPy
-========
+=======
 Overview
 ========
 FraCSPy is an open-source Python library focused on providing conventional microseismic monitoring tools, particularly for the purpose of benchmarking
@@ -8,7 +8,7 @@ newly proposed algorithms and workflows.
 
 
 Available Tools
---------------
+---------------
 In this first version, FraCSPy focuses on traditional monitoring tools (i.e., non-Machine Learning procedures). It has routines that cover the following 
 elements of the microseismic monitoring pipeline: 
 - detection

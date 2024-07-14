@@ -3,7 +3,7 @@ from scipy.sparse.linalg import lsqr
 from pylops.basicoperators import HStack, VStack
 from pylops.utils import dottest
 from pylops.optimization.sparsity import *
-from pyfrac.modelling.trueamp_kirchhoff import TAKirchhoff
+from fracspy.modelling.trueamp_kirchhoff import TAKirchhoff
 
 
 def singlecomp_pwave_mtioperator(x,
@@ -62,7 +62,6 @@ def multicomp_pwave_mtioperator(x,
                          x=x,
                          y=y,
                          t=t,
-                         srcs=recs[:, :1],
                          recs=recs,
                          wav=wav,
                          wavcenter=wavc,
@@ -76,7 +75,6 @@ def multicomp_pwave_mtioperator(x,
                          x=x,
                          y=y,
                          t=t,
-                         srcs=recs[:, :1],
                          recs=recs,
                          wav=wav,
                          wavcenter=wavc,
@@ -90,7 +88,6 @@ def multicomp_pwave_mtioperator(x,
                          x=x,
                          y=y,
                          t=t,
-                         srcs=recs[:, :1],
                          recs=recs,
                          wav=wav,
                          wavcenter=wavc,

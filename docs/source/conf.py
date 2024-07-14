@@ -3,10 +3,10 @@ import sys
 import os
 import datetime
 from sphinx_gallery.sorting import ExampleTitleSortKey
-# from pyfrac import __version__
+from fracspy import __version__
 
 # Sphinx needs to be able to import the package to use autodoc and get the version number
-sys.path.insert(0, os.path.abspath("../../pyfrac"))
+sys.path.insert(0, os.path.abspath("../../fracspy"))
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -67,9 +67,9 @@ sphinx_gallery_conf = {
     # directory where function granular galleries are stored
     "backreferences_dir": "api/generated/backreferences",
     # Modules for which function level galleries are created.
-    "doc_module": "pyfrac",
+    "doc_module": "fracspy",
     # Insert links to documentation of objects in the examples
-    "reference_url": {"pyfrac": None},
+    "reference_url": {"fracspy": None},
 }
 
 # Always show the source code that generates a plot
@@ -86,14 +86,14 @@ source_encoding = "utf-8-sig"
 master_doc = "index"
 
 # Version
-version = 'X' # __version__
+version = __version__
 if len(version.split("+")) > 1 or version == "unknown":
     version = "dev"
 
 # General information about the project
 year = datetime.date.today().year
-project = "PyFrac"
-copyright = "{}, PyFrac Development Team".format(year)
+project = "fracspy"
+copyright = "{}, fracspy Development Team".format(year)
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
@@ -103,9 +103,9 @@ rst_epilog = """
 )
 html_static_path = ["_static"]
 html_last_updated_fmt = "%b %d, %Y"
-html_title = "PyFrac"
-html_short_title = "PyFrac"
-# html_logo = "_static/pyfrac.png"
+html_title = "fracspy"
+html_short_title = "fracspy"
+# html_logo = "_static/fracspy.png"
 # html_favicon = "_static/favicon.ico"
 html_extra_path = []
 pygments_style = "default"
@@ -120,8 +120,8 @@ html_theme = "pydata_sphinx_theme"
 #     "logo_only": True,
 #     "display_version": True,
 #     "logo": {
-#         "image_light": "pyfrac.png",
-#         "image_dark": "pyfrac.png",
+#         "image_light": "fracspy.png",
+#         "image_dark": "fracspy.png",
 #     }
 # }
 html_css_files = [
@@ -147,8 +147,8 @@ html_context = {
     "gallery_dir": dict(
         zip(sphinx_gallery_conf["gallery_dirs"], sphinx_gallery_conf["examples_dirs"])
     ),
-    "github_project": "PyFrac",
-    "github_repo": "pyfrac",
+    "github_project": "fracspy",
+    "github_repo": "fracspy",
     "github_version": "main",
 }
 

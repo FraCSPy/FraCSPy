@@ -1,6 +1,6 @@
 r"""
 Diffraction Stacking Localisation - Simple scenario
-===============================================
+===================================================
 This tutorial illustrates how to perform source localisation using a diffraction stacking based on semblance.
 
 In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as 
@@ -24,16 +24,16 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 # Import fracspy
-import pyfrac as fp
+import fracspy as fp
 # Import modelling utils
-from pyfrac.modelling.kirchhoff import Kirchhoff
-from pyfrac.utils.sofiutils import read_seis
+from fracspy.modelling.kirchhoff import Kirchhoff
+from fracspy.utils.sofiutils import read_seis
 # Import diffraction stacking utils
-from pyfrac.locationsolvers.localisationutils import dist2rec
-from pyfrac.locationsolvers.imaging import diffraction_stacking
+from fracspy.locationsolvers.localisationutils import dist2rec
+from fracspy.locationsolvers.imaging import diffraction_stacking
 # Import visualization utils
-from pyfrac.visualisation.traceviz import traceimage
-from pyfrac.visualisation.eventimages import locimage3d
+from fracspy.visualisation.traceviz import traceimage
+from fracspy.visualisation.eventimages import locimage3d
 # Import pylops
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
@@ -98,7 +98,6 @@ Op = Kirchhoff(z=z,
                x=x, 
                y=y, 
                t=t, 
-               srcs=recs[:, :1], 
                recs=recs, 
                vel=vel, 
                wav=wav, 
@@ -123,7 +122,7 @@ print(frwddata.shape)
 
 ###############################################################################
 # Diffraction stacking
-# ---------------------------
+# --------------------
 
 # Define search grid
 gx = x

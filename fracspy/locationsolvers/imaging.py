@@ -1,6 +1,6 @@
-from pyfrac.locationsolvers.localisationutils import get_max_locs
-from pyfrac.locationsolvers.localisationutils import moveout_correction
-from pyfrac.locationsolvers.localisationutils import semblance_stack
+from fracspy.locationsolvers.localisationutils import get_max_locs
+from fracspy.locationsolvers.localisationutils import moveout_correction
+from fracspy.locationsolvers.localisationutils import semblance_stack
 from scipy.sparse.linalg import lsqr
 import pylops
 from pylops.optimization.sparsity  import *

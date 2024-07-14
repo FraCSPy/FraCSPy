@@ -1,4 +1,4 @@
-from pyfrac.locationsolvers.localisationutils import get_max_locs
+from fracspy.locationsolvers.localisationutils import get_max_locs
 import numpy as np
 import torch
 from torch.optim.lr_scheduler import StepLR

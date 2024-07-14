@@ -50,3 +50,6 @@ docs/source/gallery
 docs/source/examples
 docs/source/tutorials
 *execution_times.rst
+
+# setuptools_scm generated  #
+fracspy/version.py

@@ -4,8 +4,8 @@ from numpy.testing import assert_array_almost_equal
 
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
-from pyfrac.modelling.kirchhoff import Kirchhoff
-from pyfrac.modelling.trueamp_kirchhoff import TAKirchhoff
+from fracspy.modelling.kirchhoff import Kirchhoff
+from fracspy.modelling.trueamp_kirchhoff import TAKirchhoff
 
 
 PAR = {

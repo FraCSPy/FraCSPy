@@ -36,10 +36,10 @@ import matplotlib.pyplot as plt
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
 
-import pyfrac
+import fracspy
 
-from pyfrac.visualisation.eventimages import locimage3d
-from pyfrac.utils.sofiutils import read_seis
+from fracspy.visualisation.eventimages import locimage3d
+from fracspy.utils.sofiutils import read_seis
 
 
 ###############################################################################
@@ -94,7 +94,7 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 ###############################################################################
 # Let's now double-check that the data has been loaded correctly.
 
-ax = pyfrac.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 ax.set_title('SOFI FD data - Vertical Component')
 plt.tight_layout()
 
@@ -121,7 +121,7 @@ plt.tight_layout()
 # an eikonal solver is used here to compute the traveltimes from each subsurface
 # point to each receiver.
 
-Op = pyfrac.modelling.kirchhoff.Kirchhoff(
+Op = fracspy.modelling.kirchhoff.Kirchhoff(
         z=z,
         x=x,
         y=y,
@@ -201,7 +201,7 @@ plt.tight_layout()
 # the source location is likely to be a smoothed product, as opposed
 # # to the desired single location.
 
-migrated, mig_hc = pyfrac.locationsolvers.imaging.migration(
+migrated, mig_hc = fracspy.locationsolvers.imaging.migration(
     Op, vz, [nx,ny,nz], nforhc=10)
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', mig_hc)
@@ -228,7 +228,7 @@ plt.tight_layout()
 #
 # Let's start with th least-squares solution
 
-inv, inv_hc = pyfrac.locationsolvers.imaging.lsqr_migration(
+inv, inv_hc = fracspy.locationsolvers.imaging.lsqr_migration(
     Op, vz, [nx,ny,nz], nforhc=10, verbose=False)
 print('True Hypo-Center:', [sx,sy,sz])
 print('LSQR Inversion Hypo-Centers:', inv_hc)
@@ -243,7 +243,7 @@ plt.tight_layout()
 ###############################################################################
 # We move on now to the sparsity-promoting solution
 
-fista, fista_hc = pyfrac.locationsolvers.imaging.fista_migration(
+fista, fista_hc = fracspy.locationsolvers.imaging.fista_migration(
     Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
 print('True Hypo-Center:', [sx, sy, sz])
 print('FISTA Inversion Hypo-Centers:', fista_hc)

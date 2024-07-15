@@ -53,3 +53,6 @@ docs/source/tutorials
 
 # setuptools_scm generated  #
 fracspy/version.py
+
+# VSCODE
+.vscode/

@@ -39,15 +39,16 @@ def collect_source_angles(x,y,z, reclocs, nc=3):
         total_distance = np.sqrt(delta_x ** 2 + delta_y ** 2 + delta_z ** 2)
         dist_table[irec] = total_distance
 
-        # cosine x
-        gamma_sourceangles[0, irec] = delta_x / total_distance
-        # cosine y
-        gamma_sourceangles[1, irec] = delta_y / total_distance
-        # cosine z
-        gamma_sourceangles[2, irec] = delta_z / total_distance
-
-        # At rec loc total distance is zero < CANT DIVIDE BY ZERO!
+        #First remove rec loc from total distance table
         rl = np.argwhere(total_distance == 0)
+        # temporarily set total_distance to 999 for rec loc
+        if len(rl) > 0:
+            total_distance[rl[0][0], rl[0][1], rl[0][2]] = 999
+        # cosine x, y, z
+        gamma_sourceangles[0, irec] = delta_x / total_distance
+        gamma_sourceangles[1, irec] = delta_y / total_distance
+        gamma_sourceangles[2, irec] = delta_z / total_distance
+        # put correct source angle for rec loc
         if len(rl) > 0:
             gamma_sourceangles[:, irec, rl[0][0], rl[0][1], rl[0][2]] = 0
 

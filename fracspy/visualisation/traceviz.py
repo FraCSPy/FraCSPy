@@ -31,8 +31,6 @@ def traceimage(data, norm_indiv=False, figsize=[12, 6], cbar=True, climQ=90, cma
     if norm_indiv:
         data = (data.T / np.max(abs(data), axis=1)).T
 
-        
-
     clim = np.percentile(abs(data), climQ)
     if ax is None:
         fig, ax = plt.subplots(1, 1, figsize=figsize)
@@ -45,7 +43,7 @@ def traceimage(data, norm_indiv=False, figsize=[12, 6], cbar=True, climQ=90, cma
     ax.axis('tight')
     if ax is None: fig.tight_layout()
 
-    return ax
+    return fig, ax
 
 def multiwiggleplot(datalist, norm_indiv=True, figsize=[12, 6], rec_label=True, xhline=True, givencolors=False):
     ntr = np.shape(datalist[0])[0]  # num of traces

@@ -27,6 +27,7 @@ def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
     return ev_loc, ev_locs
 
+
 def dist2rec(recs, gx, gy, gz):
     '''Compute distances from a 3D grid of points to array of receivers 
 

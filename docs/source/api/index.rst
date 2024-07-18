@@ -6,9 +6,8 @@ FraCSPy API
 The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:
 
-* *XX*: xxx
-* *XX*: xxx
-* *XX*: xxx
+* Location Determination
+* Moment Tensor Inversion
 
 
 Location Determination
@@ -35,28 +34,41 @@ Modelling
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: fracspy.locationsolvers.imaging
+.. currentmodule:: fracspy.location.migration
 
 .. autosummary::
    :toctree: generated/
 
-    migration
-    lsqr_migration
-    fista_migration
+    diffstack
+    semblancediffstack
 
-.. currentmodule:: fracspy.locationsolvers.crosscorr_imaging
+.. currentmodule:: fracspy.location.imaging
 
 .. autosummary::
    :toctree: generated/
 
-    XcorrObjFunc
-    xcorr_imaging
+    lsi
+    sparselsi
 
-.. currentmodule:: fracspy.locationsolvers.localisationutils
+.. currentmodule:: fracspy.location.xcorri
+
+.. autosummary::
+   :toctree: generated/
+
+    xcorri
+
+.. currentmodule:: fracspy.location.location
+
+.. autosummary::
+   :toctree: generated/
+
+    Location
 
 
 Utilities
 ~~~~~~~~~
+
+.. currentmodule:: fracspy.location.utils
 
 .. autosummary::
    :toctree: generated/

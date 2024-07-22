@@ -124,9 +124,7 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 # changes in polarity across the  traces; this is the information that we utilise
 # to determine the Moment Tensor.
 
-#fig,ax = plt.subplots(1,1,figsize=[15,5])
-#ax.imshow(vz.T, aspect='auto', cmap='binary_r')
-ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 ax.set_title('SOFI FD data - Vertical Component')
 plt.tight_layout()
 

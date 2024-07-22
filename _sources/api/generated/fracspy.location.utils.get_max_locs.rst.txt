@@ -1,0 +1,12 @@
+﻿fracspy.location.utils.get\_max\_locs
+=====================================
+
+.. currentmodule:: fracspy.location.utils
+
+.. autofunction:: get_max_locs
+
+.. include:: backreferences/fracspy.location.utils.get_max_locs.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

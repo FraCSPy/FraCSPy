@@ -1,0 +1,59 @@
+﻿fracspy.modelling.trueamp\_kirchhoff.TAKirchhoff
+================================================
+
+.. currentmodule:: fracspy.modelling.trueamp_kirchhoff
+
+.. autoclass:: TAKirchhoff
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~TAKirchhoff.__init__
+        ~TAKirchhoff.adjoint
+        ~TAKirchhoff.apply_columns
+        ~TAKirchhoff.cond
+        ~TAKirchhoff.conj
+        ~TAKirchhoff.div
+        ~TAKirchhoff.dot
+        ~TAKirchhoff.eigs
+        ~TAKirchhoff.matmat
+        ~TAKirchhoff.matvec
+        ~TAKirchhoff.reset_count
+        ~TAKirchhoff.rmatmat
+        ~TAKirchhoff.rmatvec
+        ~TAKirchhoff.todense
+        ~TAKirchhoff.toimag
+        ~TAKirchhoff.toreal
+        ~TAKirchhoff.tosparse
+        ~TAKirchhoff.trace
+        ~TAKirchhoff.transpose
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

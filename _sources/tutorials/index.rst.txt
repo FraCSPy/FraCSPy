@@ -4,6 +4,7 @@
 
 Tutorials
 ---------
+Below is a series of tutorials which use FraCSPy for microseismic monitoring purposes.
 
 
 .. raw:: html
@@ -14,7 +15,7 @@ Tutorials
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homog...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards):">
 
 .. only:: html
 
@@ -31,7 +32,24 @@ Tutorials
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_Location_DiffractionStacking_tutorial_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Diffraction Stacking Localisation - Simple scenario</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:">
 
 .. only:: html
 
@@ -48,7 +66,7 @@ Tutorials
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Microseismic data can be considered as: $d=GM Using the Greens functions as defined by Aki and ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We will start once again from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards) - see the Amplitude-based Moment Tensor Inversion tutorial for more details.">
 
 .. only:: html
 
@@ -74,6 +92,7 @@ Tutorials
    :hidden:
 
    /tutorials/MT_AmplitudeInversion_tutorial
+   /tutorials/Location_DiffractionStacking_tutorial
    /tutorials/Location_KirchhoffBased_tutorial
    /tutorials/MT_WaveformInversion_tutorial
 

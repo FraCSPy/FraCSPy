@@ -5,7 +5,7 @@
 Gallery
 -------
 
-Below is a gallery of examples which use pyfrac for microseismic monitoring purposes.
+Below is a gallery of examples which use FraCSPy for microseismic monitoring purposes.
 
 
 .. raw:: html
@@ -16,7 +16,7 @@ Below is a gallery of examples which use pyfrac for microseismic monitoring purp
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="As this is a plotting example, we will tackle the problem as an inverse-crime. For a more scien...">
+    <div class="sphx-glr-thumbcontainer" tooltip="As this is a plotting example, we will tackle the problem as an inverse-crime. For a more scientific example of how to perform amplitude-based moment-tensor inversion, look into the tutorial [XXX] which uses data generated via finite- difference modelling.">
 
 .. only:: html
 
@@ -33,7 +33,7 @@ Below is a gallery of examples which use pyfrac for microseismic monitoring purp
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="As this is a plotting example, we will tackle the problem as an inverse-crime. For a more scien...">
+    <div class="sphx-glr-thumbcontainer" tooltip="As this is a plotting example, we will tackle the problem as an inverse-crime. For a more scientific example of how to perform amplitude-based moment-tensor inversion, look into the tutorial [XXX] which uses data generated via finite- difference modelling.">
 
 .. only:: html
 

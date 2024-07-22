@@ -34,10 +34,10 @@ difference modelling.
 
     import matplotlib.pyplot as plt
     import numpy as np
-    from pyfrac.mtsolvers.homo_mti import collect_source_angles, pwave_Greens_comp
-    from pyfrac.mtsolvers.mtutils import get_mt_computation_dict
-    from pyfrac.mtsolvers.mtai import *
-    from pyfrac.visualisation.momenttensor_plots import MTMatrix_comparisonplot
+    from fracspy.mtsolvers.homo_mti import collect_source_angles, pwave_Greens_comp
+    from fracspy.mtsolvers.mtutils import get_mt_computation_dict
+    from fracspy.mtsolvers.mtai import *
+    from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
 
 
     plt.close("all")
@@ -120,17 +120,6 @@ tutorial on amplitude-based moment tensor inversion: [LINK]
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:43: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[0, irec] = delta_x / total_distance
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:45: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[1, irec] = delta_y / total_distance
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:47: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[2, irec] = delta_z / total_distance
 
 
 
@@ -250,7 +239,7 @@ NB: Just a quick plot to show how shifted the selected arrival amplitudes are
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.603 seconds)
+   **Total running time of the script:** (0 minutes 0.590 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_ComparingMTmatrices.py:
@@ -266,6 +255,10 @@ NB: Just a quick plot to show how shifted the selected arrival amplitudes are
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_ComparingMTmatrices.py <plot_ComparingMTmatrices.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_ComparingMTmatrices.zip <plot_ComparingMTmatrices.zip>`
 
 
 .. only:: html

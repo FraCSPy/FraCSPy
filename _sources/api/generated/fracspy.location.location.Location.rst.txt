@@ -1,0 +1,42 @@
+﻿fracspy.location.location.Location
+==================================
+
+.. currentmodule:: fracspy.location.location
+
+.. autoclass:: Location
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Location.__init__
+        ~Location.apply
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.location.location.Location.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

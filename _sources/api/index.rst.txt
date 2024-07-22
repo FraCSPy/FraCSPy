@@ -1,14 +1,13 @@
 .. _api:
 
-PyFrac API
-==========
+FraCSPy API
+===========
 
-The Application Programming Interface (API) of PyFrac mirrors the usual microseismic workflow
+The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:
 
-* *XX*: xxx
-* *XX*: xxx
-* *XX*: xxx
+* Location Determination
+* Moment Tensor Inversion
 
 
 Location Determination
@@ -17,38 +16,59 @@ Location Determination
 Modelling
 ~~~~~~~~~
 
-.. currentmodule:: pyfrac.modelling.kirchhoff
+.. currentmodule:: fracspy.modelling.kirchhoff
 
 .. autosummary::
    :toctree: generated/
 
     Kirchhoff
 
+.. currentmodule:: fracspy.modelling.trueamp_kirchhoff
+
+.. autosummary::
+   :toctree: generated/
+
+    TAKirchhoff
+
+
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: pyfrac.locationsolvers.imaging
+.. currentmodule:: fracspy.location.migration
 
 .. autosummary::
    :toctree: generated/
 
-    migration
-    lsqr_migration
-    fista_migration
+    diffstack
+    semblancediffstack
 
-.. currentmodule:: pyfrac.locationsolvers.crosscorr_imaging
+.. currentmodule:: fracspy.location.imaging
 
 .. autosummary::
    :toctree: generated/
 
-    XcorrObjFunc
-    xcorr_imaging
+    lsi
+    sparselsi
 
-.. currentmodule:: pyfrac.locationsolvers.localisationutils
+.. currentmodule:: fracspy.location.xcorri
+
+.. autosummary::
+   :toctree: generated/
+
+    xcorri
+
+.. currentmodule:: fracspy.location.location
+
+.. autosummary::
+   :toctree: generated/
+
+    Location
 
 
 Utilities
 ~~~~~~~~~
+
+.. currentmodule:: fracspy.location.utils
 
 .. autosummary::
    :toctree: generated/
@@ -57,12 +77,12 @@ Utilities
 
 
 Moment Tensor Inversion
---------------------------
+-----------------------
 
 Source Location Known
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: pyfrac.mtsolvers.mtai
+.. currentmodule:: fracspy.mtsolvers.mtai
 
 .. autosummary::
    :toctree: generated/

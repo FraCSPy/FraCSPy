@@ -71,7 +71,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-import pyfrac
+import fracspy
 
 ###############################################################################
 # Load model and seismic data
@@ -106,7 +106,7 @@ nr = recs_xzy.shape[1]
 
 # Load seismic data
 expname = 'MT-90-90-180_Homogeneous_griddedarray'
-vz = pyfrac.utils.sofiutils.read_seis(
+vz = fracspy.utils.sofiutils.read_seis(
     os.path.join(input_dir, 'outputs',
                  'su', f'{expname}_vy.txt'),
     nr=nr)
@@ -124,9 +124,7 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 # changes in polarity across the  traces; this is the information that we utilise
 # to determine the Moment Tensor.
 
-#fig,ax = plt.subplots(1,1,figsize=[15,5])
-#ax.imshow(vz.T, aspect='auto', cmap='binary_r')
-ax = pyfrac.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 ax.set_title('SOFI FD data - Vertical Component')
 plt.tight_layout()
 
@@ -148,7 +146,7 @@ sloc_ind = [sx, sy, sz]
 # and extract the amplitudes at the peak of the P-wave arrival in the data
 
 # Traveltime table
-trav = pyfrac.modelling.kirchhoff.Kirchhoff._traveltime_table(
+trav = fracspy.modelling.kirchhoff.Kirchhoff._traveltime_table(
         z,
         x,
         y=y,
@@ -178,14 +176,14 @@ plt.tight_layout()
 
 # Amplitudes
 gamma_sourceangles, dist_table = \
-    pyfrac.mtsolvers.homo_mti.collect_source_angles(x, y, z,
+    fracspy.mtsolvers.homo_mti.collect_source_angles(x, y, z,
                                                     reclocs=recs, nc=3)
 
 # This keeps everything nice and clean in the later G compute
-MT_comp_dict = pyfrac.mtsolvers.mtutils.get_mt_computation_dict()
+MT_comp_dict = fracspy.mtsolvers.mtutils.get_mt_computation_dict()
 
 # Create G operator
-Gz = pyfrac.mtsolvers.homo_mti.pwave_Greens_comp(
+Gz = fracspy.mtsolvers.homo_mti.pwave_Greens_comp(
     gamma_sourceangles,
     dist_table,
     sloc_ind,
@@ -201,7 +199,7 @@ Gz = pyfrac.mtsolvers.homo_mti.pwave_Greens_comp(
 # We finally solve our inverse problem to obtain an estimate of the moment tensor
 
 # Inversion
-mt_est = pyfrac.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
+mt_est = fracspy.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
 mt_est /= np.max(abs(mt_est))
 
 # Comparison with known MT

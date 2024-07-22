@@ -93,7 +93,7 @@ to obtain our best estimate of the moment tensor parameters.
     import numpy as np
     import matplotlib.pyplot as plt
 
-    import pyfrac
+    import fracspy
 
 
 
@@ -141,7 +141,7 @@ array. The data are modelled using the SOFI3D Finite Difference package.
 
     # Load seismic data
     expname = 'MT-90-90-180_Homogeneous_griddedarray'
-    vz = pyfrac.utils.sofiutils.read_seis(
+    vz = fracspy.utils.sofiutils.read_seis(
         os.path.join(input_dir, 'outputs',
                      'su', f'{expname}_vy.txt'),
         nr=nr)
@@ -167,14 +167,12 @@ Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the  traces; this is the information that we utilise
 to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-133
+.. GENERATED FROM PYTHON SOURCE LINES 126-131
 
 .. code-block:: Python
 
 
-    #fig,ax = plt.subplots(1,1,figsize=[15,5])
-    #ax.imshow(vz.T, aspect='auto', cmap='binary_r')
-    ax = pyfrac.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+    fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
     ax.set_title('SOFI FD data - Vertical Component')
     plt.tight_layout()
 
@@ -190,14 +188,14 @@ to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-138
+.. GENERATED FROM PYTHON SOURCE LINES 132-136
 
 Create modelling operator
 -------------------------
 We start by defining the source frequency and location, which we assume to be
 known ahead of time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-146
+.. GENERATED FROM PYTHON SOURCE LINES 136-144
 
 .. code-block:: Python
 
@@ -216,18 +214,18 @@ known ahead of time.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-149
+.. GENERATED FROM PYTHON SOURCE LINES 145-147
 
 We can now model the traveltimes from the source to each of the receivers
 and extract the amplitudes at the peak of the P-wave arrival in the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-175
+.. GENERATED FROM PYTHON SOURCE LINES 147-173
 
 .. code-block:: Python
 
 
     # Traveltime table
-    trav = pyfrac.modelling.kirchhoff.Kirchhoff._traveltime_table(
+    trav = fracspy.modelling.kirchhoff.Kirchhoff._traveltime_table(
             z,
             x,
             y=y,
@@ -263,26 +261,26 @@ and extract the amplitudes at the peak of the P-wave arrival in the data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-178
+.. GENERATED FROM PYTHON SOURCE LINES 174-176
 
 We can finally also compute our Green's function coefficients and assemble
 the operator
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-198
+.. GENERATED FROM PYTHON SOURCE LINES 176-196
 
 .. code-block:: Python
 
 
     # Amplitudes
     gamma_sourceangles, dist_table = \
-        pyfrac.mtsolvers.homo_mti.collect_source_angles(x, y, z,
+        fracspy.mtsolvers.homo_mti.collect_source_angles(x, y, z,
                                                         reclocs=recs, nc=3)
 
     # This keeps everything nice and clean in the later G compute
-    MT_comp_dict = pyfrac.mtsolvers.mtutils.get_mt_computation_dict()
+    MT_comp_dict = fracspy.mtsolvers.mtutils.get_mt_computation_dict()
 
     # Create G operator
-    Gz = pyfrac.mtsolvers.homo_mti.pwave_Greens_comp(
+    Gz = fracspy.mtsolvers.homo_mti.pwave_Greens_comp(
         gamma_sourceangles,
         dist_table,
         sloc_ind,
@@ -296,33 +294,22 @@ the operator
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:43: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[0, irec] = delta_x / total_distance
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:45: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[1, irec] = delta_y / total_distance
-    /home/runner/work/PyFrac/PyFrac/pyfrac/mtsolvers/homo_mti.py:47: RuntimeWarning: invalid value encountered in divide
-      gamma_sourceangles[2, irec] = delta_z / total_distance
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 199-202
+.. GENERATED FROM PYTHON SOURCE LINES 197-200
 
 Moment Tensor Inversion
 -----------------------
 We finally solve our inverse problem to obtain an estimate of the moment tensor
 
-.. GENERATED FROM PYTHON SOURCE LINES 202-213
+.. GENERATED FROM PYTHON SOURCE LINES 200-211
 
 .. code-block:: Python
 
 
     # Inversion
-    mt_est = pyfrac.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
+    mt_est = fracspy.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
     mt_est /= np.max(abs(mt_est))
 
     # Comparison with known MT
@@ -346,7 +333,7 @@ We finally solve our inverse problem to obtain an estimate of the moment tensor
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 27.033 seconds)
+   **Total running time of the script:** (0 minutes 27.164 seconds)
 
 
 .. _sphx_glr_download_tutorials_MT_AmplitudeInversion_tutorial.py:
@@ -362,6 +349,10 @@ We finally solve our inverse problem to obtain an estimate of the moment tensor
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: MT_AmplitudeInversion_tutorial.py <MT_AmplitudeInversion_tutorial.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: MT_AmplitudeInversion_tutorial.zip <MT_AmplitudeInversion_tutorial.zip>`
 
 
 .. only:: html

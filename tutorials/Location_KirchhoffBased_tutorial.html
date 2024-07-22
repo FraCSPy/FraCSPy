@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Kirchhoff-Based Localisation - Single component &#8212; PyFrac</title>
+        <title>Kirchhoff-Based Localisation - Single component &#8212; fracspy</title>
     
 
   
@@ -22,12 +22,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -35,16 +35,16 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/style.css?v=e5b2244c" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=e45f66c9" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Waveform-based Moment Tensor Inversion - Multicomponent" href="MT_WaveformInversion_tutorial.html" />
-    <link rel="prev" title="Amplitude-based Moment Tensor Inversion" href="MT_AmplitudeInversion_tutorial.html" />
+    <link rel="prev" title="Diffraction Stacking Localisation - Simple scenario" href="Location_DiffractionStacking_tutorial.html" />
     
     <script src="../_static/require.js"></script>
 
@@ -113,7 +113,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -123,6 +123,8 @@
       <div class="navbar-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../index.html">
   
@@ -131,7 +133,7 @@
   
   
   
-    <p class="title logo__title">PyFrac</p>
+    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -142,33 +144,33 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    PyFrac
+    FraCSPy
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item current active">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Tutorials
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../api/index.html">
-    PyFrac API
+    FraCSPy API
   </a>
 </li>
 
@@ -185,7 +187,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -199,10 +201,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -216,7 +218,7 @@ document.write(`
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -227,7 +229,7 @@ document.write(`
   
 
   
-    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -253,33 +255,33 @@ document.write(`
           
           
             <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    PyFrac
+    FraCSPy
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item current active">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Tutorials
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../api/index.html">
-    PyFrac API
+    FraCSPy API
   </a>
 </li>
 
@@ -297,10 +299,10 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -316,14 +318,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html">Amplitude-based Moment Tensor Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Location_DiffractionStacking_tutorial.html">Diffraction Stacking Localisation - Simple scenario</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Kirchhoff-Based Localisation - Single component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MT_WaveformInversion_tutorial.html">Waveform-based Moment Tensor Inversion - Multicomponent</a></li>
-
-
-
-
-
-
 </ul>
 </div>
 </nav></div>
@@ -396,7 +393,7 @@ sources) using the following integral relation:</p>
 \[d(\mathbf{x_r}, t) =
 w(t) * \int\limits_V G(\mathbf{x_r}, \mathbf{x}, t) m(\mathbf{x})\,\mathrm{d}\mathbf{x}\]</div>
 <p>where <span class="math notranslate nohighlight">\(m(\mathbf{x})\)</span> represents the source distribution at every location in the subsurface
-(and effectively parametrises the source strenght), <span class="math notranslate nohighlight">\(G(\mathbf{x_r}, \mathbf{x}, t)\)</span> is the subsurface-to-receiver
+(and effectively parametrises the source strength), <span class="math notranslate nohighlight">\(G(\mathbf{x_r}, \mathbf{x}, t)\)</span> is the subsurface-to-receiver
 Green’s function and finally  <span class="math notranslate nohighlight">\(w(t)\)</span> is the source wavelet. In our implementation, the following high-frequency
 approximation of the Green’s function is adopted:</p>
 <div class="math notranslate nohighlight">
@@ -414,10 +411,10 @@ more complex cases when we deal with heterogenous media.</p>
 <span class="kn">from</span> <span class="nn">pylops.utils</span> <span class="kn">import</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.utils.dottest.html#pylops.utils.dottest" title="pylops.utils.dottest" class="sphx-glr-backref-module-pylops-utils sphx-glr-backref-type-py-function"><span class="n">dottest</span></a>
 <span class="kn">from</span> <span class="nn">pylops.utils.wavelets</span> <span class="kn">import</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.utils.wavelets.ricker.html#pylops.utils.wavelets.ricker" title="pylops.utils.wavelets.ricker" class="sphx-glr-backref-module-pylops-utils-wavelets sphx-glr-backref-type-py-function"><span class="n">ricker</span></a>
 
-<span class="kn">import</span> <span class="nn">pyfrac</span>
+<span class="kn">import</span> <span class="nn">fracspy</span>
 
-<span class="kn">from</span> <span class="nn">pyfrac.visualisation.eventimages</span> <span class="kn">import</span> <span class="n">locimage3d</span>
-<span class="kn">from</span> <span class="nn">pyfrac.utils.sofiutils</span> <span class="kn">import</span> <span class="n">read_seis</span>
+<span class="kn">from</span> <span class="nn">fracspy.visualisation.eventimages</span> <span class="kn">import</span> <span class="n">locimage3d</span>
+<span class="kn">from</span> <span class="nn">fracspy.utils.sofiutils</span> <span class="kn">import</span> <span class="n">read_seis</span>
 </pre></div>
 </div>
 <section id="load-model-and-seismic-data">
@@ -469,7 +466,7 @@ boundaries, which we need to remove prior to performing localisation.</p>
 </pre></div>
 </div>
 <p>Let’s now double-check that the data has been loaded correctly.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <span class="n">pyfrac</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">traceviz</span><span class="o">.</span><span class="n">traceimage</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="n">climQ</span><span class="o">=</span><span class="mf">99.99</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <span class="n">fracspy</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">traceviz</span><span class="o">.</span><span class="n">traceimage</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="n">climQ</span><span class="o">=</span><span class="mf">99.99</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s1">&#39;SOFI FD data - Vertical Component&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 </pre></div>
@@ -495,12 +492,11 @@ in real applications, this will need to be estimated from the data.</p>
 <img src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_002.png" srcset="../_images/sphx_glr_Location_KirchhoffBased_tutorial_002.png" alt="Wavelet" class = "sphx-glr-single-img"/><p>Second, we define our modelling operator; as part of the initialization process,
 an eikonal solver is used here to compute the traveltimes from each subsurface
 point to each receiver.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Op</span> <span class="o">=</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.LinearOperator.html#pylops.LinearOperator" title="pylops.LinearOperator" class="sphx-glr-backref-module-pylops sphx-glr-backref-type-py-class"><span class="n">pyfrac</span><span class="o">.</span><span class="n">modelling</span><span class="o">.</span><span class="n">kirchhoff</span><span class="o">.</span><span class="n">Kirchhoff</span></a><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Op</span> <span class="o">=</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.LinearOperator.html#pylops.LinearOperator" title="pylops.LinearOperator" class="sphx-glr-backref-module-pylops sphx-glr-backref-type-py-class"><span class="n">fracspy</span><span class="o">.</span><span class="n">modelling</span><span class="o">.</span><span class="n">kirchhoff</span><span class="o">.</span><span class="n">Kirchhoff</span></a><span class="p">(</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">z</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">z</span></a><span class="p">,</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t</span></a><span class="p">,</span>
-        <span class="n">srcs</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="p">,</span>
         <span class="n">vel</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html#numpy.ones_like" title="numpy.ones_like" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mod</span></a><span class="p">),</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wav</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wav</span></a><span class="p">,</span>
@@ -509,12 +505,10 @@ point to each receiver.</p>
         <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;numba&#39;</span><span class="p">)</span>
 
 <span class="c1"># Check operator with dottest</span>
-<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool_" title="numpy.bool_" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_</span></a> <span class="o">=</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.utils.dottest.html#pylops.utils.dottest" title="pylops.utils.dottest" class="sphx-glr-backref-module-pylops-utils sphx-glr-backref-type-py-function"><span class="n">dottest</span></a><span class="p">(</span><span class="n">Op</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool_" title="numpy.bool_" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">_</span></a> <span class="o">=</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.utils.dottest.html#pylops.utils.dottest" title="pylops.utils.dottest" class="sphx-glr-backref-module-pylops-utils sphx-glr-backref-type-py-function"><span class="n">dottest</span></a><span class="p">(</span><span class="n">Op</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/PyFrac/PyFrac/pyfrac/modelling/kirchhoff.py:255: FutureWarning: A new implementation of Kirchhoff is provided in v2.1.0. This currently affects only the inner working of the operator, end-users can continue using the operator in the same way. Nevertheless, it is now recommended to providethe variables trav (and amp) as a tuples containing the traveltime (and amplitude) tables for sources and receivers separately. This behaviour will eventually become default in version v3.0.0.
-  warnings.warn(
-Dot test passed, v^H(Opu)=-29891.0520653595 - u^H(Op^Hv)=-29891.052065359523
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Dot test passed, v^H(Opu)=-23245.633604576426 - u^H(Op^Hv)=-23245.633604576364
 </pre></div>
 </div>
 </section>
@@ -579,8 +573,9 @@ the energy of the event of interest to a certain subsurface location.</p>
 the adjoint to gain an initial idea on possible source locations. However,
 the source location is likely to be a smoothed product, as opposed
 # to the desired single location.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">migrated</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mig_hc</span></a> <span class="o">=</span> <a href="../api/generated/pyfrac.locationsolvers.imaging.migration.html#pyfrac.locationsolvers.imaging.migration" title="pyfrac.locationsolvers.imaging.migration" class="sphx-glr-backref-module-pyfrac-locationsolvers-imaging sphx-glr-backref-type-py-function"><span class="n">pyfrac</span><span class="o">.</span><span class="n">locationsolvers</span><span class="o">.</span><span class="n">imaging</span><span class="o">.</span><span class="n">migration</span></a><span class="p">(</span>
-    <span class="n">Op</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nx</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ny</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nz</span></a><span class="p">],</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">fracspy</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">Location</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">z</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">migrated</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mig_hc</span></a> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;diffstack&quot;</span><span class="p">,</span> <span class="n">Op</span><span class="o">=</span><span class="n">Op</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;True Hypo-Center:&#39;</span><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sx</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sy</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sz</span></a><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Migration Hypo-Centers:&#39;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mig_hc</span></a><span class="p">)</span>
 
@@ -594,9 +589,9 @@ the source location is likely to be a smoothed product, as opposed
 </div>
 <img src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_005.png" srcset="../_images/sphx_glr_Location_KirchhoffBased_tutorial_005.png" alt="Location KirchhoffBased tutorial" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True Hypo-Center: [26, 34, 60]
 Migration Hypo-Centers: [26.2 34.  61. ]
-/home/runner/work/PyFrac/PyFrac/pyfrac/visualisation/eventimages.py:11: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+/home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:12: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
   fig.tight_layout()
-/home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+/home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
   plt.tight_layout()
 </pre></div>
 </div>
@@ -612,9 +607,10 @@ become unstable as iterations progress. On the other hand, adding a sparsity con
 can lead to a better resolved source location. Note, however, that in both cases error in
 the velocity model cannot be compensated and will contribute to the blurring of the resulting
 source image.</p>
-<p>Let’s start with th least-squares solution</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv_hc</span></a> <span class="o">=</span> <a href="../api/generated/pyfrac.locationsolvers.imaging.lsqr_migration.html#pyfrac.locationsolvers.imaging.lsqr_migration" title="pyfrac.locationsolvers.imaging.lsqr_migration" class="sphx-glr-backref-module-pyfrac-locationsolvers-imaging sphx-glr-backref-type-py-function"><span class="n">pyfrac</span><span class="o">.</span><span class="n">locationsolvers</span><span class="o">.</span><span class="n">imaging</span><span class="o">.</span><span class="n">lsqr_migration</span></a><span class="p">(</span>
-    <span class="n">Op</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nx</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ny</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nz</span></a><span class="p">],</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<p>Let’s start with the least-squares solution</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv_hc</span></a> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;lsi&quot;</span><span class="p">,</span> <span class="n">Op</span><span class="o">=</span><span class="n">Op</span><span class="p">,</span>
+                      <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;True Hypo-Center:&#39;</span><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sx</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sy</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sz</span></a><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;LSQR Inversion Hypo-Centers:&#39;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inv_hc</span></a><span class="p">)</span>
 
@@ -628,13 +624,14 @@ source image.</p>
 </div>
 <img src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_006.png" srcset="../_images/sphx_glr_Location_KirchhoffBased_tutorial_006.png" alt="Location KirchhoffBased tutorial" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True Hypo-Center: [26, 34, 60]
 LSQR Inversion Hypo-Centers: [26.  34.  63.8]
-/home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:242: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+/home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:243: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
   plt.tight_layout()
 </pre></div>
 </div>
 <p>We move on now to the sparsity-promoting solution</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fista</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fista_hc</span></a> <span class="o">=</span> <a href="../api/generated/pyfrac.locationsolvers.imaging.fista_migration.html#pyfrac.locationsolvers.imaging.fista_migration" title="pyfrac.locationsolvers.imaging.fista_migration" class="sphx-glr-backref-module-pyfrac-locationsolvers-imaging sphx-glr-backref-type-py-function"><span class="n">pyfrac</span><span class="o">.</span><span class="n">locationsolvers</span><span class="o">.</span><span class="n">imaging</span><span class="o">.</span><span class="n">fista_migration</span></a><span class="p">(</span>
-    <span class="n">Op</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vz</span></a><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nx</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ny</span></a><span class="p">,</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nz</span></a><span class="p">],</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fista_eps</span><span class="o">=</span><span class="mf">1e1</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fista</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fista_hc</span></a> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frwddata</span></a><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;sparselsi&quot;</span><span class="p">,</span> <span class="n">Op</span><span class="o">=</span><span class="n">Op</span><span class="p">,</span>
+                          <span class="n">l1eps</span><span class="o">=</span><span class="mf">1e1</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;True Hypo-Center:&#39;</span><span class="p">,</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sx</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sy</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sz</span></a><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FISTA Inversion Hypo-Centers:&#39;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fista_hc</span></a><span class="p">)</span>
 
@@ -647,18 +644,21 @@ LSQR Inversion Hypo-Centers: [26.  34.  63.8]
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_007.png" srcset="../_images/sphx_glr_Location_KirchhoffBased_tutorial_007.png" alt="Location KirchhoffBased tutorial" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True Hypo-Center: [26, 34, 60]
-FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
-/home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:257: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+FISTA Inversion Hypo-Centers: [25.8 34.  60. ]
+/home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:259: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
   plt.tight_layout()
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (3 minutes 0.711 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 59.118 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-location-kirchhoffbased-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d0548ea7534e466e49a4d299be515f06/Location_KirchhoffBased_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Location_KirchhoffBased_tutorial.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/15da86dc14e1c9c419a76c4cf201b3e0/Location_KirchhoffBased_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Location_KirchhoffBased_tutorial.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/04206c024e8f1a7164dc11e2e529e266/Location_KirchhoffBased_tutorial.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">Location_KirchhoffBased_tutorial.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -676,12 +676,12 @@ FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="MT_AmplitudeInversion_tutorial.html"
+       href="Location_DiffractionStacking_tutorial.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Amplitude-based Moment Tensor Inversion</p>
+        <p class="prev-next-title">Diffraction Stacking Localisation - Simple scenario</p>
       </div>
     </a>
     <a class="right-next"
@@ -732,8 +732,8 @@ FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -744,7 +744,7 @@ FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
 
   <p class="copyright">
     
-      © Copyright 2024, PyFrac Development Team.
+      © Copyright 2024, fracspy Development Team.
       <br/>
     
   </p>
@@ -753,7 +753,7 @@ FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
@@ -766,7 +766,7 @@ FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>

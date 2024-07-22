@@ -5,7 +5,7 @@ This example shows how to create a heatmap of the moment tensor matrix
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from pyfrac.visualisation.momenttensor_plots import MTMatrixplot
+from fracspy.visualisation.momenttensor_plots import MTMatrixplot
 
 
 plt.close("all")

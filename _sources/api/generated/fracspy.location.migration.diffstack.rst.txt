@@ -1,0 +1,12 @@
+﻿fracspy.location.migration.diffstack
+====================================
+
+.. currentmodule:: fracspy.location.migration
+
+.. autofunction:: diffstack
+
+.. include:: backreferences/fracspy.location.migration.diffstack.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**05:15.168** total execution time for 3 files **from tutorials**:
+**06:22.024** total execution time for 4 files **from tutorials**:
 
 .. container::
 
@@ -33,11 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py` (``Location_KirchhoffBased_tutorial.py``)
-     - 03:00.711
+     - 02:59.118
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py` (``MT_WaveformInversion_tutorial.py``)
-     - 01:47.424
+     - 01:48.544
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` (``Location_DiffractionStacking_tutorial.py``)
+     - 01:07.198
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py` (``MT_AmplitudeInversion_tutorial.py``)
-     - 00:27.033
+     - 00:27.164
      - 0.0

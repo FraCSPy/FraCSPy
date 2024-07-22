@@ -1,0 +1,12 @@
+﻿fracspy.mtsolvers.mtai.lsqr\_mtsolver
+=====================================
+
+.. currentmodule:: fracspy.mtsolvers.mtai
+
+.. autofunction:: lsqr_mtsolver
+
+.. include:: backreferences/fracspy.mtsolvers.mtai.lsqr_mtsolver.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

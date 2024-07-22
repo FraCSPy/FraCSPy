@@ -31,7 +31,7 @@ sources) using the following integral relation:
         w(t) * \int\limits_V G(\mathbf{x_r}, \mathbf{x}, t) m(\mathbf{x})\,\mathrm{d}\mathbf{x}
 
 where :math:`m(\mathbf{x})` represents the source distribution at every location in the subsurface
-(and effectively parametrises the source strenght), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
+(and effectively parametrises the source strength), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
 Green's function and finally  :math:`w(t)` is the source wavelet. In our implementation, the following high-frequency
 approximation of the Green's function is adopted:
 
@@ -58,10 +58,10 @@ more complex cases when we deal with heterogenous media.
     from pylops.utils import dottest
     from pylops.utils.wavelets import ricker
 
-    import pyfrac
+    import fracspy
 
-    from pyfrac.visualisation.eventimages import locimage3d
-    from pyfrac.utils.sofiutils import read_seis
+    from fracspy.visualisation.eventimages import locimage3d
+    from fracspy.utils.sofiutils import read_seis
 
 
 
@@ -142,7 +142,7 @@ Let's now double-check that the data has been loaded correctly.
 .. code-block:: Python
 
 
-    ax = pyfrac.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
+    fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
     ax.set_title('SOFI FD data - Vertical Component')
     plt.tight_layout()
 
@@ -200,17 +200,16 @@ Second, we define our modelling operator; as part of the initialization process,
 an eikonal solver is used here to compute the traveltimes from each subsurface
 point to each receiver.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-141
+.. GENERATED FROM PYTHON SOURCE LINES 123-140
 
 .. code-block:: Python
 
 
-    Op = pyfrac.modelling.kirchhoff.Kirchhoff(
+    Op = fracspy.modelling.kirchhoff.Kirchhoff(
             z=z,
             x=x,
             y=y,
             t=t,
-            srcs=recs[:, :1],
             recs=recs,
             vel=1000 * np.ones_like(mod),
             wav=wav,
@@ -230,14 +229,12 @@ point to each receiver.
 
  .. code-block:: none
 
-    /home/runner/work/PyFrac/PyFrac/pyfrac/modelling/kirchhoff.py:255: FutureWarning: A new implementation of Kirchhoff is provided in v2.1.0. This currently affects only the inner working of the operator, end-users can continue using the operator in the same way. Nevertheless, it is now recommended to providethe variables trav (and amp) as a tuples containing the traveltime (and amplitude) tables for sources and receivers separately. This behaviour will eventually become default in version v3.0.0.
-      warnings.warn(
-    Dot test passed, v^H(Opu)=-29891.0520653595 - u^H(Op^Hv)=-29891.052065359523
+    Dot test passed, v^H(Opu)=-23245.633604576426 - u^H(Op^Hv)=-23245.633604576364
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 142-159
+.. GENERATED FROM PYTHON SOURCE LINES 141-158
 
 ASIDE: Checking operator optimality
 -----------------------------------
@@ -257,7 +254,7 @@ kinematic part is concerned, this will be dependant on the velocity model as wel
 the choice of the ignition time. [More commentary on ignition time can be found
 in the tutorial on rolling detection.]
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-174
+.. GENERATED FROM PYTHON SOURCE LINES 158-173
 
 .. code-block:: Python
 
@@ -289,11 +286,11 @@ in the tutorial on rolling detection.]
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-176
+.. GENERATED FROM PYTHON SOURCE LINES 174-175
 
 Let's compare the data across the full array
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-185
+.. GENERATED FROM PYTHON SOURCE LINES 175-184
 
 .. code-block:: Python
 
@@ -318,11 +315,11 @@ Let's compare the data across the full array
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-187
+.. GENERATED FROM PYTHON SOURCE LINES 185-186
 
 And at trace level
 
-.. GENERATED FROM PYTHON SOURCE LINES 187-193
+.. GENERATED FROM PYTHON SOURCE LINES 186-192
 
 .. code-block:: Python
 
@@ -344,7 +341,7 @@ And at trace level
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-204
+.. GENERATED FROM PYTHON SOURCE LINES 193-203
 
 Source localisation by imaging
 ------------------------------
@@ -357,13 +354,14 @@ the adjoint to gain an initial idea on possible source locations. However,
 the source location is likely to be a smoothed product, as opposed
 # to the desired single location.
 
-.. GENERATED FROM PYTHON SOURCE LINES 204-217
+.. GENERATED FROM PYTHON SOURCE LINES 203-217
 
 .. code-block:: Python
 
 
-    migrated, mig_hc = pyfrac.locationsolvers.imaging.migration(
-        Op, vz, [nx,ny,nz], nforhc=10)
+    L = fracspy.location.Location(x, y, z)
+    migrated, mig_hc = L.apply(vz, kind="diffstack", Op=Op, nforhc=10)
+
     print('True Hypo-Center:', [sx,sy,sz])
     print('Migration Hypo-Centers:', mig_hc)
 
@@ -389,9 +387,9 @@ the source location is likely to be a smoothed product, as opposed
 
     True Hypo-Center: [26, 34, 60]
     Migration Hypo-Centers: [26.2 34.  61. ]
-    /home/runner/work/PyFrac/PyFrac/pyfrac/visualisation/eventimages.py:11: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:12: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       fig.tight_layout()
-    /home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
 
 
@@ -411,15 +409,16 @@ can lead to a better resolved source location. Note, however, that in both cases
 the velocity model cannot be compensated and will contribute to the blurring of the resulting
 source image.
 
-Let's start with th least-squares solution
+Let's start with the least-squares solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 231-244
+.. GENERATED FROM PYTHON SOURCE LINES 231-245
 
 .. code-block:: Python
 
 
-    inv, inv_hc = pyfrac.locationsolvers.imaging.lsqr_migration(
-        Op, vz, [nx,ny,nz], nforhc=10, verbose=False)
+    inv, inv_hc = L.apply(vz, kind="lsi", Op=Op,
+                          nforhc=10, verbose=False)
+
     print('True Hypo-Center:', [sx,sy,sz])
     print('LSQR Inversion Hypo-Centers:', inv_hc)
 
@@ -445,23 +444,24 @@ Let's start with th least-squares solution
 
     True Hypo-Center: [26, 34, 60]
     LSQR Inversion Hypo-Centers: [26.  34.  63.8]
-    /home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:242: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:243: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 245-246
+.. GENERATED FROM PYTHON SOURCE LINES 246-247
 
 We move on now to the sparsity-promoting solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 246-259
+.. GENERATED FROM PYTHON SOURCE LINES 247-261
 
 .. code-block:: Python
 
 
-    fista, fista_hc = pyfrac.locationsolvers.imaging.fista_migration(
-        Op, vz, [nx,ny,nz], nforhc=10, verbose=False, fista_eps=1e1)
+    fista, fista_hc = L.apply(frwddata, kind="sparselsi", Op=Op,
+                              l1eps=1e1, nforhc=10, verbose=False)
+
     print('True Hypo-Center:', [sx, sy, sz])
     print('FISTA Inversion Hypo-Centers:', fista_hc)
 
@@ -486,8 +486,8 @@ We move on now to the sparsity-promoting solution
  .. code-block:: none
 
     True Hypo-Center: [26, 34, 60]
-    FISTA Inversion Hypo-Centers: [25.8 34.  64. ]
-    /home/runner/work/PyFrac/PyFrac/tutorials/Location_KirchhoffBased_tutorial.py:257: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    FISTA Inversion Hypo-Centers: [25.8 34.  60. ]
+    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:259: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
 
 
@@ -496,7 +496,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (3 minutes 0.711 seconds)
+   **Total running time of the script:** (2 minutes 59.118 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_KirchhoffBased_tutorial.py:
@@ -512,6 +512,10 @@ We move on now to the sparsity-promoting solution
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: Location_KirchhoffBased_tutorial.py <Location_KirchhoffBased_tutorial.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: Location_KirchhoffBased_tutorial.zip <Location_KirchhoffBased_tutorial.zip>`
 
 
 .. only:: html

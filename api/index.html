@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>PyFrac API &#8212; PyFrac</title>
+        <title>FraCSPy API &#8212; fracspy</title>
     
 
   
@@ -22,12 +22,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -35,16 +35,16 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/style.css?v=e5b2244c" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=e45f66c9" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -55,7 +55,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyfrac.modelling.kirchhoff.Kirchhoff" href="generated/pyfrac.modelling.kirchhoff.Kirchhoff.html" />
+    <link rel="next" title="fracspy.modelling.kirchhoff.Kirchhoff" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html" />
     <link rel="prev" title="Waveform-based Moment Tensor Inversion - Multicomponent" href="../tutorials/MT_WaveformInversion_tutorial.html" />
     
     <script src="../_static/require.js"></script>
@@ -113,7 +113,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -123,6 +123,8 @@
       <div class="navbar-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../index.html">
   
@@ -131,7 +133,7 @@
   
   
   
-    <p class="title logo__title">PyFrac</p>
+    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -142,33 +144,33 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    PyFrac
+    FraCSPy
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../tutorials/index.html">
     Tutorials
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item current active">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    PyFrac API
+    FraCSPy API
   </a>
 </li>
 
@@ -185,7 +187,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -199,10 +201,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -216,7 +218,7 @@ document.write(`
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -227,7 +229,7 @@ document.write(`
   
 
   
-    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -253,33 +255,33 @@ document.write(`
           
           
             <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    PyFrac
+    FraCSPy
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../tutorials/index.html">
     Tutorials
   </a>
 </li>
 
 
-<li class="nav-item pst-header-nav-item current active">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    PyFrac API
+    FraCSPy API
   </a>
 </li>
 
@@ -297,10 +299,10 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -315,23 +317,31 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.modelling.kirchhoff.Kirchhoff.html">pyfrac.modelling.kirchhoff.Kirchhoff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html">fracspy.modelling.kirchhoff.Kirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.migration.html">pyfrac.locationsolvers.imaging.migration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.lsqr_migration.html">pyfrac.locationsolvers.imaging.lsqr_migration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.fista_migration.html">pyfrac.locationsolvers.imaging.fista_migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html">fracspy.modelling.trueamp_kirchhoff.TAKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc.html">pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.crosscorr_imaging.xcorr_imaging.html">pyfrac.locationsolvers.crosscorr_imaging.xcorr_imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.locationsolvers.localisationutils.get_max_locs.html">pyfrac.locationsolvers.localisationutils.get_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.imaging.lsi.html">fracspy.location.imaging.lsi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.imaging.sparselsi.html">fracspy.location.imaging.sparselsi</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.mtsolvers.mtai.frwrd_mtmodelling.html">pyfrac.mtsolvers.mtai.frwrd_mtmodelling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/pyfrac.mtsolvers.mtai.lsqr_mtsolver.html">pyfrac.mtsolvers.mtai.lsqr_mtsolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.xcorri.xcorri.html">fracspy.location.xcorri.xcorri</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.location.Location.html">fracspy.location.location.Location</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.frwrd_mtmodelling.html">fracspy.mtsolvers.mtai.frwrd_mtmodelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.lsqr_mtsolver.html">fracspy.mtsolvers.mtai.lsqr_mtsolver</a></li>
 </ul>
 </div>
 </nav></div>
@@ -369,7 +379,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">PyFrac API</li>
+    <li class="breadcrumb-item active" aria-current="page">FraCSPy API</li>
   </ul>
 </nav>
 </div>
@@ -386,14 +396,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pyfrac-api">
-<span id="api"></span><h1>PyFrac API<a class="headerlink" href="#pyfrac-api" title="Link to this heading">#</a></h1>
-<p>The Application Programming Interface (API) of PyFrac mirrors the usual microseismic workflow
+  <section id="fracspy-api">
+<span id="api"></span><h1>FraCSPy API<a class="headerlink" href="#fracspy-api" title="Link to this heading">#</a></h1>
+<p>The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:</p>
 <ul class="simple">
-<li><p><em>XX</em>: xxx</p></li>
-<li><p><em>XX</em>: xxx</p></li>
-<li><p><em>XX</em>: xxx</p></li>
+<li><p>Location Determination</p></li>
+<li><p>Moment Tensor Inversion</p></li>
 </ul>
 <section id="location-determination">
 <h2>Location Determination<a class="headerlink" href="#location-determination" title="Link to this heading">#</a></h2>
@@ -401,8 +410,16 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Modelling<a class="headerlink" href="#modelling" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.modelling.kirchhoff.Kirchhoff.html#pyfrac.modelling.kirchhoff.Kirchhoff" title="pyfrac.modelling.kirchhoff.Kirchhoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kirchhoff</span></code></a>(z, x, t, srcs, recs, vel, wav, ...)</p></td>
-<td><p>Kirchhoff Demigration operator.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html#fracspy.modelling.kirchhoff.Kirchhoff" title="fracspy.modelling.kirchhoff.Kirchhoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kirchhoff</span></code></a>(z, x, t, recs, vel, wav, wavcenter)</p></td>
+<td><p>Kirchhoff single-sided, demigration operator.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html#fracspy.modelling.trueamp_kirchhoff.TAKirchhoff" title="fracspy.modelling.trueamp_kirchhoff.TAKirchhoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TAKirchhoff</span></code></a>(z, x, t, recs, wav, wavcenter[, ...])</p></td>
+<td><p>True-amplitude Kirchhoff single-sided, demigration operator.</p></td>
 </tr>
 </tbody>
 </table>
@@ -412,25 +429,38 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Imaging/Inversion<a class="headerlink" href="#imaging-inversion" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.migration.html#pyfrac.locationsolvers.imaging.migration" title="pyfrac.locationsolvers.imaging.migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code></a>(Op, data, n_xyz[, nforhc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack" title="fracspy.location.migration.diffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffstack</span></code></a>(data, n_xyz, Op[, nforhc])</p></td>
 <td><p>Kirchhoff migration for microseismic source location</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.lsqr_migration.html#pyfrac.locationsolvers.imaging.lsqr_migration" title="pyfrac.locationsolvers.imaging.lsqr_migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsqr_migration</span></code></a>(Op, data, n_xyz[, niter, ...])</p></td>
-<td><p>LSQR Kirchhoff-based inversion for microseismic source location</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.imaging.fista_migration.html#pyfrac.locationsolvers.imaging.fista_migration" title="pyfrac.locationsolvers.imaging.fista_migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fista_migration</span></code></a>(Op, data, n_xyz[, niter, ...])</p></td>
-<td><p>FISTA Kirchhoff-based inversion for microseismic source location</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.migration.semblancediffstack.html#fracspy.location.migration.semblancediffstack" title="fracspy.location.migration.semblancediffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">semblancediffstack</span></code></a>(data, n_xyz, tt, dt[, nforhc])</p></td>
+<td><p>Diffraction stacking for microseismic source location</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc.html#pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc" title="pyfrac.locationsolvers.crosscorr_imaging.XcorrObjFunc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">XcorrObjFunc</span></code></a>(x, y)</p></td>
-<td><p>Cross-correlation objective function</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.imaging.lsi.html#fracspy.location.imaging.lsi" title="fracspy.location.imaging.lsi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsi</span></code></a>(data, n_xyz, Op[, niter, nforhc, verbose])</p></td>
+<td><p>Least-squares imaging for microseismic source location</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.crosscorr_imaging.xcorr_imaging.html#pyfrac.locationsolvers.crosscorr_imaging.xcorr_imaging" title="pyfrac.locationsolvers.crosscorr_imaging.xcorr_imaging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xcorr_imaging</span></code></a>(Op, data, n_xyz[, niter, ...])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.imaging.sparselsi.html#fracspy.location.imaging.sparselsi" title="fracspy.location.imaging.sparselsi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparselsi</span></code></a>(data, n_xyz, Op[, niter, l1eps, ...])</p></td>
+<td><p>Sparsity-promoting imaging for microseismic source location</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.xcorri.xcorri.html#fracspy.location.xcorri.xcorri" title="fracspy.location.xcorri.xcorri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xcorri</span></code></a>(data, n_xyz, Op[, niter, l1eps, lr, ...])</p></td>
+<td><p>Cross-correlation-based imaging for microseismic source location</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.location.Location.html#fracspy.location.location.Location" title="fracspy.location.location.Location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Location</span></code></a>(x, y, z)</p></td>
+<td><p>Event location</p></td>
 </tr>
 </tbody>
 </table>
@@ -440,7 +470,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.locationsolvers.localisationutils.get_max_locs.html#pyfrac.locationsolvers.localisationutils.get_max_locs" title="pyfrac.locationsolvers.localisationutils.get_max_locs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_max_locs</span></code></a>(ssimage[, n_max, rem_edge, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html#fracspy.location.utils.get_max_locs" title="fracspy.location.utils.get_max_locs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_max_locs</span></code></a>(ssimage[, n_max, rem_edge, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -454,10 +484,10 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Source Location Known<a class="headerlink" href="#source-location-known" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyfrac.mtsolvers.mtai.frwrd_mtmodelling.html#pyfrac.mtsolvers.mtai.frwrd_mtmodelling" title="pyfrac.mtsolvers.mtai.frwrd_mtmodelling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frwrd_mtmodelling</span></code></a>(Gz, mt)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.frwrd_mtmodelling.html#fracspy.mtsolvers.mtai.frwrd_mtmodelling" title="fracspy.mtsolvers.mtai.frwrd_mtmodelling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frwrd_mtmodelling</span></code></a>(Gz, mt)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyfrac.mtsolvers.mtai.lsqr_mtsolver.html#pyfrac.mtsolvers.mtai.lsqr_mtsolver" title="pyfrac.mtsolvers.mtai.lsqr_mtsolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsqr_mtsolver</span></code></a>(Gz, u_zp)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.lsqr_mtsolver.html#fracspy.mtsolvers.mtai.lsqr_mtsolver" title="fracspy.mtsolvers.mtai.lsqr_mtsolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsqr_mtsolver</span></code></a>(Gz, u_zp)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -487,11 +517,11 @@ from pre-processing to source mechanism inversion. It is composed of the followi
       </div>
     </a>
     <a class="right-next"
-       href="generated/pyfrac.modelling.kirchhoff.Kirchhoff.html"
+       href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pyfrac.modelling.kirchhoff.Kirchhoff</p>
+        <p class="prev-next-title">fracspy.modelling.kirchhoff.Kirchhoff</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -514,7 +544,9 @@ from pre-processing to source mechanism inversion. It is composed of the followi
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#location-determination">Location Determination</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imaging-inversion">Imaging/Inversion</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
@@ -541,8 +573,8 @@ from pre-processing to source mechanism inversion. It is composed of the followi
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -553,7 +585,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 
   <p class="copyright">
     
-      © Copyright 2024, PyFrac Development Team.
+      © Copyright 2024, fracspy Development Team.
       <br/>
     
   </p>
@@ -562,7 +594,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
@@ -575,7 +607,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>

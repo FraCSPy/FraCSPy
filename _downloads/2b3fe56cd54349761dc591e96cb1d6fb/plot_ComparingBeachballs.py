@@ -12,10 +12,11 @@ difference modelling.
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from pyfrac.mtsolvers.homo_mti import collect_source_angles, pwave_Greens_comp
-from pyfrac.mtsolvers.mtutils import get_mt_computation_dict
-from pyfrac.mtsolvers.mtai import *
-from pyfrac.visualisation.momenttensor_plots import MTBeachball_comparisonplot
+from fracspy.mtsolvers.homo_mti import collect_source_angles, pwave_Greens_comp
+from fracspy.mtsolvers.mtutils import get_mt_computation_dict
+from fracspy.mtsolvers.mtutils import get_magnitude
+from fracspy.mtsolvers.mtai import *
+from fracspy.visualisation.momenttensor_plots import MTBeachball_comparisonplot
 
 
 plt.close("all")
@@ -80,8 +81,17 @@ mt_xz = 0
 mt_yz = 0
 mt = [mt_xx, mt_yy, mt_zz, mt_xy, mt_xz, mt_yz]
 print('MT for forward modelling: ', mt)
+
 # Forward (Note, this will only give the p-amplitudes of the arrival
 p_amps_true = frwrd_mtmodelling(Gz, mt)
+
+# Compute seismic moment and moment magnitude for the true tensor
+m0, mw = get_magnitude(mt)
+
+# Print with LaTeX formatting
+print('Corresponding seismic moment M_0: ', m0)
+print('Corresponding moment magntude M_w: ', mw)
+
 # So this is not super boring let's add a tiny bit of noise
 p_amps_noisy = p_amps_true + 0.25*((np.random.random(len(p_amps_true))-0.5)*np.mean(abs(p_amps_true)))
 
@@ -89,6 +99,12 @@ p_amps_noisy = p_amps_true + 0.25*((np.random.random(len(p_amps_true))-0.5)*np.m
 ###############################################################################
 # Perform inverse operation with our least-squares MT solver
 mt_est = lsqr_mtsolver(Gz, p_amps_noisy)
+
+# Compute seismic moment and moment magnitude for the estimated tensor
+m0_est, mw_est = get_magnitude(mt_est)
+
+print('Estimated seismic moment M_0: ', m0_est)
+print('Estimated moment magntude M_w: ', mw_est)
 
 
 ###############################################################################

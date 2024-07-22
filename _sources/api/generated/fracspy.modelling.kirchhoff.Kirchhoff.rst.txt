@@ -1,0 +1,59 @@
+﻿fracspy.modelling.kirchhoff.Kirchhoff
+=====================================
+
+.. currentmodule:: fracspy.modelling.kirchhoff
+
+.. autoclass:: Kirchhoff
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Kirchhoff.__init__
+        ~Kirchhoff.adjoint
+        ~Kirchhoff.apply_columns
+        ~Kirchhoff.cond
+        ~Kirchhoff.conj
+        ~Kirchhoff.div
+        ~Kirchhoff.dot
+        ~Kirchhoff.eigs
+        ~Kirchhoff.matmat
+        ~Kirchhoff.matvec
+        ~Kirchhoff.reset_count
+        ~Kirchhoff.rmatmat
+        ~Kirchhoff.rmatvec
+        ~Kirchhoff.todense
+        ~Kirchhoff.toimag
+        ~Kirchhoff.toreal
+        ~Kirchhoff.tosparse
+        ~Kirchhoff.trace
+        ~Kirchhoff.transpose
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.modelling.kirchhoff.Kirchhoff.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

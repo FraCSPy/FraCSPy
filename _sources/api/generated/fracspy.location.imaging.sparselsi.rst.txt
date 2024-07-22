@@ -1,0 +1,12 @@
+﻿fracspy.location.imaging.sparselsi
+==================================
+
+.. currentmodule:: fracspy.location.imaging
+
+.. autofunction:: sparselsi
+
+.. include:: backreferences/fracspy.location.imaging.sparselsi.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+﻿fracspy.location.imaging.lsi
+============================
+
+.. currentmodule:: fracspy.location.imaging
+
+.. autofunction:: lsi
+
+.. include:: backreferences/fracspy.location.imaging.lsi.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

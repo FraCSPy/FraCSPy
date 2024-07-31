@@ -79,14 +79,25 @@ Utilities
 Moment Tensor Inversion
 -----------------------
 
-Source Location Known
-~~~~~~~~~~~~~~~~~~~~~
+Inverse engines
+~~~~~~~~~~~~~~~
 
-.. currentmodule:: fracspy.mtsolvers.mtai
+.. currentmodule:: fracspy.mtinversion.mtai
 
 .. autosummary::
    :toctree: generated/
 
-    frwrd_mtmodelling
-    lsqr_mtsolver
+    mtamplitude_modelling
+    mtamplitude_inversion
 
+
+Utilities
+~~~~~~~~~
+
+.. currentmodule:: fracspy.mtinversion.greensfunction
+
+.. autosummary::
+   :toctree: generated/
+
+    collect_source_angles
+    pwave_zcomp_Greens

@@ -40,11 +40,29 @@ class Location():
         """Perform event location
 
         This method performs event location for the provided dataset using
-        the pre-defined acquisition geometry using one of the available imaging technique.
+        the pre-defined acquisition geometry using one of the available imaging techniques.
 
         .. note:: This method can be called multiple times using different input datasets
           and/or imaging methods as the internal parameters are not modified during the
           location procedure.
 
+        Parameters
+        ----------
+        data : :obj:`numpy.ndarray`
+            Data of shape :math`n_r \times n_t`
+        kind : :obj:`str`, optional
+            Algorithm kind (`diffstack`, `semblancediffstack`,
+            `lsi`, `sparselsi`, or `xcorri`
+        kwargs : :obj:`dict`, optional
+            Keyword arguments to pass to the location algorithm
+
+        Returns
+        -------
+        im : :obj:`numpy.ndarray`
+            Migrated volume
+        hc : :obj:`numpy.ndarray`
+            Estimated hypocentral location
+
         """
-        return _location_kind[kind](data, self.n_xyz, **kwargs)
+        im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)[:2]
+        return im, hc

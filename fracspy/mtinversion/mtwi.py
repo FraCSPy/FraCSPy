@@ -119,6 +119,7 @@ def frwrd_mtmodelling(mt_cube, Mstack_Op, nr, nt, multicomp=True):
         data = data.reshape(nr, nt)
     return data
 
+
 def adjoint_mtmodelling(data, Mstack_Op, nxyz):
     mt_adj = Mstack_Op.H @ data.ravel()
     mt_adj = mt_adj.reshape([6, nxyz[0], nxyz[1], nxyz[2]])
@@ -129,6 +130,7 @@ def lsqr_mtsolver(data, Mstack_Op, nxyz):
     mt_inv = lsqr(Mstack_Op, data.ravel(), iter_lim=50, atol=0, btol=0, show=True)[0]
     mt_inv = mt_inv.reshape([6, nxyz[0], nxyz[1], nxyz[2]])
     return mt_inv
+
 
 def fista_mtsolver(data, Mstack_Op, nxyz, fista_niter=100, fista_damping=1e-13, verbose=True):
     mt_fista = fista(Mstack_Op,

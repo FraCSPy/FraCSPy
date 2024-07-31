@@ -1,6 +1,6 @@
 from . import location
 from . import modelling
-from . import mtsolvers
+from . import mtinversion
 from . import processing
 from . import utils
 from . import visualisation

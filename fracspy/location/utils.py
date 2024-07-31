@@ -66,7 +66,7 @@ def moveout_correction(data, itshifts):
     data_corrected - microseismic data with corrected moveout [nr, nt]
 
     Notes
-    ----
+    -----
     The function checks that all values in `itshifts` are non-negative and that the length of `itshifts` matches the number of rows in `data`.
 
     Example:
@@ -120,12 +120,12 @@ def semblance_stack(data):
     semblance_values: A 1D array with shape (nt,) containing the semblance values for each time sample.
 
     Description
-    -------
+    -----------
     The semblance_stack function computes the semblance stack, which is a measure of the coherence or similarity between the seismic data and the noise. 
     The semblance value at each time sample is calculated as the ratio of the numerator (the sum of squared amplitudes) to the denominator (the sum of squares of the total amplitude minus the square of the sum).
 
     Mathematical Formula
-    -------
+    --------------------
     The formula for computing the semblance stack is:
 
     semblance = numerator / denominator
@@ -137,7 +137,7 @@ def semblance_stack(data):
     nr is the number of receivers
     
     Notes
-    -------
+    -----
     The function initializes an array semblance_values with shape (nt,) to store the semblance values.
     It then computes the numerator and denominator of the semblance equation using NumPy operations.
     To avoid division by zero, it sets any denominators that are equal to zero to a small value (1e-10).

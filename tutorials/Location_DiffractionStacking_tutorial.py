@@ -34,8 +34,8 @@ from pylops.utils.wavelets import ricker
 from fracspy.modelling.kirchhoff import Kirchhoff
 
 # Import diffraction stacking utils
+from fracspy.location import Location
 from fracspy.location.utils import dist2rec
-from fracspy.location.migration import semblancediffstack
 
 # Import visualization utils
 from fracspy.visualisation.traceviz import traceimage
@@ -100,7 +100,7 @@ microseismic[sx, sy, sz] = 1.
 # ^^^^^^^^^^^^^^^^^^^^^^^
 # 
 
-nt = 101 # number of time steps
+nt = 81 # number of time steps
 dt = 0.004 # time step
 f0 = 20 # Central frequency
 t = np.arange(nt) * dt # time vector
@@ -144,16 +144,20 @@ frwddata = frwddata_1d.reshape(nr,nt)
 ###############################################################################
 # Diffraction stacking
 # ^^^^^^^^^^^^^^^^^^^^
-# Here we apply diffraction stakcing algorithm based on semblance to get the
+# Here we apply diffraction stacking algorithm based on semblance to get the
 # image volume and determine location from the maximum of this volume
 
 ###############################################################################
-# Define search grid
-# """"""""""""""""""
+# Define location class using grid vectors
+# """"""""""""""""""""""""""""""""""""""""
 
+# Use the original velocity model grid for location
 gx = x
 gy = y
 gz = z
+
+# Set up location class
+L = Location(gx, gy, gz)
 
 ###############################################################################
 # Prepare traveltimes
@@ -166,9 +170,12 @@ print(f"Traveltime array shape: {tt.shape}")
 # Perform standard semblance-based diffraction stack
 # """"""""""""""""""""""""""""""""""""""""""""""""""
 
-dstacked, hc = semblancediffstack(data=frwddata, 
-                                  n_xyz=[len(gx),len(gy),len(gz)], 
-                                  tt=tt, dt=dt, nforhc=10)
+dstacked, hc = L.apply(frwddata, 
+                       kind="semblancediffstack", 
+                       tt=tt, dt=dt, nforhc=10)
+
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from diffraction stacking:', hc.tolist())
 
 #%%
 
@@ -194,15 +201,16 @@ ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
-#%%
 ###############################################################################
 # Plot wavelet
 # """"""""""""
+
 fig, ax = plt.subplots(1, 1)
 ax.plot(wav)
+ax.set_xlabel('Time steps')
+ax.set_ylabel('Amplitude')
 fig.set_size_inches(10, 3)  # set size in inches
 
-#%%
 ###############################################################################
 # Plot receiver geometry
 # ^^^^^^^^^^^^^^^^^^^^^^
@@ -216,4 +224,3 @@ ax.set_title('Receiver Geometry: map view')
 ax.legend(['Receivers', 'Source'],loc='upper right')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
-

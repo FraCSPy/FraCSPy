@@ -21,13 +21,13 @@ dist
 pyfrac/version.py
 
 # Ignore figure files but keep the logo
-!logo/*.png  
 *.eps
 *.png
 *.jpeg
 *.jpg
 *.tiff
 *.svg
+!logo/*.png  
 
 # Cache
 .cache

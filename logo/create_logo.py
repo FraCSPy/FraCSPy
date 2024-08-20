@@ -26,26 +26,52 @@ def ricker_wavelet(t, a=1):
     """
     return (1 - 2*(a*t)**2) * np.exp(-a**2 * t**2)
 
-def create_svg_icon(filename):
+def create_svg_icon(filename, theme="light", background="circle"):
     """
-    Create an SVG icon for 'a' in FraCSPy.
+    Create an SVG icon for lens with wavelet.
 
-    This function generates an SVG logo with a specified filename, but this time it will have the letter 'a' centered.
+    This function generates an SVG icon with a specified filename.
 
     Parameters
     ----------
     filename : :obj:`str`
         The name of the file to save the SVG icon as.
+    theme : :obj:`str`, optional, default: "light"
+        Color theme: "light" or "dark"
+    background : :obj:`str`, optional, default: "circle"
+        Icon background: "circle" or "square"
+    
+    Raises
+    ------
+    ValueError :
+        If theme is not "light" or "dark"
+    ValueError :
+        If background is not "circle" or "square"
     """
     # Set up the SVG drawing object
     dwg = svgwrite.Drawing(filename, profile='tiny', size=("100px", "100px"))
 
-    # Add a white background
-    dwg.add(dwg.rect(insert=(0, 0), size=('100%', '100%'), fill='white'))
+    # Define colors depending on the theme
+    if theme == "light":
+        text_color = "black"
+        background_color = "white"
+    elif theme == "dark":
+        text_color = "white"
+        background_color = "black"
+    else:
+        raise ValueError(f"Unknown theme: {theme}")
 
-    # Define the text color
-    text_color = "black"
-
+    # Add background
+    if background == "circle":
+        # Add a white circular background
+        dwg.add(dwg.circle(center=(50, 50), r=50, fill=background_color))
+    elif background == "square":
+        # Add a white square background
+        dwg.add(dwg.rect(insert=(0, 0), size=('100%', '100%'), fill=background_color))
+    else:
+        raise ValueError(f"Unknown background: {background}")
+    
+    
     # Set up the time range and number of points for generating the wavelet
     t_min = -4
     t_max = 4
@@ -60,7 +86,7 @@ def create_svg_icon(filename):
     
     # Convert the data to SVG path format and add it as a path in the drawing object
     wavelet_path = "M" + " ".join([f"{x},{y}" for x, y in zip(t, y)])
-    dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2))
+    dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2, fill=text_color))
         
     # Draw an oval with variable thickness using paths
     num_segments = 100  # Number of segments to approximate the oval
@@ -84,7 +110,7 @@ def create_svg_icon(filename):
         # Draw the segment with the calculated stroke width
         dwg.add(dwg.line(start=(x1, y1), end=(x2, y2), 
                          stroke=text_color, stroke_width=stroke_width, 
-                         stroke_linecap="round", stroke_opacity = 0.6))
+                         stroke_linecap="round"))
 
     # Create a magnifying glass handle for 'a' and add it as a line in the drawing object
     handle_coords = [(68, 94), (57, 66)]    
@@ -92,12 +118,12 @@ def create_svg_icon(filename):
 
     # Add curved strokes to mimic lens flares and add them as paths in the drawing object    
     stroke_path = "M35,42 Q35,30 45,27 Q37,33 35,42"
-    dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2))
+    dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2, fill=text_color))
 
     # Save the SVG icon to a file
     dwg.save()
 
-def create_svg_logo(filename):
+def create_svg_logo(filename, theme="light"):
     """
     Create an SVG logo for FraCSPy.
 
@@ -107,15 +133,30 @@ def create_svg_logo(filename):
     ----------
     filename : :obj:`str`
         The name of the file to save the SVG logo as.
+    theme : :obj:`str`, optional, default: "light"
+        Color theme: "light" or "dark"
+    
+    Raises
+    ------
+    ValueError :
+        If theme is not "light" or "dark"
     """
     # Set up the SVG drawing object
     dwg = svgwrite.Drawing(filename, profile='tiny', size=("400px", "100px"))
 
-    # Add a white background
-    dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white"))
+     # Define colors depending on the theme
+    if theme == "light":
+        text_color = "black"
+        background_color = "white"
+    elif theme == "dark":
+        text_color = "white"
+        background_color = None
+    else:
+        raise ValueError(f"Unknown theme: {theme}")
 
-    # Define the text color
-    text_color = "black"
+    if background_color is not None:
+        # Add background
+        dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill=background_color))
 
     # Set up the time range and number of points for generating the wavelet
     t_min = -4
@@ -131,7 +172,7 @@ def create_svg_logo(filename):
     
     # Convert the data to SVG path format and add it as a path in the drawing object
     wavelet_path = "M" + " ".join([f"{x},{y}" for x, y in zip(t, y)])
-    dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2))
+    dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2, fill=text_color))
 
     # Add text "FraCSPy"
     dwg.add(dwg.text("FraCSPy", insert=(-5, 73), font_family="Poppins", font_size="100px", fill=text_color))
@@ -142,7 +183,7 @@ def create_svg_logo(filename):
 
     # Add curved strokes to mimic lens flares and add them as paths in the drawing object    
     stroke_path = "M100,45 Q100,33 110,30 Q102,36 100,45"
-    dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2))
+    dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2, fill=text_color))
 
     # Save the SVG logo to a file
     dwg.save()
@@ -242,30 +283,46 @@ def display_svg(svg_file):
 output_folder = "./"
 out_dpi = 300
 
-# File paths
+# File paths for logo (light)
 svg_logo_file  = os.path.join(output_folder, "fracspy_logo.svg")
 png_logo_file  = os.path.join(output_folder, "fracspy_logo.png")
 jpg_logo_file  = os.path.join(output_folder, "fracspy_logo.jpg")
 tiff_logo_file = os.path.join(output_folder, "fracspy_logo.tiff")
 eps_logo_file  = os.path.join(output_folder, "fracspy_logo.eps")
+# File paths for logo (dark)
+svg_logo_dark_file  = os.path.join(output_folder, "fracspy_logo_dark.svg")
+png_logo_dark_file  = os.path.join(output_folder, "fracspy_logo_dark.png")
+jpg_logo_dark_file  = os.path.join(output_folder, "fracspy_logo_dark.jpg")
+tiff_logo_dark_file = os.path.join(output_folder, "fracspy_logo_dark.tiff")
+eps_logo_dark_file  = os.path.join(output_folder, "fracspy_logo_dark.eps")
+# File paths for icon
 svg_icon_file  = os.path.join(output_folder, "fracspy_icon.svg")
 png_icon_file  = os.path.join(output_folder, "fracspy_icon.png")
+svg_icon_dark_file  = os.path.join(output_folder, "fracspy_icon_dark.svg")
+png_icon_dark_file  = os.path.join(output_folder, "fracspy_icon_dark.png")
 
 # Create logo
 create_svg_logo(svg_logo_file)
+create_svg_logo(svg_logo_dark_file,theme="dark")
 
 # Create icon
 create_svg_icon(svg_icon_file)
+create_svg_icon(svg_icon_dark_file,theme="dark")
 
 # Convert to PNG and upscaled PNG
 upscale_factor = 2
 high_res_logo_png = convert_svg(svg_logo_file, png_logo_file, "png", dpi=out_dpi, upscale_factor=upscale_factor)
-high_res_icon_png = convert_svg(svg_icon_file, png_icon_file, "png", dpi=out_dpi, upscale_factor=upscale_factor)
+high_res_logo_dark_png = convert_svg(svg_logo_dark_file, png_logo_dark_file, "png", dpi=out_dpi, upscale_factor=upscale_factor)
+convert_svg(svg_icon_file, png_icon_file, "png", dpi=out_dpi, upscale_factor=upscale_factor)
+convert_svg(svg_icon_dark_file, png_icon_dark_file, "png", dpi=out_dpi, upscale_factor=upscale_factor)
 
 # Convert to other formats
 convert_svg(svg_logo_file, jpg_logo_file, "jpg", dpi=out_dpi, high_res_png=high_res_logo_png)
 convert_svg(svg_logo_file, tiff_logo_file, "tiff", dpi=out_dpi, high_res_png=high_res_logo_png)
 convert_svg(svg_logo_file, eps_logo_file, "eps", dpi=out_dpi, high_res_png=high_res_logo_png)
+convert_svg(svg_logo_dark_file, jpg_logo_dark_file, "jpg", dpi=out_dpi, high_res_png=high_res_logo_dark_png)
+convert_svg(svg_logo_dark_file, tiff_logo_dark_file, "tiff", dpi=out_dpi, high_res_png=high_res_logo_dark_png)
+convert_svg(svg_logo_dark_file, eps_logo_dark_file, "eps", dpi=out_dpi, high_res_png=high_res_logo_dark_png)
 
 # Display the SVG icon and logo
 display_svg(svg_logo_file)

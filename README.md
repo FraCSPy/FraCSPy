@@ -2,6 +2,8 @@
 
 FraCSPy stands for Python Framework for Conventional microSeismic Processing.
 
+![FraCSPy logo](logo/fracspy_logo.png)
+
 It is a single python toolbox for the full microseismic pipeline from modelling to post-event analysis.
 This library is a single location leveraging the excellent work of other scientists (software developers) and adapts them for the specific use case of microseismic monitoring.
 

@@ -28,6 +28,7 @@ pyfrac/version.py
 *.tiff
 *.svg
 !logo/*.png  
+!docs/source/_static/*.png
 
 # Cache
 .cache

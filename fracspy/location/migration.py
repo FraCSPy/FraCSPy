@@ -4,7 +4,6 @@ from fracspy.location.utils import get_max_locs
 from fracspy.location.utils import moveout_correction
 from fracspy.location.utils import semblance_stack
 
-
 def diffstack(data, n_xyz, Op, nforhc=10):
     """Kirchhoff migration for microseismic source location
 
@@ -35,13 +34,12 @@ def diffstack(data, n_xyz, Op, nforhc=10):
     hc, _ = get_max_locs(migrated, n_max=nforhc, rem_edge=False)
     return migrated, hc
 
-
 def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
     """Diffraction stacking for microseismic source location
 
     This routine performs imaging of microseismic data by diffraction
-    stacking . In practice,
-    this approach is similar to :func:`fracspy.location.migration.diffstack`
+    stacking . In practice, this approach is similar to 
+    :func:`fracspy.location.migration.diffstack` 
     with the main difference that semblance is used as measure of coherency
     instead of a straight summation of the contributions over the moveout
     curves
@@ -76,17 +74,14 @@ def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
     # Initialise ds image array
     ds_im = np.zeros(ngrid)
 
+    # Find time sample shifts for all grid points
+    itshifts = np.round((ttg - ttg.min(axis=0))/dt)
+    
     # Loop over grid points
     for igrid in range(ngrid):
-        # Get traveltime curve
-        tcurve = ttg[:,igrid]
-        # Get minimum time
-        tmin = np.min(tcurve)
-        # Get shifts
-        itshifts =  np.round((tcurve - tmin)/dt)
         # Perform moveout correction for data
-        data_mc = moveout_correction(data=data,itshifts=itshifts)
-
+        data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])
+        # Perform semblance stack
         ds_im[igrid] = np.max(semblance_stack(data_mc))
 
     ds_im_vol = ds_im.reshape(nx, ny, nz)

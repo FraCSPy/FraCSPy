@@ -87,7 +87,6 @@ def moveout_correction(data, itshifts):
         raise ValueError("All values in itshifts must be non-negative.")
 
     # Calculate the shifted indices for each row
-    #shifted_indices = np.arange(nt) - itshifts[:, np.newaxis]
     shifted_indices = np.arange(nt) - itshifts.astype(int)[:, np.newaxis]
     
     # Clip indices to ensure they stay within bounds
@@ -95,15 +94,6 @@ def moveout_correction(data, itshifts):
 
     # Copy values from data to result using fancy indexing
     data_corrected[np.arange(nr)[:, np.newaxis], shifted_indices] = data
-
-    # # Loop through each row
-    # for i in range(nr):
-    #     # Calculate the shift for this row
-    #     shift = int(itshifts[i])
-        
-    #     # Move values towards the beginning of the array
-    #     #data_corrected[i, :shift] = 0  # Fill the gap with zeros
-    #     data_corrected[i, shift:] = data[i, :-shift]  # Move values
 
     return data_corrected
 

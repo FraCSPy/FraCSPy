@@ -46,6 +46,9 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
+from time import time
+import fracspy as fp
+
 #%%
 
 ###############################################################################
@@ -169,10 +172,15 @@ print(f"Traveltime array shape: {tt.shape}")
 ###############################################################################
 # Perform standard semblance-based diffraction stack
 # """"""""""""""""""""""""""""""""""""""""""""""""""
-
+start_time = time()
+print("Diffraction stacking...")
 dstacked, hc = L.apply(frwddata, 
-                       kind="semblancediffstack", 
-                       tt=tt, dt=dt, nforhc=10)
+                      kind="semblancediffstack", 
+                      tt=tt, dt=dt, nforhc=10)
+# You can also run it like that:
+#dstacked, hc = fp.location.migration.semblancediffstack(frwddata,n_xyz=[len(gx),len(gy),len(gz)], tt=tt, dt=dt, nforhc=10)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
 print('True event hypocenter:', [sx, sy, sz])
 print('Event hypocenter from diffraction stacking:', hc.tolist())

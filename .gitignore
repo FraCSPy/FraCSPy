@@ -20,7 +20,8 @@ dist
 *.zip
 pyfrac/version.py
 
-# Figure files
+# Ignore figure files but keep the logo
+!logo/*.png  
 *.eps
 *.png
 *.jpeg

@@ -2,7 +2,7 @@ import numpy as np
 
 
 def collect_source_angles(x, y, z, recs): #, nc=3):
-    """Angles between sources and receivers
+    r"""Angles between sources and receivers
 
     Compute angles between sources in a regular 3-dimensional
     grid and receivers
@@ -17,8 +17,6 @@ def collect_source_angles(x, y, z, recs): #, nc=3):
         Z-axis
     recs : :obj:`numpy.ndarray`
         Receiver locations of size :math:`3 \times n_r`
-    # nc : :obj:`int`, optional
-    #    Number of components
 
     Returns
     -------
@@ -85,17 +83,19 @@ def collect_source_angles(x, y, z, recs): #, nc=3):
     return cosine_sourceangles, dists
 
 
-def pwave_zcomp_Greens(cosine_sourceangles,
-                       dists,
-                       src_idx,
-                       vel,
-                       MT_comp_dict,
-                       omega_p):
-    """P-wave, z-component Green's function
+def pwave_greens_comp(
+        cosine_sourceangles,
+        dists,
+        src_idx,
+        vel,
+        MT_comp_dict,
+        comp_idx,
+        omega_p,
+):
+    r"""Particle velocity component of the P-wave Green's function
 
-    Compute Green's function for the z-component of the P-wave
-    between sources in a regular 3-dimensional
-    grid and receivers
+    Compute Green's function for a given-component (x, y, or z) of the P-wave
+    between a source and a set of receivers
 
     Parameters
     ----------
@@ -105,18 +105,28 @@ def pwave_zcomp_Greens(cosine_sourceangles,
         Distances of size :math:`\times n_r \times n_x \times n_y \times n_z`
     src_idx : :obj:`numpy.ndarray`
         Source location indices (relative to x, y, and z axes)
+    vel : :obj:`numpy.ndarray`
+        Velocity model
+    MT_comp_dict : :obj:`dict`
+        Dictionary containing Moment Tensor parameters
+    comp_idx : :obj:`int`
+        Index of component at receiver side
+    omega_p : :obj:`float`
+        Peak frequency of the given wave
 
     Returns
     -------
+    G_z : :obj:`numpy.ndarray`
+        Green's functions of size :math:`6 \times n_r`
 
     Notes
     -----
-    This methodc computes the amplitudes of z-component of the Green's functions associated to the first P-wave arrival,
-    assuming a known source location based on the far-field particle velocity expression from a moment tensor source
-    in a homogeneous full space (eq. 4.29, [1]_):
+    This method computes the amplitudes of a given component of the particle velocity Green's functions associated
+    to the first P-wave arrival, assuming a known source location based on the far-field particle velocity expression
+    from a moment tensor source in a homogeneous full space (eq. 4.29, [1]_):
 
     .. math::
-        v_z^P = j \omega_P \left( \frac{\gamma_z\gamma_p\gamma_q}{4\pi\rho\alpha^3}  \frac{1}{r} \right) M_{pq}
+        v_i^P = j \omega_P \left( \frac{\gamma_i\gamma_p\gamma_q}{4\pi\rho\alpha^3}  \frac{1}{r} \right) M_{pq}
 
     where:
 
@@ -127,7 +137,7 @@ def pwave_zcomp_Greens(cosine_sourceangles,
 
     - :math:`\theta` describes whether we are utilising the P-wave information;
 
-    - :math:`i` describes the z-component of the data, aligning with the below p,q definitions;
+    - :math:`i` describes the i-component of the data, aligning with the below p,q definitions;
 
     - :math:`p` describes the first index of the moment tensor element;
 
@@ -135,7 +145,7 @@ def pwave_zcomp_Greens(cosine_sourceangles,
 
     - :math:`\omega_P` is the peak frequency of the given wave;
 
-    - :math:`\gamma_{z/p/q}` is the take-off angle in the z/p/q-th direction
+    - :math:`\gamma_{i/p/q}` is the take-off angle in the z/p/q-th direction
       (for a ray between the source and receiver);
 
     - :math:`r` is the distance between source and receiver;
@@ -157,81 +167,133 @@ def pwave_zcomp_Greens(cosine_sourceangles,
     # Compute common scalar
     all_scaler = omega_p / (4 * np.pi * np.mean(vel) ** 3)
 
-    # Gamma index related to velocity direction
-    zcomp_gamma_ind = 2
-
     # Compute P-wave Green's function (z-component)
     G_z = np.zeros([6, nr])
-    for irec in range(nr):
-        for cmp_dict in MT_comp_dict:
+    for cmp_dict in MT_comp_dict:
+        for irec in range(nr):
             el_indic = cmp_dict['elementID']
-            p_gamma_ind, q_gamma_ind = cmp_dict['pq']
+            p_idx, q_idx = cmp_dict['pq']
 
-            cosine_src_elements = cosine_src[zcomp_gamma_ind,irec] * cosine_src[p_gamma_ind,irec] * cosine_src[q_gamma_ind, irec]
+            cosine_src_elements = cosine_src[comp_idx, irec] * cosine_src[p_idx, irec] * cosine_src[q_idx, irec]
             G_z[el_indic, irec] = all_scaler * cosine_src_elements * dist_sloc[irec] ** -1
 
     return G_z
 
 
-def pwave_Greens_comp(gamma_sourceangles,
-                      dist_table,
-                      sloc_ind,
-                      vel,
-                      MT_comp_dict,
-                      comp_gamma_ind,
-                      omega_p,
-                      ):
-    '''
+def mt_pwave_greens_comp(
+        n_xyz,
+        cosine_sourceangles,
+        dists,
+        vel,
+        MT_comp_dict,
+        comp_idx,
+        omega_p,
+):
+    r"""Particle velocity component of the P-wave Green's functions within a volumetric source grid for
+    all moment tensor components
+
+    Compute Green's functions for a given-component (x, y, or z) of the P-wave
+    between sources defined in a regular 3-dimensional grid and a set of receivers
 
     Parameters
     ----------
-    gamma_sourceangles
-    dist_table: :obj:`numpy.ndarray`
-        Travel distance table from all possible source locs (reference grid) to receivers,
-    sloc_ind: :list
-        Index of source location, [sxi, syi, szi], wrt reference grid indices
-    omega_p
-    vel
-    MT_comp_dict
-    comp_gamma_ind : :obj:`numpy.ndarray`
-        Gamma index related to velocity direction, 0=x, 1=y, 2=z
+    n_xyz : :obj:`tuple`
+        Number of grid points in X-, Y-, and Z-axes for the source area
+    cosine_sourceangles : :obj:`numpy.ndarray`
+        Cosine source angles of size :math:`3 \times n_r \times n_x \times n_y \times n_z`
+    dists : :obj:`numpy.ndarray`
+        Distances of size :math:`\times n_r \times n_x \times n_y \times n_z`
+    vel : :obj:`numpy.ndarray`
+        Velocity model
+    MT_comp_dict : :obj:`dict`
+        Dictionary containing Moment Tensor parameters
+    comp_idx : :obj:`int`
+        Index of component at receiver side
+    omega_p : :obj:`float`
+        Peak frequency of the given wave
 
     Returns
     -------
+    Gc : :obj:`numpy.ndarray`
+        Green's functions of size :math:`6 \times n_r \times n_x \times n_y \times n_z` for a given component
 
-    '''
-    nr = gamma_sourceangles.shape[1]
+    Notes
+    -----
+    This method computes the amplitudes of a given component of the particle velocity Green's functions associated
+    to the first P-wave arrival, for a uniform grid of source location based on the far-field particle velocity
+    expression from a moment tensor source in a homogeneous full space for all of the 6 different moment tensor
+    components.
 
-    # SLICE ON SOURCE LOC
-    dist_sloc = dist_table[:, sloc_ind[0], sloc_ind[1], sloc_ind[2]]
-    gamma_sloc = gamma_sourceangles[:, :, sloc_ind[0], sloc_ind[1], sloc_ind[2]]
+    """
+    nx, ny, nz = n_xyz
+    nr = cosine_sourceangles.shape[1]
 
-    # INITIALISE G
-    G = np.zeros([6, nr])  # Z-component
-    all_scaler = omega_p / (4 * np.pi * np.mean(vel) ** 3)
+    # Compute Green's functions
+    Gc = np.zeros([6, nr, nx, ny, nz])
 
-    for irec in range(nr):
-        for cmp_dict in MT_comp_dict:
-            el_indic = cmp_dict['elementID']
-            p_gamma_ind, q_gamma_ind = cmp_dict['pq']
+    for ix in range(nx):
+        for iy in range(ny):
+            for iz in range(nz):
+                Gc[:, :, ix, iy, iz] = pwave_greens_comp(cosine_sourceangles,
+                                                         dists,
+                                                         [ix, iy, iz],
+                                                         vel,
+                                                         MT_comp_dict,
+                                                         comp_idx=comp_idx,
+                                                         omega_p=omega_p)
+    return Gc
 
-            gamma_elements = gamma_sloc[comp_gamma_ind,irec] * gamma_sloc[p_gamma_ind,irec] * gamma_sloc[q_gamma_ind,irec]
 
-            G[el_indic, irec] = all_scaler * gamma_elements * dist_sloc[irec]**-1
+def mt_pwave_greens_multicomp(
+        n_xyz,
+        cosine_sourceangles,
+        dists,
+        vel,
+        MT_comp_dict,
+        omega_p,
+):
+    r"""Particle velocity components of the P-wave Green's functions within a volumetric source grid for
+    all moment tensor components
 
-    return G
+    Compute Green's functions for the 3-components (x, y, and z) of the P-wave
+    between sources defined in a regular 3-dimensional grid and a set of receivers
 
-def multicomp_Greens_Pwave(nxyz,
-                           nr,
-                           gamma_sourceangles,
-                           dist_table,
-                           vel,
-                           MT_comp_dict,
-                           omega_p,
-                           ):
+    Parameters
+    ----------
+    n_xyz : :obj:`tuple`
+        Number of grid points in X-, Y-, and Z-axes for the source area
+    cosine_sourceangles : :obj:`numpy.ndarray`
+        Cosine source angles of size :math:`3 \times n_r \times n_x \times n_y \times n_z`
+    dists : :obj:`numpy.ndarray`
+        Distances of size :math:`\times n_r \times n_x \times n_y \times n_z`
+    vel : :obj:`numpy.ndarray`
+        Velocity model
+    MT_comp_dict : :obj:`dict`
+        Dictionary containing Moment Tensor parameters
+    omega_p : :obj:`float`
+        Peak frequency of the given wave
 
-    nx,ny,nz = nxyz
+    Returns
+    -------
+    Gx : :obj:`numpy.ndarray`
+        x-component Green's functions of size :math:`6 \times n_r \times n_x \times n_y \times n_z`
+    Gy : :obj:`numpy.ndarray`
+        y-component Green's functions of size :math:`6 \times n_r \times n_x \times n_y \times n_z`
+    Gz : :obj:`numpy.ndarray`
+        z-component Green's functions of size :math:`6 \times n_r \times n_x \times n_y \times n_z`
 
+    Notes
+    -----
+    This method computes the amplitudes of the 3-component particle velocity Green's functions associated
+    to the first P-wave arrival, for a uniform grid of source location based on the far-field particle velocity
+    expression from a moment tensor source in a homogeneous full space for all of the 6 different moment tensor
+    components.
+
+    """
+    nx, ny, nz = n_xyz
+    nr = cosine_sourceangles.shape[1]
+
+    # Compute Green's functions
     Gx = np.zeros([6, nr, nx, ny, nz])
     Gy = np.zeros([6, nr, nx, ny, nz])
     Gz = np.zeros([6, nr, nx, ny, nz])
@@ -239,52 +301,27 @@ def multicomp_Greens_Pwave(nxyz,
     for ix in range(nx):
         for iy in range(ny):
             for iz in range(nz):
-                Gx[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
-                                                             dist_table,
-                                                             [ix, iy, iz],
-                                                             vel,
-                                                             MT_comp_dict,
-                                                             comp_gamma_ind=0,
-                                                             omega_p=omega_p)
-
-                Gy[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
-                                                             dist_table,
-                                                             [ix, iy, iz],
-                                                             vel,
-                                                             MT_comp_dict,
-                                                             comp_gamma_ind=1,
-                                                             omega_p=omega_p)
-
-                Gz[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
-                                                             dist_table,
-                                                             [ix, iy, iz],
-                                                             vel,
-                                                             MT_comp_dict,
-                                                             comp_gamma_ind=2,
-                                                             omega_p=omega_p)
-    return Gx, Gy, Gz
-
-
-def singlecomp_Greens_Pwave(nxyz,
-                            nr,
-                            gamma_sourceangles,
-                            dist_table,
-                            vel,
-                            MT_comp_dict,
-                            omega_p,
-                            ):
-
-    nx,ny,nz = nxyz
-    Gz = np.zeros([6, nr, nx, ny, nz])
-
-    for ix in range(nx):
-        for iy in range(ny):
-            for iz in range(nz):
-                Gz[:, :, ix, iy, iz] = pwave_Greens_comp(gamma_sourceangles,
-                                                         dist_table,
+                Gx[:, :, ix, iy, iz] = pwave_greens_comp(cosine_sourceangles,
+                                                         dists,
                                                          [ix, iy, iz],
                                                          vel,
                                                          MT_comp_dict,
-                                                         comp_gamma_ind=2,
+                                                         comp_idx=0,
                                                          omega_p=omega_p)
-    return Gz
+
+                Gy[:, :, ix, iy, iz] = pwave_greens_comp(cosine_sourceangles,
+                                                         dists,
+                                                         [ix, iy, iz],
+                                                         vel,
+                                                         MT_comp_dict,
+                                                         comp_idx=1,
+                                                         omega_p=omega_p)
+
+                Gz[:, :, ix, iy, iz] = pwave_greens_comp(cosine_sourceangles,
+                                                         dists,
+                                                         [ix, iy, iz],
+                                                         vel,
+                                                         MT_comp_dict,
+                                                         comp_idx=2,
+                                                         omega_p=omega_p)
+    return Gx, Gy, Gz

@@ -110,8 +110,9 @@ vz = fracspy.utils.sofiutils.read_seis(
     os.path.join(input_dir, 'outputs',
                  'su', f'{expname}_vy.txt'),
     nr=nr)
+vz = vz[:, t_shift: t_shift + tdur]
 efd_scaler = np.max(abs(vz))  # Scaler to make data more friendly
-vz = vz[:, t_shift: t_shift + tdur] * efd_scaler
+vz /= efd_scaler
 
 # Remove absorbing boundaries from both the model and receiver coordinates
 mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
@@ -134,11 +135,10 @@ plt.tight_layout()
 # We start by defining the source frequency and location, which we assume to be
 # known ahead of time.
 
-omega_p = 20
-
-sx = nx//2
-sy = ny//2
-sz = 2*nz//3
+omega_p = 30
+sx = nx // 2
+sy = ny // 2
+sz = 2 * nz // 3
 sloc_ind = [sx, sy, sz]
 
 ###############################################################################
@@ -170,13 +170,16 @@ plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
 plt.scatter(range(nr), source_times, marker='o', facecolors='none', edgecolors='k', s=5)
 plt.tight_layout()
 
+plt.figure()
+plt.plot(vz_amps, 'k')
+
 ###############################################################################
 # Moment Tensor Inversion
 # -----------------------
 # We finally solve our inverse problem to obtain an estimate of the moment tensor
 
-MT = fracspy.mtinversion.MTInversion(x, y, z, recs, mod, omega_p)
-mt_est = MT.apply(vz_amps, sloc_ind)
+MT = fracspy.mtinversion.MTInversion(x, y, z, recs, mod)
+mt_est = MT.apply(vz_amps, sloc_ind, 2, omega_p, kind="ai")
 
 # Comparison with known MT
 mt = np.array([0, 0, 0, 1, 0, 0])

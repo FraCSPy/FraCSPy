@@ -4,12 +4,12 @@ __all__ = [
 
 
 from fracspy.mtinversion.greensfunction import *
-from fracspy.mtinversion.mtai import mtamplitude_inversion
-from fracspy.mtinversion.mtwi import lsqr_mtsolver
-from fracspy.mtinversion.utils import get_mt_computation_dict
+from fracspy.mtinversion.mtai import MTA
+from fracspy.mtinversion.mtwi import MTW
 
-_mt_kind = {"ai": mtamplitude_inversion,
-            "wi": lsqr_mtsolver,
+
+_mt_kind = {"ai": MTA,
+            "wi": MTW,
             }
 
 
@@ -27,26 +27,17 @@ class MTInversion():
         Y-axis
     z : :obj:`numpy.ndarray`
         Z-axis
-    z : :obj:`numpy.ndarray`
-        Z-axis
     recs : :obj:`numpy.ndarray`
         Receiver locations of size :math:`3 \times n_r`
-    src_idx : :obj:`numpy.ndarray`
-        Source location indices (relative to x, y, and z axes)
-    vel : :obj:`numpy.ndarray`
-        Velocity model of size :math:`n_x \times n_y \times n_z`
-    omega_p : :obj:`float`
-        Central frequency of source
     vel : :obj:`numpy.ndarray`
         Velocity model of size :math:`n_x \times n_y \times n_z`
 
     """
-    def __init__(self, x, y, z, recs, vel, omega_p):
+    def __init__(self, x, y, z, recs, vel):
         self.x, self.y, self.z = x, y, z
         self.n_xyz = x.size, y.size, z.size
         self.recs = recs
         self.vel = vel
-        self.omega_p = omega_p
         self._precompute()
 
     def _precompute(self):
@@ -54,9 +45,9 @@ class MTInversion():
 
         Pre-compute parameters that can be re-used for different source locations
         """
-        self.cosine_sourceangles, self.dists = collect_source_angles(self.x, self.y, self.z, recs=self.recs) #, nc=3)
+        self.cosine_sourceangles, self.dists = collect_source_angles(self.x, self.y, self.z, recs=self.recs)
 
-    def apply(self, data, src_idx,  kind="ai", **kwargs):
+    def apply(self, data, src_idx, cmp_idx, omega_p, kind="ai", kwargs_engine={}, kwargs_inv={}):
         """Perform MT inversion
 
         This method performs MT inversion location for the provided dataset (either amplitudes
@@ -68,14 +59,27 @@ class MTInversion():
           and/or imaging methods as the internal parameters are not modified during the
           location procedure.
 
-        """
-        Gz = pwave_Greens_comp(self.cosine_sourceangles,
-                               self.dists,
-                               src_idx,
-                               self.vel,
-                               get_mt_computation_dict(),
-                               comp_gamma_ind=2,
-                               omega_p=self.omega_p,
-                               )
+        Parameters
+        ----------
+        data : :obj:`numpy.ndarray`
+            Amplitude data of size :math`n_r`
+        src_idx : :obj:`numpy.ndarray`
+            Source location indices (relative to x, y, and z axes)
+        comp_idx : :obj:`int`
+            Index of component at receiver side
+        omega_p : :obj:`float`
+            Central frequency of source
 
-        return _mt_kind[kind](Gz, data, **kwargs)
+        """
+        mtengine = _mt_kind[kind](
+            self.x, self.y, self.z,
+            self.recs, self.vel,
+            src_idx, cmp_idx,
+            omega_p,
+            cosine_sourceangles=self.cosine_sourceangles,
+            dists=self.dists,
+            **kwargs_engine)
+
+        mt = mtengine.invert(data, **kwargs_inv)
+
+        return mt

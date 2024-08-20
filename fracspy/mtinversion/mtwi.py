@@ -1,143 +1,169 @@
-import numpy as np
+__all__ = [
+    "MTW",
+]
+
 from scipy.sparse.linalg import lsqr
-from pylops.basicoperators import HStack, VStack
-from pylops.utils import dottest
 from pylops.optimization.sparsity import *
-from fracspy.modelling.trueamp_kirchhoff import TAKirchhoff
+
+from fracspy.modelling.mt_kirchhoff import TAKirchhoff, MTSKirchhoff, MTMKirchhoff
+from fracspy.mtinversion.greensfunction import *
+from fracspy.mtinversion.utils import MT_comp_dict
 
 
-def singlecomp_pwave_mtioperator(x,
-                                 y,
-                                 z,
-                                 recs,
-                                 t,
-                                 wav,
-                                 wavc,
-                                 tt_table,
-                                 Gz,
-                                 Ms_scaling = 1e6,
-                                 engine='numba',
-                                 checkdottest=True
-                                 ):
-    nr = recs.shape[1]
-    Ms_Op = [TAKirchhoff(z=z,
-                         x=x,
-                         y=y,
-                         t=t,
-                         recs=recs,
-                         wav=wav,
-                         wavcenter=wavc,
-                         wavfilter=True,
-                         trav=tt_table.reshape(nr, -1).T,
-                         amp=Ms_scaling * Gz[icomp].reshape(nr, -1).T.astype(np.float32),
-                         engine=engine)
-             for icomp in range(6)]
-    # Combine to a single operator
-    Mstack_Op = HStack(Ms_Op, forceflat=True)
-    # check operator with dottest
-    if checkdottest:
-        _ = dottest(Mstack_Op, verb=True, atol=1e-5)
-    return Mstack_Op
+class MTW():
+    r"""Moment-Tensor Waveform modelling and inversion
 
+    This class acts as an abstract interface for users to perform
+    moment-tensor modelling of waveforms
 
-def multicomp_pwave_mtioperator(x,
-                          y,
-                          z,
-                          recs,
-                          t,
-                          wav,
-                          wavc,
-                          tt_table,
-                          Gx,
-                          Gy,
-                          Gz,
-                          Ms_scaling = 1e6,
-                          engine='numba',
-                          checkdottest=True
-                          ):
-    nr = recs.shape[1]
+    Parameters
+    ----------
+    aoi : :obj:`tuple`
+        Area of interest for waveform computation defined as half windows to place either size of the source in center
+        of region (defined by `src_idx`)
 
-    # Build 6 True Amp Kirchoff Operators
-    Mx_Op = [TAKirchhoff(z=z,
-                         x=x,
-                         y=y,
-                         t=t,
-                         recs=recs,
-                         wav=wav,
-                         wavcenter=wavc,
-                         wavfilter=True,
-                         trav=tt_table.reshape(nr, -1).T,
-                         amp=Ms_scaling * Gx[icomp].reshape(nr, -1).T.astype(np.float32),
-                         engine=engine)
-             for icomp in range(6)]
+    """
+    def __init__(self, x, y, z, recs, vel, src_idx, comp_idx,
+                 omega_p, aoi, t, wav, wavc,
+                 Ms_scaling=1., engine="numpy", multicomp=False,
+                 cosine_sourceangles=None, dists=None):
+        self.x, self.y, self.z = x, y, z
+        self.n_xyz = x.size, y.size, z.size
+        self.recs = recs
+        self.nr = recs.shape[1]
+        self.vel = vel
+        if isinstance(vel, np.ndarray):
+            self.mode = "eikonal"
+        else:
+            self.mode = "analytic"
+        self.src_idx = src_idx
+        self.comp_idx = comp_idx
+        self.omega_p = omega_p
+        self.aoi = aoi
 
-    My_Op = [TAKirchhoff(z=z,
-                         x=x,
-                         y=y,
-                         t=t,
-                         recs=recs,
-                         wav=wav,
-                         wavcenter=wavc,
-                         wavfilter=True,
-                         trav=tt_table.reshape(nr, -1).T,
-                         amp=Ms_scaling * Gy[icomp].reshape(nr, -1).T.astype(np.float32),
-                         engine=engine)
-             for icomp in range(6)]
+        self.t, self.wav, self.wavc = t, wav, wavc
+        self.nt = t.size
 
-    Mz_Op = [TAKirchhoff(z=z,
-                         x=x,
-                         y=y,
-                         t=t,
-                         recs=recs,
-                         wav=wav,
-                         wavcenter=wavc,
-                         wavfilter=True,
-                         trav=tt_table.reshape(nr, -1).T,
-                         amp=Ms_scaling * Gz[icomp].reshape(nr, -1).T.astype(np.float32),
-                         engine=engine)
-             for icomp in range(6)]
+        self.multicomp = multicomp
+        self.ncomps = 3 if multicomp else 1
+        self.Ms_scaling = Ms_scaling
+        self.engine = engine
 
-    Mxstack_Op = HStack(Mx_Op, forceflat=True)
-    Mystack_Op = HStack(My_Op, forceflat=True)
-    Mzstack_Op = HStack(Mz_Op, forceflat=True)
+        self.cosine_sourceangles, self.dists = cosine_sourceangles, dists
+        if cosine_sourceangles is None and dists is None:
+            self.cosine_sourceangles, self.dists = collect_source_angles(self.x, self.y, self.z, recs=self.recs)
+        elif (cosine_sourceangles is None and dists is not None) or (cosine_sourceangles is not None and dists is None):
+            raise NotImplementedError('Must provide both cosine_sourceangles and dists or neither')
 
-    Mstack_Op = VStack([Mxstack_Op, Mystack_Op, Mzstack_Op])
+        self.Op, self.n_xyz_aoi = self._create_op()
 
-    # check operator with dottest\
-    if checkdottest:
-        _ = dottest(Mstack_Op, verb=True, atol=1e-5)
+    def _create_op(self):
+        # Traveltime tables
+        trav = TAKirchhoff._traveltime_table(self.z,
+                                             self.x,
+                                             y=self.y,
+                                             recs=self.recs,
+                                             vel=self.vel,
+                                             mode=self.mode)
+        trav = trav.reshape(self.n_xyz[0], self.n_xyz[1], self.n_xyz[2], self.nr).transpose([3, 0, 1, 2])
 
-    return Mstack_Op
+        # Define area of interest
+        hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi = self.aoi
+        xsi, xfi = self.src_idx[0] - hwin_nx_aoi, self.src_idx[0] + hwin_nx_aoi + 1  # start/end index of x-region of interest
+        ysi, yfi = self.src_idx[1] - hwin_ny_aoi, self.src_idx[1] + hwin_ny_aoi + 1  # start/end index of y-region of interest
+        zsi, zfi = self.src_idx[2] - hwin_nz_aoi, self.src_idx[2] + hwin_nz_aoi + 1  # start/end index of z-region of interest
+        nxsi = xfi - xsi
+        nysi = yfi - ysi
+        nzsi = zfi - zsi
+        dimsai = (nxsi, nysi, nzsi)
 
+        # Extract parameters in the area of interest
+        cosine_sourceangles = self.cosine_sourceangles[:, :, xsi:xfi, ysi:yfi, zsi:zfi]
+        dists = self.dists[:, xsi:xfi, ysi:yfi, zsi:zfi]
+        trav = trav[:, xsi:xfi, ysi:yfi, zsi:zfi]
+        nx_aoi, ny_aoi, nz_aoi = trav.shape[1:]
 
-def frwrd_mtmodelling(mt_cube, Mstack_Op, nr, nt, multicomp=True):
-    # Generated Data
-    data = Mstack_Op @ mt_cube.ravel()
-    if multicomp:
-        data = data.reshape(3, nr, nt)
-    else:
-        data = data.reshape(nr, nt)
-    return data
+        # Green's functions
+        if not self.multicomp:
+            Gz = mt_pwave_greens_comp(n_xyz=[nx_aoi, ny_aoi, nz_aoi],
+                                      cosine_sourceangles=cosine_sourceangles,
+                                      dists=dists,
+                                      vel=self.vel,
+                                      MT_comp_dict=MT_comp_dict,
+                                      comp_idx=self.comp_idx,
+                                      omega_p=self.omega_p,
+                                      )
+            Op = MTSKirchhoff(
+                self.x[xsi:xfi], self.y[ysi:yfi], self.z[zsi:zfi],
+                self.recs,
+                self.t,
+                self.wav,
+                self.wavc,
+                trav,
+                Gz,
+                Ms_scaling=self.Ms_scaling,
+                engine=self.engine,
+                checkdottest=False)
+        else:
+            Gx, Gy, Gz = mt_pwave_greens_multicomp(n_xyz=[nx_aoi, ny_aoi, nz_aoi],
+                                                   cosine_sourceangles=cosine_sourceangles,
+                                                   dists=dists,
+                                                   vel=self.vel,
+                                                   MT_comp_dict=MT_comp_dict,
+                                                   omega_p=self.omega_p,
+                                                   )
+            Op = MTMKirchhoff(
+                self.x[xsi:xfi], self.y[ysi:yfi], self.z[zsi:zfi],
+                self.recs,
+                self.t,
+                self.wav,
+                self.wavc,
+                trav,
+                Gx,
+                Gy,
+                Gz,
+                Ms_scaling=self.Ms_scaling,
+                engine=self.engine,
+                checkdottest=False)
+        return Op, dimsai
 
+    def model(self, mt):
+        """Modelling
+        """
+        data = self.Op @ mt.ravel()
+        data = data.reshape(self.ncomps, self.nr, self.nt).squeeze()
+        return data
 
-def adjoint_mtmodelling(data, Mstack_Op, nxyz):
-    mt_adj = Mstack_Op.H @ data.ravel()
-    mt_adj = mt_adj.reshape([6, nxyz[0], nxyz[1], nxyz[2]])
-    return mt_adj
+    def adjoint(self, data):
+        """Adjoint modelling
+        """
+        mt = self.Op.H @ data.ravel()
+        mt = mt.reshape([6, self.n_xyz_aoi[0], self.n_xyz_aoi[1], self.n_xyz_aoi[2]])
+        return mt
 
+    def lsi(self, data, niter=100, verbose=False):
+        mt = lsqr(self.Op, data.ravel(), iter_lim=niter, atol=0, btol=0, show=verbose)[0]
+        mt = mt.reshape([6, self.n_xyz_aoi[0], self.n_xyz_aoi[1], self.n_xyz_aoi[2]])
+        return mt
 
-def lsqr_mtsolver(data, Mstack_Op, nxyz):
-    mt_inv = lsqr(Mstack_Op, data.ravel(), iter_lim=50, atol=0, btol=0, show=True)[0]
-    mt_inv = mt_inv.reshape([6, nxyz[0], nxyz[1], nxyz[2]])
-    return mt_inv
+    def sparselsi(self, data, niter=100, l1eps=1e2, verbose=False):
+        mt = fista(
+            self.Op,
+            data.ravel(),
+            x0=np.zeros([6, self.n_xyz_aoi[0], self.n_xyz_aoi[1], self.n_xyz_aoi[2]]).ravel(),
+            niter=niter,
+            eps=l1eps,
+            show=verbose)[0]
+        mt = mt.reshape([6, self.n_xyz_aoi[0], self.n_xyz_aoi[1], self.n_xyz_aoi[2]])
+        return mt
 
-
-def fista_mtsolver(data, Mstack_Op, nxyz, fista_niter=100, fista_damping=1e-13, verbose=True):
-    mt_fista = fista(Mstack_Op,
-                         data.ravel(),
-                         np.zeros([6, nxyz[0], nxyz[1], nxyz[2]]).ravel(),  # initialise at zeroes
-                         niter=fista_niter,
-                         eps=fista_damping,
-                         show=verbose)[0]
-    mt_fista = mt_fista.reshape([6, nxyz[0], nxyz[1], nxyz[2]])
-    return mt_fista
+    def invert(self, data, kind='lsi', **kwargs):
+        if kind == 'adjoint':
+            mt = self.adjoint(data, **kwargs)
+        elif kind == 'lsi':
+            mt = self.lsi(data, **kwargs)
+        elif kind == 'sparselsi':
+            mt = self.sparselsi(data, **kwargs)
+        else:
+            raise NotImplementedError('kind must be adjoint, lsi, or sparselsi')
+        return mt

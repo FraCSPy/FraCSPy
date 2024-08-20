@@ -82,8 +82,9 @@ class TAKirchhoff(LinearOperator):
     Notes
     -----
     The True-amplitude Kirchhoff single-sided demigration operator synthesizes
-    seismic data given a
-    propagation velocity model :math:`v` and a source distribution :math:`m`.
+    seismic data given a propagation velocity model :math:`v` and a source distribution
+    :math:`m`.
+
     In forward mode:
 
     .. math::
@@ -94,7 +95,7 @@ class TAKirchhoff(LinearOperator):
     where :math:`m(\mathbf{x_s})` represents the source distribution
     at every location in the subsurface, :math:`G(\mathbf{x_r}, \mathbf{x_s}, t)`
     is the Green's function from source-to-receiver, and finally :math:`\widetilde{w}(t)` is
-    a filtered version of the wavelet :math:`w(t)` [3]_ (or the wavelet itself when
+    a filtered version of the wavelet :math:`w(t)` [1]_ (or the wavelet itself when
     ``wavfilter=False``). In our implementation, the following high-frequency
     approximation of the Green's functions is adopted:
 

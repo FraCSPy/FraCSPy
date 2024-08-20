@@ -30,6 +30,14 @@ Modelling
 
     TAKirchhoff
 
+.. currentmodule:: fracspy.modelling.mt_kirchhoff
+
+.. autosummary::
+   :toctree: generated/
+
+    MTSKirchhoff
+    MTMKirchhoff
+
 
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
@@ -87,8 +95,21 @@ Inverse engines
 .. autosummary::
    :toctree: generated/
 
-    mtamplitude_modelling
-    mtamplitude_inversion
+    MTA
+
+.. currentmodule:: fracspy.mtinversion.mtwi
+
+.. autosummary::
+   :toctree: generated/
+
+    MTW
+
+.. currentmodule:: fracspy.mtinversion.mtinversion
+
+.. autosummary::
+   :toctree: generated/
+
+    MTInversion
 
 
 Utilities
@@ -100,4 +121,6 @@ Utilities
    :toctree: generated/
 
     collect_source_angles
-    pwave_zcomp_Greens
+    pwave_greens_comp
+    mt_pwave_greens_comp
+    mt_pwave_greens_multicomp

@@ -61,9 +61,6 @@ def create_svg_icon(filename):
     # Convert the data to SVG path format and add it as a path in the drawing object
     wavelet_path = "M" + " ".join([f"{x},{y}" for x, y in zip(t, y)])
     dwg.add(dwg.path(wavelet_path, stroke=text_color, stroke_width=0.2))
-
-    # Add letter "a"
-    #dwg.add(dwg.text("a", insert=(18, 73), font_family="Poppins", font_size="100px", fill=text_color))
         
     # Draw an oval with variable thickness using paths
     num_segments = 100  # Number of segments to approximate the oval
@@ -90,9 +87,7 @@ def create_svg_icon(filename):
                          stroke_linecap="round", stroke_opacity = 0.6))
 
     # Create a magnifying glass handle for 'a' and add it as a line in the drawing object
-    handle_coords = [(68, 94), (57, 66)]
-    #handle_coords = [(66, 94), (55, 66)]
-    #handle_coords = [(66, 97), (55, 69)]
+    handle_coords = [(68, 94), (57, 66)]    
     dwg.add(dwg.line(start=handle_coords[0], end=handle_coords[1], stroke=text_color, stroke_width=9))
 
     # Add curved strokes to mimic lens flares and add them as paths in the drawing object    
@@ -141,13 +136,11 @@ def create_svg_logo(filename):
     # Add text "FraCSPy"
     dwg.add(dwg.text("FraCSPy", insert=(-5, 73), font_family="Poppins", font_size="100px", fill=text_color))
 
-    # Create a magnifying glass handle for 'a' and add it as a line in the drawing object
-    #handle_coords = [(131, 97), (120, 69)]
+    # Create a magnifying glass handle for 'a' and add it as a line in the drawing object    
     handle_coords = [(133, 97), (122, 69)]
     dwg.add(dwg.line(start=handle_coords[0], end=handle_coords[1], stroke=text_color, stroke_width=9))
 
-    # Add curved strokes to mimic lens flares and add them as paths in the drawing object
-    #stroke_path = "M100,45 Q100,33 110,33 Q102,36 100,45"
+    # Add curved strokes to mimic lens flares and add them as paths in the drawing object    
     stroke_path = "M100,45 Q100,33 110,30 Q102,36 100,45"
     dwg.add(dwg.path(stroke_path, stroke=text_color, stroke_width=0.2))
 

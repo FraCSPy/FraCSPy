@@ -93,7 +93,7 @@ if len(version.split("+")) > 1 or version == "unknown":
 # General information about the project
 year = datetime.date.today().year
 project = "fracspy"
-copyright = "{}, fracspy Development Team".format(year)
+copyright = "{}, FraCSPy Development Team".format(year)
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
@@ -103,8 +103,8 @@ rst_epilog = """
 )
 html_static_path = ["_static"]
 html_last_updated_fmt = "%b %d, %Y"
-html_title = "fracspy"
-html_short_title = "fracspy"
+html_title = "FraCSPy"
+html_short_title = "FraCSPy"
 html_logo = "_static/fracspy_logo.png"
 html_favicon = "_static/favicon.ico"
 html_extra_path = []

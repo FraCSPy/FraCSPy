@@ -70,9 +70,10 @@ work as an indicator of a correct location and origin time of an event.
 
 However, simple stacking of the absolute values to get 
 :math:`\mathbf{F}(\mathbf{r},t)` can be further improved by using a 
-semblance-based approach. The semblance is a coherency measure and can be 
-understood as the ratio of the signal energy to the energy of the signal and 
-noise in the selected window (Neidell and Taner, 1971).
+semblance-based approach. The semblance is a coherency or similarity measure 
+and can be understood as the ratio of the total energy (the square of sum of 
+amplitudes) to the energy of indivudal traces (the sum of squares) 
+(Neidell and Taner, 1971).
 
 
 For the EMO-corrected data, for image point :math:`\mathbf{r}` and a given time
@@ -80,8 +81,8 @@ step :math:`t` the semblance-based image function :math:`S(\mathbf{r},t)`
 can be calculated by:
     
 .. math::
-        S(\mathbf{r},t) = \frac{\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
-        {N_R \sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}
+        S(\mathbf{r},t) = \frac{\sum_{k=it-W}^{t+W}\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
+        {N_R \sum_{k=it-W}^{t+W}\sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}
 
 The main advantage of the semblance-based imaging is its ability to identify 
 and suppress high stack values that result from high noise on only a few 
@@ -93,13 +94,16 @@ have a low semblance value and in contrast to microseismic events that have
 consistent amplitude arrivals across the array (provided that EMO correction is 
 done with a suitable velocity model).
 
-
+In order to suppress the effect of noise even better, it is possible to extend 
+the semblance-based approach by introducing the time window over which the
+energy measures are summed:
         
 .. math::
-        S_w(\mathbf{r},t) = \frac{\sum_{R=1}^{N_R} \left[\sum_{i=1}^{M} u_i^{\text{EMO}(k)}\right]^2}
-        {M \sum_{k=t-W}^{t+W} \left[\sum_{i=1}^{M} u_i^{\text{EMO}(k)}\right]^2}
+        S_w(\mathbf{r},t) = \frac{\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
+        {N_R \sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}
 
-Note that neither stack of absolute values, nor semblance-based stack take 
+
+Note that neither stack of absolute values, nor semblance-based stacks take 
 into account the potential polarity changes of the signal, i.e. they both are 
 best suitable for localisation of events with single polarity (e.g. an 
 explosion or an implosion).

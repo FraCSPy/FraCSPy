@@ -29,20 +29,25 @@ def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
 
 def dist2rec(recs, gx, gy, gz):
-    '''Compute distances from a 3D grid of points to array of receivers 
+    r"""Compute distances from a 3D grid of points to array of receivers.
 
     Parameters
     ----------
-    recs - receiver coordinates [3,nr]
-    gx - x coordinates of a grid [1,ngx]
-    gy - y coordinates of a grid [1,ngy] 
-    gz - z coordinates of a grid [1,ngz]
+    recs : :obj:`float`
+        receiver coordinates [3,nr]
+    gx : :obj:`float`
+        x coordinates of a grid [1,ngx]
+    gy : :obj:`float`
+        y coordinates of a grid [1,ngy] 
+    gz : :obj:`float`
+        z coordinates of a grid [1,ngz]
 
     Returns
     -------
-    d - 4D array of distances [nr,ngx,ngy,ngz]
+    d : :obj:`numpy.ndarray`
+        4D array of distances [nr,ngx,ngy,ngz]
 
-    '''
+    """
     nr = recs.shape[1]
     gx, gy, gz = np.meshgrid(gx, gy, gz, indexing='ij')
     d = np.sqrt((recs[0][:, None, None, None] - gx)**2 +
@@ -51,19 +56,22 @@ def dist2rec(recs, gx, gy, gz):
     return d
 
 
-def moveout_correction(data, itshifts):
-    '''Moveout correction for microseismic data.
+def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
+    r"""Moveout correction for microseismic data.
 
-    This function applies a moveout correction to microsseismic data by shifting each sample in time according to its corresponding shift value.
+    This function applies a moveout correction to microseismic data by shifting each sample in time according to its corresponding shift value.
 
     Parameters
     ----------
-    data - input seismic data [nr, nt]
-    itshifts - array of shift values [nr]
+    data : :obj:`numpy.ndarray`
+        input seismic data [nr, nt]
+    itshifts : :obj:`numpy.ndarray`
+        array of shift values [nr]
 
     Returns
     -------
-    data_corrected - microseismic data with corrected moveout [nr, nt]
+    data_corrected : :obj:`numpy.ndarray`
+        microseismic data with corrected moveout [nr, nt]
 
     Notes
     -----
@@ -72,7 +80,7 @@ def moveout_correction(data, itshifts):
     Example:
     >>> # Assuming you have a 2D array "data" with shape (nr, nt) and an array "itshifts" with shape (nr,)
     >>> corrected_data = moveout_correction(data, itshifts)
-    '''
+    """
     # Get size
     nr, nt = data.shape
     
@@ -97,17 +105,18 @@ def moveout_correction(data, itshifts):
 
     return data_corrected
 
-
-def semblance_stack(data):
-    '''Computes the semblance stack for a given input array
+def semblance_stack(data:np.ndarray):
+    r"""Computes the semblance stack for a given input array.
 
     Parameters
     ----------
-    data - The input array with shape (nr, nt), where nr is the number of receivers and nt is the number of time samples, usually microseismic data with corrected moveout [nr, nt]
+    data : :obj:`numpy.ndarray`
+        The input array with shape (nr, nt), where nr is the number of receivers and nt is the number of time samples, usually microseismic data with corrected moveout [nr, nt]
 
     Returns
     -------
-    semblance_values: A 1D array with shape (nt,) containing the semblance values for each time sample.
+    semblance_values: :obj:`numpy.ndarray`
+        A 1D array with shape (nt,) containing the semblance values for each time sample.
 
     Description
     -----------
@@ -127,12 +136,12 @@ def semblance_stack(data):
     nr is the number of receivers
     
     Notes
-    -----
+    ----- 
     The function initializes an array semblance_values with shape (nt,) to store the semblance values.
     It then computes the numerator and denominator of the semblance equation using NumPy operations.
     To avoid division by zero, it sets any denominators that are equal to zero to a small value (1e-10).
     Finally, it returns the computed semblance values.
-    '''
+    """
     # Get the shape of the input data, which should be (nr, nt)
     nr, nt = data.shape
     

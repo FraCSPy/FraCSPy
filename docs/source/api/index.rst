@@ -74,6 +74,10 @@ Utilities
    :toctree: generated/
 
     get_max_locs
+    dist2rec
+    moveout_correction
+    semblance_stack
+    
 
 
 Moment Tensor Inversion

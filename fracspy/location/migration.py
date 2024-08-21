@@ -5,7 +5,7 @@ from fracspy.location.utils import moveout_correction
 from fracspy.location.utils import semblance_stack
 
 def diffstack(data, n_xyz, Op, nforhc=10):
-    """Kirchhoff migration for microseismic source location
+    """Kirchhoff migration for microseismic source location.
 
     This routine performs imaging of microseismic data by migration
     using the adjoint of the Kirchhoff modelling operator.
@@ -35,7 +35,7 @@ def diffstack(data, n_xyz, Op, nforhc=10):
     return migrated, hc
 
 def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
-    """Diffraction stacking for microseismic source location
+    """Diffraction stacking for microseismic source location.
 
     This routine performs imaging of microseismic data by diffraction
     stacking . In practice, this approach is similar to 

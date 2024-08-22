@@ -35,6 +35,51 @@ def diffstack(data, n_xyz, Op, nforhc=10):
     return migrated, hc
 
 def absdiffstack(data, n_xyz, tt, dt, nforhc=10):
+    r"""Absolute diffraction stacking for microseismic source location.
+    
+    This function applies event moveout correction to the input data and then computes 
+    the absolute value of the stacking. The result is a 3D image showing the 
+    amplitude of the stacked seismic data.
+
+    Parameters
+    ----------
+    data : :obj:`numpy.ndarray`
+        Data of shape :math`n_r \times n_t`
+    n_xyz : :obj:`tuple`
+        Number of grid points in X-, Y-, and Z-axes for the imaging area
+    tt : :obj:`numpy.ndarray`
+        Traveltime table of size :math`n_r \times n_x \times n_y \times n_z`    
+    nforhc : :obj:`int`, optional, default: 10
+        Number of points for hypocenter
+
+    Description
+    -----------
+    The stacking is performed for all possible origin times :math:`t`:   
+        
+    .. math::
+            F(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} A_R 
+            \left(t + T_R(\mathbf{r})\right)\right|,
+
+    where :math:`\mathbf{r}` is a vector that defines a spatial position 
+    :math:`(x, y, z)` of the image point, :math:`T_R(\mathbf{r})` is the P-wave 
+    traveltime from the image point :math:`\mathbf{r}` to a receiver :math:`R`,
+    :math:`N_R` is a number of receivers, and :math:`A_R` is the observed waveform 
+    at the receiver :math:`R`.
+
+    The term 
+
+    .. math::
+            A_R^{EMO}(t,\mathbf{r}) = A_R \left(t + T_R(\mathbf{r})\right)
+
+    represents the data with the corrected event moveout.
+
+    Returns
+    -------
+    ds_im_vol : :obj:`numpy.ndarray`
+        Diffraction stack volume
+    hc : :obj:`numpy.ndarray`
+        Estimated hypocentral location
+    """
     # Get sizes
     nx, ny, nz = n_xyz
     ngrid = nx*ny*nz
@@ -66,7 +111,8 @@ def semblancediffstack(data, n_xyz, tt, dt, semwinsize=0, nforhc=10):
 
     This routine performs imaging of microseismic data by diffraction
     stacking. In practice, this approach is similar to 
-    :func:`fracspy.location.migration.diffstack` 
+    :func:`fracspy.location.migration.diffstack` and
+    :func:`fracspy.location.migration.absdiffstack`
     with the main difference that semblance is used as measure of coherency
     instead of a straight summation of the contributions over the moveout
     curves
@@ -90,7 +136,6 @@ def semblancediffstack(data, n_xyz, tt, dt, semwinsize=0, nforhc=10):
         Diffraction stack volume
     hc : :obj:`numpy.ndarray`
         Estimated hypocentral location
-
     """
     # Get sizes
     nx, ny, nz = n_xyz

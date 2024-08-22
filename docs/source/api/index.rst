@@ -40,6 +40,7 @@ Imaging/Inversion
    :toctree: generated/
 
     diffstack
+    absdiffstack
     semblancediffstack
 
 .. currentmodule:: fracspy.location.imaging

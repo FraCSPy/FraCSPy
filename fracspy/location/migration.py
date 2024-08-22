@@ -34,11 +34,38 @@ def diffstack(data, n_xyz, Op, nforhc=10):
     hc, _ = get_max_locs(migrated, n_max=nforhc, rem_edge=False)
     return migrated, hc
 
-def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
-    """Diffraction stacking for microseismic source location.
+def absdiffstack(data, n_xyz, tt, dt, nforhc=10):
+    # Get sizes
+    nx, ny, nz = n_xyz
+    ngrid = nx*ny*nz
+    nr = tt.shape[0]
+
+    # Reshape tt array
+    ttg = tt.reshape(nr, -1)
+
+    # Initialise ds image array
+    ds_im = np.zeros(ngrid)
+
+    # Find time sample shifts for all grid points
+    itshifts = np.round((ttg - ttg.min(axis=0))/dt)
+    
+    # Loop over grid points
+    for igrid in range(ngrid):
+        # Perform moveout correction for data
+        data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])
+        # Compute absolute value of the stacking
+        ds_im[igrid] = np.max(np.abs(np.sum(data_mc,axis=0)))
+
+    ds_im_vol = ds_im.reshape(nx, ny, nz)
+    
+    hc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
+    return ds_im_vol, hc
+
+def semblancediffstack(data, n_xyz, tt, dt, semwinsize=0, nforhc=10):
+    """Diffraction stacking for microseismic source location based on semblance.
 
     This routine performs imaging of microseismic data by diffraction
-    stacking . In practice, this approach is similar to 
+    stacking. In practice, this approach is similar to 
     :func:`fracspy.location.migration.diffstack` 
     with the main difference that semblance is used as measure of coherency
     instead of a straight summation of the contributions over the moveout
@@ -52,7 +79,9 @@ def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
         Number of grid points in X-, Y-, and Z-axes for the imaging area
     tt : :obj:`numpy.ndarray`
         Traveltime table of size :math`n_r \times n_x \times n_y \times n_z`
-    nforhc : :obj:`int`, optional
+    semwinsize : :obj:`int`, optional, default: 0
+        Time window size for semblance, amount of time steps
+    nforhc : :obj:`int`, optional, default: 10
         Number of points for hypocenter
 
     Returns
@@ -81,8 +110,8 @@ def semblancediffstack(data, n_xyz, tt, dt, nforhc=10):
     for igrid in range(ngrid):
         # Perform moveout correction for data
         data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])
-        # Perform semblance stack
-        ds_im[igrid] = np.max(semblance_stack(data_mc))
+        # Perform semblance-based stacking
+        ds_im[igrid] = np.max(semblance_stack(data_mc),semwinsize)
 
     ds_im_vol = ds_im.reshape(nx, ny, nz)
     

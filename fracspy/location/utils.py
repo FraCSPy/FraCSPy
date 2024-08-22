@@ -105,13 +105,15 @@ def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
 
     return data_corrected
 
-def semblance_stack(data:np.ndarray):
+def semblance_stack(data:np.ndarray, semwinsize:int=0):
     r"""Computes the semblance stack for a given input array.
 
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
         The input array with shape (nr, nt), where nr is the number of receivers and nt is the number of time samples, usually microseismic data with corrected moveout [nr, nt]
+    semwinsize : :obj:`int`, optional, default: 0
+        Time window size for semblance, amount of time steps
 
     Returns
     -------
@@ -120,8 +122,9 @@ def semblance_stack(data:np.ndarray):
 
     Description
     -----------
-    The semblance_stack function computes the semblance stack, which is a measure of the coherence or similarity between the seismic data and the noise. 
-    The semblance value at each time sample is calculated as the ratio of the numerator (the sum of squared amplitudes) to the denominator (the sum of squares of the total amplitude minus the square of the sum).
+    The semblance_stack function computes the semblance stack, which is a measure of the coherence or similarity between the seismic traces. 
+    The semblance value at each time sample is calculated as the ratio of the numerator (the squared sum of amplitudes at each trace) to the denominator 
+    (the sum of squares of amplitudes at each trace, multiplied by the number of traces).
 
     Mathematical Formula
     --------------------
@@ -131,8 +134,8 @@ def semblance_stack(data:np.ndarray):
 
     where:
 
-    numerator = Σ(data^2, axis=0)
-    denominator = nr * Σ(data^2, axis=0) - (Σ(data, axis=0))^2
+    numerator = (Σ(data, axis=0))^2
+    denominator = nr * Σ(data^2, axis=0)
     nr is the number of receivers
     
     Notes
@@ -149,31 +152,24 @@ def semblance_stack(data:np.ndarray):
     # The size of this array is determined by the number of time samples (nt)
     semblance_values = np.zeros(nt)
 
-    """
-    Compute the numerator and denominator of the semblance equation
-    The numerator is the sum of squared amplitudes, and the denominator is a function 
-    of the total amplitude and the square root of the variance.
-    """
+    if semwinsize==0:
+        # Compute the numerator of the semblance equation
+        # This is simply the sum of the squares of each data point
+        #numerator = np.sum(data ** 2, axis=0)
+        numerator = np.sum(data, axis=0) ** 2
 
-    # Compute the numerator of the semblance equation
-    # This is simply the sum of the squares of each data point
-    numerator = np.sum(data ** 2, axis=0)
+        # Compute the denominator of the semblance equation
+        # The denominator is a function of the total amplitude and the square root of the variance
+        #sum_data_squared = np.sum(data, axis=0) ** 2
+        #denominator = nr * np.sum(data ** 2, axis=0) - sum_data_squared
+        denominator = nr * np.sum(data ** 2, axis=0)
+        #denominator = nr * np.sum(data, axis=0) ** 2
 
-    # Compute the denominator of the semblance equation
-    # The denominator is a function of the total amplitude and the square root of the variance
-    sum_data_squared = np.sum(data, axis=0) ** 2
-    denominator = nr * np.sum(data ** 2, axis=0) - sum_data_squared
+        # Avoid division by zero
+        denominator[denominator == 0] = 1e-10
 
-    """
-    Check for division by zero and set any zeros to a small value (1e-10)
-    This is necessary because the denominator cannot be zero
-    """
-
-    # Avoid division by zero
-    denominator[denominator == 0] = 1e-10
-
-    # Compute the semblance values using the numerator and denominator
-    # The semblance value at each time sample is calculated as the ratio of the numerator to the denominator
-    semblance_values = numerator / denominator
+        # Compute the semblance values using the numerator and denominator
+        # The semblance value at each time sample is calculated as the ratio of the numerator to the denominator
+        semblance_values = numerator / denominator
 
     return semblance_values

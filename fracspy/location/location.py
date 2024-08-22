@@ -3,13 +3,14 @@ __all__ = [
 ]
 
 
-from fracspy.location.migration import diffstack, semblancediffstack
+from fracspy.location.migration import diffstack, absdiffstack, semblancediffstack
 from fracspy.location.imaging import lsi, sparselsi
 from fracspy.location.xcorri import xcorri
 
 
 _location_kind = {"diffstack": diffstack,
-                  "semblancediffstack": semblancediffstack,
+                  "absdiffstack": absdiffstack,
+                  "semblancediffstack": semblancediffstack,                  
                   "lsi": lsi,
                   "sparselsi": sparselsi,
                   "xcorri": xcorri,

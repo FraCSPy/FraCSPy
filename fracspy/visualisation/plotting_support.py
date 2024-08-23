@@ -180,7 +180,7 @@ def explode_volume(volume, t=None, x=None, y=None,
     fig : :obj:`matplotlib.pyplot.Figure`
         Figure handle
     axs : :obj:`matplotlib.pyplot.Axis`
-        Axes handes
+        Axes handles
     """
     if linespec is None:
         linespec = dict(ls='-', lw=1.5, color='#0DF690')

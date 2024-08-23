@@ -5,7 +5,7 @@ Diffraction Stacking Localisation - Simple scenario
 This tutorial illustrates how to perform source localisation using diffraction stacking based on semblance. 
 
 We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
-We also consider only P-waves for simplicity here.
+We also consider only P-waves for simplicity here, and single-component receivers.
 
 Traveltimes
 ^^^^^^^^^^^
@@ -139,6 +139,7 @@ from pylops.utils.wavelets import ricker
 
 # Import modelling utils
 from fracspy.modelling.kirchhoff import Kirchhoff
+from fracspy.utils.synthutils import add_noise
 
 # Import diffraction stacking utils
 from fracspy.location import Location
@@ -209,7 +210,8 @@ microseismic[sx, sy, sz] = 1.
 # Generate synthetic data
 # ^^^^^^^^^^^^^^^^^^^^^^^
 # 
-
+start_time = time()
+print("Generating synthetic data...")
 nt = 81 # number of time steps
 dt = 0.004 # time step
 f0 = 20 # Central frequency
@@ -218,6 +220,7 @@ t = np.arange(nt) * dt # time vector
 ###############################################################################
 # Create signal wavelet
 # """""""""""""""""""""
+
 wav, wavt, wavc = ricker(t[:41], f0=f0)
 
 ###############################################################################
@@ -245,18 +248,50 @@ _ = dottest(Op, verb=True)
 ###############################################################################
 # Forward modelling
 # """""""""""""""""
-
+# Apply operator to model data
 frwddata_1d = Op @ microseismic.flatten().squeeze()
 frwddata = frwddata_1d.reshape(nr,nt)
+
+# Contaminate data with white noise
+# """""""""""""""""""""""""""""""""
+
+# Fix the seed
+seed=1
+
+# Fix SNR
+snr_wn=1
+snr_sn=5
+snr_rn=2
+
+# Fix traces for ringy noise
+trind_rn = np.arange(1,nr,11)
+
+# Add white noise of defined SNR
+frwddata_wn = add_noise(frwddata,noisetype="white",snr=snr_wn,seed=seed)
+
+# Contaminate data with spiky noise
+# """""""""""""""""""""""""""""""""
+
+# Add noise spikes with twice as bigger SNR
+frwddata_sn = add_noise(frwddata,noisetype="spiky",snr=snr_sn,seed=seed)
+
+# Contaminate data with ringy noise
+# """""""""""""""""""""""""""""""""
+
+# Add ringy noise on some traces
+frwddata_rn = add_noise(frwddata,noisetype="ringy",snr=snr_rn,
+                        trind=trind_rn,seed=seed)
+
+# Show consumed time
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
 
 #%%
 
 ###############################################################################
-# Apply diffraction stacking
+# Prepare 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we apply diffraction stacking algorithm based on semblance to get the
-# image volume and determine location from the maximum of this volume.
 
 ###############################################################################
 # Define location class using grid vectors
@@ -278,62 +313,125 @@ L = Location(gx, gy, gz)
 tt = 1 / v0*dist2rec(recs,gx,gy,gz)
 print(f"Traveltime array shape: {tt.shape}")
 
+
+#%%
+
+# ###############################################################################
+# # Apply diffraction stacking to clean data
+# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# # Here we apply various diffraction stacking algorithms to clean noise-free 
+# # data, get the image volume and determine location from the maximum of this 
+# # volume.
+
+# ###############################################################################
+# # Perform absolute-value diffraction stacking
+# # """""""""""""""""""""""""""""""""""""""""""
+
+# start_time = time()
+# print("Absolute-value diffraction stacking...")
+# dstacked_abs, hc_abs = L.apply(frwddata, 
+#                       kind="absdiffstack", 
+#                       tt=tt, dt=dt, nforhc=10)
+# # One can also run it like that:
+# # dstacked, hc = fracspy.location.migration.absdiffstack(frwddata,
+# #                                                        n_xyz=[len(gx),len(gy),len(gz)], 
+# #                                                        tt=tt, 
+# #                                                        dt=dt, 
+# #                                                        nforhc=10)
+# end_time = time()
+# print(f"Computation time: {end_time - start_time} seconds")
+
+# print('True event hypocenter:', [sx, sy, sz])
+# print('Event hypocenter from absolute diffraction stacking:', hc_abs.tolist())
+# print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs.tolist())])
+
+
+# ###############################################################################
+# # Perform semblance-based diffraction stacking without sliding time window
+# # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# start_time = time()
+# print("Semblance-based diffraction stacking...")
+# # Run the stacking using Location class
+# dstacked_semb, hc_semb = L.apply(frwddata, 
+#                       kind="semblancediffstack", 
+#                       tt=tt, dt=dt, nforhc=10)
+# end_time = time()
+# print(f"Computation time: {end_time - start_time} seconds")
+
+# print('True event hypocenter:', [sx, sy, sz])
+# print('Event hypocenter from semblance-based diffraction stacking:', hc_semb.tolist())
+# print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb.tolist())])
+
+# ###############################################################################
+# # Perform semblance-based diffraction stacking with sliding time window
+# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# # Define sliding window as two periods of the signal
+swsize = int(2/f0/dt)
+# print(f"Sliding window size in samples: {swsize}")
+# start_time = time()
+# print("Semblance-based diffraction stacking...")
+# # Run the stacking using Location class
+# dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
+#                       kind="semblancediffstack", 
+#                       tt=tt, dt=dt, swsize=swsize, nforhc=10)
+# end_time = time()
+# print(f"Computation time: {end_time - start_time} seconds")
+
+# print('True event hypocenter:', [sx, sy, sz])
+# print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin.tolist())
+# print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin.tolist())])
+
+#%%
+
+###############################################################################
+# Apply diffraction stacking to noise-contaminated data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply diffraction stacking algorithms to data contaminated 
+# with noise
+
 ###############################################################################
 # Perform standard diffraction stacking (absolute values)
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 start_time = time()
 print("Absolute-value diffraction stacking...")
-dstacked_abs, hc_abs = L.apply(frwddata, 
-                      kind="absdiffstack", 
-                      tt=tt, dt=dt, nforhc=10)
-# One can also run it like that:
-# dstacked, hc = fracspy.location.migration.absdiffstack(frwddata,
-#                                                        n_xyz=[len(gx),len(gy),len(gz)], 
-#                                                        tt=tt, 
-#                                                        dt=dt, 
-#                                                        nforhc=10)
+dstacked_abs_wn, hc_abs_wn = L.apply(frwddata_wn, 
+                            kind="absdiffstack", 
+                            tt=tt, dt=dt, nforhc=10)
+dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
+                            kind="absdiffstack", 
+                            tt=tt, dt=dt, nforhc=10)
+dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
+                            kind="absdiffstack", 
+                            tt=tt, dt=dt, nforhc=10)
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
-print('True event hypocenter:', [sx, sy, sz])
-print('Event hypocenter from absolute diffraction stacking:', hc_abs.tolist())
-print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs.tolist())])
 
 
-###############################################################################
-# Perform semblance-based diffraction stacking without sliding time window
-# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-start_time = time()
-print("Semblance-based diffraction stacking...")
-# Run the stacking using Location class
-dstacked_semb, hc_semb = L.apply(frwddata, 
-                      kind="semblancediffstack", 
-                      tt=tt, dt=dt, nforhc=10)
-end_time = time()
-print(f"Computation time: {end_time - start_time} seconds")
-
-print('True event hypocenter:', [sx, sy, sz])
-print('Event hypocenter from semblance-based diffraction stacking:', hc_semb.tolist())
-print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb.tolist())])
 
 ###############################################################################
 # Perform semblance-based diffraction stacking with sliding time window
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 # Define sliding window as two periods of the signal
-swsize = int(2/f0/dt)
 print(f"Sliding window size in samples: {swsize}")
 start_time = time()
 print("Semblance-based diffraction stacking...")
-# Run the stacking using Location class
-dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
-                      kind="semblancediffstack", 
-                      tt=tt, dt=dt, swsize=swsize, nforhc=10)
+dstacked_semb_swin_wn, hc_semb_swin_wn = L.apply(frwddata_wn, 
+                                        kind="semblancediffstack", 
+                                        tt=tt, dt=dt, swsize=swsize, nforhc=10)
+dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
+                                        kind="semblancediffstack", 
+                                        tt=tt, dt=dt, swsize=swsize, nforhc=10)
+dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
+                                        kind="semblancediffstack", 
+                                        tt=tt, dt=dt, swsize=swsize, nforhc=10)
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
-print('True event hypocenter:', [sx, sy, sz])
-print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin.tolist())
-print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin.tolist())])
 
 #%%
 
@@ -344,43 +442,126 @@ print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin.tolis
 # modelled input data and receiver geometry
 
 ###############################################################################
-# Plot resulting image volume from absolute-value diffraction stacking
-# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# Plot resulting image volumes from absolute-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # The form and inclination of the location spot reflect the 
 # receiver geometry, whereas focusing is related to the selected imaging 
 # condition (absolute value):
 
-fig,axs = locimage3d(dstacked_abs, x0=sx, y0=sy, z0=sz)
+# Results of application to clean data:
+# fig,axs = locimage3d(dstacked_abs, 
+#                      title='Location with absolute-value diffraction stacking:\nclean data',
+#                      x0=sx, y0=sy, z0=sz)
+
+
+# Results of application to data contaminated with white noise:
+fig,axs = locimage3d(dstacked_abs_wn, 
+                     title=f"Location with absolute-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
+                     x0=sx, y0=sy, z0=sz)
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from absolute diffraction stacking:', hc_abs_wn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs_wn.tolist())])
+
+# Results of application to data contaminated with spiky noise:
+fig,axs = locimage3d(dstacked_abs_sn, 
+                     title=f"Location with absolute-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn}",
+                     x0=sx, y0=sy, z0=sz)
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from absolute diffraction stacking:', hc_abs_sn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs_sn.tolist())])
+
+# Results of application to data contaminated with ringy noise:
+fig,axs = locimage3d(dstacked_abs_rn, 
+                     title=f"Location with absolute-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn}",
+                     x0=sx, y0=sy, z0=sz)
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from absolute diffraction stacking:', hc_abs_rn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs_rn.tolist())])
 
 ###############################################################################
 # Plot resulting image volume from semblance-based diffraction stacking
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-fig,axs = locimage3d(dstacked_semb, x0=sx, y0=sy, z0=sz)
+
+# Results of application to clean data:
+# fig,axs = locimage3d(dstacked_semb, 
+#                      title='Location with semblance-based diffraction stacking:\nclean data',
+#                      x0=sx, y0=sy, z0=sz)
 
 ###############################################################################
 # Plot resulting image volume from semblance-based diffraction stacking
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-fig,axs = locimage3d(dstacked_semb_swin, x0=sx, y0=sy, z0=sz)
+# Involving sliding window helps to reduce the artifacts and improve focusing
+# but slightly increase the location error.
+
+# Results of application to clean data:
+# fig,axs = locimage3d(dstacked_semb_swin, 
+#                      title=f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\nclean data",
+#                      x0=sx, y0=sy, z0=sz)
+
+# Results of application to data contaminated with white noise:
+fig,axs = locimage3d(dstacked_semb_swin_wn,                     
+                     x0=sx, y0=sy, z0=sz)
+fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with white noise of SNR={snr_wn}")
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin_wn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin_wn.tolist())])
+
+# Results of application to data contaminated with spiky noise:
+fig,axs = locimage3d(dstacked_semb_swin_sn,                     
+                     x0=sx, y0=sy, z0=sz)
+fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with spiky noise of SNR={snr_sn}")
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin_sn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin_sn.tolist())])
+
+# Results of application to data contaminated with ringy noise:
+fig,axs = locimage3d(dstacked_semb_swin_sn,                     
+                     x0=sx, y0=sy, z0=sz)
+fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with ringy noise of SNR={snr_rn}")
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin_rn.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin_rn.tolist())])
 
 ###############################################################################
 # Plot modelled data
 # """"""""""""""""""
 
 fig, ax = traceimage(frwddata, climQ=99.99)
-ax.set_title('Point Receivers')
+ax.set_title('Noise-free modelled data')
 ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
 ###############################################################################
-# Plot wavelet
-# """"""""""""
+# Plot modelled data contaminated with white noise
+# """"""""""""""""""""""""""""""""""""""""""""""""
 
-fig, ax = plt.subplots(1, 1)
-ax.plot(wav)
-ax.set_xlabel('Time steps')
-ax.set_ylabel('Amplitude')
+fig, ax = traceimage(frwddata_wn, climQ=99.99)
+ax.set_title(f"Modelled data contaminated with white noise of SNR={snr_wn}")
+ax.set_ylabel('Time steps')
+fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
+
+###############################################################################
+# Plot modelled data contaminated with spiky noise
+# """"""""""""""""""""""""""""""""""""""""""""""""
+
+fig, ax = traceimage(frwddata_sn, climQ=99.99)
+ax.set_title(f"Modelled data contaminated with spiky noise of SNR={snr_sn}")
+ax.set_ylabel('Time steps')
+fig = ax.get_figure()
+fig.set_size_inches(10, 3)  # set size in inches
+
+###############################################################################
+# Plot modelled data contaminated with ringy noise
+# """"""""""""""""""""""""""""""""""""""""""""""""
+
+fig, ax = traceimage(frwddata_rn, climQ=99.99)
+ax.set_title(f"Modelled data contaminated with ringy noise of SNR={snr_rn}")
+ax.set_ylabel('Time steps')
+fig = ax.get_figure()
+fig.set_size_inches(10, 3)  # set size in inches
+
 
 ###############################################################################
 # Plot receiver geometry

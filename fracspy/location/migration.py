@@ -110,21 +110,20 @@ def semblancediffstack(data, n_xyz, tt, dt, swsize=0, nforhc=10):
     """Diffraction stacking for microseismic source location based on semblance.
 
     This routine performs imaging of microseismic data by diffraction
-    stacking. In practice, this approach is similar to 
-    :func:`fracspy.location.migration.diffstack` and
+    stacking. In practice, this approach is similar to     
     :func:`fracspy.location.migration.absdiffstack`
     with the main difference that semblance is used as measure of coherency
-    instead of a straight summation of the contributions over the moveout
+    instead of a straight summation of the amplitudes over the moveout
     curves
 
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
-        Data of shape :math`n_r \times n_t`
+        Data of shape :math:`n_r \times n_t`
     n_xyz : :obj:`tuple`
         Number of grid points in X-, Y-, and Z-axes for the imaging area
     tt : :obj:`numpy.ndarray`
-        Traveltime table of size :math`n_r \times n_x \times n_y \times n_z`
+        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`
     swsize : :obj:`int`, optional, default: 0
         Sliding time window size for semblance, amount of time steps
     nforhc : :obj:`int`, optional, default: 10
@@ -136,7 +135,7 @@ def semblancediffstack(data, n_xyz, tt, dt, swsize=0, nforhc=10):
         Diffraction stack volume
     hc : :obj:`numpy.ndarray`
         Estimated hypocentral location
-        
+
     """
     # Get sizes
     nx, ny, nz = n_xyz

@@ -2,11 +2,9 @@ r"""
 
 Diffraction Stacking Localisation - Simple scenario
 ===================================================
-This tutorial illustrates how to perform source localisation using 
-diffraction stacking based on semblance. 
+This tutorial illustrates how to perform source localisation using diffraction stacking based on semblance. 
 
-We consider here a simple scenario of a homogeneous subsurface model and 
-a point microseismic source with a uniform radiation pattern (explosion-like).
+We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
 We also consider only P-waves for simplicity here.
 
 Traveltimes
@@ -16,46 +14,37 @@ In a homogeneous medium traveltimes are computed analytically as
 .. math::
         t(\mathbf{x_r},\mathbf{x_s}) = \frac{d(\mathbf{x_r},\mathbf{x_s})}{v}
 
-where :math:`d(\mathbf{x_r},\mathbf{x_s})` is the distance between a source 
-at :math:`\mathbf{x_s}` and a receiver at :math:`\mathbf{x_r}`, and 
-:math:`v` is medium wave velocity (e.g. P-wave velocity :math:`v_p`).
+where :math:`d(\mathbf{x_r},\mathbf{x_s})` is the distance between a source at 
+:math:`\mathbf{x_s}` and a receiver at :math:`\mathbf{x_r}`, 
+and :math:`v` is medium wave velocity (e.g. P-wave velocity :math:`v_p`).
 
 Waveforms
 ^^^^^^^^^
-The input data waveforms are computed with the help of PyLops operator which
-involves finite-difference (FD) modelling.
+The input data waveforms are computed with the help of PyLops operator which involves finite-difference (FD) modelling.
 
-See more:
+See more information here:
 https://pylops.readthedocs.io
 
 Diffraction stacking
 ^^^^^^^^^^^^^^^^^^^^
-The subsurface volume is discretised and each grid node is considered to be a
-potential source position or a so-called image point.
-In other words, each image point represents a possible diffraction point from 
-which seismic energy radiates. The term ‘diffraction stacking’ dates back to 
-the works of Claerbout (1971, 1985) and Timoshin (1972). 
-The concept was initially related to seismic migration and imaging of 
-reflectors as a set of diffraction points (in the context of the exploding 
-reflector principle). Here, the diffraction stacking is related to imaging of 
-real excitation sources.
+The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
+In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
+The term ‘diffraction stacking’ dates back to the works of Claerbout (1971, 1985) and Timoshin (1972). 
+The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
+Here, the diffraction stacking is related to imaging of real excitation sources.
 
-Waveforms from all traces are stacked along the calculated moveouts. In other 
-words, one should apply event moveout (EMO) correction 
-(e.g., Trojanowski and Eisner, 2016) to microseismic data and stack the traces.
-As the source origin time of a seismic event is unknown, in order to get the 
-image function value :math:`F(\mathbf{r},t)`, the stacking must be 
-performed for all possible origin times :math:`t`:   
+Waveforms from all traces are stacked along the calculated moveouts. 
+In other words, one should apply event moveout (EMO) correction (e.g., Trojanowski and Eisner, 2016) to microseismic data and stack the traces.
+As the source origin time of a seismic event is unknown, in order to get the image function value :math:`F(\mathbf{r},t)`, the stacking must be performed for all possible origin times :math:`t`:   
     
 .. math::
         F(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} A_R 
         \left(t + T_R(\mathbf{r})\right)\right|,
 
-where :math:`\mathbf{r}` is a vector that defines a spatial position 
-:math:`(x, y, z)` of the image point, :math:`T_R(\mathbf{r})` is the P-wave 
-traveltime from the image point :math:`\mathbf{r}` to a receiver :math:`R`,
-:math:`N_R` is a number of receivers, and :math:`A_R` is the observed waveform 
-at the receiver :math:`R` (e.g., Anikiev, 2015).
+where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, 
+:math:`T_R(\mathbf{r})` is the P-wave traveltime from the image point :math:`\mathbf{r}` to a receiver :math:`R`,
+:math:`N_R` is a number of receivers, and :math:`A_R` is the observed waveform at the receiver :math:`R` (e.g., Anikiev, 2015).
+
 The term 
 
 .. math::
@@ -63,68 +52,47 @@ The term
 
 represents the EMO-corrected data.
 
-An absolute value of the stack of the EMO-corrected data is used in order to 
-treat equally positive and negative phases of the stacked amplitudes and let 
-the positive maximum of the resulting image function :math:`\mathbf{F}_0(\mathbf{r},t)`
-work as an indicator of a correct location and origin time of an event
-(Anikiev et al. 2014).
+An absolute value of the stack of the EMO-corrected data is used in order to treat equally positive and negative phases of the stacked amplitudes 
+and let the positive maximum of the resulting 4D image function  :math:`\mathbf{F}_0(\mathbf{r},t)` work as an indicator of a correct location 
+and origin time of an event (Anikiev et al. 2014).
 
-Computation of :math:`F(\mathbf{r},t)` is implemented in 
-:py:class:`fracspy.location.migration.absdiffstack`.
+Computation of :math:`F(\mathbf{r},t)` is implemented in :py:class:`fracspy.location.migration.absdiffstack`.
 
-However, simple stacking of the absolute values to get 
-:math:`\mathbf{F}(\mathbf{r},t)` can be further improved.
+However, simple stacking of the absolute values to get :math:`\mathbf{F}(\mathbf{r},t)` can be further improved, e.g., using a semblance-based approach. 
+The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
+to the energy of indivudal traces (the sum of squares) (Neidell and Taner, 1971).
 
-ONe possible way is to use a semblance-based approach. 
-The semblance is a coherency or similarity measure 
-and can be understood as the ratio of the total energy (the square of sum of 
-amplitudes) to the energy of indivudal traces (the sum of squares) 
-(Neidell and Taner, 1971).
-
-For the EMO-corrected data, for image point :math:`\mathbf{r}` and a given time
-step :math:`t` the semblance-based image function :math:`S(\mathbf{r},t)` 
-can be calculated by:
+For the EMO-corrected data, for image point :math:`\mathbf{r}` and a given time step :math:`t` the semblance-based image function :math:`S(\mathbf{r},t)` can be calculated by:
         
 .. math::
         S(\mathbf{r},t) = \frac{\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
         {N_R \sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}    
 
-The main advantage of the semblance-based imaging is its ability to identify 
-and suppress high stack values that result from high noise on only a few 
-receivers, which is a common problem for surface monitoring 
-(Trojanowski and Eisner, 2016). The semblance reaches its maximum value of 1 
-for identical signals on all traces and the minimum value of 0 for a zero sum 
-of the samples. High stacks resulting from high noise on individual receivers
-have a low semblance value and in contrast to microseismic events that have 
-consistent amplitude arrivals across the array (provided that EMO correction is 
-done with a suitable velocity model).
+The main advantage of the semblance-based imaging is its ability to identify and suppress high stack values that result from high noise on only a few receivers, 
+which is a common problem for surface monitoring (Trojanowski and Eisner, 2016). 
+The semblance reaches its maximum value of 1 for identical signals on all traces and the minimum value of 0 for a zero sum of the samples. 
+High stacks resulting from high noise on individual receivers have a low semblance value and in contrast to microseismic events 
+that have consistent amplitude arrivals across the array (provided that EMO correction is done with a suitable velocity model).
 
 In order to suppress the effect of noise even better, it is possible to extend 
-the semblance-based approach by introducing the time window :math:`W` over 
-which the energy measures are summed:
+the semblance-based approach by introducing a sliding time window :math:`W` over which the energy measures are summed:
 
 .. math::
-        S_w(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
+        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
         {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}
 
-where :math:`k` an index of the time-discretised signal within a time interval 
-consisting of the :math:`2W + 1` samples and :math:`it` is the index of time 
-:math:`t` (Trojanowski and Eisner, 2016).
+where :math:`k` an index of the time-discretised signal within a sliding time interval 
+consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` (Trojanowski and Eisner, 2016).
 
-Both approaches - computation of :math:`S(\mathbf{r},t)` 
-and :math:`S_w(\mathbf{r},t,W)` - are implemented in 
-:py:class:`fracspy.location.migration.semblancediffstack`.
+Both approaches - computation of :math:`S(\mathbf{r},t)` and :math:`S_w(\mathbf{r},t,W)` - 
+are implemented in :py:class:`fracspy.location.migration.semblancediffstack`.
 
-Note that neither of the approaches described here take into account the 
-potential polarity changes of the signal.
-Therefore, seismograms generated by shear source mechanisms (with positive and 
-negative P-wave and S-wave polarizations) cause these methods to fail to 
-produce high stack values at the true origin time and location because of the 
-destructive interference of the signal (e.g. Anikiev et al., 2014, 
-Trojanowski and Eisner, 2016).
+Note that neither of the approaches described here take into account the potential polarity changes of the signal.
+Therefore, seismograms generated by shear source mechanisms (with positive and negative P-wave and S-wave polarizations) 
+cause these methods to fail to produce high stack values at the true origin time 
+and location because of the destructive interference of the signal (e.g. Anikiev et al., 2014, Trojanowski and Eisner, 2016).
 
-We discuss stacking with polarity correction in 
-:ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
+We discuss stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
 
 
 References
@@ -311,31 +279,61 @@ tt = 1 / v0*dist2rec(recs,gx,gy,gz)
 print(f"Traveltime array shape: {tt.shape}")
 
 ###############################################################################
-# Perform standard semblance-based diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""
+# Perform standard diffraction stacking (absolute values)
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""
 start_time = time()
-print("Diffraction stacking...")
-# Run the stacking using Location class
-# dstacked, hc = L.apply(frwddata, 
-#                       kind="semblancediffstack", 
-#                       tt=tt, dt=dt, nforhc=10)
-dstacked, hc = L.apply(frwddata, 
+print("Absolute-value diffraction stacking...")
+dstacked_abs, hc_abs = L.apply(frwddata, 
                       kind="absdiffstack", 
                       tt=tt, dt=dt, nforhc=10)
-
 # One can also run it like that:
-# dstacked, hc = fracspy.location.migration.semblancediffstack(frwddata,
-#                                                              n_xyz=[len(gx),len(gy),len(gz)], 
-#                                                              tt=tt, 
-#                                                              dt=dt, 
-#                                                              nforhc=10)
-
+# dstacked, hc = fracspy.location.migration.absdiffstack(frwddata,
+#                                                        n_xyz=[len(gx),len(gy),len(gz)], 
+#                                                        tt=tt, 
+#                                                        dt=dt, 
+#                                                        nforhc=10)
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
 print('True event hypocenter:', [sx, sy, sz])
-print('Event hypocenter from diffraction stacking:', hc.tolist())
-print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc.tolist())])
+print('Event hypocenter from absolute diffraction stacking:', hc_abs.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_abs.tolist())])
+
+
+###############################################################################
+# Perform semblance-based diffraction stacking without sliding time window
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+start_time = time()
+print("Semblance-based diffraction stacking...")
+# Run the stacking using Location class
+dstacked_semb, hc_semb = L.apply(frwddata, 
+                      kind="semblancediffstack", 
+                      tt=tt, dt=dt, nforhc=10)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from semblance-based diffraction stacking:', hc_semb.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb.tolist())])
+
+###############################################################################
+# Perform semblance-based diffraction stacking with sliding time window
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# Define sliding window as two periods of the signal
+swsize = int(2/f0/dt)
+print(f"Sliding window size in samples: {swsize}")
+start_time = time()
+print("Semblance-based diffraction stacking...")
+# Run the stacking using Location class
+dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
+                      kind="semblancediffstack", 
+                      tt=tt, dt=dt, swsize=swsize, nforhc=10)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+print('True event hypocenter:', [sx, sy, sz])
+print('Event hypocenter from semblance-based diffraction stacking:', hc_semb_swin.tolist())
+print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc_semb_swin.tolist())])
 
 #%%
 
@@ -346,10 +344,23 @@ print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc.tolist())])
 # modelled input data and receiver geometry
 
 ###############################################################################
-# Plot resulting image volume
-# """""""""""""""""""""""""""
+# Plot resulting image volume from absolute-value diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# The form and inclination of the location spot reflect the 
+# receiver geometry, whereas focusing is related to the selected imaging 
+# condition (absolute value):
 
-fig,axs = locimage3d(dstacked, x0=sx, y0=sy, z0=sz)
+fig,axs = locimage3d(dstacked_abs, x0=sx, y0=sy, z0=sz)
+
+###############################################################################
+# Plot resulting image volume from semblance-based diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+fig,axs = locimage3d(dstacked_semb, x0=sx, y0=sy, z0=sz)
+
+###############################################################################
+# Plot resulting image volume from semblance-based diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+fig,axs = locimage3d(dstacked_semb_swin, x0=sx, y0=sy, z0=sz)
 
 ###############################################################################
 # Plot modelled data
@@ -373,7 +384,7 @@ fig.set_size_inches(10, 3)  # set size in inches
 
 ###############################################################################
 # Plot receiver geometry
-# ^^^^^^^^^^^^^^^^^^^^^^
+# """"""""""""""""""""""
 
 fig, ax = plt.subplots(1, 1)
 fig.set_size_inches(8, 8)  # set size in inches

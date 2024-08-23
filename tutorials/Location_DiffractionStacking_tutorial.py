@@ -260,8 +260,8 @@ seed=1
 
 # Fix SNR
 snr_wn=1
-snr_sn=5
-snr_rn=2
+snr_sn=1/100
+snr_rn=1/100
 
 # Fix traces for ringy noise
 trind_rn = np.arange(1,nr,11)

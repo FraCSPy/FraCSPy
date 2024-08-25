@@ -76,7 +76,7 @@ def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=Non
     elif noisetype == "spiky":
         # Generate spiky noise
         for trace in trind:
-            num_spikes = np.random.randint(1, 10)  # Random number of spikes
+            num_spikes = np.random.randint(1, 5)  # Random number of spikes
             spike_positions = np.random.choice(nt, num_spikes, replace=False)
             noise[trace, spike_positions] = noise_max * np.random.uniform(-1, 1, num_spikes)
     

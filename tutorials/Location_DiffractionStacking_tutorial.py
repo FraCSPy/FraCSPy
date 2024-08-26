@@ -345,8 +345,6 @@ ax.legend(['Receivers', 'Source'],loc='upper right')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 
-
-
 #%%
 
 ###############################################################################
@@ -376,16 +374,16 @@ print(f"Traveltime array shape: {tt.shape}")
 
 #%%
 
-# ###############################################################################
-# # Apply diffraction stacking to clean data
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we apply various diffraction stacking algorithms to clean noise-free 
-# # data, get the image volume and determine location from the maximum of this 
-# # volume.
+###############################################################################
+# Apply diffraction stacking to clean data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply various diffraction stacking algorithms to clean noise-free 
+# data, get the image volume and determine location from the maximum of this 
+# volume.
 
-# ###############################################################################
-# # Perform absolute-value diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Perform absolute-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Absolute-value diffraction stacking...")
@@ -401,9 +399,9 @@ dstacked_abs, hc_abs = L.apply(frwddata,
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
-# ###############################################################################
-# # Perform semblance-based diffraction stacking without sliding time window
-# # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Perform semblance-based diffraction stacking without sliding time window
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Semblance-based diffraction stacking...")
@@ -414,9 +412,9 @@ dstacked_semb, hc_semb = L.apply(frwddata,
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
-# ###############################################################################
-# # Perform semblance-based diffraction stacking with sliding time window
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Perform semblance-based diffraction stacking with sliding time window
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # # Define sliding window as two periods of the signal
 swsize = int(2/f0/dt)
@@ -481,10 +479,9 @@ print(f"Computation time: {end_time - start_time} seconds")
 #%%
 
 ###############################################################################
-# Visualisation of results and data
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we visualise the slices of the resulting image volume as well as 
-# modelled input data and receiver geometry
+# Visualisation of results
+# ^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the slices of the resulting image volume
 
 ###############################################################################
 # Plot resulting image volumes from absolute-value diffraction stacking

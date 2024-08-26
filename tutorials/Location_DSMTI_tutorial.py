@@ -55,227 +55,215 @@ and detection methods for microseismic events. Geophysical Prospecting, 65(1),
 47–63. https://doi.org/10.1111/1365-2478.12366
 """
 
-# #%%
+#%%
+
+###############################################################################
+# Load all necessary packages
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+import os
+import fracspy
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Import modelling utils
+from fracspy.modelling.kirchhoff import Kirchhoff
+
+# Import data utils
+from fracspy.utils.sofiutils import read_seis
+
+# Import diffraction stacking utils
+from fracspy.location import Location
+
+# Import visualisation utils
+from fracspy.visualisation.traceviz import traceimage
+from fracspy.visualisation.eventimages import locimage3d
+
+
+# Deal with warnings (for a cleaner code)
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+# Track computation time
+from time import time
+
+
+#%%
+###############################################################################
+# Load model and seismic data
+# ---------------------------
+# For this example, we will use a toy example of a small homogenous model with a gridded surface receiver
+# array, same as in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
+#The data are modelled using the SOFI3D Finite Difference package.
+
+# Directory containing input data
+input_dir = '../data/pyfrac_SOFIModelling'
+
+# Loading the model
+abs_bounds = 30
+dx = dy = dz = 5
+mnx = 112
+mny = 128
+mnz = 120
+
+# Load source parameters
+source = np.loadtxt(os.path.join(input_dir,'inputs/centralsource.dat')).T
+sf = source[3] # source frequency
+
+# Modelling parameters
+dt = 1e-3  # SOFI3D Time sampling rate
+t_shift = 160  # Time shift required to align FD data to zero
+tdur = 500  # Recording duration
+
+# Load model
+mod_w_bounds = np.fromfile(os.path.join(input_dir,'inputs',
+                                        'models',
+                                        'Homogeneous_xyz.vp'),
+                           dtype='float32').reshape([mnx, mny, mnz])
+
+# Get velocity assuming it is homogeneous (to speed up traveltimes computations)
+vp = float(mod_w_bounds[0][0][0])
+
+# Load receiver geometry
+recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs/griddedarray_xzy_20m.dat')).T
+#recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs/walkaway8arms_xzy.dat')).T
+nr = recs_xzy.shape[1]
+
+# Load seismic data
+#expname = 'MT-90-90-180_Homogeneous_griddedarray'
+expname = 'explosive_Homogeneous_griddedarray'
+# expname = 'MT-90-90-180_Homogeneous_walkaway8arms'
+data_vz = read_seis(os.path.join(input_dir, 'outputs','su', f'{expname}_vy.txt'),
+                    nr=nr)
+
+# Define scaler and make data more friendly
+efd_scaler = np.max(abs(data_vz)) 
+data_vz = data_vz[:, t_shift: t_shift + tdur] * efd_scaler
+
+# Remove absorbing boundaries from the model, source and receiver coordinates
+mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
+nx, ny, nz = mod.shape
+x, y, z = np.arange(nx) * dx, np.arange(ny) * dy, np.arange(nz) * dz
+sx, sy, sz = source[0]-(abs_bounds*dx), source[2]-(abs_bounds*dy), source[1] 
+recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dy), recs_xzy[1]])
+# Get indices of source
+isx, isy, isz = int(sx/dx), int(sy/dy), int(sz/dz)
+
+
+###############################################################################
+# Plot input data
+# ^^^^^^^^^^^^^^^
+# Let's now double-check that the data has been loaded correctly. Observe the
+# changes in polarity across the  traces; this is the information that we utilise
+# to determine the Moment Tensor.
+
+fig, ax = traceimage(data_vz, climQ=99.99, figsize=(10, 4))
+ax.set_title('SOFI FD data - Vertical Component')
+plt.tight_layout()
+
+
+###############################################################################
+# Plot source location and receiver geometry
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+fig, ax = plt.subplots(1, 1)
+fig.set_size_inches(8, 8)  # set size in inches
+ax.set_aspect('equal')
+ax.scatter(recs[0],recs[1])
+ax.scatter(sx,sy, marker='*')
+ax.set_title('Receiver Geometry: map view')
+ax.legend(['Receivers', 'Source'],loc='upper right')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+
+#%%
+
+###############################################################################
+# Prepare for location
+# ^^^^^^^^^^^^^^^^^^^^
+
+###############################################################################
+# Define location class using grid vectors
+# """"""""""""""""""""""""""""""""""""""""
+# Use the original velocity model grid for location (the grid can be different)
+
+gx = x
+gy = y
+gz = z
+
+# Set up the location class
+
+L = Location(gx, gy, gz)
+
+###############################################################################
+# Prepare traveltimes
+# """""""""""""""""""
+from fracspy.location.utils import dist2rec
+tt = 1 / vp*dist2rec(recs,gx,gy,gz)
+print(f"Traveltime array shape: {tt.shape}")
+
 
 # ###############################################################################
-# # Load all necessary packages
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-# import numpy as np
-# import matplotlib.pyplot as plt
-
-# from pylops.utils import dottest
-# from pylops.utils.wavelets import ricker
-
-# # Import modelling utils
-# from fracspy.modelling.kirchhoff import Kirchhoff
-
-# # Import diffraction stacking utils
-# from fracspy.location import Location
-# from fracspy.location.utils import dist2rec
-
-# # Import visualisation utils
-# from fracspy.visualisation.traceviz import traceimage
-# from fracspy.visualisation.eventimages import locimage3d
-
-# # Deal with warnings (for a cleaner code)
-# import warnings
-# warnings.filterwarnings("ignore", category=FutureWarning)
-# warnings.filterwarnings("ignore", category=UserWarning)
-
-# # Track computation time
-# from time import time 
-
-# #%%
-
-# ###############################################################################
-# # Setup
-# # ^^^^^
-# # Here we setup the parameters of the velocity model, geometry of receivers and 
-# # microseismic source for forward modelling
-
-# ###############################################################################
-# # Velocity Model
-# # """"""""""""""
-
-# nx, ny, nz = 50, 50, 50
-# dx, dy, dz = 4, 4, 4
-# x, y, z = np.arange(nx)*dx, np.arange(ny)*dy, np.arange(nz)*dz
-
-# v0 = 1000 # initial velocity
-# vel = np.ones([nx,ny,nz])*v0
-
-# print(f"Velocity model shape: {vel.shape}")
-
-# ###############################################################################
-# # Receivers
-# # """""""""
-
-# dr_xyz = 4*dx
-
-# grid_rx_locs = np.arange(dx, (dx*nx)-dx, dr_xyz)
-# grid_ry_locs = np.arange(dy, (dy*ny)-dy, dr_xyz)
-
-# rx, ry, rz = np.meshgrid(grid_rx_locs,
-#                          grid_ry_locs,
-#                          dz) 
-# recs = np.vstack((rx.flatten(), ry.flatten(), rz.flatten()))
-# nr = recs.shape[1]
-
-# print(f"Receiver array shape: {recs.shape}")
-
-# ###############################################################################
-# # Microseismic sources
-# # """"""""""""""""""""
-
-# sx, sy, sz = [nx//4, ny//2, nz//2]
-# microseismic = np.zeros((nx, ny, nz))
-# microseismic[sx, sy, sz] = 1.
-
-
-# #%%
-
-# ###############################################################################
-# # Generate synthetic data
-# # ^^^^^^^^^^^^^^^^^^^^^^^
-# # 
-
-# nt = 81 # number of time steps
-# dt = 0.004 # time step
-# f0 = 20 # Central frequency
-# t = np.arange(nt) * dt # time vector
-
-# ###############################################################################
-# # Create signal wavelet
-# # """""""""""""""""""""
-# wav, wavt, wavc = ricker(t[:41], f0=f0)
-
-# ###############################################################################
-# # Initialise operator
+# # Compute traveltimes
 # # """""""""""""""""""
+# # We can now model the traveltimes from the grid points to each of the receivers
+# # Here, unlike :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py, 
+# # we use :py:class:`fracspy.modelling.kirchhoff.Kirchhoff._traveltime_table` 
+# # function to compute traveltimes analytically
 
-# Op = Kirchhoff(z=z, 
-#                x=x, 
-#                y=y, 
-#                t=t, 
-#                recs=recs, 
-#                vel=vel, 
-#                wav=wav, 
-#                wavcenter=wavc, 
-#                mode='eikonal', 
-#                engine='numba')
-
-# ###############################################################################
-# # Check operator with dottest
-# # """""""""""""""""""""""""""
-# # This test can help to detect errors in the operator implementation.
-
-# _ = dottest(Op, verb=True)
-
-# ###############################################################################
-# # Forward modelling
-# # """""""""""""""""
-
-# frwddata_1d = Op @ microseismic.flatten().squeeze()
-# frwddata = frwddata_1d.reshape(nr,nt)
-
-
-# #%%
-
-# ###############################################################################
-# # Apply diffraction stacking
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we apply diffraction stacking algorithm based on semblance to get the
-# # image volume and determine location from the maximum of this volume.
-
-# ###############################################################################
-# # Define location class using grid vectors
-# # """"""""""""""""""""""""""""""""""""""""
-# # Use the original velocity model grid for location (the grid can be different)
-
-# gx = x
-# gy = y
-# gz = z
-
-# # Set up the location class
-
-# L = Location(gx, gy, gz)
-
-# ###############################################################################
-# # Prepare traveltimes
-# # """""""""""""""""""
-
-# tt = 1 / v0*dist2rec(recs,gx,gy,gz)
-# print(f"Traveltime array shape: {tt.shape}")
-
-# ###############################################################################
-# # Perform standard semblance-based diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""
 # start_time = time()
-# print("Diffraction stacking...")
-# # Run the stacking using Location class
-# dstacked, hc = L.apply(frwddata, 
-#                       kind="semblancediffstack", 
-#                       tt=tt, dt=dt, nforhc=10)
-
-# # One can also run it like that:
-# # dstacked, hc = fracspy.location.migration.semblancediffstack(frwddata,
-# #                                                              n_xyz=[len(gx),len(gy),len(gz)], 
-# #                                                              tt=tt, 
-# #                                                              dt=dt, 
-# #                                                              nforhc=10)
-
+# print("Computing traveltimes...")
+# # Traveltime table
+# tt = Kirchhoff._traveltime_table(z=gz,
+#                                  x=gx,
+#                                  y=gy,
+#                                  recs=recs,
+#                                  vel=vp,
+#                                  mode='analytic')
+# tt = tt.reshape(nx,ny,nz,nr).transpose([3,0,1,2])
+# # Show consumed time
 # end_time = time()
 # print(f"Computation time: {end_time - start_time} seconds")
+# print(tt.shape)
 
-# print('True event hypocenter:', [sx, sy, sz])
-# print('Event hypocenter from diffraction stacking:', hc.tolist())
-# print('Location error:', [x - y for x, y in zip([sx, sy, sz], hc.tolist())])
+#%%
 
-# #%%
+###############################################################################
+# Apply diffraction stacking to clean data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply various diffraction stacking algorithms to clean noise-free 
+# data, get the image volume and determine location from the maximum of this 
+# volume.
 
-# ###############################################################################
-# # Visualisation of results and data
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we visualise the slices of the resulting image volume as well as 
-# # modelled input data and receiver geometry
+###############################################################################
+# Perform absolute-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""
 
-# ###############################################################################
-# # Plot resulting image volume
-# # """""""""""""""""""""""""""
+start_time = time()
+print("Absolute-value diffraction stacking...")
+dstacked_abs, hc_abs = L.apply(data_vz,
+                               kind="absdiffstack",
+                               tt=tt, dt=dt, nforhc=10)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
-# fig,axs = locimage3d(dstacked, x0=sx, y0=sy, z0=sz)
 
-# ###############################################################################
-# # Plot modelled data
-# # """"""""""""""""""
+#%%
 
-# fig, ax = traceimage(frwddata, climQ=99.99)
-# ax.set_title('Point Receivers')
-# ax.set_ylabel('Time steps')
-# fig = ax.get_figure()
-# fig.set_size_inches(10, 3)  # set size in inches
+###############################################################################
+# Visualisation of results
+# ^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the slices of the resulting image volume
 
-# ###############################################################################
-# # Plot wavelet
-# # """"""""""""
+###############################################################################
+# Plot resulting image volumes from absolute-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# fig, ax = plt.subplots(1, 1)
-# ax.plot(wav)
-# ax.set_xlabel('Time steps')
-# ax.set_ylabel('Amplitude')
-# fig.set_size_inches(10, 3)  # set size in inches
-
-# ###############################################################################
-# # Plot receiver geometry
-# # ^^^^^^^^^^^^^^^^^^^^^^
-
-# fig, ax = plt.subplots(1, 1)
-# fig.set_size_inches(8, 8)  # set size in inches
-# ax.set_aspect('equal')
-# ax.scatter(recs[0],recs[1])
-# ax.scatter(sx*dx,sy*dy, marker='*')
-# ax.set_title('Receiver Geometry: map view')
-# ax.legend(['Receivers', 'Source'],loc='upper right')
-# ax.set_xlabel('x')
-# ax.set_ylabel('y')
+# Results of application to clean data:
+fig,axs = locimage3d(dstacked_abs,
+                      title='Location with absolute-value diffraction stacking:\nclean data',
+                      x0=isx, y0=isy, z0=isz)
+print('True event hypocenter:', [isx, isy, isz])
+print('Event hypocenter from absolute diffraction stacking:', hc_abs.tolist())
+print('Location error:', [x - y for x, y in zip([isx, isy, isz], hc_abs.tolist())])

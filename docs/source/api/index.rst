@@ -30,7 +30,6 @@ Modelling
 
     TAKirchhoff
 
-
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
 
@@ -68,6 +67,13 @@ Imaging/Inversion
 
 Utilities
 ~~~~~~~~~
+
+.. currentmodule:: fracspy.utils.synthutils
+
+.. autosummary::
+   :toctree: generated/
+
+    add_noise
 
 .. currentmodule:: fracspy.location.utils
 

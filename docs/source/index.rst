@@ -46,3 +46,10 @@ benchmarking purposes posed a key challenge for junior researchers.
    :caption: Reference documentation
 
    api/index.rst
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Getting involved
+
+   Credits <credits.rst>

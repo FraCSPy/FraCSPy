@@ -1,4 +1,4 @@
-name: PyFrac
+name: Build and test FraCSPy
 
 on: [push, pull_request]
 

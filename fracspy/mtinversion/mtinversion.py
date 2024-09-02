@@ -65,7 +65,7 @@ class MTInversion():
             Amplitude data of size :math`n_r`
         src_idx : :obj:`numpy.ndarray`
             Source location indices (relative to x, y, and z axes)
-        comp_idx : :obj:`int`
+        cmp_idx : :obj:`int`
             Index of component at receiver side
         omega_p : :obj:`float`
             Central frequency of source

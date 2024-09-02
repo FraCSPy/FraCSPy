@@ -170,9 +170,6 @@ plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
 plt.scatter(range(nr), source_times, marker='o', facecolors='none', edgecolors='k', s=5)
 plt.tight_layout()
 
-plt.figure()
-plt.plot(vz_amps, 'k')
-
 ###############################################################################
 # Moment Tensor Inversion
 # -----------------------
@@ -180,6 +177,7 @@ plt.plot(vz_amps, 'k')
 
 MT = fracspy.mtinversion.MTInversion(x, y, z, recs, mod)
 mt_est = MT.apply(vz_amps, sloc_ind, 2, omega_p, kind="ai")
+mt_est /= np.max(abs(mt_est))
 
 # Comparison with known MT
 mt = np.array([0, 0, 0, 1, 0, 0])

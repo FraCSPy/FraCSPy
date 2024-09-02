@@ -124,3 +124,13 @@ Utilities
     pwave_greens_comp
     mt_pwave_greens_comp
     mt_pwave_greens_multicomp
+
+
+.. currentmodule:: fracspy.mtinversion.utils
+
+.. autosummary::
+   :toctree: generated/
+
+    get_mt_at_loc
+    get_mt_max_locs
+    get_magnitude

@@ -1,6 +1,6 @@
 r"""
 Waveform-based Moment Tensor Inversion - Multicomponent
-========================================================
+=======================================================
 This is a follow-up of the Amplitude-based Moment Tensor Inversion tutorial. In this tutorial, we will extend the
 MT inversion algorithm to work directly with waveforms instead of picked amplitudes. By avoiding any picking,
 this method can determine the moment tensor of a microseismic source when the source location is not known a-prior.
@@ -40,16 +40,15 @@ To summarize, we will apply the following workflow:
 """
 
 import os
+import numpy as np
 import matplotlib.pyplot as plt
 
 import fracspy
 
 from pylops.utils.wavelets import ricker
 from fracspy.utils.sofiutils import read_seis
-from fracspy.modelling.kirchhoff import Kirchhoff
-from fracspy.mtsolvers.mtwi import *
-from fracspy.mtsolvers.homo_mti import collect_source_angles, multicomp_Greens_Pwave
-from fracspy.mtsolvers.mtutils import get_mt_computation_dict, get_mt_at_loc, expected_sloc_from_mtwi
+from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
+from fracspy.mtinversion.mtwi import *
 
 
 ###############################################################################
@@ -88,18 +87,22 @@ recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs',
                                    'griddedarray_xzy_20m.dat')).T
 nr = recs_xzy.shape[1]
 
-
 # Load seismic data (note that Vz is Vy given the SOFI convention)
 expname = 'MT-90-90-180_Homogeneous_griddedarray'
 
 vx = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vx.txt' % expname), nr=nr)
 vy = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vz.txt' % expname), nr=nr)
 vz = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vy.txt' % expname), nr=nr)
+vx = vx[:,t_shift:t_shift+tdur]
+vy = vy[:,t_shift:t_shift+tdur]
+vz = vz[:,t_shift:t_shift+tdur]
 
-efd_scaler = np.max(abs(vz))    # Scaler to make data more friendly
-vx = vx[:, t_shift:t_shift + tdur] / efd_scaler
-vy = vy[:, t_shift:t_shift + tdur] / efd_scaler
-vz = vz[:, t_shift:t_shift + tdur] / efd_scaler
+# Scale data to the maximum of vz
+efd_scaler = np.max(abs(vz))
+vx = vx / efd_scaler
+vy = vy / efd_scaler
+vz = vz / efd_scaler
+FD_data = np.array([vx, vy, vz])
 
 # Combine into a single array
 FD_data = np.array([vx, vy, vz])
@@ -128,9 +131,10 @@ plt.tight_layout()
 # peak frequency of 20Hz. This is the same wavelet that we used in modelling;
 # in real applications, this will need to be estimated from the data.
 
+omega_p = 20
 nt = vz.shape[1]
 t = np.arange(nt)*dt
-wav, wavt, wavc = ricker(t[:81], f0=20)
+wav, wavt, wavc = ricker(t[:81], f0=omega_p)
 
 fig, ax = plt.subplots(figsize=(10, 2))
 ax.plot(wavt, wav, 'k', lw=2)
@@ -140,103 +144,87 @@ ax.grid('on')
 plt.tight_layout()
 
 ###############################################################################
-# Second, we compute the traveltimes and ray angles to be used to create the
-# Green's functions.
+# Second we define an area of interest where we expect the source to be located.
+# In fact, whilst in practice one could consider the entire subsurface,
+# this comes with a computational and storage burden for the Green's functions.
 
-# Traveltime terms
-trav = Kirchhoff._traveltime_table(z,
-                                   x,
-                                   y=y,
-                                   recs=recs,
-                                   vel=mod,
-                                   mode='eikonal')
-
-TTT_full = trav.reshape(nx,ny,nz,nr).transpose([3, 0, 1, 2])
-
-# Amplitude terms
-gamma_sourceangles, dist_table = collect_source_angles(x,y,z, reclocs=recs, nc=3)
-
-###############################################################################
-# And we can now compute the Green's functions. We will define an area of
-# interest where we expect the source to be located. In fact, whilst in practice
-# one could consider the entire subsurface, this comes with a computational and
-# storage burden for the Green's functions.
+sx = nx // 2
+sy = ny // 2
+sz = 2 * nz // 3
+sloc_ind = [sx, sy, sz]
 
 hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi = 15, 13, 11  # half window lengths in x, y, z
-winc_x, winc_y, winc_z = nx//2, ny//2, 2*nz//3  # Center points of the area of interest
+winc_x, winc_y, winc_z = nx // 2, ny // 2, 2 * nz // 3  # Center points of the area of interest
 
 # Defining area of interest
 xsi, xfi = winc_x-hwin_nx_aoi, winc_x+hwin_nx_aoi+1   # start/end index of x-region of interest
 ysi, yfi = winc_y-hwin_ny_aoi, winc_y+hwin_ny_aoi+1   # start/end index of y-region of interest
 zsi, zfi = winc_z-hwin_nz_aoi, winc_z+hwin_nz_aoi+1   # start/end index of z-region of interest
+nx_aoi = xfi - xsi
+ny_aoi = yfi - ysi
+nz_aoi = zfi - zsi
 
-# Parameters only for the area of interest
-gamma_sourceangles_aoi = gamma_sourceangles[:, :, xsi:xfi, ysi:yfi, zsi:zfi]
-dist_table_aoi = dist_table[:, xsi:xfi, ysi:yfi, zsi:zfi]
-tt_table_aoi = TTT_full[:, xsi:xfi, ysi:yfi, zsi:zfi]
-nr, nx_aoi, ny_aoi, nz_aoi = tt_table_aoi.shape
-
-# This keeps everything nice and clean in the later G compute
-MT_comp_dict = get_mt_computation_dict()
-
-# Computing Greens functions for AoI
-Gx, Gy, Gz = multicomp_Greens_Pwave(nxyz=[nx_aoi, ny_aoi, nz_aoi],
-                                    nr=nr,
-                                    gamma_sourceangles=gamma_sourceangles_aoi,
-                                    dist_table=dist_table_aoi,
-                                    vel=mod,
-                                    MT_comp_dict=MT_comp_dict,
-                                    omega_p=1,
-                                    )
+# MT in area of interest
+MT_aoi = np.zeros([6, nx_aoi, ny_aoi, nz_aoi])  # MT components as images
+MT_selected = -1 * np.array([0,0,0,1,0,0])
+MT_aoi[:, nx_aoi//2, ny_aoi//2, nz_aoi//2] = MT_selected
 
 ###############################################################################
-# Finally we can create our Kirchhoff-MT operator
+# Next, we create our Kirchhoff-MT operator
 
-Mstack_Op = multicomp_pwave_mtioperator(
-    x=x[xsi:xfi],
-    y=y[ysi:yfi],
-    z=z[zsi:zfi],
-    recs=recs,
-    t=t,
-    wav=wav,
-    wavc=wavc,
-    tt_table=tt_table_aoi,
-    Gx=Gx,
-    Gy=Gy,
-    Gz=Gz,
-    Ms_scaling = 1e6,
-    engine='numba'
-    )
+Ms_scaling = 1.92e10
+mtw = MTW(x, y, z, recs, mod, sloc_ind,
+          2, omega_p, (hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi),
+          t, wav, wavc, multicomp=True,
+          Ms_scaling=Ms_scaling,
+          engine='numba')
+data = mtw.model(MT_aoi)
+
+# Visualization
+for ivc, vc in enumerate([vx, vy, vz]):
+    fig, axs = plt.subplots(1, 3, figsize=[15,5],
+                            sharey=True, sharex=True)
+    axs[0].imshow(data[ivc].T, aspect='auto',cmap='RdBu')
+    axs[1].imshow(vc.T, aspect='auto',cmap='RdBu')
+    axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap='RdBu')
+    axs[2].set_ylim([350,270])
+    axs[2].set_xlim([0,20])
+    for ax in axs: ax.axhline(300)
+    fig.tight_layout()
+
+    fig, axs = plt.subplots(1,2, figsize=[15,5], sharey=True)
+    axs[0].plot(data[ivc, 0], 'k', label='FD')
+    axs[0].plot(vc[0], 'r', label='Kirch')
+    axs[0].legend()
+    axs[1].plot(data[ivc, 20], 'k')
+    axs[1].plot(vc[20], 'r')
+    fig.tight_layout()
 
 ###############################################################################
 # Joint localisation and MT inversion
 # -----------------------------------
 # Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
-# Dimensions of area of interest
-nxyz = [nx_aoi, ny_aoi, nz_aoi]
-
 # Adjoint
-mt_adj = adjoint_mtmodelling(FD_data, Mstack_Op, nxyz)
+mt_adj = mtw.adjoint(FD_data)
 
-# Least-squares inversion
-mt_inv = lsqr_mtsolver(FD_data, Mstack_Op, nxyz)
+# Inversion
+mt_inv = mtw.lsi(FD_data, niter=100, verbose=True)
 
 ###############################################################################
 # Let's now extract both the expected location and MT source parameters
 
-exp_sloc, _ = expected_sloc_from_mtwi(mt_inv)
+exp_sloc, _ = get_mt_max_locs(mt_inv)
 print('Expected Source Location (AOI coord. ref.): \n', exp_sloc)
-mt_at_loc = get_mt_at_loc(mt_inv, [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
+mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(), [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
 print('MT at expected Source Location (full): \n', mt_at_loc)
 print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
-
 
 ###############################################################################
 # And finally we visualize the estimated kernels both from the adjoint and
 # inverse approaches.
 
-clim = 1
+clim = 1e2
 fracspy.visualisation.eventimages.locimage3d(mt_adj[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_adj[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_adj[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
@@ -244,6 +232,7 @@ fracspy.visualisation.eventimages.locimage3d(mt_adj[3], int(exp_sloc[0]), int(ex
 fracspy.visualisation.eventimages.locimage3d(mt_adj[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_adj[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 
+clim = 1e-4
 fracspy.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])

@@ -12,15 +12,21 @@ MT_comp_dict = [{'elementID': 0, 'laymans': 'xx', 'pq': [0, 0], 'ODscaler': 1, '
 
 
 def get_mt_at_loc(mt_image_set, location_indices):
-    """Moment
+    """Moment tensor at specific location
+
+    Extract moment tensor at a given location from moment tensor component images
 
     Parameters
     ----------
-    mt_image_set
-    location_indices
+    mt_image_set : :obj:`numpy.ndarray`
+        Moment tensor component images of size :math:`n_c \times n_x \times n_y \times n_z`
+    location_indices : :obj:`tuple`
+        Indices of location to extract moment tensor from the moment tensor component images
 
     Returns
     -------
+    M : :obj:`tuple`
+        Extracted moment tensor
 
     """
     mxx = mt_image_set[0][location_indices[0], location_indices[1], location_indices[2]]
@@ -30,21 +36,65 @@ def get_mt_at_loc(mt_image_set, location_indices):
     mxz = mt_image_set[4][location_indices[0], location_indices[1], location_indices[2]]
     myz = mt_image_set[5][location_indices[0], location_indices[1], location_indices[2]]
 
-    return (mxx,myy,mzz,mxy,mxz,myz)
+    M = (mxx, myy, mzz, mxy, mxz, myz)
+    return M
 
 
-def expected_sloc_from_mtwi(mt_image_set, nforhc=5, rem_edge=True, edgebuf=1, absval=True):
-    energy_images = np.sum(abs(mt_image_set), axis=0)
-    hc, hcs = get_max_locs(energy_images,
-                           n_max=nforhc,
-                           rem_edge=rem_edge,
-                           edgebuf=edgebuf,
-                           absval=absval)
-    return hc, hcs
+def get_mt_max_locs(mt_image_set, n_max=50, rem_edge=True, edgebuf=10):
+    """Source location from moment tensor component images
 
-# Determine seismic moment m0 and local magnitude mw
+    Compute the source location from the sum of the absolute values of the
+    six moment tensor component images.
+
+    Parameters
+    ----------
+    mt_image_set : :obj:`numpy.ndarray`
+        Moment tensor component images of size :math:`n_c \times n_x \times n_y \times n_z`
+    n_max : :obj:`int`, optional
+        Number of maximum values to extract (if ``n_max>1``, the centroid of these values
+        will be computed and provided as the estimated source location)
+    rem_edge : :obj:`bool`, optional
+        Remove edges of volume
+    edgebuf : :obj:`int`, optional
+        Number of grid points to remove from each edge if ``rem_edge=True``
+
+    Returns
+    -------
+    ev_loc : :obj:`tuple`
+        Most likely source location
+    ev_locs : :obj:`tuple`
+        `n_max` most likely source locations
+
+    """
+    energy_images = np.sum(np.abs(mt_image_set), axis=0)
+    ev_loc, ev_locs = get_max_locs(energy_images,
+                                   n_max=n_max,
+                                   rem_edge=rem_edge,
+                                   edgebuf=edgebuf,
+                                   absval=False)
+    return ev_loc, ev_locs
+
+
 def get_magnitude(mt):
-    mt_array = np.array(mt)  # Convert the list to a NumPy array
-    m0 = np.sqrt(np.sum(mt_array ** 2))  # Use NumPy functions for better performance
-    mw = ((2/3)*(np.log10(m0) - 9.1))
+    """Seismic moment and local magnitude
+
+    Determine seismic moment ``m0`` and local magnitude ``mw``
+    from moment tensor array.
+
+    Parameters
+    ----------
+    mt : :obj:`numpy.ndarray`
+        Moment tensor
+
+    Returns
+    -------
+    m0 : :obj:`tuple`
+        Seismic moment
+    mw : :obj:`tuple`
+        Local magnitude
+
+    """
+    mt_array = np.array(mt)
+    m0 = np.sqrt(np.sum(mt_array ** 2))
+    mw = ((2 / 3) * (np.log10(m0) - 9.1))
     return m0, mw

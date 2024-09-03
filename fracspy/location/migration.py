@@ -48,65 +48,6 @@ def diffstack(data: np.ndarray,
     This routine performs imaging of microseismic data by diffraction stacking with 
     various stacking approaches and optional polarity correction.
     
-    Diffraction stacking is applied to data with corrected event moveout (EMO),
-    and can be done in several ways:
-    
-    1. Absolute-value based
-    
-    .. math::
-        F(\mathbf{r},t) = \left| \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right|,
-
-    where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, 
-    :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, 
-    and :math:`N_R` is a number of receivers [1]_, [2]_.
-
-    2. Squared-value based
-
-    Similarly, but the stack is taken to the power of 2:   
-    
-    .. math::
-        E(\mathbf{r},t) = \left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2,
-    
-    3. Semblance-based
-
-    Simple stacking can be further improved using a semblance-based approach.
-
-    The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
-    to the energy of individual traces (the sum of squares) [3]_:
-
-    .. math::
-        S(\mathbf{r},t) = \frac{\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
-        {N_R \sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}    
-
-    In order to suppress the effect of noise even better, it is possible to extend the semblance-based approach 
-    by introducing a sliding time window :math:`W` over which the energy measures are summed:
-
-    .. math::
-        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
-        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}
-
-    where :math:`k` an index of the time-discretised signal within a sliding time interval 
-    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [4]_.
-
-    Depending on the desired output, the function can output either a 3D volume and a location, 
-    or a full 4D array (time dimension + 3 spatial dimensions).
-    
-    By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:
-
-    .. math::
-        I(\mathbf{r}) = \max_t F(\mathbf{r},t).
-    
-    Optionally, one can output a 3D image volume obtained as a sum of the 4D image function over time, e.g.:
-
-    .. math::
-        I(\mathbf{r}) = \sum_t F(\mathbf{r},t).
-
-    Full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.
-
-    Polarity correction, if requested, is done using moment tensor inversion:
-
-   
-    
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
@@ -151,6 +92,73 @@ def diffstack(data: np.ndarray,
     ValueError :
         if pol_correction value is unknown
 
+    Notes
+    -----
+
+    The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
+    In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
+    The term "diffraction stacking" dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [6]_. 
+    The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
+    Here, the diffraction stacking is related to imaging of real excitation sources.
+
+    Diffraction stacking is applied to data with corrected event moveout (EMO),
+    and can be done in several ways:
+    
+    1. Absolute-value based
+    
+    .. math::
+        F(\mathbf{r},t) = \left| \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right|,
+
+    where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, 
+    :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, 
+    and :math:`N_R` is a number of receivers [1]_, [2]_.
+
+    2. Squared-value based
+
+    Similarly, but the stack is taken to the power of 2:   
+    
+    .. math::
+        E(\mathbf{r},t) = \left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2,
+    
+    3. Semblance-based
+
+    Simple stacking can be further improved using a semblance-based approach.
+
+    The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
+    to the energy of individual traces (the sum of squares) [5]_:
+
+    .. math::
+        S(\mathbf{r},t) = \frac{\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
+        {N_R \sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}    
+
+    In order to suppress the effect of noise even better, it is possible to extend the semblance-based approach 
+    by introducing a sliding time window :math:`W` over which the energy measures are summed:
+
+    .. math::
+        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
+        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}
+
+    where :math:`k` an index of the time-discretised signal within a sliding time interval 
+    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [7]_.
+
+    Depending on the desired output, the function can output either a 3D volume and a location, 
+    or a full 4D array (time dimension + 3 spatial dimensions).
+    
+    By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:
+
+    .. math::
+        I(\mathbf{r}) = \max_t F(\mathbf{r},t).
+    
+    Optionally, one can output a 3D image volume obtained as a sum of the 4D image function over time, e.g.:
+
+    .. math::
+        I(\mathbf{r}) = \sum_t F(\mathbf{r},t).
+
+    The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.
+
+    Polarity correction, if requested, is done using moment tensor inversion:
+
+
     References
     ----------
     .. [1] Anikiev, D. (2015). Joint detection, location and source mechanism 
@@ -163,12 +171,21 @@ def diffstack(data: np.ndarray,
        induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
        249–258. 
        https://doi.org/10.1093/gji/ggu126
+
+    .. [3] Claerbout, J. F. (1971). Toward a unified theory of reflector mapping. 
+       Geophysics, 36(3), 467-481. https://doi.org/10.1190/1.1440185
+
+    .. [4] Claerbout, J. (1985). Imaging the earth's interior. Oxford, England: Blackwell 
+       Scientific Publications. https://sepwww.stanford.edu/sep/prof/iei2/
     
-    .. [3] Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
+    .. [5] Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
        FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
        https://doi.org/10.1190/1.1440186
 
-    .. [4] Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
+    .. [6] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic 
+       recordings. Moscow: Nedra. [In Russian].
+
+    .. [7] Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
        and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
        47–63. 
        https://doi.org/10.1111/1365-2478.12366

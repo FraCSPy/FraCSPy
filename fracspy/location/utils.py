@@ -116,7 +116,8 @@ def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
     -----
     The function checks that all values in `itshifts` are non-negative and that the length of `itshifts` matches the number of rows in `data`.
 
-    Example:
+    Examples
+    --------
     >>> # Assuming you have a 2D array "data" with shape (nr, nt) and an array "itshifts" with shape (nr,)
     >>> corrected_data = moveout_correction(data, itshifts)
 

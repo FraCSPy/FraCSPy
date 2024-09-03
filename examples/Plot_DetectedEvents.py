@@ -95,7 +95,7 @@ for event in selected_events:
             #data_array /= np.max(np.abs(data_array))
         
             # Increment subplot index
-            plt.subplot(len(stations), 1, plot_count + 1)
+            plt.subplot(num_stations_to_plot, 1, plot_count + 1)
 
             # Plot the data for the current station
             plt.plot(data_array, label=f'Station: {station}')

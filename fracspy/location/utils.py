@@ -27,6 +27,45 @@ def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
     return ev_loc, ev_locs
 
+def get_location_misfit(loca:list, locb:list, steps:list = None):
+    r"""
+    Calculate the location misfit between two lists of locations (loca and locb) 
+    possibly scaled by a list of step values.
+    
+    Parameters
+    ----------
+    loca : :obj:`list`
+        The first list of locations
+    locb : :obj:`list`
+        The second list of locations
+    steps : :obj:`list`, optional, default: None
+        A list of scaling factors. Defaults to None.
+
+    Returns
+    -------
+        list: The location misfit between the two input lists
+
+    Raises
+    ------
+    ValueError
+        If the input lists have different lengths.
+
+    """
+    if len(loca) != len(locb):
+        raise ValueError("Input location lists must have the same length.")
+    
+    if steps is not None and len(steps) != len(loca):
+        raise ValueError("Steps list must have the same length as location lists.")
+    
+    loca_array = np.array(loca)
+    locb_array = np.array(locb)
+    
+    if steps is not None:
+        steps_array = np.array(steps)
+        return list((loca_array - locb_array) * steps_array)
+    else:
+        return list(loca_array - locb_array)
+
 
 def dist2rec(recs, gx, gy, gz):
     r"""Compute distances from a 3D grid of points to array of receivers.

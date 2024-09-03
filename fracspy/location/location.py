@@ -3,19 +3,17 @@ __all__ = [
 ]
 
 
-from fracspy.location.migration import diffstack, absdiffstack, semblancediffstack
+from fracspy.location.migration import kmigration, diffstack
 from fracspy.location.imaging import lsi, sparselsi
 from fracspy.location.xcorri import xcorri
 
 
-_location_kind = {"diffstack": diffstack,
-                  "absdiffstack": absdiffstack,
-                  "semblancediffstack": semblancediffstack,                  
+_location_kind = {"kmigration": kmigration,
+                  "diffstack": diffstack,                    
                   "lsi": lsi,
                   "sparselsi": sparselsi,
                   "xcorri": xcorri,
                   }
-
 
 class Location():
     """Event location
@@ -37,7 +35,7 @@ class Location():
         self.x, self.y, self.z = x, y, z
         self.n_xyz = x.size, y.size, z.size
 
-    def apply(self, data, kind="diffstack", **kwargs):
+    def apply(self, data, kind="kmigration", **kwargs):
         """Perform event location
 
         This method performs event location for the provided dataset using

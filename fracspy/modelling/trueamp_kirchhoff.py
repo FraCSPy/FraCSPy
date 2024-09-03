@@ -122,19 +122,19 @@ class TAKirchhoff(LinearOperator):
 
     def __init__(
         self,
-        z: NDArray,
-        x: NDArray,
-        t: NDArray,
-        recs: NDArray,
-        wav: NDArray,
-        wavcenter: int,
-        y: Optional[NDArray] = None,
-        wavfilter: bool = False,
-        trav: Optional[NDArray] = None,
-        amp: Optional[NDArray] = None,
-        engine: str = "numpy",
-        dtype: DTypeLike = "float64",
-        name: str = "K",
+        z,
+        x,
+        t,
+        recs,
+        wav,
+        wavcenter,
+        y=None,
+        wavfilter=False,
+        trav=None,
+        amp=None,
+        engine="numpy",
+        dtype="float64",
+        name="K",
     ) -> None:
         # identify geometry
         (

@@ -1,6 +1,7 @@
 import numpy as np
 from fracspy.location.utils import get_max_locs
 
+
 # Dictionary of the MT components values
 MT_comp_dict = [{'elementID': 0, 'laymans': 'xx', 'pq': [0, 0], 'ODscaler': 1, 'MCweighting': 1},
                 {'elementID': 1, 'laymans': 'yy', 'pq': [1, 1], 'ODscaler': 1, 'MCweighting': 1},

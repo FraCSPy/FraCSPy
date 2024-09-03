@@ -99,10 +99,9 @@ vz = vz[:,t_shift:t_shift+tdur]
 
 # Scale data to the maximum of vz
 efd_scaler = np.max(abs(vz))
-vx = vx / efd_scaler
-vy = vy / efd_scaler
-vz = vz / efd_scaler
-FD_data = np.array([vx, vy, vz])
+vx /= efd_scaler
+vy /= efd_scaler
+vz /= efd_scaler
 
 # Combine into a single array
 FD_data = np.array([vx, vy, vz])
@@ -216,23 +215,20 @@ mt_inv = mtw.lsi(FD_data, niter=100, verbose=True)
 
 exp_sloc, _ = get_mt_max_locs(mt_inv)
 print('Expected Source Location (AOI coord. ref.): \n', exp_sloc)
+
 mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(), [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
 print('MT at expected Source Location (full): \n', mt_at_loc)
 print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
+
+mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(),  [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
+print('MT at true Source Location (full): \n', mt_at_loc)
+print('MT at true Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
 
 ###############################################################################
 # And finally we visualize the estimated kernels both from the adjoint and
 # inverse approaches.
 
-clim = 1e2
-fracspy.visualisation.eventimages.locimage3d(mt_adj[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_adj[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_adj[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_adj[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_adj[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_adj[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-
-clim = 1e-4
+clim = 5e-4
 fracspy.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
 fracspy.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])

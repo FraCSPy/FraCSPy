@@ -5,7 +5,7 @@ from fracspy.location.utils import moveout_correction
 from fracspy.location.utils import semblance_stack
 
 def kmigration(data, n_xyz, Op, nforhc=10):
-    """Kirchhoff migration for microseismic source location.
+    r"""Kirchhoff migration for microseismic source location.
 
     This routine performs imaging of microseismic data by migration
     using the adjoint of the Kirchhoff modelling operator.
@@ -43,55 +43,69 @@ def diffstack(data: np.ndarray,
                        stack_type: str = None,
                        pol_correction: str = None,
                        swsize: int = 0):
-    """Diffraction stacking for microseismic source location with various stacking approaches 
-    and optional polarity correction.
+    r"""Diffraction stacking for microseismic source location.
 
-    This routine performs imaging of microseismic data by diffraction stacking. 
-    Depending on the desired output, it can output either 3D volume and location, 
-    or full 4D array (time dimension + 3 spatial dimensions).
+    This routine performs imaging of microseismic data by diffraction stacking with 
+    various stacking approaches and optional polarity correction.
     
-    Diffraction stacking is applied to :math:`A_R^{EMO}(t,\mathbf{r})`, which is data with corrected event moveout (EMO),
+    Diffraction stacking is applied to data with corrected event moveout (EMO),
     and can be done in several ways:
     
     1. Absolute-value based
     
     .. math::
-        F(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right|,
+        F(\mathbf{r},t) = \left| \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right|,
 
     where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, 
     :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, 
-    and :math:`N_R` is a number of receivers, (e.g., Anikiev, 2015).
+    and :math:`N_R` is a number of receivers [1]_, [2]_.
 
     2. Squared-value based
 
     Similarly, but the stack is taken to the power of 2:   
     
     .. math::
-        E(\mathbf{r},t) = \left(\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right)^2,
+        E(\mathbf{r},t) = \left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2,
     
     3. Semblance-based
 
     Simple stacking can be further improved using a semblance-based approach.
 
     The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
-    to the energy of individual traces (the sum of squares) (Neidell and Taner, 1971).
+    to the energy of individual traces (the sum of squares) [3]_:
 
     .. math::
-        S(\mathbf{r},t) = \frac{\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
-        {N_R \sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}    
+        S(\mathbf{r},t) = \frac{\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
+        {N_R \sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}    
 
     In order to suppress the effect of noise even better, it is possible to extend the semblance-based approach 
     by introducing a sliding time window :math:`W` over which the energy measures are summed:
 
     .. math::
-        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right]^2}
-        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[A_R^{EMO}(t,\mathbf{r})\right]^2}
+        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
+        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}
 
     where :math:`k` an index of the time-discretised signal within a sliding time interval 
-    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` (Trojanowski and Eisner, 2016).
+    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [4]_.
+
+    Depending on the desired output, the function can output either a 3D volume and a location, 
+    or a full 4D array (time dimension + 3 spatial dimensions).
+    
+    By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:
+
+    .. math::
+        I(\mathbf{r}) = \max_t F(\mathbf{r},t).
+    
+    Optionally, one can output a 3D image volume obtained as a sum of the 4D image function over time, e.g.:
+
+    .. math::
+        I(\mathbf{r}) = \sum_t F(\mathbf{r},t).
+
+    Full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.
 
     Polarity correction, if requested, is done using moment tensor inversion:
 
+   
     
     Parameters
     ----------
@@ -139,23 +153,25 @@ def diffstack(data: np.ndarray,
 
     References
     ----------
-    Anikiev, D. (2015). Joint detection, location and source mechanism 
-    determination of microseismic events (Doctoral dissertation). 
-    St. Petersburg State University. St. Petersburg. 
-    https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf
+    .. [1] Anikiev, D. (2015). Joint detection, location and source mechanism 
+       determination of microseismic events (Doctoral dissertation). 
+       St. Petersburg State University. St. Petersburg. 
+       https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf
 
-    Anikiev, D., Valenta, J., Staněk, F. & Eisner, L. (2014). Joint location and 
-    source mechanism inversion of microseismic events: Benchmarking on seismicity 
-    induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
-    249–258. https://doi.org/10.1093/gji/ggu126
+    .. [2] Anikiev, D., Valenta, J., Staněk, F. & Eisner, L. (2014). Joint location and 
+       source mechanism inversion of microseismic events: Benchmarking on seismicity 
+       induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
+       249–258. 
+       https://doi.org/10.1093/gji/ggu126
     
-    Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
-    FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
-    https://doi.org/10.1190/1.1440186
+    .. [3] Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
+       FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
+       https://doi.org/10.1190/1.1440186
 
-    Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
-    and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
-    47–63. https://doi.org/10.1111/1365-2478.12366
+    .. [4] Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
+       and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
+       47–63. 
+       https://doi.org/10.1111/1365-2478.12366
 
     """
     # Get sizes

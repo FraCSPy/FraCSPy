@@ -72,8 +72,9 @@ from fracspy.modelling.kirchhoff import Kirchhoff
 # Import data utils
 from fracspy.utils.sofiutils import read_seis
 
-# Import diffraction stacking utils
+# Import locatoin utils
 from fracspy.location import Location
+from fracspy.location.utils import *
 
 # Import visualisation utils
 from fracspy.visualisation.traceviz import traceimage
@@ -103,16 +104,15 @@ input_dir = '../data/pyfrac_SOFIModelling'
 # Loading the model
 abs_bounds = 30
 dx = dy = dz = 5
-mnx = 112
-mny = 128
-mnz = 120
+mnx, mny, mnz = 112, 128, 120
 
 # Load source parameters
 source = np.loadtxt(os.path.join(input_dir,'inputs/centralsource.dat')).T
-sf = source[3] # source frequency
+dt = source[3] # timestep
+f0 = source[4] # source frequency
 
 # Modelling parameters
-dt = 1e-3  # SOFI3D Time sampling rate
+#dt = 1e-3  # SOFI3D Time sampling rate
 t_shift = 160  # Time shift required to align FD data to zero
 tdur = 500  # Recording duration
 
@@ -231,39 +231,69 @@ print(f"Traveltime array shape: {tt.shape}")
 
 ###############################################################################
 # Apply diffraction stacking to clean data
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we apply various diffraction stacking algorithms to clean noise-free 
-# data, get the image volume and determine location from the maximum of this 
-# volume.
+# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# # Here we apply various diffraction stacking algorithms to clean noise-free 
+# # data, get the image volume and determine location from the maximum of this 
+# # volume.
 
-###############################################################################
-# Perform absolute-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""
+# ###############################################################################
+# # Perform absolute-value diffraction stacking without polarity correction
+# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-start_time = time()
-print("Absolute-value diffraction stacking...")
-dstacked_abs, hc_abs = L.apply(data_vz,
-                               kind="absdiffstack",
-                               tt=tt, dt=dt, nforhc=10)
-end_time = time()
-print(f"Computation time: {end_time - start_time} seconds")
+# start_time = time()
+# print("Absolute-value diffraction stacking without polarity correction...")
+# dstacked_abs, hc_abs = L.apply(data_vz,
+#                                kind="diffstack",
+#                                tt=tt, dt=dt, nforhc=10,
+#                                stack_type="absolute")
+# end_time = time()
+# print(f"Computation time: {end_time - start_time} seconds")
+
+# ###############################################################################
+# # Perform semblance-based diffraction stacking without polarity correction
+# # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# # Define sliding window as two periods of the signal
+# swsize = int(2/f0/dt)
+# print(f"Sliding window size in samples: {swsize}")
+
+# start_time = time()
+# print("Semblance-based diffraction stacking without polarity correction...")
+# dstacked_abs, hc_abs = L.apply(data_vz,
+#                                kind="diffstack",
+#                                tt=tt, dt=dt, nforhc=10,
+#                                stack_type="semblance", swsize = )
+# end_time = time()
+# print(f"Computation time: {end_time - start_time} seconds")
 
 
-#%%
 
-###############################################################################
-# Visualisation of results
-# ^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we visualise the slices of the resulting image volume
+# #%%
 
-###############################################################################
-# Plot resulting image volumes from absolute-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# ###############################################################################
+# # Visualisation of results
+# # ^^^^^^^^^^^^^^^^^^^^^^^^
+# # Here we visualise the slices of the resulting image volume
 
-# Results of application to clean data:
-fig,axs = locimage3d(dstacked_abs,
-                      title='Location with absolute-value diffraction stacking:\nclean data',
-                      x0=isx, y0=isy, z0=isz)
-print('True event hypocenter:', [isx, isy, isz])
-print('Event hypocenter from absolute diffraction stacking:', hc_abs.tolist())
-print('Location error:', [x - y for x, y in zip([isx, isy, isz], hc_abs.tolist())])
+# ###############################################################################
+# # Plot resulting image volumes from absolute-value diffraction stacking
+# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# # Get the spatial limits for plotting
+# xlim = (min(gx),max(gx))
+# ylim = (min(gy),max(gy))
+# zlim = (min(gy),max(gy))
+
+# # Print true location
+# print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
+
+# # Results of application:
+# fig,axs = locimage3d(dstacked_abs, 
+#                       title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
+#                       x0=isx, y0=isy, z0=isz,
+#                       xlim=xlim,ylim=ylim,zlim=zlim)
+
+# print('-------------------------------------------------------')
+# print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
+# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
+

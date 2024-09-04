@@ -46,4 +46,7 @@ class Location():
           location procedure.
 
         """
-        return _location_kind[kind](data, self.n_xyz, **kwargs)
+        if kind == "diffstack":
+            return _location_kind[kind](data, self.x, self.y, self.z, **kwargs)
+        else:
+            return _location_kind[kind](data, self.n_xyz, **kwargs)

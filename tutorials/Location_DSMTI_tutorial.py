@@ -131,8 +131,8 @@ recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs/griddedarray_xzy_20m.dat'))
 nr = recs_xzy.shape[1]
 
 # Load seismic data
-#expname = 'MT-90-90-180_Homogeneous_griddedarray'
-expname = 'explosive_Homogeneous_griddedarray'
+expname = 'MT-90-90-180_Homogeneous_griddedarray'
+#expname = 'explosive_Homogeneous_griddedarray'
 # expname = 'MT-90-90-180_Homogeneous_walkaway8arms'
 data_vz = read_seis(os.path.join(input_dir, 'outputs','su', f'{expname}_vy.txt'),
                     nr=nr)
@@ -229,25 +229,46 @@ print(f"Traveltime array shape: {tt.shape}")
 
 #%%
 
-###############################################################################
-# Apply diffraction stacking to clean data
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we apply various diffraction stacking algorithms to clean noise-free 
-# # data, get the image volume and determine location from the maximum of this 
-# # volume.
+##############################################################################
+# Apply diffraction stacking without polarity correction
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply various diffraction stacking algorithms first without 
+# any polarity correction
 
-# ###############################################################################
-# # Perform absolute-value diffraction stacking without polarity correction
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Perform absolute-value diffraction stacking without polarity correction
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # start_time = time()
 # print("Absolute-value diffraction stacking without polarity correction...")
 # dstacked_abs, hc_abs = L.apply(data_vz,
-#                                kind="diffstack",
-#                                tt=tt, dt=dt, nforhc=10,
-#                                stack_type="absolute")
+#                                 kind="diffstack",
+#                                 tt=tt, dt=dt, nforhc=10,
+#                                 stack_type="absolute")
 # end_time = time()
 # print(f"Computation time: {end_time - start_time} seconds")
+
+#%%
+
+##############################################################################
+# Apply diffraction stacking witth polarity correction using MTI
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply various diffraction stacking algorithms with 
+# polarity correction using moment tensor inversion
+
+###############################################################################
+# Perform absolute-value diffraction stacking with polarity correction with MTI
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+start_time = time()
+print("Absolute-value diffraction stacking with polarity correction based on MTI...")
+dstacked_abs_mti, hc_abs_mti = L.apply(data_vz,
+                                       kind="diffstack",
+                                       tt=tt, dt=dt, nforhc=10,
+                                       stack_type="absolute",
+                                       polcor_type="mti",recs=recs)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
 # ###############################################################################
 # # Perform semblance-based diffraction stacking without polarity correction
@@ -268,16 +289,16 @@ print(f"Traveltime array shape: {tt.shape}")
 
 
 
-# #%%
+    #%%
 
-# ###############################################################################
-# # Visualisation of results
-# # ^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we visualise the slices of the resulting image volume
+###############################################################################
+# Visualisation of results
+# ^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the slices of the resulting image volumes
 
-# ###############################################################################
-# # Plot resulting image volumes from absolute-value diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Plot resulting image volumes from absolute-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # # Get the spatial limits for plotting
 # xlim = (min(gx),max(gx))
@@ -289,11 +310,19 @@ print(f"Traveltime array shape: {tt.shape}")
 
 # # Results of application:
 # fig,axs = locimage3d(dstacked_abs, 
-#                       title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
-#                       x0=isx, y0=isy, z0=isz,
-#                       xlim=xlim,ylim=ylim,zlim=zlim)
+#                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
+#                      x0=isx, y0=isy, z0=isz,
+#                      xlim=xlim,ylim=ylim,zlim=zlim)
 
 # print('-------------------------------------------------------')
 # print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
 # print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
 
+# fig,axs = locimage3d(dstacked_abs, 
+#                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
+#                      x0=isx, y0=isy, z0=isz,
+#                      xlim=xlim,ylim=ylim,zlim=zlim)
+
+# print('-------------------------------------------------------')
+# print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
+# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))

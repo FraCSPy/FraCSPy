@@ -4,7 +4,6 @@ from scipy.signal import convolve2d
 def _get_centroid(array_xyz):
     return np.mean(array_xyz, axis=1)
 
-
 def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
     if absval: ssimage=abs(ssimage)
@@ -146,6 +145,159 @@ def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
 
     return data_corrected
 
+def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.ndarray:
+    r"""
+    Compute vectorized Green tensor derivative for multiple source points.
+
+    Parameters
+    ----------
+    x : :obj:`numpy.ndarray`
+        Imaging area grid vector in X-axis
+    y : :obj:`numpy.ndarray`
+        Imaging area grid vector in Y-axis
+    z : :obj:`numpy.ndarray`
+        Imaging area grid vector in Z-axis
+    recs : :obj:`numpy.ndarray`
+        Array of shape (3, nrec) containing receiver coordinates
+
+    Returns
+    -------
+    g : :obj:`numpy.ndarray` 
+        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point
+    """
+    # Create a meshgrid
+    X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
+
+    # Stack the arrays into a (3, ngrid) array
+    sources = np.vstack((X.flatten(), Y.flatten(), Z.flatten()))
+    
+    # Compute relative positions and distances
+    rs = recs[:, :, np.newaxis] - sources[:, np.newaxis, :]  # shape (3, nrec, ngrid)
+    r2 = np.sum(rs**2, axis=0)  # shape (nrec, ngrid), squared distances
+    r = np.sqrt(r2)  # shape (nrec, ngrid), distances
+    
+    # Normalize and take care of division by zero
+    r = np.where(np.isclose(r, 0), np.nan, r)
+    rs_norm = rs/r
+    rs_norm = np.where(np.isnan(rs_norm), 0, rs_norm)
+
+    # Extract normalized components
+    rsx, rsy, rsz = rs_norm[0], rs_norm[1], rs_norm[2]  # each shape (nrec, ngrid)
+    
+    # Compute Green tensor derivative components
+    g = np.empty((6, rsx.shape[0], rsx.shape[1]))  # shape (6, nrec, ngrid)
+    g[0] = rsx * rsx * rsz  # shape (nrec, ngrid)
+    g[1] = rsy * rsy * rsz  # shape (nrec, ngrid)
+    g[2] = rsz * rsz * rsz  # shape (nrec, ngrid)
+    g[3] = 2 * rsx * rsy * rsz  # shape (nrec, ngrid)
+    g[4] = 2 * rsx * rsz * rsz  # shape (nrec, ngrid)
+    g[5] = 2 * rsy * rsz * rsz  # shape (nrec, ngrid)
+    
+    # Return the Green tensor derivative vector for all grid points
+    return g
+
+def mgtdinv(g: np.ndarray) -> np.ndarray:
+    r"""
+    Construct the 6x6 matrix from Green tensor derivatives and compute its inverse for each grid point.
+    
+    Parameters
+    ----------
+    g : :obj:`numpy.ndarray` 
+        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point.
+        If size is (6, nrec) it treats it as it is for one single source point.
+    
+    Returns
+    -------
+    gtg_inv : :obj:`numpy.ndarray` 
+        A set of 6x6 matrices, one for each grid point.
+    """
+    # Get sizes
+    ncomp = g.shape[0] # Number of components, presumably 6
+    nrec = g.shape[1] # Number of receivers
+    
+    # Check dimension and compute
+    if g.ndim == 3:
+        # Case 1: g is of shape (6, nrec, ngrid)
+        # Reshape g into a (nrec, ncomp) matrix
+        g_matrix = g.reshape((ncomp, nrec, -1))  # Now, g_matrix is of shape (ncomp, nrec, ngrid)
+        
+        # Initialize gtg as a 6x6 matrix for each grid point
+        gtg = np.einsum('imk,jmk->ijk', g_matrix, g_matrix)  # shape (ncomp, ncomp, ngrid)
+        
+        # Inverse of the 6x6 matrix for each grid point
+        #gtg_inv = np.linalg.inv(gtg)  # shape (ncomp, ncomp, ngrid)    
+        gtg_inv = np.linalg.inv(gtg.transpose(2,0,1)).transpose(1,2,0)
+    
+    elif g.ndim == 2:
+        # Case 2: g is of shape (6, nrec)        
+        
+        # Compute GTG matrix (single 6x6 matrix)
+        gtg = np.dot(g, g.T)  # Shape (6, 6)
+        
+        # Inverse of the 6x6 matrix
+        gtg_inv = np.linalg.inv(gtg)  # Shape (6, 6)
+        
+    else:
+        raise ValueError(f"Invalid shape for g: {g.shape}. Expected 2D or 3D array.")
+
+    # Return the 6x6 inverse matrices for all grid points
+    return gtg_inv
+
+
+def polarity_correction(data:np.ndarray, 
+                        g:np.ndarray,
+                        x:np.ndarray, 
+                        y:np.ndarray, 
+                        z:np.ndarray,
+                        polcor_type: str="mti"):
+    r"""Polarity correction for microseismic data with corrected event moveout.
+
+    This function applies a polarity correction to microseismic data with corrected event moveout.
+
+    Parameters
+    ----------
+    data : :obj:`numpy.ndarray`
+        input seismic data with corrected event moveout [nr, nt]
+    x : :obj:`float`
+        X coordinate of the potential source
+    y : :obj:`float`
+        Y coordinate of the potential source
+    z : :obj:`float`
+        Z coordinate of the potential source
+    g : :obj:`numpy.ndarray` 
+        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point
+    polcor_type : :obj:`str`, optional, default: "mti"
+        Polarity correction type to be used for data amplitudes.
+
+    Returns
+    -------
+    data_corrected : :obj:`numpy.ndarray`
+        microseismic data with corrected polarity [nr, nt]
+    
+    Notes
+    -----
+    Polarity correction is done using the moment tensor inversion.
+
+    Raises
+    ------
+    ValueError :
+        if polcor_type value is unknown
+
+    """
+    # Get size
+    nr, nt = data.shape
+
+    # Check polarity correction type
+    if polcor_type not in ["mti"]:
+        raise ValueError(f"Polarity correction type is unknown: {polcor_type}")
+
+    # if polcor_type=="mti":
+        
+    # Create an array of zeros with the same shape as data
+    data_corrected = np.zeros_like(data) 
+
+    return data_corrected
+
 def semblance_stack(data:np.ndarray, swsize:int=0):
     r"""Computes the semblance stack for a given input array.
 
@@ -263,3 +415,33 @@ def semblance_stack(data:np.ndarray, swsize:int=0):
         semblance_values = numerator.flatten() / denominator.flatten()
 
     return semblance_values
+
+def are_values_close(desired: np.ndarray, actual: np.ndarray, decimal: int = 6) -> np.ndarray:
+    """
+    Check if the values in two arrays are close to each other up to a specified number of decimal places.
+
+    The function checks whether the absolute difference between `desired` and `actual` 
+    is less than 1.5 times 10 raised to the power of `-decimal` for each pair of elements.
+
+    Parameters
+    ----------
+    desired : :obj:`np.ndarray`
+        The desired values to compare.
+    actual : :obj:`np.ndarray` 
+        The actual values to compare.
+    decimal : :obj:`int`, optional
+        The number of decimal places to consider for the comparison. Default is 6.
+
+    Returns
+    -------
+    np.ndarray
+        A boolean array where each element is True if the corresponding elements in `desired` 
+        and `actual` are close within the specified decimal precision, False otherwise.
+
+    Examples
+    --------
+    >>> are_values_close(np.array([1.000001, 1.0001]), np.array([1.000002, 1.0002]), decimal=6)
+    array([ True, False])
+    """
+    tolerance = np.float64(1.5 * 10.0**(-decimal))
+    return np.abs(desired - actual) < tolerance

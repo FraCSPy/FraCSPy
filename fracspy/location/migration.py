@@ -1,8 +1,6 @@
 import numpy as np
 
-from fracspy.location.utils import get_max_locs
-from fracspy.location.utils import moveout_correction
-from fracspy.location.utils import semblance_stack
+from fracspy.location.utils import *
 
 def kmigration(data, n_xyz, Op, nforhc=10):
     r"""Kirchhoff migration for microseismic source location.
@@ -35,14 +33,17 @@ def kmigration(data, n_xyz, Op, nforhc=10):
     return migrated, hc
 
 def diffstack(data: np.ndarray,
-                       n_xyz: tuple, 
-                       tt: np.ndarray, 
-                       dt: float,                        
-                       nforhc: int = 10, 
-                       output_type: str = None,
-                       stack_type: str = None,
-                       pol_correction: str = None,
-                       swsize: int = 0):
+              x: np.ndarray,
+              y: np.ndarray,
+              z: np.ndarray,
+              tt: np.ndarray, 
+              dt: float,                        
+              nforhc: int = 10, 
+              output_type: str = None,
+              stack_type: str = None,              
+              swsize: int = 0,
+              polcor_type: str = None,
+              recs: np.ndarray=None):
     r"""Diffraction stacking for microseismic source location.
 
     This routine performs imaging of microseismic data by diffraction stacking with 
@@ -52,12 +53,14 @@ def diffstack(data: np.ndarray,
     ----------
     data : :obj:`numpy.ndarray`
         Data of shape :math:`n_r \times n_t`
-    n_xyz : :obj:`tuple`
-        Number of grid points in X-, Y-, and Z-axes for the imaging area
+    x : :obj:`numpy.ndarray`
+        Imaging area grid vector in X-axis
+    y : :obj:`numpy.ndarray`
+        Imaging area grid vector in Y-axis
+    z : :obj:`numpy.ndarray`
+        Imaging area grid vector in Z-axis
     tt : :obj:`numpy.ndarray`
-        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`
-    swsize : :obj:`int`, optional, default: 0
-        Sliding time window size for semblance-based type, amount of time steps
+        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`    
     nforhc : :obj:`int`, optional, default: 10
         Number of points for hypocenter
     output_type : :obj:`str`, optional, default: None
@@ -67,10 +70,15 @@ def diffstack(data: np.ndarray,
                "full" (output full 4D image function: x,y,z,t). in this case hc is set to None
     stack_type : :obj:`str`, optional, default: None
         Diffraction stacking type (imaging condition), default None is the same as "absolute" (absolute value).
-        Types: "absolute" (absolute value), "squared" (squared value), "semblance" (semblance-based)
-    pol_correction : :obj:`str`, optional, default: None
-        Polarity correction to be used for stacked amplitudes. 
+        Types: "absolute" (absolute value), "squared" (squared value), "semblance" (semblance-based).
+    swsize : :obj:`int`, optional, default: 0
+        Sliding time window size for semblance-based type, amount of time steps
+    polcor_type : :obj:`str`, optional, default: None
+        Polarity correction type to be used for amplitudes.
         None is default for no polarity correction, "mti" is for polarity correction based on moment tensor inversion.
+    recs : :obj:`numpy.ndarray`, optional, default: None
+        Array of shape (3, nrec) containing receiver coordinates.
+        Must be provided if polcor_type is not None
 
     Returns
     -------
@@ -90,7 +98,9 @@ def diffstack(data: np.ndarray,
     ValueError :
         if stack_type value is unknown
     ValueError :
-        if pol_correction value is unknown
+        if polcor_type value is unknown
+    ValueError :
+        if recs is None and polcor_type is not None
 
     Notes
     -----
@@ -192,7 +202,7 @@ def diffstack(data: np.ndarray,
 
     """
     # Get sizes
-    nx, ny, nz = n_xyz
+    nx, ny, nz = x.size, y.size, z.size
     ngrid = nx*ny*nz
     nr, nt = data.shape   
 
@@ -219,9 +229,11 @@ def diffstack(data: np.ndarray,
         raise ValueError(f"Diffraction stacking type is unknown: {stack_type}")
 
     # Check polarity correction
-    if pol_correction is not None:
-        if pol_correction not in ["mti"]:
-            raise ValueError(f"Polarity correction type is unknown: {pol_correction}")
+    if polcor_type is not None:
+        if polcor_type not in ["mti"]:
+            raise ValueError(f"Polarity correction type is unknown: {polcor_type}")
+        if recs is None:
+            raise ValueError(f"Receiver coordinates are required for polarity correction type {polcor_type}")
 
     # Reshape tt array
     ttg = tt.reshape(nr, -1)
@@ -232,29 +244,46 @@ def diffstack(data: np.ndarray,
 
     # Find time sample shifts for all grid points
     itshifts = np.round((ttg - ttg.min(axis=0))/dt)
+
+    # Precompute vectorized Green tensor derivatives for grid points
+    if polcor_type is not None:
+        # Check sizes of recs
+        if recs.shape[0] != 3:
+            raise ValueError(f"Size of the receiver coordinates array is not consistent: {recs.shape}")
+        if nr != recs.shape[1]:
+            raise ValueError(f"Number of traces in data is not consistent with array of receiver coordinates: {nr} != {recs.shape[1]}")
+        vgtd_grid = vgtd(x=x,y=y,z=z,recs=recs)
+        gtginv_grid = mgtdinv(g=vgtd_grid)
+        print(vgtd_grid.shape)
+        print(gtginv_grid)
     
     # Loop over grid points
     for igrid in range(ngrid):
         # Perform moveout correction for data
-        data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])
-        if pol_correction is not None:
+        data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])        
+        if polcor_type is not None:
             # Perform polarity correction for data
-            #data_pc = polarity_correction(data=data,pol_correction)
+            data_pc = polarity_correction(data=data_mc,
+                                          g=vgtd_grid,
+                                          x=x[igrid],
+                                          y=y[igrid],
+                                          z=z[igrid],
+                                          polcor_type=polcor_type)
             data_pc = data_mc
         else:
             data_pc = data_mc
-        if stack_type is "absolute":
+        # Perform stacking based on the type
+        if stack_type == "absolute":
             ds = np.abs(np.sum(data_pc,axis=0))
-        if stack_type is "squared":            
+        elif stack_type == "squared":       
             ds = (np.sum(data_pc,axis=0))**2            
-        elif stack_type is "semblance":
-            # Perform semblance-based stacking
+        elif stack_type == "semblance":            
             ds = semblance_stack(data_pc,swsize)
 
         # Fill based on the output type
-        if output_type is "max":
+        if output_type == "max":
             ds_im[igrid] = np.max(ds)
-        elif output_type is "sum":
+        elif output_type == "sum":
             ds_im[igrid] = np.sum(ds)            
         else:
             ds_full[:,igrid] = ds

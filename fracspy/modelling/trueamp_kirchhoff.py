@@ -82,8 +82,9 @@ class TAKirchhoff(LinearOperator):
     Notes
     -----
     The True-amplitude Kirchhoff single-sided demigration operator synthesizes
-    seismic data given a
-    propagation velocity model :math:`v` and a source distribution :math:`m`.
+    seismic data given a propagation velocity model :math:`v` and a source distribution
+    :math:`m`.
+
     In forward mode:
 
     .. math::
@@ -94,7 +95,7 @@ class TAKirchhoff(LinearOperator):
     where :math:`m(\mathbf{x_s})` represents the source distribution
     at every location in the subsurface, :math:`G(\mathbf{x_r}, \mathbf{x_s}, t)`
     is the Green's function from source-to-receiver, and finally :math:`\widetilde{w}(t)` is
-    a filtered version of the wavelet :math:`w(t)` [3]_ (or the wavelet itself when
+    a filtered version of the wavelet :math:`w(t)` [1]_ (or the wavelet itself when
     ``wavfilter=False``). In our implementation, the following high-frequency
     approximation of the Green's functions is adopted:
 
@@ -121,19 +122,19 @@ class TAKirchhoff(LinearOperator):
 
     def __init__(
         self,
-        z: NDArray,
-        x: NDArray,
-        t: NDArray,
-        recs: NDArray,
-        wav: NDArray,
-        wavcenter: int,
-        y: Optional[NDArray] = None,
-        wavfilter: bool = False,
-        trav: Optional[NDArray] = None,
-        amp: Optional[NDArray] = None,
-        engine: str = "numpy",
-        dtype: DTypeLike = "float64",
-        name: str = "K",
+        z,
+        x,
+        t,
+        recs,
+        wav,
+        wavcenter,
+        y=None,
+        wavfilter=False,
+        trav=None,
+        amp=None,
+        engine="numpy",
+        dtype="float64",
+        name="K",
     ) -> None:
         # identify geometry
         (

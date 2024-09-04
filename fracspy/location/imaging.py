@@ -6,7 +6,7 @@ from pylops.optimization.sparsity import *
 from fracspy.location.utils import get_max_locs
 
 
-def lsi(data, n_xyz, Op, niter=100, nforhc=10, verbose=True):
+def lsi(data, n_xyz, Op, niter=100, nforhc=10, verbose=False):
     """Least-squares imaging for microseismic source location
 
     This routine performs imaging of microseismic data by
@@ -42,7 +42,7 @@ def lsi(data, n_xyz, Op, niter=100, nforhc=10, verbose=True):
     return inv, hc
 
 
-def sparselsi(data, n_xyz, Op, niter=100, l1eps=1e2, nforhc=10, verbose=True):
+def sparselsi(data, n_xyz, Op, niter=100, l1eps=1e2, nforhc=10, verbose=False):
     """Sparsity-promoting imaging for microseismic source location
 
     This routine performs imaging of microseismic data by

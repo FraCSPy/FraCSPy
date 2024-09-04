@@ -60,7 +60,7 @@ def MTMatrixplot(mt, ax, cmap=None, title=True):
 
     '''
     if not cmap:
-        cmap = matplotlib.cm.Spectral
+        cmap = matplotlib.cm.PiYG
     cmap.set_bad('w', 1.)
 
     mt_matrix, mat_mt4plt = _mt4plt(mt)

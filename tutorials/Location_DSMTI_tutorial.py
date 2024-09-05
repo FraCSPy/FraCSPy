@@ -131,8 +131,8 @@ recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs/griddedarray_xzy_20m.dat'))
 nr = recs_xzy.shape[1]
 
 # Load seismic data
-expname = 'MT-90-90-180_Homogeneous_griddedarray'
-#expname = 'explosive_Homogeneous_griddedarray'
+#expname = 'MT-90-90-180_Homogeneous_griddedarray'
+expname = 'explosive_Homogeneous_griddedarray'
 # expname = 'MT-90-90-180_Homogeneous_walkaway8arms'
 data_vz = read_seis(os.path.join(input_dir, 'outputs','su', f'{expname}_vy.txt'),
                     nr=nr)
@@ -204,29 +204,6 @@ tt = 1 / vp*dist2rec(recs,gx,gy,gz)
 print(f"Traveltime array shape: {tt.shape}")
 
 
-# ###############################################################################
-# # Compute traveltimes
-# # """""""""""""""""""
-# # We can now model the traveltimes from the grid points to each of the receivers
-# # Here, unlike :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py, 
-# # we use :py:class:`fracspy.modelling.kirchhoff.Kirchhoff._traveltime_table` 
-# # function to compute traveltimes analytically
-
-# start_time = time()
-# print("Computing traveltimes...")
-# # Traveltime table
-# tt = Kirchhoff._traveltime_table(z=gz,
-#                                  x=gx,
-#                                  y=gy,
-#                                  recs=recs,
-#                                  vel=vp,
-#                                  mode='analytic')
-# tt = tt.reshape(nx,ny,nz,nr).transpose([3,0,1,2])
-# # Show consumed time
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-# print(tt.shape)
-
 #%%
 
 ##############################################################################
@@ -239,14 +216,14 @@ print(f"Traveltime array shape: {tt.shape}")
 # Perform absolute-value diffraction stacking without polarity correction
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# start_time = time()
-# print("Absolute-value diffraction stacking without polarity correction...")
-# dstacked_abs, hc_abs = L.apply(data_vz,
-#                                 kind="diffstack",
-#                                 tt=tt, dt=dt, nforhc=10,
-#                                 stack_type="absolute")
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
+start_time = time()
+print("Absolute-value diffraction stacking without polarity correction...")
+dstacked_abs, hc_abs = L.apply(data_vz,
+                                kind="diffstack",
+                                tt=tt, dt=dt, nforhc=10,
+                                stack_type="absolute")
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
 #%%
 
@@ -289,7 +266,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 
 
-    #%%
+#%%
 
 ###############################################################################
 # Visualisation of results
@@ -300,29 +277,29 @@ print(f"Computation time: {end_time - start_time} seconds")
 # Plot resulting image volumes from absolute-value diffraction stacking
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# # Get the spatial limits for plotting
-# xlim = (min(gx),max(gx))
-# ylim = (min(gy),max(gy))
-# zlim = (min(gy),max(gy))
+# Get the spatial limits for plotting
+xlim = (min(gx),max(gx))
+ylim = (min(gy),max(gy))
+zlim = (min(gy),max(gy))
 
-# # Print true location
-# print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
+# Print true location
+print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
 
-# # Results of application:
-# fig,axs = locimage3d(dstacked_abs, 
-#                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
-#                      x0=isx, y0=isy, z0=isz,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
+# Results of application:
+fig,axs = locimage3d(dstacked_abs, 
+                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
+                      x0=isx, y0=isy, z0=isz,
+                      xlim=xlim,ylim=ylim,zlim=zlim)
 
-# print('-------------------------------------------------------')
-# print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
+print('-------------------------------------------------------')
+print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
 
-# fig,axs = locimage3d(dstacked_abs, 
-#                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
-#                      x0=isx, y0=isy, z0=isz,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
+fig,axs = locimage3d(dstacked_abs_mti, 
+                     title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
+                     x0=isx, y0=isy, z0=isz,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 
-# print('-------------------------------------------------------')
-# print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
+print('-------------------------------------------------------')
+print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs_mti,[dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_mti, [dx, dy, dz])))

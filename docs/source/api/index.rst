@@ -80,8 +80,9 @@ Utilities
    :toctree: generated/
 
     get_max_locs
-    dist2rec
+    dist2rec    
     moveout_correction
+    polarity_correction
     semblance_stack
     
 

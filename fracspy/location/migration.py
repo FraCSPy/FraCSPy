@@ -253,32 +253,36 @@ def diffstack(data: np.ndarray,
         if nr != recs.shape[1]:
             raise ValueError(f"Number of traces in data is not consistent with array of receiver coordinates: {nr} != {recs.shape[1]}")
         vgtd_grid = vgtd(x=x,y=y,z=z,recs=recs)
-        gtginv_grid = mgtdinv(g=vgtd_grid)
-        print(vgtd_grid.shape)
-        print(gtginv_grid)
+        gtg_inv_grid = mgtdinv(g=vgtd_grid)
+        #print(vgtd_grid.shape)
+        #print(gtg_inv_grid.shape)
     
     # Loop over grid points
     for igrid in range(ngrid):
-        # Perform moveout correction for data
-        data_mc = moveout_correction(data=data,itshifts=itshifts[:,igrid])        
-        if polcor_type is not None:
-            # Perform polarity correction for data
+        #print(f"igrid={igrid}/{ngrid}")
+
+        # Perform event moveout correction for data
+        data_mc = moveout_correction(data=data,
+                                     itshifts=itshifts[:,igrid])
+
+        # Perform polarity correction for data if needed
+        if polcor_type is not None:            
             data_pc = polarity_correction(data=data_mc,
-                                          g=vgtd_grid,
-                                          x=x[igrid],
-                                          y=y[igrid],
-                                          z=z[igrid],
-                                          polcor_type=polcor_type)
-            data_pc = data_mc
+                                          polcor_type=polcor_type,
+                                          g=vgtd_grid[:,:,igrid],
+                                          gtg_inv=gtg_inv_grid[:,:,igrid]
+                                          )
         else:
             data_pc = data_mc
+
         # Perform stacking based on the type
         if stack_type == "absolute":
             ds = np.abs(np.sum(data_pc,axis=0))
         elif stack_type == "squared":       
             ds = (np.sum(data_pc,axis=0))**2            
         elif stack_type == "semblance":            
-            ds = semblance_stack(data_pc,swsize)
+            ds = semblance_stack(data=data_pc,
+                                 swsize=swsize)
 
         # Fill based on the output type
         if output_type == "max":

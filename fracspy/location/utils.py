@@ -147,7 +147,7 @@ def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
 
 def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.ndarray:
     r"""
-    Compute vectorized Green tensor derivative for multiple source points.
+    Compute vectorized Green's tensor derivative for multiple source points.
 
     Parameters
     ----------
@@ -163,7 +163,7 @@ def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.nd
     Returns
     -------
     g : :obj:`numpy.ndarray` 
-        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point
+        Array of shape (6, nrec, ngrid) containing the Green's tensor derivative for each source point
     """
     # Create a meshgrid
     X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
@@ -196,37 +196,64 @@ def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.nd
     # Return the Green tensor derivative vector for all grid points
     return g
 
+def svd_inv(M: np.ndarray):
+    """
+    Compute the inverse of a matrix using SVD with regularization.
+    
+    Parameters:
+    ----------
+    M : :obj:`numpy.ndarray` 
+        The input matrix to invert.
+        
+    Returns:
+    -------
+    :obj:`numpy.ndarray`
+        The regularized inverse of the input matrix.
+    """
+    U, s, Vt = np.linalg.svd(M)
+
+    # Determine inverse singular values
+    s = np.where(np.isclose(s, 0), np.nan, s)
+    s_inv = 1/s
+    s_inv = np.where(np.isnan(s_inv), 0, s_inv)    
+    return (Vt.T * s_inv) @ U.T
+
 def mgtdinv(g: np.ndarray) -> np.ndarray:
     r"""
-    Construct the 6x6 matrix from Green tensor derivatives and compute its inverse for each grid point.
+    Construct the 6x6 matrix from Green's tensor derivatives and compute its inverse for each grid point.
     
     Parameters
     ----------
     g : :obj:`numpy.ndarray` 
-        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point.
+        Array of shape (6, nrec, ngrid) containing the Green's tensor derivative for each source point.
         If size is (6, nrec) it treats it as it is for one single source point.
     
     Returns
     -------
     gtg_inv : :obj:`numpy.ndarray` 
-        A set of 6x6 matrices, one for each grid point.
-    """
-    # Get sizes
-    ncomp = g.shape[0] # Number of components, presumably 6
-    nrec = g.shape[1] # Number of receivers
-    
+        A set of 6x6 matrices, one for each grid point, of size (6, 6, ngrid) or (6 ,6)
+    """    
     # Check dimension and compute
     if g.ndim == 3:
         # Case 1: g is of shape (6, nrec, ngrid)
-        # Reshape g into a (nrec, ncomp) matrix
-        g_matrix = g.reshape((ncomp, nrec, -1))  # Now, g_matrix is of shape (ncomp, nrec, ngrid)
         
-        # Initialize gtg as a 6x6 matrix for each grid point
-        gtg = np.einsum('imk,jmk->ijk', g_matrix, g_matrix)  # shape (ncomp, ncomp, ngrid)
+        # Construct gtg as a 6x6 matrix from g for each grid point 
+        gtg = np.einsum('imk,jmk->ijk', g, g)  # shape (6, 6, ngrid)
         
-        # Inverse of the 6x6 matrix for each grid point
-        #gtg_inv = np.linalg.inv(gtg)  # shape (ncomp, ncomp, ngrid)    
-        gtg_inv = np.linalg.inv(gtg.transpose(2,0,1)).transpose(1,2,0)
+        # Inverse of the 6x6 matrix for each grid point        
+        #gtg_inv = np.linalg.inv(gtg.transpose(2,0,1)).transpose(1,2,0)
+
+        # Initialize gtg_inv with the same shape as gtg
+        gtg_inv = np.zeros_like(gtg)
+
+        # Iterate over each grid point
+        for i in range(gtg.shape[2]):
+            try:
+                # Try inverse of the 6x6 matrix
+                gtg_inv[:,:,i] = np.linalg.inv(gtg[:,:,i])
+            except np.linalg.LinAlgError:
+                # If inversion fails, use SVD with regularization
+                gtg_inv[:,:,i] = svd_inv(gtg[:,:,i])
     
     elif g.ndim == 2:
         # Case 2: g is of shape (6, nrec)        
@@ -234,8 +261,13 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
         # Compute GTG matrix (single 6x6 matrix)
         gtg = np.dot(g, g.T)  # Shape (6, 6)
         
-        # Inverse of the 6x6 matrix
-        gtg_inv = np.linalg.inv(gtg)  # Shape (6, 6)
+        # Compute the inverse
+        try:
+            # Try inverse of the 6x6 matrix
+            gtg_inv = np.linalg.inv(gtg)
+        except np.linalg.LinAlgError:
+            # If inversion fails, use SVD with regularization
+            gtg_inv = svd_inv(gtg)
         
     else:
         raise ValueError(f"Invalid shape for g: {g.shape}. Expected 2D or 3D array.")
@@ -244,12 +276,55 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
     return gtg_inv
 
 
-def polarity_correction(data:np.ndarray, 
-                        g:np.ndarray,
-                        x:np.ndarray, 
-                        y:np.ndarray, 
-                        z:np.ndarray,
-                        polcor_type: str="mti"):
+# def vmt(data, gtgi, g):
+#     r"""Compute the vectorized moment tensor.
+
+#     From the amplitudes of the input data with corrected event moveout,
+#     this function derives the moment tensor using 
+#     the given vectorized Green's tensor and the inverse matrix based on it.
+#     The moment tensor is computed for each time moment of data.
+
+#     Parameters
+#     ----------
+#     data : :obj:`numpy.ndarray`
+#         The data with corrected event moveout.
+#         Shape must be (nrec,nt) where nrec is the number of receivers 
+#         and nt is the number of time steps.
+#     gtgi : :obj:`numpy.ndarray`
+#         The inverse of the Green's function tensor, flattened to 1D.
+#         Shape must be (6, 6).
+#     g : :obj:`numpy.ndarray`
+#         The Green's function tensor, flattened to 1D.
+#         Shape must be (6, nrec) where nrec is the number of receivers
+#         and m is the number of components.
+    
+#     Returns
+#     -------
+#     mt : :obj:`numpy.ndarray`
+#         The computed vectorized moment tensor.
+#         Shape is (6,nt) where 6 is the number of components 
+#         and nt is the number of time steps.
+
+#     """
+#     nrec,nt = data.shape
+#     ncomp = 6
+    
+#     mt = np.zeros((6,nt))
+
+#     for it in range(nt):
+#         # Compute d using matrix multiplication
+#         d = np.dot(g, data[:,it])
+            
+#         # Compute M using matrix multiplication
+#         mt[:,it] = np.dot(gtgi, d)
+        
+#     return np.dot(gtgi, np.dot(g, data))
+
+
+def polarity_correction(data: np.ndarray,                         
+                        polcor_type: str="mti",
+                        g: np.ndarray = None,
+                        gtg_inv: np.ndarray = None):
     r"""Polarity correction for microseismic data with corrected event moveout.
 
     This function applies a polarity correction to microseismic data with corrected event moveout.
@@ -263,11 +338,15 @@ def polarity_correction(data:np.ndarray,
     y : :obj:`float`
         Y coordinate of the potential source
     z : :obj:`float`
-        Z coordinate of the potential source
-    g : :obj:`numpy.ndarray` 
-        Array of shape (6, nrec, ngrid) containing the Green tensor derivative for each source point
+        Z coordinate of the potential source    
     polcor_type : :obj:`str`, optional, default: "mti"
         Polarity correction type to be used for data amplitudes.
+    g : :obj:`numpy.ndarray`, optional, default: None
+        Array of shape (6, nrec) containing the vectorized Green tensor derivative.
+        Required for "mti" polcor_type.
+    gtg_inv : :obj:`numpy.ndarray`, optional, default: None 
+        6x6 matrix constructed as an inverse from the matrix derived from vectorized Green tensor derivative.
+        Required for "mti" polcor_type.
 
     Returns
     -------
@@ -291,10 +370,22 @@ def polarity_correction(data:np.ndarray,
     if polcor_type not in ["mti"]:
         raise ValueError(f"Polarity correction type is unknown: {polcor_type}")
 
-    # if polcor_type=="mti":
+    # Perform polarity correction based on the type
+    if polcor_type=="mti":
+        # Check input
+        if g is None:
+            raise ValueError(f"The g input is required for polarity correction type {polcor_type}")
+        if gtg_inv is None:
+            raise ValueError(f"The gtg_inv is required for polarity correction type {polcor_type}")
+        # Compute the vectorized moment tensor for each time moment
+        # M=((G^T*G)^-1)*G^T*A
+        mt  = np.dot(gtg_inv, np.dot(g, data))
+
+        # Compute the polarity sign of the dot product between mt and g
+        sign_matrix = np.sign(np.dot(mt.T, g).T)
         
-    # Create an array of zeros with the same shape as data
-    data_corrected = np.zeros_like(data) 
+        # Apply the polarity correction to the data
+        data_corrected = sign_matrix * data
 
     return data_corrected
 

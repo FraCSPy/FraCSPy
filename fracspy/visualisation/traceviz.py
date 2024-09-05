@@ -4,6 +4,53 @@ import warnings
 
 
 def wiggleplot(data, dt=0.004, norm_indiv=True, figsize=[12, 6], rec_label=True, xhline=True):
+    """
+    Plots seismic traces as wiggles, with options for normalization and customization of the plot appearance.
+
+    This function visualizes a 2D array of seismic data as a series of wiggle plots (one plot per trace). 
+    Each trace is plotted as a line that represents seismic amplitude variations over time. The function 
+    supports individual normalization of traces and provides customization options for labels, grid lines, 
+    and figure size.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        A 2D numpy array where each row represents a seismic trace, and each column represents a time sample.
+    dt : float, optional
+        Time step between samples in seconds. Default is 0.004.
+    norm_indiv : bool, optional
+        If True, each trace is individually normalized to its maximum absolute amplitude for better visualization. 
+        Default is True.
+    figsize : list, optional
+        List specifying the width and height of the figure in inches. Default is [12, 6].
+    rec_label : bool, optional
+        If True, labels indicating the receiver (trace) number are added to the y-axis of a subset of traces. 
+        Default is True.
+    xhline : bool, optional
+        If True, a horizontal line is drawn at zero amplitude for each trace. Default is True.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+        The Figure object containing the plotted wiggles.
+    axs : numpy.ndarray of matplotlib.axes.Axes
+        Array of Axes objects for the individual wiggle plots.
+
+    Notes
+    -----
+    - If the number of traces (rows in `data`) exceeds 40, a warning is issued as this may affect plot readability.
+    - For datasets with more than 10 traces, only a subset of receiver labels is shown to avoid overcrowding.
+    - The function adjusts the x and y axis limits based on the normalization option and data range.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import matplotlib.pyplot as plt
+    >>> data = np.random.randn(25, 1000)  # 25 traces, 1000 samples each
+    >>> fig, axs = wiggleplot(data, dt=0.002)
+    >>> plt.show()
+    """
+
 
     t = np.arange(0,data.shape[1])*dt
     nr = data.shape[0]
@@ -104,10 +151,66 @@ def traceimage(data, dt=0.004, norm_indiv=False, figsize=[12, 6], cbar=True, cli
     return fig, ax
 
 
-def multiwiggleplot(datalist, dt=0.004, norm_indiv=True, 
+def multiwiggleplot(datalist, 
+                    dt=0.004, 
+                    norm_indiv=True, 
                     datalabels=['vx', 'vy', 'vz'],
-                    figsize=[12, 6], rec_label=True, xhline=True):
-    
+                    figsize=[12, 6], 
+                    rec_label=True, 
+                    xhline=True):
+    """
+    Plots multicoponent seismic traces as overlaid wiggles
+
+    This function visualizes multiple seismic data components (e.g., vx, vy, vz) as a series of overlaid wiggle plots.
+    Each plot represents the three components at a single receiver location, allowing for comparison 
+    and visualization of the amplitude variations over time. It supports normalization and provides options for customizing
+    labels, grid lines, and figure size.
+
+    Parameters
+    ----------
+    datalist : list of numpy.ndarray
+        A list of 2D numpy arrays, each representing a different seismic data component (e.g., vx, vy, vz). 
+        Each array should have the same shape, where each row represents a seismic trace, and each column represents a time sample.
+    dt : float, optional
+        Time step between samples in seconds. Default is 0.004.
+    norm_indiv : bool, optional
+        If True, each trace is individually normalized to its maximum absolute amplitude for better visualization. 
+        Default is True.
+    datalabels : list of str, optional
+        Labels for the different data components to be used in the legend. Default is ['vx', 'vy', 'vz'].
+    figsize : list, optional
+        List specifying the width and height of the figure in inches. Default is [12, 6].
+    rec_label : bool, optional
+        If True, labels indicating the receiver (trace) number are added to the y-axis of each trace plot. 
+        Default is True.
+    xhline : bool, optional
+        If True, a horizontal line is drawn at zero amplitude for each trace. Default is True.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+        The Figure object containing the plotted wiggles.
+    axs : numpy.ndarray of matplotlib.axes.Axes
+        Array of Axes objects for the individual wiggle plots.
+
+    Notes
+    -----
+    - If the number of traces (rows in `datalist[0]`) exceeds 15, a warning is issued as this may affect plot readability.
+    - The function overlays the three components (`vx`, `vy`, `vz`) using different colors (`red`, `green`, `blue`).
+    - The function adjusts the x and y axis limits based on the normalization option and data range.
+    - A legend is added to the first subplot to differentiate the overlaid components.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import matplotlib.pyplot as plt
+    >>> vx = np.random.randn(10, 1000)  # 10 traces, 1000 samples each for vx
+    >>> vy = np.random.randn(10, 1000)  # 10 traces, 1000 samples each for vy
+    >>> vz = np.random.randn(10, 1000)  # 10 traces, 1000 samples each for vz
+    >>> fig, axs = multiwiggleplot([vx, vy, vz], dt=0.002)
+    >>> plt.show()
+    """
+
     t = np.arange(0,datalist[0].shape[1])*dt
     nr = datalist[0].shape[0]
 

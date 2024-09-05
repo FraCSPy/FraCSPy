@@ -17,6 +17,8 @@ np.random.seed(0)
 ###############################################################################
 # Data Loading
 # ^^^^^^^^^^^^
+# Load data previously modelled using SOFI3D finite difference package
+
 # Directory containing input data
 input_dir = '../data/pyfrac_SOFIModelling'
 
@@ -28,7 +30,7 @@ nr = recs_xzy.shape[1]
 # Modelling parameters
 dt = 1e-3  # SOFI3D Time sampling rate
 
-# Load seismic data
+# Load the 3 component seismic data
 expname = 'explosive_Homogeneous_griddedarray'
 vz = read_seis(os.path.join(input_dir, 'outputs',
                             'su', f'{expname}_vy.txt'),

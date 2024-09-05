@@ -11,9 +11,6 @@ difference modelling.
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from fracspy.mtsolvers.homo_mti import collect_source_angles, pwave_Greens_comp
-from fracspy.mtsolvers.mtutils import get_mt_computation_dict
-from fracspy.mtsolvers.mtai import *
 from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
 
 

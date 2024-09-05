@@ -17,6 +17,9 @@ np.random.seed(0)
 ###############################################################################
 # Data Loading
 # ^^^^^^^^^^^^
+# Load data previously modelled using SOFI3D finite difference package
+
+
 # Directory containing input data
 input_dir = '../data/pyfrac_SOFIModelling'
 

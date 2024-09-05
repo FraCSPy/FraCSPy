@@ -120,6 +120,7 @@ def explode_volume(volume, t=None, x=None, y=None,
                    tcrop=None, xcrop=None, ycrop=None,
                    labels=('[s]', '[km]', '[km]'),
                    tlabel='t', xlabel='x', ylabel='y',
+                   secondcross=False, secondcrossloc=None, secondcrosslinespec=None,
                    ratio=None, linespec=None, interp=None, title='',
                    filename=None, save_opts=None):
     """Display 3D volume
@@ -163,6 +164,12 @@ def explode_volume(volume, t=None, x=None, y=None,
         Label to use for x axis
     ylabels : :obj:`bool`, optional
         Label to use for y axis
+    secondcross : :obj:`bool`, optional
+        Add second cross to plot
+    secondcrossloc : :obj:`tuple`, optional
+        Indices of second cross location [x,y,z]
+    secondcrosslinespec : :obj:`dict`, optional
+        Specifications for lines of second cross
     ratio : :obj:`float`, optional
         Figure aspect ratio (if ``None``, inferred from the volume sizes directly)
     linespec : :obj:`dict`, optional
@@ -184,6 +191,8 @@ def explode_volume(volume, t=None, x=None, y=None,
     """
     if linespec is None:
         linespec = dict(ls='-', lw=1.5, color='#0DF690')
+    if secondcross and secondcrosslinespec is None:
+        secondcrosslinespec = dict(ls=':', lw=1.5, color='k')
     nt, nx, ny = volume.shape
     t_label, x_label, y_label = labels
 
@@ -206,6 +215,10 @@ def explode_volume(volume, t=None, x=None, y=None,
     tline = dt * t + tlim[0] + 0.5 * dt
     xline = dx * x + xlim[0] + 0.5 * dx
     yline = dy * y + ylim[0] + 0.5 * dy
+    if secondcross:
+        sc_tline = dt * secondcrossloc[2] + tlim[0] + 0.5 * dt
+        sc_xline = dx * secondcrossloc[0] + xlim[0] + 0.5 * dx
+        sc_yline = dy * secondcrossloc[1] + ylim[0] + 0.5 * dy
 
     # instantiate plots
     fig = plt.figure(figsize=figsize)
@@ -229,6 +242,9 @@ def explode_volume(volume, t=None, x=None, y=None,
     ax.imshow(volume[:, :, y], extent=[xlim[0], xlim[1], tlim[1], tlim[0]], **opts)
     ax.axvline(x=xline, **linespec)
     ax.axhline(y=tline, **linespec)
+    if secondcross:
+        ax.axvline(x=sc_xline, **secondcrosslinespec)
+        ax.axhline(y=sc_tline, **secondcrosslinespec)
     if xcrop is not None:
         ax.set_xlim(xcrop)
     if tcrop is not None:
@@ -236,8 +252,12 @@ def explode_volume(volume, t=None, x=None, y=None,
 
     # top plot
     c = ax_top.imshow(volume[t].T, extent=[xlim[0], xlim[1], ylim[1], ylim[0]], **opts)
-    ax_top.axvline(x=xline, **linespec)
+    ax_top.axvline(x=xline, **linespec, label='Intersect Plane')
     ax_top.axhline(y=yline, **linespec)
+    if secondcross:
+        ax_top.axvline(x=sc_xline, **secondcrosslinespec, label='Secondary Loc.')
+        ax_top.axhline(y=sc_yline, **secondcrosslinespec)
+        ax_top.legend()
     ax_top.invert_yaxis()
     if xcrop is not None:
         ax_top.set_xlim(xcrop)
@@ -253,6 +273,9 @@ def explode_volume(volume, t=None, x=None, y=None,
     ax_right.imshow(volume[:, x], extent=[ylim[0], ylim[1], tlim[1], tlim[0]], **opts)
     ax_right.axvline(x=yline, **linespec)
     ax_right.axhline(y=tline, **linespec)
+    if secondcross:
+        ax_right.axvline(x=sc_yline, **secondcrosslinespec)
+        ax_right.axhline(y=sc_tline, **secondcrosslinespec)
     if ycrop is not None:
         ax_right.set_xlim(ycrop)
     if tcrop is not None:

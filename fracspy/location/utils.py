@@ -2,6 +2,23 @@ import numpy as np
 
 
 def _get_centroid(array_xyz):
+    """
+    Computes the centroid (mean) of a set of points in 3D space.
+
+    This function calculates the centroid of a set of points represented by a 2D numpy array with shape (3, N), where N is the number of points.
+    The centroid is the average of all the points along each axis (x, y, z).
+
+    Parameters
+    ----------
+    array_xyz : numpy.ndarray
+        A 2D numpy array of shape (3, N) where each column represents a point in 3D space with coordinates (x, y, z).
+
+    Returns
+    -------
+    numpy.ndarray
+        A 1D numpy array of shape (3,) representing the centroid of the points, with the mean values for each of the x, y, and z coordinates.
+    """
+
     return np.mean(array_xyz, axis=1)
 
 

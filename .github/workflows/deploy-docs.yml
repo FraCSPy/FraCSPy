@@ -1,4 +1,4 @@
-name: Deploy Sphinx docs to GitHub Pages
+name: Build FraCSPy's documentation and deploy to GitHub Pages
 
 on:
   push:

@@ -4,8 +4,7 @@ __all__ = [
 
 
 from fracspy.location.migration import diffstack, semblancediffstack
-from fracspy.location.imaging import lsi, sparselsi
-from fracspy.location.xcorri import xcorri
+from fracspy.location.imaging import lsi, sparselsi, xcorri
 
 
 _location_kind = {"diffstack": diffstack,

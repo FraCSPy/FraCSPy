@@ -20,6 +20,9 @@ microseismic_image = np.zeros_like(background_noise)
 microseismic_image[source_location] = 25
 microseismic_image = gaussian_filter(microseismic_image, sigma=2, radius=5)
 
+sx = int(np.round(source_location[0]))
+sy = int(np.round(source_location[1]))
+sz = int(np.round(source_location[2]))
 
 fig, axs = locimage3d(microseismic_image,
                       x0=int(np.round(source_location[0])),
@@ -33,10 +36,10 @@ plt.tight_layout()
 # Noisy Example - Artifact present in image 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-artifact_location_center = 15, 15, 25  # x,y,z location 
+artifact_location_center = 25, 35, 25  # x,y,z location 
 artifact_image = np.zeros_like(microseismic_image)
 artifact_image[artifact_location_center] = 50
-artifact_image = gaussian_filter(artifact_image, sigma=2, radius=2)
+artifact_image = gaussian_filter(artifact_image, sigma=3, radius=4)
 
 microseismic_image_noisy = microseismic_image.copy() + artifact_image
 
@@ -53,8 +56,13 @@ fig, axs = locimage3d(microseismic_image_noisy,
 plt.tight_layout()
 
 ###############################################################################
-# Instead, by passing the x0, y0, z0 parameters to the imaging function, we can
-# dictate where the volume is to be sliced
+# Instead, if we know the area where we expect the microseismicity to occur we
+# can crop the image around this location using the xlim, ylim and zlim parameters.
+#
+# Note, this is a good solution to allow zooming in on specific areas, however 
+# if you have an area of interest defined it is preferable to use that in the 
+# localisation/MTI procedures and then your resulting inverted volume will already 
+# focus on that area. For more information, see the MTWI tutorial.
 
 sx = int(np.round(source_location[0]))
 sy = int(np.round(source_location[1]))
@@ -64,5 +72,8 @@ fig, axs = locimage3d(microseismic_image_noisy,
                       x0=sx,
                       y0=sy,
                       z0=sz,
+                      xlim=[sx-10,sx+10],
+                      ylim=[sy-10,sy+10],
+                      zlim=[sz-10,sz+10],
                       clipval=[0,1])
 plt.tight_layout()

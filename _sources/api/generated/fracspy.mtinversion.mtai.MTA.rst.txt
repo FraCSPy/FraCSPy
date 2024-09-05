@@ -1,0 +1,43 @@
+﻿fracspy.mtinversion.mtai.MTA
+============================
+
+.. currentmodule:: fracspy.mtinversion.mtai
+
+.. autoclass:: MTA
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~MTA.__init__
+        ~MTA.invert
+        ~MTA.model
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.mtinversion.mtai.MTA.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

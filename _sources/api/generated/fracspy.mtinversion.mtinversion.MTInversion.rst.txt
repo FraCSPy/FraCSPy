@@ -1,0 +1,42 @@
+﻿fracspy.mtinversion.mtinversion.MTInversion
+===========================================
+
+.. currentmodule:: fracspy.mtinversion.mtinversion
+
+.. autoclass:: MTInversion
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~MTInversion.__init__
+        ~MTInversion.apply
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.mtinversion.mtinversion.MTInversion.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

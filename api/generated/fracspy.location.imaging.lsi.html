@@ -153,6 +153,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -172,6 +179,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -264,6 +293,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -280,6 +316,20 @@ document.write(`
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -321,6 +371,10 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html">fracspy.modelling.trueamp_kirchhoff.TAKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTSKirchhoff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
@@ -338,8 +392,24 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fracspy.mtsolvers.mtai.frwrd_mtmodelling.html">fracspy.mtsolvers.mtai.frwrd_mtmodelling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fracspy.mtsolvers.mtai.lsqr_mtsolver.html">fracspy.mtsolvers.mtai.lsqr_mtsolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtwi.MTW.html">fracspy.mtinversion.mtwi.MTW</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtinversion.MTInversion.html">fracspy.mtinversion.mtinversion.MTInversion</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.collect_source_angles.html">fracspy.mtinversion.greensfunction.collect_source_angles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.pwave_greens_comp.html">fracspy.mtinversion.greensfunction.pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_mt_at_loc.html">fracspy.mtinversion.utils.get_mt_at_loc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_mt_max_locs.html">fracspy.mtinversion.utils.get_mt_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_magnitude.html">fracspy.mtinversion.utils.get_magnitude</a></li>
 </ul>
 </div>
 </nav></div>
@@ -401,14 +471,14 @@ document.write(`
 <h1>fracspy.location.imaging.lsi<a class="headerlink" href="#fracspy-location-imaging-lsi" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="fracspy.location.imaging.lsi">
-<span class="sig-prename descclassname"><span class="pre">fracspy.location.imaging.</span></span><span class="sig-name descname"><span class="pre">lsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nforhc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/imaging.html#lsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.imaging.lsi" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">fracspy.location.imaging.</span></span><span class="sig-name descname"><span class="pre">lsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nforhc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/imaging.html#lsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.imaging.lsi" title="Link to this definition">#</a></dt>
 <dd><p>Least-squares imaging for microseismic source location</p>
 <p>This routine performs imaging of microseismic data by
 least-squares inversion using a Kirchhoff modelling operator.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Data of shape :math`n_r         imes n_t`</p>
+<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Data of shape :math`n_r         imes n_t`</p>
 </dd>
 <dt><strong>n_xyz</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Number of grid points in X-, Y-, and Z-axes for the imaging area</p>
 </dd>
@@ -419,15 +489,15 @@ least-squares inversion using a Kirchhoff modelling operator.</p>
 <dt><strong>nforhc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional</span></dt><dd><p>Number of points for hypocenter</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, optional</span></dt><dd><p>Verbosity (if <code class="docutils literal notranslate"><span class="pre">True</span></code>, show iteration progression of the
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.lsqr.html#scipy.sparse.linalg.lsqr" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.lsqr</span></code></a> solver)</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.lsqr.html#scipy.sparse.linalg.lsqr" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.lsqr</span></code></a> solver)</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>inv</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Inverted volume</p>
+<dt><strong>inv</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Inverted volume</p>
 </dd>
-<dt><strong>hc</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Estimated hypocentral location</p>
+<dt><strong>hc</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Estimated hypocentral location</p>
 </dd>
 </dl>
 </dd>
@@ -520,7 +590,7 @@ least-squares inversion using a Kirchhoff modelling operator.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

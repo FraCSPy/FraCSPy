@@ -18,8 +18,8 @@
 .. _sphx_glr_gallery_plot_Beachball.py:
 
 
-Moment Tensor Plotting - Matrix Style
-=======================================
+Focal Mechanism Beachball Plot
+==============================
 This example shows how to create a heatmap of the moment tensor matrix
 
 .. GENERATED FROM PYTHON SOURCE LINES 6-14

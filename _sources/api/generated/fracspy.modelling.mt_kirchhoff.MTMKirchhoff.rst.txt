@@ -1,0 +1,12 @@
+﻿fracspy.modelling.mt\_kirchhoff.MTMKirchhoff
+============================================
+
+.. currentmodule:: fracspy.modelling.mt_kirchhoff
+
+.. autofunction:: MTMKirchhoff
+
+.. include:: backreferences/fracspy.modelling.mt_kirchhoff.MTMKirchhoff.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

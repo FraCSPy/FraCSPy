@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**06:15.324** total execution time for 8 files **from all galleries**:
+**06:54.597** total execution time for 11 files **from all galleries**:
 
 .. container::
 
@@ -33,25 +33,34 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py` (``../../tutorials/Location_KirchhoffBased_tutorial.py``)
-     - 02:51.666
+     - 03:06.421
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py` (``../../tutorials/MT_WaveformInversion_tutorial.py``)
-     - 01:48.225
+     - 02:07.893
      - 0.0
    * - :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` (``../../tutorials/Location_DiffractionStacking_tutorial.py``)
-     - 01:07.062
+     - 01:07.278
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/MT_AmplitudeInversion_tutorial.py``)
-     - 00:27.026
+     - 00:26.965
+     - 0.0
+   * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``../../examples/plot_SeismicWiggles.py``)
+     - 00:04.540
+     - 0.0
+   * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``../../examples/plot_EventImages.py``)
+     - 00:00.898
+     - 0.0
+   * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``../../examples/plot_SeismicTraceImage.py``)
+     - 00:00.275
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``../../examples/plot_ComparingBeachballs.py``)
-     - 00:00.688
+     - 00:00.163
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``../../examples/plot_ComparingMTmatrices.py``)
-     - 00:00.596
+     - 00:00.100
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``../../examples/plot_MTmatrix.py``)
-     - 00:00.038
+     - 00:00.039
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``../../examples/plot_Beachball.py``)
      - 00:00.025

@@ -150,6 +150,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -169,6 +176,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -259,6 +288,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -275,6 +311,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -401,14 +451,32 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform event location</span>
 
 <span class="sd">        This method performs event location for the provided dataset using</span>
-<span class="sd">        the pre-defined acquisition geometry using one of the available imaging technique.</span>
+<span class="sd">        the pre-defined acquisition geometry using one of the available imaging techniques.</span>
 
 <span class="sd">        .. note:: This method can be called multiple times using different input datasets</span>
 <span class="sd">          and/or imaging methods as the internal parameters are not modified during the</span>
 <span class="sd">          location procedure.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : :obj:`numpy.ndarray`</span>
+<span class="sd">            Data of shape :math`n_r \times n_t`</span>
+<span class="sd">        kind : :obj:`str`, optional</span>
+<span class="sd">            Algorithm kind (`diffstack`, `semblancediffstack`,</span>
+<span class="sd">            `lsi`, `sparselsi`, or `xcorri`</span>
+<span class="sd">        kwargs : :obj:`dict`, optional</span>
+<span class="sd">            Keyword arguments to pass to the location algorithm</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        im : :obj:`numpy.ndarray`</span>
+<span class="sd">            Migrated volume</span>
+<span class="sd">        hc : :obj:`numpy.ndarray`</span>
+<span class="sd">            Estimated hypocentral location</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_location_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_xyz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">im</span><span class="p">,</span> <span class="n">hc</span> <span class="o">=</span> <span class="n">_location_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_xyz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">hc</span></div>
 
 </pre></div>
 
@@ -460,7 +528,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

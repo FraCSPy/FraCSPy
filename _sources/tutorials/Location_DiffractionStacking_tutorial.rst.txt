@@ -250,7 +250,7 @@ Diffraction stacking
 
     (144, 50, 50, 50)
     (144, 125000)
-    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:12: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:92: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       fig.tight_layout()
 
 
@@ -259,7 +259,7 @@ Diffraction stacking
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 7.062 seconds)
+   **Total running time of the script:** (1 minutes 7.278 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_DiffractionStacking_tutorial.py:

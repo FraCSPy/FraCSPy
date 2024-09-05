@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.greensfunction.mt\_pwave\_greens\_comp
+==========================================================
+
+.. currentmodule:: fracspy.mtinversion.greensfunction
+
+.. autofunction:: mt_pwave_greens_comp
+
+.. include:: backreferences/fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -155,6 +155,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
@@ -174,6 +181,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -266,6 +295,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../gallery/index.html">
     Gallery
   </a>
@@ -282,6 +318,20 @@ document.write(`
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../credits.html">
+    Credits
   </a>
 </li>
 
@@ -323,6 +373,10 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html">fracspy.modelling.trueamp_kirchhoff.TAKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTSKirchhoff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
@@ -340,8 +394,24 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.frwrd_mtmodelling.html">fracspy.mtsolvers.mtai.frwrd_mtmodelling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.lsqr_mtsolver.html">fracspy.mtsolvers.mtai.lsqr_mtsolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.mtwi.MTW.html">fracspy.mtinversion.mtwi.MTW</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.mtinversion.MTInversion.html">fracspy.mtinversion.mtinversion.MTInversion</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.collect_source_angles.html">fracspy.mtinversion.greensfunction.collect_source_angles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.pwave_greens_comp.html">fracspy.mtinversion.greensfunction.pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_mt_at_loc.html">fracspy.mtinversion.utils.get_mt_at_loc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_mt_max_locs.html">fracspy.mtinversion.utils.get_mt_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_magnitude.html">fracspy.mtinversion.utils.get_magnitude</a></li>
 </ul>
 </div>
 </nav></div>
@@ -424,6 +494,17 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 </tbody>
 </table>
 </div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html#fracspy.modelling.mt_kirchhoff.MTSKirchhoff" title="fracspy.modelling.mt_kirchhoff.MTSKirchhoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MTSKirchhoff</span></code></a>(x, y, z, recs, t, wav, wavc, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html#fracspy.modelling.mt_kirchhoff.MTMKirchhoff" title="fracspy.modelling.mt_kirchhoff.MTMKirchhoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MTMKirchhoff</span></code></a>(x, y, z, recs, t, wav, wavc, ...)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="imaging-inversion">
 <h3>Imaging/Inversion<a class="headerlink" href="#imaging-inversion" title="Link to this heading">#</a></h3>
@@ -471,7 +552,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html#fracspy.location.utils.get_max_locs" title="fracspy.location.utils.get_max_locs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_max_locs</span></code></a>(ssimage[, n_max, rem_edge, ...])</p></td>
-<td><p></p></td>
+<td><p>Source location from image</p></td>
 </tr>
 </tbody>
 </table>
@@ -480,15 +561,62 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 </section>
 <section id="moment-tensor-inversion">
 <h2>Moment Tensor Inversion<a class="headerlink" href="#moment-tensor-inversion" title="Link to this heading">#</a></h2>
-<section id="source-location-known">
-<h3>Source Location Known<a class="headerlink" href="#source-location-known" title="Link to this heading">#</a></h3>
+<section id="inverse-engines">
+<h3>Inverse engines<a class="headerlink" href="#inverse-engines" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.frwrd_mtmodelling.html#fracspy.mtsolvers.mtai.frwrd_mtmodelling" title="fracspy.mtsolvers.mtai.frwrd_mtmodelling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frwrd_mtmodelling</span></code></a>(Gz, mt)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.mtai.MTA.html#fracspy.mtinversion.mtai.MTA" title="fracspy.mtinversion.mtai.MTA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MTA</span></code></a>(x, y, z, recs, vel, src_idx, cmp_idx, ...)</p></td>
+<td><p>Moment-Tensor Amplitude modelling and inversion</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.mtsolvers.mtai.lsqr_mtsolver.html#fracspy.mtsolvers.mtai.lsqr_mtsolver" title="fracspy.mtsolvers.mtai.lsqr_mtsolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsqr_mtsolver</span></code></a>(Gz, u_zp)</p></td>
-<td><p></p></td>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.mtwi.MTW.html#fracspy.mtinversion.mtwi.MTW" title="fracspy.mtinversion.mtwi.MTW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MTW</span></code></a>(x, y, z, recs, vel, src_idx, comp_idx, ...)</p></td>
+<td><p>Moment-Tensor Waveform modelling and inversion</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.mtinversion.MTInversion.html#fracspy.mtinversion.mtinversion.MTInversion" title="fracspy.mtinversion.mtinversion.MTInversion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MTInversion</span></code></a>(x, y, z, recs, vel)</p></td>
+<td><p>Moment-Tensor inversion</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id1">
+<h3>Utilities<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.collect_source_angles.html#fracspy.mtinversion.greensfunction.collect_source_angles" title="fracspy.mtinversion.greensfunction.collect_source_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collect_source_angles</span></code></a>(x, y, z, recs)</p></td>
+<td><p>Angles between sources and receivers</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.pwave_greens_comp.html#fracspy.mtinversion.greensfunction.pwave_greens_comp" title="fracspy.mtinversion.greensfunction.pwave_greens_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pwave_greens_comp</span></code></a>(cosine_sourceangles, ...)</p></td>
+<td><p>Particle velocity component of the P-wave Green's function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.html#fracspy.mtinversion.greensfunction.mt_pwave_greens_comp" title="fracspy.mtinversion.greensfunction.mt_pwave_greens_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mt_pwave_greens_comp</span></code></a>(n_xyz, ...)</p></td>
+<td><p>Particle velocity component of the P-wave Green's functions within a volumetric source grid for all moment tensor components</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html#fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp" title="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mt_pwave_greens_multicomp</span></code></a>(n_xyz, ...)</p></td>
+<td><p>Particle velocity components of the P-wave Green's functions within a volumetric source grid for all moment tensor components</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_mt_at_loc.html#fracspy.mtinversion.utils.get_mt_at_loc" title="fracspy.mtinversion.utils.get_mt_at_loc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mt_at_loc</span></code></a>(mt_image_set, location_indices)</p></td>
+<td><p>Moment tensor at specific location</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_mt_max_locs.html#fracspy.mtinversion.utils.get_mt_max_locs" title="fracspy.mtinversion.utils.get_mt_max_locs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mt_max_locs</span></code></a>(mt_image_set[, n_max, ...])</p></td>
+<td><p>Source location from moment tensor component images</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.mtinversion.utils.get_magnitude.html#fracspy.mtinversion.utils.get_magnitude" title="fracspy.mtinversion.utils.get_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_magnitude</span></code></a>(mt)</p></td>
+<td><p>Seismic moment and local magnitude</p></td>
 </tr>
 </tbody>
 </table>
@@ -554,7 +682,12 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moment-tensor-inversion">Moment Tensor Inversion</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#source-location-known">Source Location Known</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-engines">Inverse engines</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Utilities</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -594,7 +727,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

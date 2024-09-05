@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.greensfunction.mt\_pwave\_greens\_multicomp
+===============================================================
+
+.. currentmodule:: fracspy.mtinversion.greensfunction
+
+.. autofunction:: mt_pwave_greens_multicomp
+
+.. include:: backreferences/fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

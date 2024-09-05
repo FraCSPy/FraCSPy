@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.utils.get\_magnitude
+========================================
+
+.. currentmodule:: fracspy.mtinversion.utils
+
+.. autofunction:: get_magnitude
+
+.. include:: backreferences/fracspy.mtinversion.utils.get_magnitude.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

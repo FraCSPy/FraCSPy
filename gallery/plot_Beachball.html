@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Moment Tensor Plotting - Matrix Style &#8212; fracspy</title>
+        <title>Focal Mechanism Beachball Plot &#8212; fracspy</title>
     
 
   
@@ -53,8 +53,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/plot_Beachball';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
-    <link rel="prev" title="Moment Tensor Plotting - Matrix Style" href="plot_MTmatrix.html" />
+    <link rel="next" title="Moment Tensor Plotting - Matrix Style" href="plot_MTmatrix.html" />
+    <link rel="prev" title="Event Volume Plotting" href="plot_EventImages.html" />
     
     <script src="../_static/require.js"></script>
 
@@ -152,6 +152,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Gallery
@@ -172,6 +179,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -259,6 +288,13 @@ document.write(`
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Gallery
@@ -276,6 +312,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../credits.html">
+    Credits
   </a>
 </li>
 
@@ -311,10 +361,13 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="plot_ComparingBeachballs.html">Comparing Beachball Focal Mechanism Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_ComparingBeachballs.html">Comparing Focal Mechanism Beachball Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plot_ComparingMTmatrices.html">Comparing Moment Tensor Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_EventImages.html">Event Volume Plotting</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Focal Mechanism Beachball Plot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plot_MTmatrix.html">Moment Tensor Plotting - Matrix Style</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Moment Tensor Plotting - Matrix Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_SeismicTraceImage.html">Seismic Data Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_SeismicWiggles.html">Seismic Wiggles Plotting</a></li>
 </ul>
 </div>
 </nav></div>
@@ -355,7 +408,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Gallery</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Moment...</li>
+    <li class="breadcrumb-item active" aria-current="page">Focal...</li>
   </ul>
 </nav>
 </div>
@@ -377,8 +430,8 @@ document.write(`
 <p><a class="reference internal" href="#sphx-glr-download-gallery-plot-beachball-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="moment-tensor-plotting-matrix-style">
-<span id="sphx-glr-gallery-plot-beachball-py"></span><h1>Moment Tensor Plotting - Matrix Style<a class="headerlink" href="#moment-tensor-plotting-matrix-style" title="Link to this heading">#</a></h1>
+<section class="sphx-glr-example-title" id="focal-mechanism-beachball-plot">
+<span id="sphx-glr-gallery-plot-beachball-py"></span><h1>Focal Mechanism Beachball Plot<a class="headerlink" href="#focal-mechanism-beachball-plot" title="Link to this heading">#</a></h1>
 <p>This example shows how to create a heatmap of the moment tensor matrix</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -442,20 +495,20 @@ pyfrac.visualisation.momenttensor_plots.MTBeachball</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="plot_MTmatrix.html"
+       href="plot_EventImages.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Moment Tensor Plotting - Matrix Style</p>
+        <p class="prev-next-title">Event Volume Plotting</p>
       </div>
     </a>
     <a class="right-next"
-       href="../tutorials/index.html"
+       href="plot_MTmatrix.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorials</p>
+        <p class="prev-next-title">Moment Tensor Plotting - Matrix Style</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -498,7 +551,7 @@ pyfrac.visualisation.momenttensor_plots.MTBeachball</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

@@ -150,6 +150,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -169,6 +176,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -259,6 +288,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -275,6 +311,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -443,8 +493,9 @@ document.write(`
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The True-amplitude Kirchhoff single-sided demigration operator synthesizes</span>
-<span class="sd">    seismic data given a</span>
-<span class="sd">    propagation velocity model :math:`v` and a source distribution :math:`m`.</span>
+<span class="sd">    seismic data given a propagation velocity model :math:`v` and a source distribution</span>
+<span class="sd">    :math:`m`.</span>
+
 <span class="sd">    In forward mode:</span>
 
 <span class="sd">    .. math::</span>
@@ -455,7 +506,7 @@ document.write(`
 <span class="sd">    where :math:`m(\mathbf{x_s})` represents the source distribution</span>
 <span class="sd">    at every location in the subsurface, :math:`G(\mathbf{x_r}, \mathbf{x_s}, t)`</span>
 <span class="sd">    is the Green&#39;s function from source-to-receiver, and finally :math:`\widetilde{w}(t)` is</span>
-<span class="sd">    a filtered version of the wavelet :math:`w(t)` [3]_ (or the wavelet itself when</span>
+<span class="sd">    a filtered version of the wavelet :math:`w(t)` [1]_ (or the wavelet itself when</span>
 <span class="sd">    ``wavfilter=False``). In our implementation, the following high-frequency</span>
 <span class="sd">    approximation of the Green&#39;s functions is adopted:</span>
 
@@ -482,19 +533,19 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">z</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-        <span class="n">t</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-        <span class="n">recs</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-        <span class="n">wav</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-        <span class="n">wavcenter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NDArray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">wavfilter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">trav</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NDArray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">amp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NDArray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="p">:</span> <span class="n">DTypeLike</span> <span class="o">=</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;K&quot;</span><span class="p">,</span>
+        <span class="n">z</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">,</span>
+        <span class="n">recs</span><span class="p">,</span>
+        <span class="n">wav</span><span class="p">,</span>
+        <span class="n">wavcenter</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wavfilter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">trav</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">amp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;K&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># identify geometry</span>
         <span class="p">(</span>
@@ -700,7 +751,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

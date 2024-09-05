@@ -150,6 +150,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -169,6 +176,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -259,6 +288,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -275,6 +311,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -367,12 +417,38 @@ document.write(`
 <div class="viewcode-block" id="get_max_locs">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.get_max_locs.html#fracspy.location.utils.get_max_locs">[docs]</a>
 <span class="k">def</span> <span class="nf">get_max_locs</span><span class="p">(</span><span class="n">ssimage</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgebuf</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">absval</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Source location from image</span>
 
-    <span class="k">if</span> <span class="n">absval</span><span class="p">:</span> <span class="n">ssimage</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">ssimage</span><span class="p">)</span>
+<span class="sd">    Compute the source location from a seismic image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ssimage : :obj:`numpy.ndarray`</span>
+<span class="sd">        Image of size :math:`n_x \times n_y \times n_z`</span>
+<span class="sd">    n_max : :obj:`int`, optional</span>
+<span class="sd">        Number of maximum values to extract (if ``n_max&gt;1``, the centroid of these values</span>
+<span class="sd">        will be computed and provided as the estimated source location)</span>
+<span class="sd">    rem_edge : :obj:`bool`, optional</span>
+<span class="sd">        Remove edges of volume</span>
+<span class="sd">    edgebuf : :obj:`int`, optional</span>
+<span class="sd">        Number of grid points to remove from each edge if ``rem_edge=True``</span>
+<span class="sd">    absval : :obj:`bool`, optional</span>
+<span class="sd">        Compute absolute value of ``ssimage``</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ev_loc : :obj:`tuple`</span>
+<span class="sd">        Most likely source location</span>
+<span class="sd">    ev_locs : :obj:`tuple`</span>
+<span class="sd">        `n_max` most likely source locations</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">absval</span><span class="p">:</span>
+        <span class="n">ssimage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ssimage</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rem_edge</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ssimage</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ssimage</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">cropped_image</span> <span class="o">=</span> <span class="n">ssimage</span><span class="p">[</span><span class="n">edgebuf</span><span class="p">:</span><span class="o">-</span><span class="n">edgebuf</span><span class="p">,</span> <span class="n">edgebuf</span><span class="p">:</span><span class="o">-</span><span class="n">edgebuf</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ssimage</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ssimage</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">cropped_image</span> <span class="o">=</span> <span class="n">ssimage</span><span class="p">[</span><span class="n">edgebuf</span><span class="p">:</span><span class="o">-</span><span class="n">edgebuf</span><span class="p">,</span> <span class="n">edgebuf</span><span class="p">:</span><span class="o">-</span><span class="n">edgebuf</span><span class="p">,</span>  <span class="n">edgebuf</span><span class="p">:</span><span class="o">-</span><span class="n">edgebuf</span><span class="p">]</span>
         <span class="n">ev_locs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">cropped_image</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">n_max</span><span class="p">)[</span><span class="o">-</span><span class="n">n_max</span><span class="p">:],</span>
                                             <span class="n">cropped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
@@ -384,27 +460,35 @@ document.write(`
 
     <span class="k">if</span> <span class="n">n_max</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">ev_loc</span> <span class="o">=</span> <span class="n">_get_centroid</span><span class="p">(</span><span class="n">ev_locs</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span> <span class="n">ev_loc</span> <span class="o">=</span> <span class="n">ev_locs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ev_loc</span> <span class="o">=</span> <span class="n">ev_locs</span>
 
     <span class="k">return</span> <span class="n">ev_loc</span><span class="p">,</span> <span class="n">ev_locs</span></div>
 
 
 
 <span class="k">def</span> <span class="nf">dist2rec</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Compute distances from a 3D grid of points to array of receivers </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Receivers-to-grid distances</span>
+
+<span class="sd">    Compute distances from a 3D grid of points to array of receivers</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    recs - receiver coordinates [3,nr]</span>
-<span class="sd">    gx - x coordinates of a grid [1,ngx]</span>
-<span class="sd">    gy - y coordinates of a grid [1,ngy] </span>
-<span class="sd">    gz - z coordinates of a grid [1,ngz]</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`</span>
+<span class="sd">        receiver coordinates of size :math:`3 \times n_r`</span>
+<span class="sd">    gx : :obj:`numpy.ndarray`</span>
+<span class="sd">        x coordinates</span>
+<span class="sd">    gy : :obj:`numpy.ndarray`</span>
+<span class="sd">        y coordinates</span>
+<span class="sd">    gz : :obj:`numpy.ndarray`</span>
+<span class="sd">        z coordinates</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    d - 4D array of distances [nr,ngx,ngy,ngz]</span>
+<span class="sd">    d : :obj:`numpy.ndarray`</span>
+<span class="sd">        4D array of distances of size :math:`n_r \times n_x \times n_y \times n_z`</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">nr</span> <span class="o">=</span> <span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">recs</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
@@ -416,7 +500,8 @@ document.write(`
 <span class="k">def</span> <span class="nf">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">itshifts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Moveout correction for microseismic data.</span>
 
-<span class="sd">    This function applies a moveout correction to microsseismic data by shifting each sample in time according to its corresponding shift value.</span>
+<span class="sd">    This function applies a moveout correction to microsseismic data by shifting</span>
+<span class="sd">    each sample in time according to its corresponding shift value.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -429,7 +514,8 @@ document.write(`
 
 <span class="sd">    Notes</span>
 <span class="sd">    ----</span>
-<span class="sd">    The function checks that all values in `itshifts` are non-negative and that the length of `itshifts` matches the number of rows in `data`.</span>
+<span class="sd">    The function checks that all values in `itshifts` are non-negative and that the length of `itshifts`</span>
+<span class="sd">    matches the number of rows in `data`.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; # Assuming you have a 2D array &quot;data&quot; with shape (nr, nt) and an array &quot;itshifts&quot; with shape (nr,)</span>
@@ -590,7 +676,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.utils.get\_mt\_max\_locs
+============================================
+
+.. currentmodule:: fracspy.mtinversion.utils
+
+.. autofunction:: get_mt_max_locs
+
+.. include:: backreferences/fracspy.mtinversion.utils.get_mt_max_locs.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

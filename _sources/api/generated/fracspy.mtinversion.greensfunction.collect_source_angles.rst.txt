@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.greensfunction.collect\_source\_angles
+==========================================================
+
+.. currentmodule:: fracspy.mtinversion.greensfunction
+
+.. autofunction:: collect_source_angles
+
+.. include:: backreferences/fracspy.mtinversion.greensfunction.collect_source_angles.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

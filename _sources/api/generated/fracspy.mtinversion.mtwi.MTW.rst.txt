@@ -1,0 +1,46 @@
+﻿fracspy.mtinversion.mtwi.MTW
+============================
+
+.. currentmodule:: fracspy.mtinversion.mtwi
+
+.. autoclass:: MTW
+
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~MTW.__init__
+        ~MTW.adjoint
+        ~MTW.invert
+        ~MTW.lsi
+        ~MTW.model
+        ~MTW.sparselsi
+
+
+
+
+
+
+
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+.. include:: backreferences/fracspy.mtinversion.mtwi.MTW.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
+
+
+
+
+
+
+
+
+
+
+

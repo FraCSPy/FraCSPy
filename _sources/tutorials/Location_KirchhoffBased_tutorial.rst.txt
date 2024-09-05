@@ -387,7 +387,7 @@ the source location is likely to be a smoothed product, as opposed
 
     True Hypo-Center: [26, 34, 60]
     Migration Hypo-Centers: [26.2 34.  61. ]
-    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:12: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:92: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       fig.tight_layout()
     /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
@@ -496,7 +496,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 51.666 seconds)
+   **Total running time of the script:** (3 minutes 6.421 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_KirchhoffBased_tutorial.py:

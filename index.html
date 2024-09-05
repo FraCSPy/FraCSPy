@@ -55,7 +55,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Gallery" href="gallery/index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
     
     <script src="_static/require.js"></script>
 
@@ -154,6 +154,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Gallery
   </a>
@@ -173,6 +180,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -267,6 +296,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Gallery
   </a>
@@ -283,6 +319,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="credits.html">
+    Credits
   </a>
 </li>
 
@@ -345,17 +395,35 @@ newly proposed algorithms and workflows.</p>
 <section id="available-tools">
 <h2>Available Tools<a class="headerlink" href="#available-tools" title="Link to this heading">#</a></h2>
 <p>In this first version, FraCSPy focuses on traditional monitoring tools (i.e., non-Machine Learning procedures). It has routines that cover the following
-elements of the microseismic monitoring pipeline:
-- detection
-- localisation
-- moment tensor determination</p>
+elements of the microseismic monitoring pipeline:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>detection,</p></li>
+<li><p>localisation, and</p></li>
+<li><p>characterisation: moment tensor determination and moment magnitude computation.</p></li>
+</ul>
+</div></blockquote>
 <p>Alongside these core features, there are a number of functions available for data processing and for visualisation.</p>
 </section>
-<section id="history">
-<h2>History<a class="headerlink" href="#history" title="Link to this heading">#</a></h2>
-<p>FraCSPy was initially written by senior researchers at King Abdullah University of Science and Technology and GFZ
-German Research Centre for Geosciences, after they identified that the lack of available conventional algorithms for
-benchmarking purposes posed a key challenge for junior researchers.</p>
+<section id="package-design">
+<h2>Package Design<a class="headerlink" href="#package-design" title="Link to this heading">#</a></h2>
+<p>The package is designed with core classes for each element of the microseismic pipeline (e.g., detection, location, etc.) with
+subroutines contained in these classes that follow conventional methods. For example, the location class has subroutines for
+diffraction stack imaging, least-squares imaging and cross-correlation-based Kirchhoff imaging, among others. First, the
+location object is created</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">L</span> <span class="o">=</span> <span class="n">fracspy</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">Location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then the selected methodology is applied, using the <cite>kind</cite> feature,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">inv</span><span class="p">,</span> <span class="n">inv_hc</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">vz</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;lsi&quot;</span><span class="p">,</span> <span class="n">Op</span><span class="o">=</span><span class="n">Op</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Building the package in this manner keeps the codebase relatively clean and allows for easy adaptation/inclusion of different methodologies.</p>
+<p>The ability to include multiple methodologies is a core concept behind which FraCSPy is created. To date, there is no <em>one</em>
+detection/location/characterisation methodology which is prized above all others. And, therefore, we wish to include as many conventionally
+used methodologies as possible - allowing the users to choose which is right for the specific task and dataset.</p>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -374,11 +442,11 @@ benchmarking purposes posed a key challenge for junior researchers.</p>
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="gallery/index.html"
+       href="installation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Gallery</p>
+        <p class="prev-next-title">Installation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -403,7 +471,7 @@ benchmarking purposes posed a key challenge for junior researchers.</p>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">FraCSPy</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-tools">Available Tools</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history">History</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#package-design">Package Design</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
 </ul>
@@ -446,7 +514,7 @@ benchmarking purposes posed a key challenge for junior researchers.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

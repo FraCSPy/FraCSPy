@@ -150,6 +150,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -169,6 +176,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -259,6 +288,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../gallery/index.html">
     Gallery
   </a>
@@ -275,6 +311,20 @@ document.write(`
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../api/index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -367,7 +417,7 @@ document.write(`
 
 <div class="viewcode-block" id="lsi">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.imaging.lsi.html#fracspy.location.imaging.lsi">[docs]</a>
-<span class="k">def</span> <span class="nf">lsi</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">lsi</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Least-squares imaging for microseismic source location</span>
 
 <span class="sd">    This routine performs imaging of microseismic data by</span>
@@ -406,7 +456,7 @@ document.write(`
 
 <div class="viewcode-block" id="sparselsi">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.imaging.sparselsi.html#fracspy.location.imaging.sparselsi">[docs]</a>
-<span class="k">def</span> <span class="nf">sparselsi</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">l1eps</span><span class="o">=</span><span class="mf">1e2</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sparselsi</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">l1eps</span><span class="o">=</span><span class="mf">1e2</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparsity-promoting imaging for microseismic source location</span>
 
 <span class="sd">    This routine performs imaging of microseismic data by</span>
@@ -494,7 +544,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

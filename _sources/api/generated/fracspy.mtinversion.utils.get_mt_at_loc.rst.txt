@@ -1,0 +1,12 @@
+﻿fracspy.mtinversion.utils.get\_mt\_at\_loc
+==========================================
+
+.. currentmodule:: fracspy.mtinversion.utils
+
+.. autofunction:: get_mt_at_loc
+
+.. include:: backreferences/fracspy.mtinversion.utils.get_mt_at_loc.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

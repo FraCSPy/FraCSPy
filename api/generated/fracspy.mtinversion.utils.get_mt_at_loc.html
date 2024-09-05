@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>fracspy.mtsolvers.mtai.frwrd_mtmodelling &#8212; fracspy</title>
+        <title>fracspy.mtinversion.utils.get_mt_at_loc &#8212; fracspy</title>
     
 
   
@@ -50,11 +50,13 @@
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.mtsolvers.mtai.frwrd_mtmodelling';</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.mtinversion.utils.get_mt_at_loc';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="fracspy.mtsolvers.mtai.lsqr_mtsolver" href="fracspy.mtsolvers.mtai.lsqr_mtsolver.html" />
-    <link rel="prev" title="fracspy.location.utils.get_max_locs" href="fracspy.location.utils.get_max_locs.html" />
+    <link rel="next" title="fracspy.mtinversion.utils.get_mt_max_locs" href="fracspy.mtinversion.utils.get_mt_max_locs.html" />
+    <link rel="prev" title="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html" />
     
     <script src="../../_static/require.js"></script>
 
@@ -153,6 +155,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -172,6 +181,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -264,6 +295,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -280,6 +318,20 @@ document.write(`
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -321,6 +373,10 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html">fracspy.modelling.trueamp_kirchhoff.TAKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTSKirchhoff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
@@ -337,9 +393,25 @@ document.write(`
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
 </ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtwi.MTW.html">fracspy.mtinversion.mtwi.MTW</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtinversion.MTInversion.html">fracspy.mtinversion.mtinversion.MTInversion</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.collect_source_angles.html">fracspy.mtinversion.greensfunction.collect_source_angles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.pwave_greens_comp.html">fracspy.mtinversion.greensfunction.pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp</a></li>
+</ul>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.mtsolvers.mtai.frwrd_mtmodelling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fracspy.mtsolvers.mtai.lsqr_mtsolver.html">fracspy.mtsolvers.mtai.lsqr_mtsolver</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.mtinversion.utils.get_mt_at_loc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_mt_max_locs.html">fracspy.mtinversion.utils.get_mt_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_magnitude.html">fracspy.mtinversion.utils.get_magnitude</a></li>
 </ul>
 </div>
 </nav></div>
@@ -380,7 +452,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">FraCSPy API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">fracspy.mtso...</li>
+    <li class="breadcrumb-item active" aria-current="page">fracspy.mtin...</li>
   </ul>
 </nav>
 </div>
@@ -397,12 +469,30 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="fracspy-mtsolvers-mtai-frwrd-mtmodelling">
-<h1>fracspy.mtsolvers.mtai.frwrd_mtmodelling<a class="headerlink" href="#fracspy-mtsolvers-mtai-frwrd-mtmodelling" title="Link to this heading">#</a></h1>
+  <section id="fracspy-mtinversion-utils-get-mt-at-loc">
+<h1>fracspy.mtinversion.utils.get_mt_at_loc<a class="headerlink" href="#fracspy-mtinversion-utils-get-mt-at-loc" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="fracspy.mtsolvers.mtai.frwrd_mtmodelling">
-<span class="sig-prename descclassname"><span class="pre">fracspy.mtsolvers.mtai.</span></span><span class="sig-name descname"><span class="pre">frwrd_mtmodelling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Gz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/mtsolvers/mtai.html#frwrd_mtmodelling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.mtsolvers.mtai.frwrd_mtmodelling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="fracspy.mtinversion.utils.get_mt_at_loc">
+<span class="sig-prename descclassname"><span class="pre">fracspy.mtinversion.utils.</span></span><span class="sig-name descname"><span class="pre">get_mt_at_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mt_image_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/mtinversion/utils.html#get_mt_at_loc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.mtinversion.utils.get_mt_at_loc" title="Link to this definition">#</a></dt>
+<dd><p>Moment tensor at specific location</p>
+<p>Extract moment tensor at a given location from moment tensor component images</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>mt_image_set</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Moment tensor component images of size <span class="math notranslate nohighlight">\(n_c       imes n_x        imes n_y        imes n_z\)</span></p>
+</dd>
+<dt><strong>location_indices</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Indices of location to extract moment tensor from the moment tensor component images</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>M</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Extracted moment tensor</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <div style='clear:both'></div></section>
 
@@ -417,20 +507,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="fracspy.location.utils.get_max_locs.html"
+       href="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">fracspy.location.utils.get_max_locs</p>
+        <p class="prev-next-title">fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp</p>
       </div>
     </a>
     <a class="right-next"
-       href="fracspy.mtsolvers.mtai.lsqr_mtsolver.html"
+       href="fracspy.mtinversion.utils.get_mt_max_locs.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fracspy.mtsolvers.mtai.lsqr_mtsolver</p>
+        <p class="prev-next-title">fracspy.mtinversion.utils.get_mt_max_locs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -452,7 +542,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fracspy.mtsolvers.mtai.frwrd_mtmodelling"><code class="docutils literal notranslate"><span class="pre">frwrd_mtmodelling</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fracspy.mtinversion.utils.get_mt_at_loc"><code class="docutils literal notranslate"><span class="pre">get_mt_at_loc</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -490,7 +580,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

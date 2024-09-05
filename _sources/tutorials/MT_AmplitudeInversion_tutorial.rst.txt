@@ -109,7 +109,7 @@ Load model and seismic data
 For this example, we will use a toy example of a small homogenous model with a gridded surface receiver
 array. The data are modelled using the SOFI3D Finite Difference package.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-122
+.. GENERATED FROM PYTHON SOURCE LINES 81-123
 
 .. code-block:: Python
 
@@ -145,8 +145,9 @@ array. The data are modelled using the SOFI3D Finite Difference package.
         os.path.join(input_dir, 'outputs',
                      'su', f'{expname}_vy.txt'),
         nr=nr)
+    vz = vz[:, t_shift: t_shift + tdur]
     efd_scaler = np.max(abs(vz))  # Scaler to make data more friendly
-    vz = vz[:, t_shift: t_shift + tdur] * efd_scaler
+    vz /= efd_scaler
 
     # Remove absorbing boundaries from both the model and receiver coordinates
     mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
@@ -161,13 +162,13 @@ array. The data are modelled using the SOFI3D Finite Difference package.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-126
+.. GENERATED FROM PYTHON SOURCE LINES 124-127
 
 Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the  traces; this is the information that we utilise
 to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-131
+.. GENERATED FROM PYTHON SOURCE LINES 127-132
 
 .. code-block:: Python
 
@@ -188,23 +189,22 @@ to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-136
+.. GENERATED FROM PYTHON SOURCE LINES 133-137
 
 Create modelling operator
 -------------------------
 We start by defining the source frequency and location, which we assume to be
 known ahead of time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-144
+.. GENERATED FROM PYTHON SOURCE LINES 137-144
 
 .. code-block:: Python
 
 
-    omega_p = 20
-
-    sx = nx//2
-    sy = ny//2
-    sz = 2*nz//3
+    omega_p = 30
+    sx = nx // 2
+    sy = ny // 2
+    sz = 2 * nz // 3
     sloc_ind = [sx, sy, sz]
 
 
@@ -232,15 +232,15 @@ and extract the amplitudes at the peak of the P-wave arrival in the data
             recs=recs,
             vel=mod,
             mode='eikonal')
-    TTT_full = trav.reshape(nx,ny,nz,nr).transpose([3,0,1,2])
-    source_times = np.round(TTT_full[:, sloc_ind[0],
-                            sloc_ind[1], sloc_ind[2]]/dt).astype(int)
+    trav = trav.reshape(nx, ny, nz, nr).transpose([3,0,1,2])
+    source_times = np.round(trav[:, sloc_ind[0],
+                            sloc_ind[1], sloc_ind[2]]
+                            / dt).astype(int)
 
     # Extract amplitudes at arrival times based on given source location
     vz_amps = np.ones(nr)
     for i in range(nr):
         vz_amps[i] = vz[i, source_times[i]]
-    p_amps = vz_amps
 
     plt.figure(figsize=(10, 4))
     plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
@@ -261,55 +261,19 @@ and extract the amplitudes at the peak of the P-wave arrival in the data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-176
-
-We can finally also compute our Green's function coefficients and assemble
-the operator
-
-.. GENERATED FROM PYTHON SOURCE LINES 176-196
-
-.. code-block:: Python
-
-
-    # Amplitudes
-    gamma_sourceangles, dist_table = \
-        fracspy.mtsolvers.homo_mti.collect_source_angles(x, y, z,
-                                                        reclocs=recs, nc=3)
-
-    # This keeps everything nice and clean in the later G compute
-    MT_comp_dict = fracspy.mtsolvers.mtutils.get_mt_computation_dict()
-
-    # Create G operator
-    Gz = fracspy.mtsolvers.homo_mti.pwave_Greens_comp(
-        gamma_sourceangles,
-        dist_table,
-        sloc_ind,
-        mod,
-        MT_comp_dict,
-        comp_gamma_ind=2,
-        omega_p=omega_p,
-        )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 197-200
+.. GENERATED FROM PYTHON SOURCE LINES 174-177
 
 Moment Tensor Inversion
 -----------------------
 We finally solve our inverse problem to obtain an estimate of the moment tensor
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-211
+.. GENERATED FROM PYTHON SOURCE LINES 177-188
 
 .. code-block:: Python
 
 
-    # Inversion
-    mt_est = fracspy.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
+    MT = fracspy.mtinversion.MTInversion(x, y, z, recs, mod)
+    mt_est = MT.apply(vz_amps, sloc_ind, 2, omega_p, kind="ai")
     mt_est /= np.max(abs(mt_est))
 
     # Comparison with known MT
@@ -333,7 +297,7 @@ We finally solve our inverse problem to obtain an estimate of the moment tensor
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 27.026 seconds)
+   **Total running time of the script:** (0 minutes 26.965 seconds)
 
 
 .. _sphx_glr_download_tutorials_MT_AmplitudeInversion_tutorial.py:

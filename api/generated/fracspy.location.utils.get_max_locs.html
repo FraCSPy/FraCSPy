@@ -50,10 +50,12 @@
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.location.utils.get_max_locs';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="fracspy.mtsolvers.mtai.frwrd_mtmodelling" href="fracspy.mtsolvers.mtai.frwrd_mtmodelling.html" />
+    <link rel="next" title="fracspy.mtinversion.mtai.MTA" href="fracspy.mtinversion.mtai.MTA.html" />
     <link rel="prev" title="fracspy.location.location.Location" href="fracspy.location.location.Location.html" />
     
     <script src="../../_static/require.js"></script>
@@ -153,6 +155,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -172,6 +181,28 @@
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -264,6 +295,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Gallery
   </a>
@@ -280,6 +318,20 @@ document.write(`
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../credits.html">
+    Credits
   </a>
 </li>
 
@@ -321,6 +373,10 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.trueamp_kirchhoff.TAKirchhoff.html">fracspy.modelling.trueamp_kirchhoff.TAKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTSKirchhoff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
@@ -338,8 +394,24 @@ document.write(`
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.location.utils.get_max_locs</a></li>
 </ul>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fracspy.mtsolvers.mtai.frwrd_mtmodelling.html">fracspy.mtsolvers.mtai.frwrd_mtmodelling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fracspy.mtsolvers.mtai.lsqr_mtsolver.html">fracspy.mtsolvers.mtai.lsqr_mtsolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtwi.MTW.html">fracspy.mtinversion.mtwi.MTW</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtinversion.MTInversion.html">fracspy.mtinversion.mtinversion.MTInversion</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.collect_source_angles.html">fracspy.mtinversion.greensfunction.collect_source_angles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.pwave_greens_comp.html">fracspy.mtinversion.greensfunction.pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_comp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_comp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp.html">fracspy.mtinversion.greensfunction.mt_pwave_greens_multicomp</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_mt_at_loc.html">fracspy.mtinversion.utils.get_mt_at_loc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_mt_max_locs.html">fracspy.mtinversion.utils.get_mt_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.utils.get_magnitude.html">fracspy.mtinversion.utils.get_magnitude</a></li>
 </ul>
 </div>
 </nav></div>
@@ -402,7 +474,34 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="fracspy.location.utils.get_max_locs">
 <span class="sig-prename descclassname"><span class="pre">fracspy.location.utils.</span></span><span class="sig-name descname"><span class="pre">get_max_locs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ssimage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rem_edge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgebuf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/utils.html#get_max_locs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.utils.get_max_locs" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Source location from image</p>
+<p>Compute the source location from a seismic image.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>ssimage</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Image of size <span class="math notranslate nohighlight">\(n_x        imes n_y        imes n_z\)</span></p>
+</dd>
+<dt><strong>n_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional</span></dt><dd><p>Number of maximum values to extract (if <code class="docutils literal notranslate"><span class="pre">n_max&gt;1</span></code>, the centroid of these values
+will be computed and provided as the estimated source location)</p>
+</dd>
+<dt><strong>rem_edge</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, optional</span></dt><dd><p>Remove edges of volume</p>
+</dd>
+<dt><strong>edgebuf</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional</span></dt><dd><p>Number of grid points to remove from each edge if <code class="docutils literal notranslate"><span class="pre">rem_edge=True</span></code></p>
+</dd>
+<dt><strong>absval</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, optional</span></dt><dd><p>Compute absolute value of <code class="docutils literal notranslate"><span class="pre">ssimage</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>ev_loc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Most likely source location</p>
+</dd>
+<dt><strong>ev_locs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p><cite>n_max</cite> most likely source locations</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <div style='clear:both'></div></section>
 
@@ -426,11 +525,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="fracspy.mtsolvers.mtai.frwrd_mtmodelling.html"
+       href="fracspy.mtinversion.mtai.MTA.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fracspy.mtsolvers.mtai.frwrd_mtmodelling</p>
+        <p class="prev-next-title">fracspy.mtinversion.mtai.MTA</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -490,7 +589,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

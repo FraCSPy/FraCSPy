@@ -27,7 +27,7 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Comparing Beachball Focal Mechanism Solutions</div>
+      <div class="sphx-glr-thumbnail-title">Comparing Focal Mechanism Beachball Solutions</div>
     </div>
 
 
@@ -50,6 +50,40 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Event Volume Plotting">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_plot_EventImages_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_plot_EventImages.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Event Volume Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Focal Mechanism Beachball Plot">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_plot_Beachball_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_plot_Beachball.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Focal Mechanism Beachball Plot</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Moment Tensor Plotting - Matrix Style">
 
 .. only:: html
@@ -67,18 +101,35 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Moment Tensor Plotting - Matrix Style">
+    <div class="sphx-glr-thumbcontainer" tooltip="Seismic Data Plotting">
 
 .. only:: html
 
-  .. image:: /gallery/images/thumb/sphx_glr_plot_Beachball_thumb.png
+  .. image:: /gallery/images/thumb/sphx_glr_plot_SeismicTraceImage_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_plot_Beachball.py`
+  :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Moment Tensor Plotting - Matrix Style</div>
+      <div class="sphx-glr-thumbnail-title">Seismic Data Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Seismic Wiggles Plotting">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_plot_SeismicWiggles_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_plot_SeismicWiggles.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Seismic Wiggles Plotting</div>
     </div>
 
 
@@ -94,8 +145,11 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
    /gallery/plot_ComparingBeachballs
    /gallery/plot_ComparingMTmatrices
-   /gallery/plot_MTmatrix
+   /gallery/plot_EventImages
    /gallery/plot_Beachball
+   /gallery/plot_MTmatrix
+   /gallery/plot_SeismicTraceImage
+   /gallery/plot_SeismicWiggles
 
 
 

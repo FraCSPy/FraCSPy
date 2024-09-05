@@ -12,7 +12,9 @@ def locimage3d(image,
                xlim=None,
                ylim=None, 
                zlim=None, 
-               labels=('[m]', '[m]', '[m]')):    
+               labels=('[m]', '[m]', '[m]'),
+               secondcross=False, 
+               secondcrossloc=None, ):
     """
     Plots x-y, y-z, and x-z slices of a 3D volume for visualizing microseismic source images and moment tensor (MT) kernel images.
 
@@ -20,12 +22,16 @@ def locimage3d(image,
     It is particularly useful for visualizing microseismic source images or MT kernels over a subsurface area of interest. 
     The appearance of the resulting plots can be customized using various parameters.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     image : numpy.ndarray
-        A 3D numpy array representing the volume to be sliced and visualized. x,y,z orientation.
-    x0, y0, z0 : int
-        The x, y, and z indices where the intersections will be made in the 3D volume.
+        A 3D numpy array representing the volume to be sliced and visualized, oriented in x, y, z dimensions.
+    x0 : int
+        The x index where the intersection will be made in the 3D volume.
+    y0 : int
+        The y index where the intersection will be made in the 3D volume.
+    z0 : int
+        The z index where the intersection will be made in the 3D volume.
     intersect_linecol : str, optional
         Color of the intersecting lines in the plot that indicate the slicing locations. Default is 'k' (black).
     title : str, optional
@@ -36,27 +42,37 @@ def locimage3d(image,
         Clip value for the intensity scaling of the image. If None, it is not applied. Default is None.
     cmap : str, optional
         Colormap used for displaying the slices. Default is 'hot_r'.
-    xlim, ylim, zlim : tuple or None, optional
-        Limits for the x, y, and z axes, respectively. Each should be a tuple of (min, max). If None, the limits are set automatically. Default is None.
+    xlim : tuple or None, optional
+        Limits for the x-axis in the format (min, max). If None, limits are set automatically. Default is None.
+    ylim : tuple or None, optional
+        Limits for the y-axis in the format (min, max). If None, limits are set automatically. Default is None.
+    zlim : tuple or None, optional
+        Limits for the z-axis in the format (min, max). If None, limits are set automatically. Default is None.
     labels : tuple of str, optional
         Labels for the x, y, and z axes. Default is ('[m]', '[m]', '[m]').
+    secondcross : bool, optional
+        If True, a second cross is added to the plot. Default is False.
+    secondcrossloc : tuple or None, optional
+        Indices of the second cross location in the format (x, y, z). Default is None.
 
-    Returns:
-    --------
+    Returns
+    -------
     fig : matplotlib.figure.Figure
         The Figure object containing the plotted slices.
     axs : numpy.ndarray of matplotlib.axes.Axes
         Array of Axes objects for the different slices.
 
-    Notes:
-    ------
+    Notes
+    -----
     The function utilizes the `explode_volume` method for handling the 3D volume slicing and plotting. 
     Slices are generated for the x-y, y-z, and x-z planes at the specified coordinates, with options 
     for adjusting color maps, intensity scaling, and axis limits.
     """
 
+
     
     linespec = dict(ls='-', lw=1.5, color=intersect_linecol)
+    secondcrosslinespec = dict(ls='--', lw=1.5, color=intersect_linecol)
 
     fig, axs = explode_volume(image.transpose(2, 0, 1),
                               p=p, clipval=clipval,
@@ -68,6 +84,9 @@ def locimage3d(image,
                               ylim=ylim, 
                               tlim=zlim, 
                               labels=labels,
+                              secondcross=secondcross, 
+                              secondcrossloc=secondcrossloc, 
+                              secondcrosslinespec=secondcrosslinespec,
                               )
     fig.suptitle(title, fontsize=18)
     fig.tight_layout()

@@ -25,15 +25,21 @@ z = np.arange(0,nz)*dz
 source_location = 25, 30, 50  # x,y,z location 
 
 ###############################################################################
-# Simple Example - Clean source location
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Simple Example
+# ^^^^^^^^^^^^^^
+# In this example we have a noisy background but the coherent energy, and 
+# the image maxima correspond to our source location
 
+noise_inds = np.random.randint(0,nx*ny*nz,size=int(0.05*(nx*ny*nz)))
+noise_flat = np.zeros([nx*ny*nz])
+noise_flat[noise_inds] = np.random.rand(int(0.05*(nx*ny*nz)))
+background_noise = 2*gaussian_filter(noise_flat.reshape([nx,ny,nz]), 
+                                   sigma=1, radius=2)
 
-background_noise = gaussian_filter(100*np.random.rand(nx,ny,nz), sigma=1, radius=2)
-
-microseismic_image = np.zeros_like(background_noise)
-microseismic_image[source_location] = 40
-microseismic_image = gaussian_filter(microseismic_image, sigma=2, radius=5)
+microseismic_event = np.zeros_like(background_noise)
+microseismic_event[source_location] = 80
+microseismic_event = gaussian_filter(microseismic_event, sigma=2, radius=5)
+microseismic_image = microseismic_event + background_noise
 
 
 ###############################################################################
@@ -56,9 +62,9 @@ plt.tight_layout()
 # Noisy Example - Artifact present in image 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-artifact_location_center = 25, 35, 25  # x,y,z location 
+artifact_location_center = 22, 35, 25  # x,y,z location 
 artifact_image = np.zeros_like(microseismic_image)
-artifact_image[artifact_location_center] = 125
+artifact_image[artifact_location_center] = 200
 artifact_image = gaussian_filter(artifact_image, sigma=3, radius=4)
 
 microseismic_image_noisy = microseismic_image.copy() + artifact_image
@@ -77,5 +83,28 @@ fig, axs = locimage3d(microseismic_image_noisy,
                       xlim=[x[0],x[-1]],
                       ylim=[y[0],y[-1]],
                       zlim=[z[0],z[-1]],
+                      clipval=[0,1])
+plt.tight_layout()
+
+
+###############################################################################
+# In this instance, it may be preferable to add an additional cross to the plot
+# to highlight where we believe the source location is, in comparison to the 
+# maxima for the image volume. 
+#
+# Note, that the source location is not the location for the plane intersection
+# the second cross is merely a projection of the expected location, on top of
+# the intersection.
+
+
+fig, axs = locimage3d(microseismic_image_noisy,
+                      x0=int(np.round(max_loc[0])),
+                      y0=int(np.round(max_loc[1])),
+                      z0=int(np.round(max_loc[2])),
+                      xlim=[x[0],x[-1]],
+                      ylim=[y[0],y[-1]],
+                      zlim=[z[0],z[-1]],
+                      secondcross=True, 
+                      secondcrossloc=source_location,
                       clipval=[0,1])
 plt.tight_layout()

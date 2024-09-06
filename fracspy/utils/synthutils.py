@@ -1,13 +1,13 @@
 import numpy as np
 
-def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=None, seed: int = None):
+def add_noise(data:np.ndarray, noise_type:str="white", snr:float=1, trind:int=None, seed: int = None):
     r"""Contaminate seismic data with noise of different type.
 
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
         Input seismic data of shape :math:`n_r \times n_t`
-    noisetype: :obj:`str`, optional, default: "white"
+    noise_type: :obj:`str`, optional, default: "white"
         Type of noise: 
         "white" for random white noise, 
         "spiky" for noise that manifests as sharp spikes in the data.
@@ -23,7 +23,8 @@ def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=Non
     
     Returns
     -------
-    ds_im_vol : :obj:`numpy.ndarray`
+    data_contaminated : :obj:`numpy.ndarray`
+        Data contaminated with noise of the selected noise type, size: :math:`n_r \times n_t`
 
     Raises
     ------
@@ -37,12 +38,13 @@ def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=Non
     
     The ringing effect in seismic data refers to a specific type of noise or distortion that appears as a series of oscillations or reverberations in the seismic trace. This effect is characterized by a repetitive, wave-like pattern that continues after the main seismic event, resembling the ringing of a bell.
     Key aspects of the ringing effect include:
+
     - Appearance: It looks like a series of alternating positive and negative amplitudes that gradually decrease over time.
     - Causes: Ringing can be caused by various factors, including:
-        - Instrument response: Poor coupling between the seismometer and the ground
-        - Resonance in the recording system
-        - Near-surface reverberations
-        - Data processing artifacts, particularly from improper filtering
+      - Instrument response: Poor coupling between the seismometer and the ground
+      - Resonance in the recording system
+      - Near-surface reverberations
+      - Data processing artifacts, particularly from improper filtering
     - Impact: Ringing can obscure real seismic events and make interpretation difficult, especially for later arrivals or subtle features.
     - Frequency: The ringing often occurs at a characteristic frequency, which can help in identifying its source.
     - Duration: It can persist for a significant portion of the trace, sometimes lasting longer than the actual seismic signal of interest.
@@ -70,17 +72,17 @@ def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=Non
         if np.any(trind < 0) or np.any(trind >= nr):
             raise ValueError("All indices in trind must be >= 0 and < nr")
         
-    if noisetype == "white":
+    if noise_type == "white":
         # Generate white noise
         noise[trind,:] = np.random.normal(0, noise_max, (len(trind), data.shape[1]))
-    elif noisetype == "spiky":
+    elif noise_type == "spiky":
         # Generate spiky noise
         for trace in trind:
             num_spikes = np.random.randint(1, 5)  # Random number of spikes
             spike_positions = np.random.choice(nt, num_spikes, replace=False)
             noise[trace, spike_positions] = noise_max * np.random.uniform(-1, 1, num_spikes)
     
-    elif noisetype == "ringy":
+    elif noise_type == "ringy":
         # Generate ringy noise
         frequency = np.random.uniform(5, 15)  # Random frequency for the ringing effect
         for trace in trind:
@@ -88,7 +90,7 @@ def add_noise(data:np.ndarray, noisetype:str="white", snr:float=1, trind:int=Non
             ringy_wave = noise_max * np.exp(-t/nt) * np.sin(2 * np.pi * frequency * t / nt)
             noise[trace, :] = ringy_wave
     else:
-        raise ValueError(f"Invalid noisetype: {noisetype}")
+        raise ValueError(f"Invalid noise type: {noise_type}")
     
     # Add noise to the data
     data_contaminated = data + noise

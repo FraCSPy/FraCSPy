@@ -145,29 +145,35 @@ def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
 
     return data_corrected
 
-def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.ndarray:
+def vgtd(x: np.ndarray | float, 
+         y: np.ndarray | float, 
+         z: np.ndarray | float, 
+         recs: np.ndarray) -> np.ndarray:
     r"""
     Compute vectorized Green's tensor derivative for multiple source points.
-
     Parameters
     ----------
-    x : :obj:`numpy.ndarray`
-        Imaging area grid vector in X-axis
-    y : :obj:`numpy.ndarray`
-        Imaging area grid vector in Y-axis
-    z : :obj:`numpy.ndarray`
-        Imaging area grid vector in Z-axis
+    x : :obj:`numpy.ndarray` or float
+        Imaging area grid vector in X-axis or single X coordinate
+    y : :obj:`numpy.ndarray` or float
+        Imaging area grid vector in Y-axis or single Y coordinate
+    z : :obj:`numpy.ndarray` or float
+        Imaging area grid vector in Z-axis or single Z coordinate
     recs : :obj:`numpy.ndarray`
         Array of shape (3, nrec) containing receiver coordinates
-
     Returns
     -------
     g : :obj:`numpy.ndarray` 
-        Array of shape (6, nrec, ngrid) containing the Green's tensor derivative for each source point
+        Array of shape (6, nrec, ngrid) containing the Green's tensor derivative for each source point,
+        where ngrid is a number of grid points (ngrid=1 if x,y,z are single values)
     """
+    # Convert single values to arrays if necessary
+    x = np.atleast_1d(x)
+    y = np.atleast_1d(y)
+    z = np.atleast_1d(z)
+
     # Create a meshgrid
     X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
-
     # Stack the arrays into a (3, ngrid) array
     sources = np.vstack((X.flatten(), Y.flatten(), Z.flatten()))
     
@@ -180,7 +186,6 @@ def vgtd(x: np.ndarray, y: np.ndarray, z: np.ndarray, recs: np.ndarray) -> np.nd
     r = np.where(np.isclose(r, 0), np.nan, r)
     rs_norm = rs/r
     rs_norm = np.where(np.isnan(rs_norm), 0, rs_norm)
-
     # Extract normalized components
     rsx, rsy, rsz = rs_norm[0], rs_norm[1], rs_norm[2]  # each shape (nrec, ngrid)
     

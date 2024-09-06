@@ -256,10 +256,10 @@ frwddata = frwddata_1d.reshape(nr,nt)
 # Contaminate data with white noise
 # """""""""""""""""""""""""""""""""
 
-# Fix the seed
+# Fix the seed for reproducibility
 seed=1
 
-# Fix SNR
+# Fix SNR levels
 snr_wn=1
 snr_sn=1/10
 snr_rn=1/5
@@ -268,19 +268,19 @@ snr_rn=1/5
 trind_rn = np.arange(1,nr,11)
 
 # Add white noise of defined SNR
-frwddata_wn = add_noise(frwddata,noisetype="white",snr=snr_wn,seed=seed)
+frwddata_wn = add_noise(frwddata,noise_type="white",snr=snr_wn,seed=seed)
 
 # Contaminate data with spiky noise
 # """""""""""""""""""""""""""""""""
 
 # Add noise spikes with twice as bigger SNR
-frwddata_sn = add_noise(frwddata,noisetype="spiky",snr=snr_sn,seed=seed)
+frwddata_sn = add_noise(frwddata,noise_type="spiky",snr=snr_sn,seed=seed)
 
 # Contaminate data with ringy noise
 # """""""""""""""""""""""""""""""""
 
 # Add ringy noise on some traces
-frwddata_rn = add_noise(frwddata,noisetype="ringy",snr=snr_rn,
+frwddata_rn = add_noise(frwddata,noise_type="ringy",snr=snr_rn,
                         trind=trind_rn,seed=seed)
 
 # Show consumed time

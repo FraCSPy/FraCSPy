@@ -94,49 +94,56 @@ def dist2rec(recs, gx, gy, gz):
     return d
 
 
-def moveout_correction(data:np.ndarray, itshifts:np.ndarray):
+def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     r"""Moveout correction for microseismic data.
-
     This function applies a moveout correction to microseismic data by shifting each sample in time according to its corresponding shift value.
+    The function now supports both positive and negative shifts.
 
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
-        input seismic data [nr, nt]
+        Input seismic data [nr, nt]
     itshifts : :obj:`numpy.ndarray`
-        array of shift values [nr]
+        Array of shift values [nr]
 
     Returns
     -------
     data_corrected : :obj:`numpy.ndarray`
-        microseismic data with corrected moveout [nr, nt]
+        Microseismic data with corrected moveout [nr, nt]
 
     Notes
     -----
-    The function checks that all values in `itshifts` are non-negative and that the length of `itshifts` matches the number of rows in `data`.
+    The function checks that the length of `itshifts` matches the number of rows in `data`.
+    If all shifts are negative, the moveout correction is applied in the opposite direction.
 
     Examples
     --------
     >>> # Assuming you have a 2D array "data" with shape (nr, nt) and an array "itshifts" with shape (nr,)
     >>> corrected_data = moveout_correction(data, itshifts)
-
     """
     # Get size
     nr, nt = data.shape
-    
+   
     # Check size
     if len(itshifts) != nr:
         raise ValueError("The length of itshifts must match the number of rows in data.")
-    
+   
     data_corrected = np.zeros_like(data)  # Create an array of zeros with the same shape as data
 
-    # Check if all values in itshifts are positive
-    if np.any(itshifts < 0):
-        raise ValueError("All values in itshifts must be non-negative.")
+    # Determine the direction of the shift
+    all_negative = np.all(itshifts <= 0)
+    
+    # Convert shifts to integers
+    itshifts_int = itshifts.astype(int)
 
     # Calculate the shifted indices for each row
-    shifted_indices = np.arange(nt) - itshifts.astype(int)[:, np.newaxis]
-    
+    if all_negative:
+        # If all shifts are negative or zero, shift in the opposite direction
+        shifted_indices = np.arange(nt) + np.abs(itshifts_int)[:, np.newaxis]
+    else:
+        # If any shift is positive, use the original direction
+        shifted_indices = np.arange(nt) - itshifts_int[:, np.newaxis]
+   
     # Clip indices to ensure they stay within bounds
     shifted_indices = np.clip(shifted_indices, 0, nt - 1)
 
@@ -171,7 +178,7 @@ def vgtd(x: np.ndarray | float,
     x = np.atleast_1d(x)
     y = np.atleast_1d(y)
     z = np.atleast_1d(z)
-
+        
     # Create a meshgrid
     X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
     # Stack the arrays into a (3, ngrid) array
@@ -199,7 +206,7 @@ def vgtd(x: np.ndarray | float,
     g[5] = 2 * rsy * rsz * rsz  # shape (nrec, ngrid)
     
     # Return the Green tensor derivative vector for all grid points
-    return g
+    return np.squeeze(g)
 
 def svd_inv(M: np.ndarray):
     """
@@ -238,6 +245,10 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
     gtg_inv : :obj:`numpy.ndarray` 
         A set of 6x6 matrices, one for each grid point, of size (6, 6, ngrid) or (6 ,6)
     """    
+    # Check number of components
+    if g.shape[0]!=6:
+        raise ValueError("g must have 6 components!")
+    
     # Check dimension and compute
     if g.ndim == 3:
         # Case 1: g is of shape (6, nrec, ngrid)
@@ -280,52 +291,6 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
     # Return the 6x6 inverse matrices for all grid points
     return gtg_inv
 
-
-# def vmt(data, gtgi, g):
-#     r"""Compute the vectorized moment tensor.
-
-#     From the amplitudes of the input data with corrected event moveout,
-#     this function derives the moment tensor using 
-#     the given vectorized Green's tensor and the inverse matrix based on it.
-#     The moment tensor is computed for each time moment of data.
-
-#     Parameters
-#     ----------
-#     data : :obj:`numpy.ndarray`
-#         The data with corrected event moveout.
-#         Shape must be (nrec,nt) where nrec is the number of receivers 
-#         and nt is the number of time steps.
-#     gtgi : :obj:`numpy.ndarray`
-#         The inverse of the Green's function tensor, flattened to 1D.
-#         Shape must be (6, 6).
-#     g : :obj:`numpy.ndarray`
-#         The Green's function tensor, flattened to 1D.
-#         Shape must be (6, nrec) where nrec is the number of receivers
-#         and m is the number of components.
-    
-#     Returns
-#     -------
-#     mt : :obj:`numpy.ndarray`
-#         The computed vectorized moment tensor.
-#         Shape is (6,nt) where 6 is the number of components 
-#         and nt is the number of time steps.
-
-#     """
-#     nrec,nt = data.shape
-#     ncomp = 6
-    
-#     mt = np.zeros((6,nt))
-
-#     for it in range(nt):
-#         # Compute d using matrix multiplication
-#         d = np.dot(g, data[:,it])
-            
-#         # Compute M using matrix multiplication
-#         mt[:,it] = np.dot(gtgi, d)
-        
-#     return np.dot(gtgi, np.dot(g, data))
-
-
 def polarity_correction(data: np.ndarray,                         
                         polcor_type: str="mti",
                         g: np.ndarray = None,
@@ -337,13 +302,7 @@ def polarity_correction(data: np.ndarray,
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
-        input seismic data with corrected event moveout [nr, nt]
-    x : :obj:`float`
-        X coordinate of the potential source
-    y : :obj:`float`
-        Y coordinate of the potential source
-    z : :obj:`float`
-        Z coordinate of the potential source    
+        input seismic data with corrected event moveout [nr, nt]    
     polcor_type : :obj:`str`, optional, default: "mti"
         Polarity correction type to be used for data amplitudes.
     g : :obj:`numpy.ndarray`, optional, default: None

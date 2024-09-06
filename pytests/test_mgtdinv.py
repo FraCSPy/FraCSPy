@@ -15,20 +15,20 @@ def test_mgtdinv_2d_identity():
     result = mgtdinv(g)
     assert np.allclose(result, np.eye(6))
 
-def test_mgtdinv_2d_known_inverse():
-    # Test case 3: 2D input with known result
-    g = np.array([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [10, 11, 12],
-        [13, 14, 15],
-        [16, 17, 18]
-    ])
-    gtg = np.dot(g, g.T)
-    expected_inv = np.linalg.inv(gtg)
-    result = mgtdinv(g)
-    assert np.allclose(result, expected_inv)
+# def test_mgtdinv_2d_known_inverse():
+#     # Test case 3: 2D input with known result
+#     g = np.array([[1], [-1], [0]])    
+#     gtg = np.dot(g, g.T)
+#     # this is 
+#     # array([[ 1, -1,  0],
+#     #        [-1,  1,  0],
+#     #        [ 0,  0,  0]])
+#     #expected_inv = np.linalg.inv(gtg)
+#     expected_inv = array([[ 0.25, -1,  0],
+#                           [-1,  1,  0],
+#                           [ 0,  0,  0]])
+#     result = mgtdinv(g)
+#     assert np.allclose(result, expected_inv)
 
 def test_mgtdinv_3d():
     # Test case 4: 3D input

@@ -72,9 +72,10 @@ from fracspy.modelling.kirchhoff import Kirchhoff
 # Import data utils
 from fracspy.utils.sofiutils import read_seis
 
-# Import locatoin utils
+# Import location utils
 from fracspy.location import Location
 from fracspy.location.utils import *
+from fracspy.location.migration import *
 
 # Import visualisation utils
 from fracspy.visualisation.traceviz import traceimage
@@ -108,13 +109,12 @@ mnx, mny, mnz = 112, 128, 120
 
 # Load source parameters
 source = np.loadtxt(os.path.join(input_dir,'inputs/centralsource.dat')).T
-dt = source[3] # timestep
 f0 = source[4] # source frequency
 
 # Modelling parameters
-#dt = 1e-3  # SOFI3D Time sampling rate
-t_shift = 160  # Time shift required to align FD data to zero
-tdur = 500  # Recording duration
+dt = 1e-3  # SOFI3D Time sampling rate
+t_shift = 360  # Time shift to reduce the time steps
+tdur = 250  # Recording duration
 
 # Load model
 mod_w_bounds = np.fromfile(os.path.join(input_dir,'inputs',
@@ -122,7 +122,7 @@ mod_w_bounds = np.fromfile(os.path.join(input_dir,'inputs',
                                         'Homogeneous_xyz.vp'),
                            dtype='float32').reshape([mnx, mny, mnz])
 
-# Get velocity assuming it is homogeneous (to speed up traveltimes computations)
+# Get velocity value considering that the model is homogeneous
 vp = float(mod_w_bounds[0][0][0])
 
 # Load receiver geometry
@@ -131,13 +131,13 @@ recs_xzy = np.loadtxt(os.path.join(input_dir,'inputs/griddedarray_xzy_20m.dat'))
 nr = recs_xzy.shape[1]
 
 # Load seismic data
-#expname = 'MT-90-90-180_Homogeneous_griddedarray'
-expname = 'explosive_Homogeneous_griddedarray'
+expname = 'MT-90-90-180_Homogeneous_griddedarray'
+#expname = 'explosive_Homogeneous_griddedarray'
 # expname = 'MT-90-90-180_Homogeneous_walkaway8arms'
 data_vz = read_seis(os.path.join(input_dir, 'outputs','su', f'{expname}_vy.txt'),
                     nr=nr)
 
-# Define scaler and make data more friendly
+# Define scaler and make data more friendly computation-wise
 efd_scaler = np.max(abs(data_vz)) 
 data_vz = data_vz[:, t_shift: t_shift + tdur] * efd_scaler
 
@@ -178,19 +178,88 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 
 #%%
+###############################################################################
+# Test basic functions
+# ^^^^^^^^^^^^^^^^^^^^
+# Here we test basic elements of diffraction stacking like moveout and polarity
+# correction
+
+###############################################################################
+# Test moveout correction and plot corrected data
+# """""""""""""""""""""""""""""""""""""""""""""""
+
+# Compute traveltimes to receivers from the true location
+tt_true = 1 / vp * np.squeeze(dist2rec(recs,sx,sy,sz))
+itshifts_true = np.round((tt_true - tt_true.min(axis=0))/dt)
+data_mc = moveout_correction(data=data_vz,
+                             itshifts=itshifts_true)
+
+# Plot data with corrected moveout
+fig, ax = traceimage(data_mc, climQ=99.99, figsize=(10, 4))
+ax.set_title('Data with corrected event moveout')
+plt.tight_layout()
+
+# Restore moveout (use negative time index tshifts)
+data_mr = moveout_correction(data=data_mc,
+                             itshifts=-itshifts_true)
+
+# Plot data with restored moveout
+fig, ax = traceimage(data_mr, climQ=99.99, figsize=(10, 4))
+ax.set_title('Data with restored event moveout')
+plt.tight_layout()
+
+###############################################################################
+# Test polarity correction and plot corrected data
+# """"""""""""""""""""""""""""""""""""""""""""""""
+
+# Compute compute vectorized Green tensor derivatives for the true location
+vgtd_true = vgtd(x=sx,y=sy,z=sz,recs=recs)
+# Compuite the GTG matrix
+gtg_inv_true = mgtdinv(g=vgtd_true)
+
+data_pc = polarity_correction(data = data_mc,
+                              polcor_type = "mti",
+                              g = vgtd_true,
+                              gtg_inv = gtg_inv_true
+                              )
+
+# Plot data with corrected moveout and polarity
+fig, ax = traceimage(data_pc, climQ=99.99, figsize=(10, 4))
+ax.set_title('Data with corrected event moveout and polarity')
+plt.tight_layout()
+
+# Restore moveout for polarity corrected data
+data_pc_mr = moveout_correction(data=data_pc,
+                                itshifts=-itshifts_true)
+
+# Plot data with restored moveout
+fig, ax = traceimage(data_pc_mr, climQ=99.99, figsize=(10, 4))
+ax.set_title('Data with restored event moveout and corrected polarity')
+plt.tight_layout()
+
+
+#%%
 
 ###############################################################################
 # Prepare for location
 # ^^^^^^^^^^^^^^^^^^^^
+# Set up the location class and grid, compute traveltimes
 
 ###############################################################################
 # Define location class using grid vectors
 # """"""""""""""""""""""""""""""""""""""""
-# Use the original velocity model grid for location (the grid can be different)
+# We can use the original velocity model grid for location,
+# but for the sake of having more representative image we shift the grid deeper
+# Moreover, we reduce the grid step twice for efficiency
 
-gx = x
-gy = y
-gz = z
+gdx = dx*2
+gdy = dy*2
+gdz = dz*2
+gx = x[::2]
+gy = y[::2]
+gz = np.arange(150, 460, gdz)
+
+
 
 # Set up the location class
 
@@ -209,19 +278,20 @@ print(f"Traveltime array shape: {tt.shape}")
 ##############################################################################
 # Apply diffraction stacking without polarity correction
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we apply various diffraction stacking algorithms first without 
-# any polarity correction
+# Here we apply a diffraction stacking algorithm without 
+# any polarity correction, for reference
 
 ###############################################################################
-# Perform absolute-value diffraction stacking without polarity correction
+# Perform squared-value diffraction stacking without polarity correction
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
-print("Absolute-value diffraction stacking without polarity correction...")
-dstacked_abs, hc_abs = L.apply(data_vz,
+print("Squared-value diffraction stacking without polarity correction...")
+dstacked_sqd, hc_sqd = L.apply(data_vz,
                                 kind="diffstack",
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="absolute")
+                                stack_type="squared",
+                                output_type = "mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -234,36 +304,38 @@ print(f"Computation time: {end_time - start_time} seconds")
 # polarity correction using moment tensor inversion
 
 ###############################################################################
-# Perform absolute-value diffraction stacking with polarity correction with MTI
+# Perform squared-value diffraction stacking with polarity correction with MTI
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
-print("Absolute-value diffraction stacking with polarity correction based on MTI...")
-dstacked_abs_mti, hc_abs_mti = L.apply(data_vz,
+print("Squared-value diffraction stacking with polarity correction based on MTI...")
+dstacked_sqd_mti, hc_sqd_mti = L.apply(data_vz,
                                        kind="diffstack",
                                        tt=tt, dt=dt, nforhc=10,
-                                       stack_type="absolute",
+                                       stack_type="squared",
+                                       output_type = "mean",
                                        polcor_type="mti",recs=recs)
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
-# ###############################################################################
-# # Perform semblance-based diffraction stacking without polarity correction
-# # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###############################################################################
+# Perform semblance-based diffraction stacking with polarity correction with MTI
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# # Define sliding window as two periods of the signal
-# swsize = int(2/f0/dt)
-# print(f"Sliding window size in samples: {swsize}")
+# Define sliding window as two periods of the signal
+swsize = int(2/f0/dt)
+print(f"Sliding window size in samples: {swsize}")
 
-# start_time = time()
-# print("Semblance-based diffraction stacking without polarity correction...")
-# dstacked_abs, hc_abs = L.apply(data_vz,
-#                                kind="diffstack",
-#                                tt=tt, dt=dt, nforhc=10,
-#                                stack_type="semblance", swsize = )
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
+start_time = time()
+print("Semblance-based diffraction stacking with polarity correction based on MTI...")
+dstacked_sem_mti, hc_sem_mti = L.apply(data_vz,
+                                kind="diffstack",
+                                tt=tt, dt=dt, nforhc=10,                                
+                                stack_type="semblance", swsize = swsize,
+                                output_type = "mean",
+                                polcor_type="mti",recs=recs)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
 
 
 #%%
@@ -271,35 +343,50 @@ print(f"Computation time: {end_time - start_time} seconds")
 ###############################################################################
 # Visualisation of results
 # ^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we visualise the slices of the resulting image volumes
+# Here we visualise the slices of the resulting image volumes.
+# Clearly, the result of application of stacking without polarity correction  
+# shows an unfocused image, whereas for stacking with polarity correction the ]
+# resulting images are focused in the correct location which fluctuates in 
+# depth, reflecting the time-depth tradeoff.
+# Uncertainty in depth direction is much higher due to surface acquisition.
+
 
 ###############################################################################
-# Plot resulting image volumes from absolute-value diffraction stacking
+# Plot resulting image volumes from squared-value diffraction stacking
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # Get the spatial limits for plotting
 xlim = (min(gx),max(gx))
 ylim = (min(gy),max(gy))
-zlim = (min(gy),max(gy))
+zlim = (min(gz),max(gz))
 
 # Print true location
 print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
 
 # Results of application:
-fig,axs = locimage3d(dstacked_abs, 
-                      title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
-                      x0=isx, y0=isy, z0=isz,
+fig,axs = locimage3d(dstacked_sqd, 
+                      title='Location with squared-value diffraction stacking\nwithout polarity correction:',
+                      x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
                       xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs, [dx, dy, dz])))
+print('Event hypocenter from squared-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sqd)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz],  L.putongrid(hc_sqd))))
 
-fig,axs = locimage3d(dstacked_abs_mti, 
-                     title='Location with absolute-value diffraction stacking\nwithout polarity correction:',
-                     x0=isx, y0=isy, z0=isz,
+fig,axs = locimage3d(dstacked_sqd_mti, 
+                     title='Location with squared-value diffraction stacking\nwith polarity correction based on MTI:',
+                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from absolute-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs_mti,[dx, dy, dz])))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_mti, [dx, dy, dz])))
+print('Event hypocenter from squared-value diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sqd_mti)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.putongrid(hc_sqd_mti))))
+
+fig,axs = locimage3d(dstacked_sem_mti, 
+                     title='Location with semblance-based diffraction stacking\nwith polarity correction based on MTI:',
+                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
+
+print('-------------------------------------------------------')
+print('Event hypocenter from semblance-based diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sem_mti)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz],  L.putongrid(hc_sem_mti))))

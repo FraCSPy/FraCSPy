@@ -66,7 +66,7 @@ def diffstack(data: np.ndarray,
     output_type : :obj:`str`, optional, default: None
         Output type to produce. Default None is the same as "max".
         Types: "max" (output 3D volume as a maximum of the image function for all time moments), 
-               "sum" (output 3D volume as a sum of the image function through time), 
+               "mean" (output 3D volume as an average of the image function through time), 
                "full" (output full 4D image function: x,y,z,t). in this case hc is set to None
     stack_type : :obj:`str`, optional, default: None
         Diffraction stacking type (imaging condition), default None is the same as "absolute" (absolute value).
@@ -219,7 +219,7 @@ def diffstack(data: np.ndarray,
     # Check output type
     if output_type is None:
         output_type = "max"
-    if output_type not in ["max","sum","full"]:
+    if output_type not in ["max","mean","full"]:
         raise ValueError(f"Output type is unknown: {output_type}")
 
     # Check stacking type
@@ -254,19 +254,16 @@ def diffstack(data: np.ndarray,
             raise ValueError(f"Number of traces in data is not consistent with array of receiver coordinates: {nr} != {recs.shape[1]}")
         vgtd_grid = vgtd(x=x,y=y,z=z,recs=recs)
         gtg_inv_grid = mgtdinv(g=vgtd_grid)
-        #print(vgtd_grid.shape)
-        #print(gtg_inv_grid.shape)
-    
+            
     # Loop over grid points
-    for igrid in range(ngrid):
-        #print(f"igrid={igrid}/{ngrid}")
+    for igrid in range(ngrid):        
 
         # Perform event moveout correction for data
         data_mc = moveout_correction(data=data,
                                      itshifts=itshifts[:,igrid])
 
         # Perform polarity correction for data if needed
-        if polcor_type is not None:            
+        if polcor_type is not None:
             data_pc = polarity_correction(data=data_mc,
                                           polcor_type=polcor_type,
                                           g=vgtd_grid[:,:,igrid],
@@ -287,13 +284,13 @@ def diffstack(data: np.ndarray,
         # Fill based on the output type
         if output_type == "max":
             ds_im[igrid] = np.max(ds)
-        elif output_type == "sum":
-            ds_im[igrid] = np.sum(ds)            
+        elif output_type == "mean":
+            ds_im[igrid] = np.mean(ds)            
         else:
             ds_full[:,igrid] = ds
 
     # Construct output based on its type
-    if output_type in ["max","sum"]:
+    if output_type in ["max","mean"]:
         ds_im_vol = ds_im.reshape(nx, ny, nz)            
         hc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
         # Return 3D array and location

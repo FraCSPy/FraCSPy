@@ -208,27 +208,30 @@ def vgtd(x: np.ndarray | float,
     # Return the Green tensor derivative vector for all grid points
     return np.squeeze(g)
 
-def svd_inv(M: np.ndarray):
+def svd_inv(M: np.ndarray, threshold: float = 1e-15):
     """
     Compute the inverse of a matrix using SVD with regularization.
-    
+   
     Parameters:
     ----------
-    M : :obj:`numpy.ndarray` 
+    M : np.ndarray
         The input matrix to invert.
-        
+    threshold : float, optional
+        Threshold for considering singular values as zero. Default is 1e-15.
+       
     Returns:
     -------
-    :obj:`numpy.ndarray`
+    np.ndarray
         The regularized inverse of the input matrix.
     """
-    U, s, Vt = np.linalg.svd(M)
-
-    # Determine inverse singular values
-    s = np.where(np.isclose(s, 0), np.nan, s)
-    s_inv = 1/s
-    s_inv = np.where(np.isnan(s_inv), 0, s_inv)    
-    return (Vt.T * s_inv) @ U.T
+    U, s, Vt = np.linalg.svd(M, full_matrices=False)
+    
+    # Compute regularized inverse singular values
+    s_inv = np.zeros_like(s)
+    np.divide(1, s, out=s_inv, where=s > threshold)
+    
+    # Compute the inverse
+    return np.dot(Vt.T * s_inv, U.T)
 
 def mgtdinv(g: np.ndarray) -> np.ndarray:
     r"""

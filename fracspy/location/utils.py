@@ -99,8 +99,7 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
 
     This function applies a moveout correction to microseismic data by shifting each sample in time 
     according to its corresponding time index shift value.
-    The function supports either all non-negative or all non-positive shifts.
-
+    
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
@@ -116,10 +115,9 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     Notes
     -----
     The function checks that the length of `itshifts` matches the number of rows in `data`.    
-    The function ensures that all shifts are either non-negative or non-positive.
     The input `itshifts` array is converted to integer.
-    If all shifts are non-negative, the moveout correction is applied in the direction of the beginning of the time.
-    If all shifts are non-positive, the moveout correction is applied in the opposite direction.
+    Shifting is done towards the beginning of time for positive `itshifts` values and 
+    in the opposite direction for negative.
 
     Examples
     --------
@@ -134,14 +132,7 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     # Check size
     if len(itshifts) != nr:
         raise ValueError("The length of itshifts must match the number of rows in data.")
-   
-    # Check if all shifts are non-negative or non-positive
-    all_non_negative = np.all(itshifts >= 0)
-    all_non_positive = np.all(itshifts <= 0)
-    
-    if not (all_non_negative or all_non_positive):
-        raise ValueError("All shifts must be either non-negative or non-positive. Mixed shifts are not allowed.")
-   
+      
     # Create an array of zeros with the same shape as data
     data_corrected = np.zeros_like(data)
     

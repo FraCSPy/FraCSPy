@@ -237,6 +237,7 @@ fig, ax = traceimage(data_pc_mr, climQ=99.99, figsize=(10, 4))
 ax.set_title('Data with restored event moveout and corrected polarity')
 plt.tight_layout()
 
+
 #%%
 
 ###############################################################################

@@ -96,15 +96,17 @@ def dist2rec(recs, gx, gy, gz):
 
 def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     r"""Moveout correction for microseismic data.
-    This function applies a moveout correction to microseismic data by shifting each sample in time according to its corresponding shift value.
-    The function now supports both positive and negative shifts.
+
+    This function applies a moveout correction to microseismic data by shifting each sample in time 
+    according to its corresponding time index shift value.
+    The function supports either all non-negative or all non-positive shifts.
 
     Parameters
     ----------
     data : :obj:`numpy.ndarray`
         Input seismic data [nr, nt]
     itshifts : :obj:`numpy.ndarray`
-        Array of shift values [nr]
+        Array of time index shift values [nr]
 
     Returns
     -------
@@ -113,13 +115,18 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
 
     Notes
     -----
-    The function checks that the length of `itshifts` matches the number of rows in `data`.
-    If all shifts are negative, the moveout correction is applied in the opposite direction.
+    The function checks that the length of `itshifts` matches the number of rows in `data`.    
+    The function ensures that all shifts are either non-negative or non-positive.
+    The input `itshifts` array is converted to integer.
+    If all shifts are non-negative, the moveout correction is applied in the direction of the beginning of the time.
+    If all shifts are non-positive, the moveout correction is applied in the opposite direction.
 
     Examples
     --------
-    >>> # Assuming you have a 2D array "data" with shape (nr, nt) and an array "itshifts" with shape (nr,)
+    >>> # Assuming you have a 2D array "data" with shape (nr, nt) and an array "itshifts" with shape (nr,):
     >>> corrected_data = moveout_correction(data, itshifts)
+    >>> # To make reverse correction, apply the negative "itshifts":
+    >>> data_restored = moveout_correction(corrected_data, -itshifts)
     """
     # Get size
     nr, nt = data.shape
@@ -128,25 +135,22 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     if len(itshifts) != nr:
         raise ValueError("The length of itshifts must match the number of rows in data.")
    
-    data_corrected = np.zeros_like(data)  # Create an array of zeros with the same shape as data
-
-    # Determine the direction of the shift
-    all_negative = np.all(itshifts <= 0)
+    # Check if all shifts are non-negative or non-positive
+    all_non_negative = np.all(itshifts >= 0)
+    all_non_positive = np.all(itshifts <= 0)
+    
+    if not (all_non_negative or all_non_positive):
+        raise ValueError("All shifts must be either non-negative or non-positive. Mixed shifts are not allowed.")
+   
+    # Create an array of zeros with the same shape as data
+    data_corrected = np.zeros_like(data)
     
     # Convert shifts to integers
     itshifts_int = itshifts.astype(int)
-
-    # Calculate the shifted indices for each row
-    if all_negative:
-        # If all shifts are negative or zero, shift in the opposite direction
-        shifted_indices = np.arange(nt) + np.abs(itshifts_int)[:, np.newaxis]
-    else:
-        # If any shift is positive, use the original direction
-        shifted_indices = np.arange(nt) - itshifts_int[:, np.newaxis]
-   
-    # Clip indices to ensure they stay within bounds
-    shifted_indices = np.clip(shifted_indices, 0, nt - 1)
-
+        
+    # Calculate the shifted indices for each row and clip them to ensure they stay within bounds
+    shifted_indices = np.clip((np.arange(nt) - itshifts_int[:, np.newaxis]), 0, nt - 1)
+    
     # Copy values from data to result using fancy indexing
     data_corrected[np.arange(nr)[:, np.newaxis], shifted_indices] = data
 
@@ -214,14 +218,14 @@ def svd_inv(M: np.ndarray, threshold: float = 1e-15):
    
     Parameters:
     ----------
-    M : np.ndarray
+    M : :obj:`numpy.ndarray` 
         The input matrix to invert.
-    threshold : float, optional
+    threshold : :obj:`float` , optional
         Threshold for considering singular values as zero. Default is 1e-15.
        
     Returns:
     -------
-    np.ndarray
+    M_inv : :obj:`numpy.ndarray` 
         The regularized inverse of the input matrix.
     """
     U, s, Vt = np.linalg.svd(M, full_matrices=False)

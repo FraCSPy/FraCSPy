@@ -159,10 +159,10 @@ def diffstack(data: np.ndarray,
     .. math::
         I(\mathbf{r}) = \max_t F(\mathbf{r},t).
     
-    Optionally, one can output a 3D image volume obtained as a sum of the 4D image function over time, e.g.:
+    Optionally, one can output a 3D image volume obtained as a mean of the 4D image function over time, e.g.:
 
     .. math::
-        I(\mathbf{r}) = \sum_t F(\mathbf{r},t).
+        I(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).
 
     The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.
 

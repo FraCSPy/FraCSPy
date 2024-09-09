@@ -65,7 +65,6 @@ def get_location_misfit(loca:list, locb:list, steps:list = None):
     else:
         return list(loca_array - locb_array)
 
-
 def dist2rec(recs, gx, gy, gz):
     r"""Compute distances from a 3D grid of points to array of receivers.
 
@@ -92,7 +91,6 @@ def dist2rec(recs, gx, gy, gz):
                 (recs[1][:, None, None, None] - gy)**2 +
                 (recs[2][:, None, None, None] - gz)**2)
     return d
-
 
 def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     r"""Moveout correction for microseismic data.

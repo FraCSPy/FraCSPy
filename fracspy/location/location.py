@@ -72,7 +72,8 @@ class Location():
             im, hc = _location_kind[kind](data, self.x, self.y, self.z, **kwargs)
         else:
             im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)
-	return im, hc
+
+        return im, hc
         
     def grid(self):
         """Construct the grid array from the internal grid vectors

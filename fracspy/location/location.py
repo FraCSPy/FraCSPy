@@ -89,7 +89,7 @@ class Location():
         # Stack the arrays into a (3, self.n_xyz) array
         return np.vstack((X.flatten(), Y.flatten(), Z.flatten()))
 
-    def putongrid(self, points:np.ndarray):
+    def indtogrid(self, points:np.ndarray):
         """Return the grid coordinates for points provided as grid indices
 
         This method computes the spatial grid coordinates of points with coordinates provided as grid indices.
@@ -102,4 +102,19 @@ class Location():
             self.x[0] + points[0] * self.dx,
             self.y[0] + points[1] * self.dy,
             self.z[0] + points[2] * self.dz
+        ])
+    
+    def gridtoind(self, points:np.ndarray):
+        """Return the grid indices for points with coordinates on a grid
+
+        This method computes the grid indices for point with provided spatial grid coordinates
+        Points have shape (3,npoints) where `npoints` is number of points.
+
+        .. note:: This method can be called multiple times as the internal parameters are not modified.
+
+        """
+        return np.array([
+            ((points[0] - self.x[0]) / self.dx).astype(int),
+            ((points[1] - self.y[0]) / self.dy).astype(int),
+            ((points[2] - self.z[0]) / self.dz).astype(int)
         ])

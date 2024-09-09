@@ -13,9 +13,9 @@ def locimage3d(image,
                xlim=None,
                ylim=None, 
                zlim=None, 
-               labels=('[m]', '[m]', '[m]'),
-               secondcross=False, 
-               secondcrossloc=None, ):
+               labels=('[m]', '[m]', '[m]'),               
+               secondcrossloc=None,
+               crosslegend=('Intersect Plane','Secondary Loc.')):
     """
     Plots x-y, y-z, and x-z slices of a 3D volume for visualizing microseismic source images and moment tensor (MT) kernel images.
 
@@ -53,11 +53,11 @@ def locimage3d(image,
     zlim : tuple or None, optional
         Limits for the z-axis in the format (min, max). If None, limits are set automatically. Default is None.
     labels : tuple of str, optional
-        Labels for the x, y, and z axes. Default is ('[m]', '[m]', '[m]').
-    secondcross : bool, optional
-        If True, a second cross is added to the plot. Default is False.
+        Labels for the x, y, and z axes. Default is ('[m]', '[m]', '[m]').    
     secondcrossloc : tuple or None, optional
         Indices of the second cross location in the format (x, y, z). Default is None.
+    crosslegend : tuple of str, optional
+        Legend labels for crosses, only used if secondcrossloc is not None, default is ('Intersect Plane','Secondary Loc.')
 
     Returns
     -------
@@ -87,10 +87,10 @@ def locimage3d(image,
                               xlim=xlim,
                               ylim=ylim, 
                               tlim=zlim, 
-                              labels=labels,
-                              secondcross=secondcross, 
+                              labels=labels,                              
                               secondcrossloc=secondcrossloc, 
                               secondcrosslinespec=secondcrosslinespec,
+                              crosslegend=crosslegend,
                               )
     fig.suptitle(title, fontsize=18)
     fig.tight_layout()

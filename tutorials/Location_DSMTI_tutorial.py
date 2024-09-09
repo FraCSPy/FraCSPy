@@ -255,9 +255,9 @@ plt.tight_layout()
 gdx = dx*2
 gdy = dy*2
 gdz = dz*2
-gx = x[::2]
+gx = x[::2] # use every second grid node
 gy = y[::2]
-gz = np.arange(150, 460, gdz)
+gz = np.arange(250, 560, gdz) # shift the grid to range 250m-550m
 
 
 
@@ -360,8 +360,16 @@ xlim = (min(gx),max(gx))
 ylim = (min(gy),max(gy))
 zlim = (min(gz),max(gz))
 
+# True source location in new index coordinates
+#true_index_location = int(isx/2), int(isy/2), int(isz/2)-25
+
+true_index_location = L.gridtoind([sx, sy, sz])
+
 # Define colormap
-cmap='cmc.batlowW_r'
+cmap='cmc.bilbao_r'
+
+# Define legend
+crosslegend=('Intersect plane (True location)','Determined location')
 
 # Print true location
 print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
@@ -370,29 +378,35 @@ print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, 
 fig,axs = locimage3d(dstacked_sqd, 
                      cmap=cmap,
                      title='Location with squared-value diffraction stacking\nwithout polarity correction:',
-                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
+                     x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
+                     secondcrossloc=hc_sqd,
+                     crosslegend=crosslegend,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from squared-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sqd)))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz],  L.putongrid(hc_sqd))))
+print('Event hypocenter from squared-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sqd)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.indtogrid(hc_sqd))))
 
 fig,axs = locimage3d(dstacked_sqd_mti, 
                      cmap=cmap,
                      title='Location with squared-value diffraction stacking\nwith polarity correction based on MTI:',
-                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
+                     x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
+                     secondcrossloc=hc_sqd_mti,
+                     crosslegend=crosslegend,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from squared-value diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sqd_mti)))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.putongrid(hc_sqd_mti))))
+print('Event hypocenter from squared-value diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sqd_mti)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.indtogrid(hc_sqd_mti))))
 
 fig,axs = locimage3d(dstacked_sem_mti, 
                      cmap=cmap,
                      title='Location with semblance-based diffraction stacking\nwith polarity correction based on MTI:',
-                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
+                     x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
+                     secondcrossloc=hc_sem_mti,
+                     crosslegend=crosslegend,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from semblance-based diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sem_mti)))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz],  L.putongrid(hc_sem_mti))))
+print('Event hypocenter from semblance-based diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sem_mti)))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.indtogrid(hc_sem_mti))))

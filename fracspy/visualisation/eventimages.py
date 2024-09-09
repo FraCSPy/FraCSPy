@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from .plotting_support import explode_volume
+import cmcrameri.cm as cmc
 
 
 def locimage3d(image, 
@@ -8,7 +9,7 @@ def locimage3d(image,
                title='', 
                p=99.9, 
                clipval=None, 
-               cmap='hot_r',
+               cmap='cmc.bilbao_r',               
                xlim=None,
                ylim=None, 
                zlim=None, 
@@ -41,7 +42,8 @@ def locimage3d(image,
     clipval : tuple or None, optional
         Clip value for the intensity scaling of the image. If None, it is not applied. Default is None.
     cmap : str, optional
-        Colormap used for displaying the slices. Default is 'hot_r'.
+        Colormap used for displaying the slices. Default is 'cmc.bilbao_r'.
+        Good options are also: 'cmc.lajolla_r', 'cmc.batlowW_r'.
     xlim : tuple or None, optional
         Limits for the x-axis in the format (min, max). If None, limits are set automatically. Default is None.
     ylim : tuple or None, optional

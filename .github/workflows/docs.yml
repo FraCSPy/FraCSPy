@@ -1,0 +1,19 @@
+name: Build FraCSPy's documentation
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies and pyfrac
+        run: |
+          make dev-install
+      - name: Build docs
+        run: |
+          sphinx-build -b html ./docs/source ./docs/build

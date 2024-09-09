@@ -1,6 +1,6 @@
 r"""
-Moment Tensor Plotting - Matrix Style
-=======================================
+Focal Mechanism Beachball Plot
+==============================
 This example shows how to create a heatmap of the moment tensor matrix
 """
 import matplotlib.pyplot as plt

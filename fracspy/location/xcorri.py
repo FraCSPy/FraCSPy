@@ -42,7 +42,7 @@ def xcorri(data, n_xyz, Op, niter=100, l1eps=8e-1,
     [1]_, and is intended to create a location algorithm that is less sensitive to
     inaccuracies in the knowledge of the source signature.
 
-    .. [1] Yu Zhang, Y., and Duan, L., and  Xie, Y. "A stable and practical implementation
+    .. [1] Zhang, Y., and Duan, L., and  Xie, Y. "A stable and practical implementation
        of least-squares reverse time migration", Geophysics, Vol. 80, 1, pp. 1JF-Z39, 2015.
 
     Parameters

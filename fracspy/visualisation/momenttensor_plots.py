@@ -5,20 +5,22 @@ from obspy.imaging.beachball import beach
 
 
 def _mt4plt(mt):
-    '''
+    """
+    Converts a 1x6 Moment Tensor array into a 3x3 matrix and a padded 5x5 matrix for visualization.
 
     Parameters
     ----------
-    mt : numpy array [1x6]
-        Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+    mt : numpy.ndarray [1x6]
+        Moment Tensor array defined according to the format specified in `pyfrac.mtsolvers.mtutils.get_mt_computation_dict`.
 
     Returns
     -------
-    mat_mt : numpy array [3x3]
-        Moment Tensor matrix
-    mat_mt4plt : numpy array [5x5]
-        Padded Moment Tensor matrix for visualisation purposes
-    '''
+    mat_mt : numpy.ndarray [3x3]
+        The Moment Tensor represented as a 3x3 matrix.
+    mat_mt4plt : numpy.ndarray [5x5]
+        The Moment Tensor represented as a padded 5x5 matrix for visualization purposes, with padding added for aesthetics.
+    """
+
     # Define MT matrix
     mat_mt = np.empty([3 ,3])
     mat_mt[0 ,0] = mt[0]  # M_{x,x}
@@ -42,25 +44,27 @@ def _mt4plt(mt):
 
 
 def MTMatrixplot(mt, ax, cmap=None, title=True):
-    '''
+    """
+    Plots a Moment Tensor matrix as a heatmap on a given axis.
 
     Parameters
     ----------
-    mt : numpy array [1x6]
-        Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
-    ax: pyplot axis
-        Figure axis on which to plot, e.g., fig,ax = plt.subplots(1,1)
-    cmap : pyplot colorbar
-        [optional], default matplotlib.cm.Spectral
-    title : bool
-        [optional] include title 'Source Moment Tensor'
+    mt : numpy.ndarray [1x6]
+        Moment Tensor array defined according to the format specified in `pyfrac.mtsolvers.mtutils.get_mt_computation_dict`.
+    ax : matplotlib.axes.Axes
+        The matplotlib axis on which to plot the Moment Tensor heatmap.
+    cmap : matplotlib.colors.Colormap, optional
+        Colormap used for displaying the Moment Tensor heatmap. If not provided, `matplotlib.cm.PiYG` is used as default.
+    title : bool, optional
+        If True, a title 'Source Moment Tensor' is displayed on the plot. Default is True.
 
     Returns
     -------
+    None
+    """
 
-    '''
     if not cmap:
-        cmap = matplotlib.cm.Spectral
+        cmap = matplotlib.cm.PiYG
     cmap.set_bad('w', 1.)
 
     mt_matrix, mat_mt4plt = _mt4plt(mt)
@@ -129,7 +133,8 @@ def MTBeachball(mt, ax):
 
 
 def MTMatrix_comparisonplot(mt, mt_est):
-    ''' Matrix heatmap comparison figure between a known and estimated moment tensor
+    ''' 
+    Creates a side-by-side matrix heatmap comparison between a known and an estimated Moment Tensor.
 
     Parameters
     ----------
@@ -150,7 +155,9 @@ def MTMatrix_comparisonplot(mt, mt_est):
 
 
 def MTBeachball_comparisonplot(mt, mt_est):
-    ''' Beachball comparison figure between a known and estimated moment tensor
+    '''
+    Creates a side-by-side beachball plot comparison between a known and an estimated Moment Tensor.
+
 
     Parameters
     ----------

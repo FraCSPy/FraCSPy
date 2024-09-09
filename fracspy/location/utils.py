@@ -4,13 +4,40 @@ from scipy.signal import convolve2d
 def _get_centroid(array_xyz):
     return np.mean(array_xyz, axis=1)
 
-def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
-    if absval: ssimage=abs(ssimage)
+def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
+    """Source location from image
+
+    Compute the source location from a seismic image.
+
+    Parameters
+    ----------
+    ssimage : :obj:`numpy.ndarray`
+        Image of size :math:`n_x \times n_y \times n_z`
+    n_max : :obj:`int`, optional
+        Number of maximum values to extract (if ``n_max>1``, the centroid of these values
+        will be computed and provided as the estimated source location)
+    rem_edge : :obj:`bool`, optional
+        Remove edges of volume
+    edgebuf : :obj:`int`, optional
+        Number of grid points to remove from each edge if ``rem_edge=True``
+    absval : :obj:`bool`, optional
+        Compute absolute value of ``ssimage``
+
+    Returns
+    -------
+    ev_loc : :obj:`tuple`
+        Most likely source location
+    ev_locs : :obj:`tuple`
+        `n_max` most likely source locations
+
+    """
+    if absval:
+        ssimage = np.abs(ssimage)
     if rem_edge:
-        if len(ssimage.shape)==2:
+        if len(ssimage.shape) == 2:
             cropped_image = ssimage[edgebuf:-edgebuf, edgebuf:-edgebuf]
-        elif len(ssimage.shape)==3:
+        elif len(ssimage.shape) == 3:
             cropped_image = ssimage[edgebuf:-edgebuf, edgebuf:-edgebuf,  edgebuf:-edgebuf]
         ev_locs = np.array(np.unravel_index(np.argpartition(cropped_image.ravel(), -1 * n_max)[-n_max:],
                                             cropped_image.shape))
@@ -22,7 +49,8 @@ def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
     if n_max > 1:
         ev_loc = _get_centroid(ev_locs)
-    else: ev_loc = ev_locs
+    else:
+        ev_loc = ev_locs
 
     return ev_loc, ev_locs
 
@@ -70,19 +98,19 @@ def dist2rec(recs, gx, gy, gz):
 
     Parameters
     ----------
-    recs : :obj:`float`
-        receiver coordinates [3,nr]
-    gx : :obj:`float`
-        x coordinates of a grid [1,ngx]
-    gy : :obj:`float`
-        y coordinates of a grid [1,ngy] 
-    gz : :obj:`float`
-        z coordinates of a grid [1,ngz]
+    recs : :obj:`numpy.ndarray`
+        receiver coordinates of size :math:`3 \times n_r`
+    gx : :obj:`numpy.ndarray`
+        x coordinates
+    gy : :obj:`numpy.ndarray`
+        y coordinates
+    gz : :obj:`numpy.ndarray`
+        z coordinates
 
     Returns
     -------
     d : :obj:`numpy.ndarray`
-        4D array of distances [nr,ngx,ngy,ngz]
+        4D array of distances of size :math:`n_r \times n_x \times n_y \times n_z`
 
     """
     nr = recs.shape[1]

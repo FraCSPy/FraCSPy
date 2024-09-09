@@ -30,6 +30,15 @@ Modelling
 
     TAKirchhoff
 
+.. currentmodule:: fracspy.modelling.mt_kirchhoff
+
+.. autosummary::
+   :toctree: generated/
+
+    MTSKirchhoff
+    MTMKirchhoff
+
+
 Imaging/Inversion
 ~~~~~~~~~~~~~~~~~
 
@@ -66,7 +75,6 @@ Imaging/Inversion
 
 Utilities
 ~~~~~~~~~
-
 .. currentmodule:: fracspy.utils.synthutils
 
 .. autosummary::
@@ -90,14 +98,50 @@ Utilities
 Moment Tensor Inversion
 -----------------------
 
-Source Location Known
-~~~~~~~~~~~~~~~~~~~~~
+Inverse engines
+~~~~~~~~~~~~~~~
 
-.. currentmodule:: fracspy.mtsolvers.mtai
+.. currentmodule:: fracspy.mtinversion.mtai
 
 .. autosummary::
    :toctree: generated/
 
-    frwrd_mtmodelling
-    lsqr_mtsolver
+    MTA
 
+.. currentmodule:: fracspy.mtinversion.mtwi
+
+.. autosummary::
+   :toctree: generated/
+
+    MTW
+
+.. currentmodule:: fracspy.mtinversion.mtinversion
+
+.. autosummary::
+   :toctree: generated/
+
+    MTInversion
+
+
+Utilities
+~~~~~~~~~
+
+.. currentmodule:: fracspy.mtinversion.greensfunction
+
+.. autosummary::
+   :toctree: generated/
+
+    collect_source_angles
+    pwave_greens_comp
+    mt_pwave_greens_comp
+    mt_pwave_greens_multicomp
+
+
+.. currentmodule:: fracspy.mtinversion.utils
+
+.. autosummary::
+   :toctree: generated/
+
+    get_mt_at_loc
+    get_mt_max_locs
+    get_magnitude

@@ -110,8 +110,9 @@ vz = fracspy.utils.sofiutils.read_seis(
     os.path.join(input_dir, 'outputs',
                  'su', f'{expname}_vy.txt'),
     nr=nr)
+vz = vz[:, t_shift: t_shift + tdur]
 efd_scaler = np.max(abs(vz))  # Scaler to make data more friendly
-vz = vz[:, t_shift: t_shift + tdur] * efd_scaler
+vz /= efd_scaler
 
 # Remove absorbing boundaries from both the model and receiver coordinates
 mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
@@ -134,11 +135,10 @@ plt.tight_layout()
 # We start by defining the source frequency and location, which we assume to be
 # known ahead of time.
 
-omega_p = 20
-
-sx = nx//2
-sy = ny//2
-sz = 2*nz//3
+omega_p = 30
+sx = nx // 2
+sy = ny // 2
+sz = 2 * nz // 3
 sloc_ind = [sx, sy, sz]
 
 ###############################################################################
@@ -153,15 +153,15 @@ trav = fracspy.modelling.kirchhoff.Kirchhoff._traveltime_table(
         recs=recs,
         vel=mod,
         mode='eikonal')
-TTT_full = trav.reshape(nx,ny,nz,nr).transpose([3,0,1,2])
-source_times = np.round(TTT_full[:, sloc_ind[0],
-                        sloc_ind[1], sloc_ind[2]]/dt).astype(int)
+trav = trav.reshape(nx, ny, nz, nr).transpose([3,0,1,2])
+source_times = np.round(trav[:, sloc_ind[0],
+                        sloc_ind[1], sloc_ind[2]]
+                        / dt).astype(int)
 
 # Extract amplitudes at arrival times based on given source location
 vz_amps = np.ones(nr)
 for i in range(nr):
     vz_amps[i] = vz[i, source_times[i]]
-p_amps = vz_amps
 
 plt.figure(figsize=(10, 4))
 plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
@@ -171,35 +171,12 @@ plt.scatter(range(nr), source_times, marker='o', facecolors='none', edgecolors='
 plt.tight_layout()
 
 ###############################################################################
-# We can finally also compute our Green's function coefficients and assemble
-# the operator
-
-# Amplitudes
-gamma_sourceangles, dist_table = \
-    fracspy.mtsolvers.homo_mti.collect_source_angles(x, y, z,
-                                                    reclocs=recs, nc=3)
-
-# This keeps everything nice and clean in the later G compute
-MT_comp_dict = fracspy.mtsolvers.mtutils.get_mt_computation_dict()
-
-# Create G operator
-Gz = fracspy.mtsolvers.homo_mti.pwave_Greens_comp(
-    gamma_sourceangles,
-    dist_table,
-    sloc_ind,
-    mod,
-    MT_comp_dict,
-    comp_gamma_ind=2,
-    omega_p=omega_p,
-    )
-
-###############################################################################
 # Moment Tensor Inversion
 # -----------------------
 # We finally solve our inverse problem to obtain an estimate of the moment tensor
 
-# Inversion
-mt_est = fracspy.mtsolvers.mtai.lsqr_mtsolver(Gz, p_amps)
+MT = fracspy.mtinversion.MTInversion(x, y, z, recs, mod)
+mt_est = MT.apply(vz_amps, sloc_ind, 2, omega_p, kind="ai")
 mt_est /= np.max(abs(mt_est))
 
 # Comparison with known MT

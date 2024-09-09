@@ -50,7 +50,7 @@ class Location():
           and/or imaging methods as the internal parameters are not modified during the
           location procedure.
 
-	Parameters
+	    Parameters
         ----------
         data : :obj:`numpy.ndarray`
             Data of shape :math`n_r \times n_t`
@@ -60,7 +60,7 @@ class Location():
         kwargs : :obj:`dict`, optional
             Keyword arguments to pass to the location algorithm
 
-	Returns
+	    Returns
         -------
         im : :obj:`numpy.ndarray`
             Migrated volume
@@ -93,7 +93,7 @@ class Location():
         """Return the grid coordinates for points provided as grid indices
 
         This method computes the spatial grid coordinates of points with coordinates provided as grid indices.
-        Points have shape (3,npoints) where npoints is number of points.
+        Points have shape (3,npoints) where `npoints` is number of points.
 
         .. note:: This method can be called multiple times as the internal parameters are not modified.
 

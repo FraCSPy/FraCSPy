@@ -75,6 +75,7 @@ Imaging/Inversion
 
 Utilities
 ~~~~~~~~~
+
 .. currentmodule:: fracspy.utils.synthutils
 
 .. autosummary::
@@ -92,7 +93,6 @@ Utilities
     moveout_correction
     polarity_correction
     semblance_stack
-    
 
 
 Moment Tensor Inversion

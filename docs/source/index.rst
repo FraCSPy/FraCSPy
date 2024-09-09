@@ -7,12 +7,12 @@ newly proposed algorithms and workflows.
 
 Available Tools
 ---------------
-In this first version, FraCSPy focuses on traditional monitoring tools (i.e., non-Machine Learning procedures). It has routines that cover the following 
-elements of the microseismic monitoring pipeline: 
+In this first version, FraCSPy focuses on traditional monitoring tools (i.e., non-Machine Learning procedures). 
+It has routines that cover the following elements of the microseismic monitoring pipeline: 
 
-   - detection,
-   - localisation, and
-   - characterisation: moment tensor determination and moment magnitude computation.
+- detection,
+- localisation, and
+- characterisation: moment tensor determination and moment magnitude computation.
 
 Alongside these core features, there are a number of functions available for data processing and for visualisation. 
 

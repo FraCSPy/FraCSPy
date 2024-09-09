@@ -93,24 +93,39 @@ def plot_reconstruction_2d(data, datarec, Fop, x, t, dx, f, ks, vel):
     plt.tight_layout()
 
 
-def clim(data, ratio=95):
+def clim(data:np.ndarray, ratio:float=95):
     """Clipping based on percentiles
+    
     Define clipping values for plotting based on percentiles of input data
+    
     Parameters
     ----------
-    data : :obj:`np.ndarray`
+    data : :obj:`numpy.ndarray`
         Full data
     ratio : :obj:`float`
         Clipping ratio
-    Parameters
-    ----------
-    -c : :obj:`float`
-        Minimum value
-    c : :obj:`float`
-        Maximum value
+
+    Returns
+    -------
+    limits : :obj:`tuple`
+        Tuple of (Minimum value, Maximum value)
+
+    Notes
+    -----
+        If data has both negative and positive values, limits are (-c,c) where c is clipped maximum absolute value of data.
+        If data has only non-negative values, limits are (0,c).
+        If data has only non-positive values, limits are (-c,0).        
     """
     c = np.percentile(np.absolute(data), ratio)
-    return -c, c
+
+    if np.all(data>=0):
+        limits = (0,c)
+    elif np.all(data<=0):
+        limits = (-c,0)
+    else:
+        limits = (-c,c)
+
+    return limits
 
 
 def explode_volume(volume, t=None, x=None, y=None,

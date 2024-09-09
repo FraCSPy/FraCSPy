@@ -541,14 +541,18 @@ xlim = (min(gx),max(gx))
 ylim = (min(gy),max(gy))
 zlim = (min(gz),max(gz))
 
+# Define colormap
+cmap='cmc.batlowW_r'
+
 # Print true location
 print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
 
 # Results of application to clean data:
-fig,axs = locimage3d(dstacked_abs, 
-                      title='Location with absolute-value diffraction stacking:\nclean data',
-                      x0=isx, y0=isy, z0=isz,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+fig,axs = locimage3d(dstacked_abs,                
+                     cmap=cmap,
+                     title='Location with absolute-value diffraction stacking:\nclean data',
+                     x0=isx, y0=isy, z0=isz,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
 print('Event hypocenter from absolute-value diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
@@ -556,6 +560,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with white noise:
 fig,axs = locimage3d(dstacked_abs_wn, 
+                     cmap=cmap,
                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -565,6 +570,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with spiky noise:
 fig,axs = locimage3d(dstacked_abs_sn, 
+                     cmap=cmap,
                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -574,6 +580,7 @@ print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misf
 
 # Results of application to data contaminated with ringy noise:
 fig,axs = locimage3d(dstacked_abs_rn, 
+                     cmap=cmap,
                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -591,9 +598,10 @@ print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, 
 
 # Results of application to clean data:
 fig,axs = locimage3d(dstacked_sqd, 
-                      title='Location with squared-value diffraction stacking:\nclean data',
-                      x0=isx, y0=isy, z0=isz,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+                     cmap=cmap,
+                     title='Location with squared-value diffraction stacking:\nclean data',
+                     x0=isx, y0=isy, z0=isz,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_sqd,[dx, dy, dz])))
@@ -601,6 +609,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with white noise:
 fig,axs = locimage3d(dstacked_sqd_wn, 
+                     cmap=cmap,
                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -610,6 +619,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with spiky noise:
 fig,axs = locimage3d(dstacked_sqd_sn, 
+                     cmap=cmap,
                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -619,6 +629,7 @@ print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misf
 
 # Results of application to data contaminated with ringy noise:
 fig,axs = locimage3d(dstacked_sqd_rn, 
+                     cmap=cmap,
                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn}",
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -642,8 +653,9 @@ print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, 
 
 # Results of application to clean data:
 fig,axs = locimage3d(dstacked_semb,                       
-                      x0=isx, y0=isy, z0=isz,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+                     cmap=cmap,
+                     x0=isx, y0=isy, z0=isz,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 fig.suptitle(f"Location with semblance-based diffraction stacking:\nclean data")
 print('-------------------------------------------------------')
 print('Event hypocenter from semblance-based diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_semb,[dx, dy, dz])))
@@ -652,8 +664,9 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to clean data:
 fig,axs = locimage3d(dstacked_semb_swin,                       
-                      x0=isx, y0=isy, z0=isz,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+                     cmap=cmap,
+                     x0=isx, y0=isy, z0=isz,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\nclean data")
 print('-------------------------------------------------------')
 print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,*np.multiply(hc_semb_swin,[dx, dy, dz])))
@@ -661,6 +674,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with white noise:
 fig,axs = locimage3d(dstacked_semb_swin_wn,                     
+                     cmap=cmap,
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with white noise of SNR={snr_wn}")
@@ -670,6 +684,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with spiky noise:
 fig,axs = locimage3d(dstacked_semb_swin_sn,                     
+                     cmap=cmap,
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with spiky noise of SNR={snr_sn}")
@@ -679,6 +694,7 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 # Results of application to data contaminated with ringy noise:
 fig,axs = locimage3d(dstacked_semb_swin_rn,                     
+                     cmap=cmap,
                      x0=isx, y0=isy, z0=isz,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with ringy noise of SNR={snr_rn}")

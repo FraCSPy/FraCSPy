@@ -9,7 +9,7 @@ def locimage3d(image,
                title='', 
                p=99.9, 
                clipval=None, 
-               cmap='cmc.bilbao_r',               
+               cmap='cmc.batlow_r',               
                xlim=None,
                ylim=None, 
                zlim=None, 
@@ -42,8 +42,10 @@ def locimage3d(image,
     clipval : tuple or None, optional
         Clip value for the intensity scaling of the image. If None, it is not applied. Default is None.
     cmap : str, optional
-        Colormap used for displaying the slices. Default is 'cmc.bilbao_r'.
-        Good options are also: 'cmc.lajolla_r', 'cmc.batlowW_r'.
+        Colormap used for displaying the slices. Default is 'cmc.batlow_r', which is universal for all kinds of image functions.
+        Good options are: 
+        'cmc.batlowW_r' (`batlow_r` starting with white), 'cmc.lajolla_r' (yellow to deep red), 'cmc.bilbao_r' (white to brown) - for image functions with 0 minimum value;
+        'cmc.vik' (blue-white-red), 'cmc.roma_r' (scientific version of rainbow) - for image functions with maximum and minimum values symmetrical to 0 or when parameter `p` is provided.
     xlim : tuple or None, optional
         Limits for the x-axis in the format (min, max). If None, limits are set automatically. Default is None.
     ylim : tuple or None, optional

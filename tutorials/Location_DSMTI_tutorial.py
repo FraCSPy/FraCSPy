@@ -360,20 +360,25 @@ xlim = (min(gx),max(gx))
 ylim = (min(gy),max(gy))
 zlim = (min(gz),max(gz))
 
+# Define colormap
+cmap='cmc.batlowW_r'
+
 # Print true location
 print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
 
 # Results of application:
 fig,axs = locimage3d(dstacked_sqd, 
-                      title='Location with squared-value diffraction stacking\nwithout polarity correction:',
-                      x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+                     cmap=cmap,
+                     title='Location with squared-value diffraction stacking\nwithout polarity correction:',
+                     x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking without polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.putongrid(hc_sqd)))
 print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz],  L.putongrid(hc_sqd))))
 
 fig,axs = locimage3d(dstacked_sqd_mti, 
+                     cmap=cmap,
                      title='Location with squared-value diffraction stacking\nwith polarity correction based on MTI:',
                      x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
                      xlim=xlim,ylim=ylim,zlim=zlim)
@@ -383,6 +388,7 @@ print('Event hypocenter from squared-value diffraction stacking with polarity co
 print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([sx, sy, sz], L.putongrid(hc_sqd_mti))))
 
 fig,axs = locimage3d(dstacked_sem_mti, 
+                     cmap=cmap,
                      title='Location with semblance-based diffraction stacking\nwith polarity correction based on MTI:',
                      x0=int(isx/2), y0=int(isy/2), z0=int(isz/2)-25,
                      xlim=xlim,ylim=ylim,zlim=zlim)

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from .plotting_support import explode_volume
+import cmcrameri.cm as cmc
 
 
 def locimage3d(image, 
@@ -8,13 +9,13 @@ def locimage3d(image,
                title='', 
                p=99.9, 
                clipval=None, 
-               cmap='hot_r',
+               cmap='cmc.batlow_r',               
                xlim=None,
                ylim=None, 
                zlim=None, 
-               labels=('[m]', '[m]', '[m]'),
-               secondcross=False, 
-               secondcrossloc=None, ):
+               labels=('[m]', '[m]', '[m]'),               
+               secondcrossloc=None,
+               crosslegend=('Intersect Plane','Secondary Loc.')):
     """
     Plots x-y, y-z, and x-z slices of a 3D volume for visualizing microseismic source images and moment tensor (MT) kernel images.
 
@@ -41,7 +42,10 @@ def locimage3d(image,
     clipval : tuple or None, optional
         Clip value for the intensity scaling of the image. If None, it is not applied. Default is None.
     cmap : str, optional
-        Colormap used for displaying the slices. Default is 'hot_r'.
+        Colormap used for displaying the slices. Default is 'cmc.batlow_r', which is universal for all kinds of image functions.
+        Good options are: 
+        'cmc.batlowW_r' (`batlow_r` starting with white), 'cmc.lajolla_r' (yellow to deep red), 'cmc.bilbao_r' (white to brown) - for image functions with 0 minimum value;
+        'cmc.vik' (blue-white-red), 'cmc.roma_r' (scientific version of rainbow) - for image functions with maximum and minimum values symmetrical to 0 or when parameter `p` is provided.
     xlim : tuple or None, optional
         Limits for the x-axis in the format (min, max). If None, limits are set automatically. Default is None.
     ylim : tuple or None, optional
@@ -49,11 +53,11 @@ def locimage3d(image,
     zlim : tuple or None, optional
         Limits for the z-axis in the format (min, max). If None, limits are set automatically. Default is None.
     labels : tuple of str, optional
-        Labels for the x, y, and z axes. Default is ('[m]', '[m]', '[m]').
-    secondcross : bool, optional
-        If True, a second cross is added to the plot. Default is False.
+        Labels for the x, y, and z axes. Default is ('[m]', '[m]', '[m]').    
     secondcrossloc : tuple or None, optional
         Indices of the second cross location in the format (x, y, z). Default is None.
+    crosslegend : tuple of str, optional
+        Legend labels for crosses, only used if secondcrossloc is not None, default is ('Intersect Plane','Secondary Loc.')
 
     Returns
     -------
@@ -83,10 +87,10 @@ def locimage3d(image,
                               xlim=xlim,
                               ylim=ylim, 
                               tlim=zlim, 
-                              labels=labels,
-                              secondcross=secondcross, 
+                              labels=labels,                              
                               secondcrossloc=secondcrossloc, 
                               secondcrosslinespec=secondcrosslinespec,
+                              crosslegend=crosslegend,
                               )
     fig.suptitle(title, fontsize=18)
     fig.tight_layout()

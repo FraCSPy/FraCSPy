@@ -93,7 +93,7 @@ if len(version.split("+")) > 1 or version == "unknown":
 # General information about the project
 year = datetime.date.today().year
 project = "fracspy"
-copyright = "{}, fracspy Development Team".format(year)
+copyright = "{}, FraCSPy Development Team".format(year)
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
@@ -103,10 +103,10 @@ rst_epilog = """
 )
 html_static_path = ["_static"]
 html_last_updated_fmt = "%b %d, %Y"
-html_title = "fracspy"
-html_short_title = "fracspy"
-# html_logo = "_static/fracspy.png"
-# html_favicon = "_static/favicon.ico"
+html_title = "FraCSPy"
+html_short_title = "FraCSPy"
+html_logo = "_static/fracspy_logo.png"
+html_favicon = "_static/favicon.ico"
 html_extra_path = []
 pygments_style = "default"
 add_function_parentheses = False
@@ -116,14 +116,14 @@ html_show_copyright = True
 
 # Theme config
 html_theme = "pydata_sphinx_theme"
-# html_theme_options = {
-#     "logo_only": True,
-#     "display_version": True,
-#     "logo": {
-#         "image_light": "fracspy.png",
-#         "image_dark": "fracspy.png",
-#     }
-# }
+html_theme_options = {
+    "logo_only": True,
+    "display_version": True,
+    "logo": {
+        "image_light": "fracspy_logo.png",
+        "image_dark": "fracspy_logo_dark.png",
+    }
+}
 html_css_files = [
     'css/custom.css',
 ]
@@ -133,7 +133,7 @@ html_context = {
     "menu_links": [
         (
             '<i class="fa fa-github fa-fw"></i> Source Code',
-            "https://github.com/DIG-Kaust/MicroseismicProcessing",
+            "https://github.com/FraCSPy/FraCSPy",
         ),
         # (
         #     '<i class="fa fa-users fa-fw"></i> Contributing',
@@ -155,5 +155,4 @@ html_context = {
 
 # Load the custom CSS files (needs sphinx >= 1.6 for this to work)
 def setup(app):
-    app.add_css_file("st"
-                     "yle.css")
+    app.add_css_file("style.css")

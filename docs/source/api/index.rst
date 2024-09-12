@@ -47,8 +47,8 @@ Imaging/Inversion
 .. autosummary::
    :toctree: generated/
 
-    diffstack
-    semblancediffstack
+    kmigration
+    diffstack    
 
 .. currentmodule:: fracspy.location.imaging
 
@@ -76,12 +76,23 @@ Imaging/Inversion
 Utilities
 ~~~~~~~~~
 
+.. currentmodule:: fracspy.utils.synthutils
+
+.. autosummary::
+   :toctree: generated/
+
+    add_noise
+
 .. currentmodule:: fracspy.location.utils
 
 .. autosummary::
    :toctree: generated/
 
     get_max_locs
+    dist2rec    
+    moveout_correction
+    polarity_correction
+    semblance_stack
 
 
 Moment Tensor Inversion

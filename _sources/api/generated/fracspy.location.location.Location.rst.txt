@@ -11,6 +11,9 @@
     
         ~Location.__init__
         ~Location.apply
+        ~Location.grid
+        ~Location.gridtoind
+        ~Location.indtogrid
 
 
 

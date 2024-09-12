@@ -1,0 +1,12 @@
+﻿fracspy.location.utils.dist2rec
+===============================
+
+.. currentmodule:: fracspy.location.utils
+
+.. autofunction:: dist2rec
+
+.. include:: backreferences/fracspy.location.utils.dist2rec.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

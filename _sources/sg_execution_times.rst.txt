@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**06:54.597** total execution time for 11 files **from all galleries**:
+**10:55.256** total execution time for 12 files **from all galleries**:
 
 .. container::
 
@@ -32,35 +32,38 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` (``../../tutorials/Location_DiffractionStacking_tutorial.py``)
+     - 04:27.753
+     - 0.0
    * - :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py` (``../../tutorials/Location_KirchhoffBased_tutorial.py``)
-     - 03:06.421
+     - 02:59.099
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py` (``../../tutorials/MT_WaveformInversion_tutorial.py``)
-     - 02:07.893
+     - 02:06.419
      - 0.0
-   * - :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` (``../../tutorials/Location_DiffractionStacking_tutorial.py``)
-     - 01:07.278
+   * - :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py` (``../../tutorials/Location_DSMTI_tutorial.py``)
+     - 00:48.649
      - 0.0
    * - :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/MT_AmplitudeInversion_tutorial.py``)
-     - 00:26.965
+     - 00:27.432
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``../../examples/plot_SeismicWiggles.py``)
-     - 00:04.540
+     - 00:04.432
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``../../examples/plot_EventImages.py``)
      - 00:00.898
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``../../examples/plot_SeismicTraceImage.py``)
-     - 00:00.275
+     - 00:00.269
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``../../examples/plot_ComparingBeachballs.py``)
-     - 00:00.163
+     - 00:00.161
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``../../examples/plot_ComparingMTmatrices.py``)
-     - 00:00.100
+     - 00:00.080
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``../../examples/plot_MTmatrix.py``)
-     - 00:00.039
+     - 00:00.038
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``../../examples/plot_Beachball.py``)
      - 00:00.025

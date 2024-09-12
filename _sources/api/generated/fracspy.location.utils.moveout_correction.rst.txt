@@ -1,0 +1,12 @@
+﻿fracspy.location.utils.moveout\_correction
+==========================================
+
+.. currentmodule:: fracspy.location.utils
+
+.. autofunction:: moveout_correction
+
+.. include:: backreferences/fracspy.location.utils.moveout_correction.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

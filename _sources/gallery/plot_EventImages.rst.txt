@@ -133,7 +133,7 @@ the xlim, ylim, and zlim parameters.
 
  .. code-block:: none
 
-    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:92: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:96: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       fig.tight_layout()
     /home/runner/work/FraCSPy/FraCSPy/examples/plot_EventImages.py:58: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
@@ -218,7 +218,7 @@ Note, that the source location is not the location for the plane intersection
 the second cross is merely a projection of the expected location, on top of
 the intersection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-111
+.. GENERATED FROM PYTHON SOURCE LINES 98-110
 
 .. code-block:: Python
 
@@ -230,8 +230,7 @@ the intersection.
                           z0=int(np.round(max_loc[2])),
                           xlim=[x[0],x[-1]],
                           ylim=[y[0],y[-1]],
-                          zlim=[z[0],z[-1]],
-                          secondcross=True, 
+                          zlim=[z[0],z[-1]],                      
                           secondcrossloc=source_location,
                           clipval=[0,1])
     plt.tight_layout()
@@ -248,7 +247,7 @@ the intersection.
 
  .. code-block:: none
 
-    /home/runner/work/FraCSPy/FraCSPy/examples/plot_EventImages.py:110: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/runner/work/FraCSPy/FraCSPy/examples/plot_EventImages.py:109: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
 
 

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>fracspy.location.location.Location &#8212; fracspy</title>
+        <title>fracspy.location.location.Location &#8212; FraCSPy</title>
     
 
   
@@ -51,9 +51,10 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.location.location.Location';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="fracspy.location.utils.get_max_locs" href="fracspy.location.utils.get_max_locs.html" />
+    <link rel="next" title="fracspy.utils.synthutils.add_noise" href="fracspy.utils.synthutils.add_noise.html" />
     <link rel="prev" title="fracspy.location.xcorri.xcorri" href="fracspy.location.xcorri.xcorri.html" />
     
     <script src="../../_static/require.js"></script>
@@ -130,8 +131,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -147,7 +154,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -287,7 +294,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -375,8 +382,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.kmigration.html">fracspy.location.migration.kmigration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.imaging.lsi.html">fracspy.location.imaging.lsi</a></li>
@@ -389,7 +396,14 @@ document.write(`
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.location.location.Location</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.utils.synthutils.add_noise.html">fracspy.utils.synthutils.add_noise</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.dist2rec.html">fracspy.location.utils.dist2rec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.moveout_correction.html">fracspy.location.utils.moveout_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.polarity_correction.html">fracspy.location.utils.polarity_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.semblance_stack.html">fracspy.location.utils.semblance_stack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
@@ -474,7 +488,8 @@ document.write(`
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fracspy.location.location.</span></span><span class="sig-name descname"><span class="pre">Location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/location.html#Location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.location.Location" title="Link to this definition">#</a></dt>
 <dd><p>Event location</p>
 <p>This class acts as an abstract interface for users to perform
-event location on a microseismic dataset</p>
+event location on a microseismic dataset.
+It assumes that grid vectors are regularly spaced.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -495,6 +510,15 @@ event location on a microseismic dataset</p>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(data[, kind])</p></td>
 <td><p>Perform event location</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code>()</p></td>
+<td><p>Construct the grid array from the internal grid vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gridtoind</span></code>(points)</p></td>
+<td><p>Return the grid indices for points with coordinates on a grid</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">indtogrid</span></code>(points)</p></td>
+<td><p>Return the grid coordinates for points provided as grid indices</p></td>
 </tr>
 </tbody>
 </table>
@@ -523,11 +547,11 @@ event location on a microseismic dataset</p>
       </div>
     </a>
     <a class="right-next"
-       href="fracspy.location.utils.get_max_locs.html"
+       href="fracspy.utils.synthutils.add_noise.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fracspy.location.utils.get_max_locs</p>
+        <p class="prev-next-title">fracspy.utils.synthutils.add_noise</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -578,7 +602,7 @@ event location on a microseismic dataset</p>
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

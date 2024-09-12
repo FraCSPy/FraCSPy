@@ -1,0 +1,12 @@
+﻿fracspy.location.migration.kmigration
+=====================================
+
+.. currentmodule:: fracspy.location.migration
+
+.. autofunction:: kmigration
+
+.. include:: backreferences/fracspy.location.migration.kmigration.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

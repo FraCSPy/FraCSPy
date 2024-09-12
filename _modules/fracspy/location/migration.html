@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>fracspy.location.migration &#8212; fracspy</title>
+        <title>fracspy.location.migration &#8212; FraCSPy</title>
     
 
   
@@ -50,6 +50,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/fracspy/location/migration';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     
@@ -127,8 +128,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -144,7 +151,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -282,7 +289,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -409,15 +416,12 @@ document.write(`
   <h1>Source code for fracspy.location.migration</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="n">get_max_locs</span>
-<span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="n">moveout_correction</span>
-<span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="n">semblance_stack</span>
+<span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
-
-<div class="viewcode-block" id="diffstack">
-<a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack">[docs]</a>
-<span class="k">def</span> <span class="nf">diffstack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Kirchhoff migration for microseismic source location</span>
+<div class="viewcode-block" id="kmigration">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.kmigration.html#fracspy.location.migration.kmigration">[docs]</a>
+<span class="k">def</span> <span class="nf">kmigration</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Kirchhoff migration for microseismic source location.</span>
 
 <span class="sd">    This routine performs imaging of microseismic data by migration</span>
 <span class="sd">    using the adjoint of the Kirchhoff modelling operator.</span>
@@ -447,66 +451,274 @@ document.write(`
     <span class="k">return</span> <span class="n">migrated</span><span class="p">,</span> <span class="n">hc</span></div>
 
 
+<div class="viewcode-block" id="diffstack">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack">[docs]</a>
+<span class="k">def</span> <span class="nf">diffstack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+              <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+              <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+              <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+              <span class="n">tt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+              <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>                        
+              <span class="n">nforhc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
+              <span class="n">output_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+              <span class="n">stack_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>              
+              <span class="n">swsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+              <span class="n">recs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Diffraction stacking for microseismic source location.</span>
 
-<div class="viewcode-block" id="semblancediffstack">
-<a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.semblancediffstack.html#fracspy.location.migration.semblancediffstack">[docs]</a>
-<span class="k">def</span> <span class="nf">semblancediffstack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Diffraction stacking for microseismic source location</span>
-
-<span class="sd">    This routine performs imaging of microseismic data by diffraction</span>
-<span class="sd">    stacking . In practice,</span>
-<span class="sd">    this approach is similar to :func:`fracspy.location.migration.diffstack`</span>
-<span class="sd">    with the main difference that semblance is used as measure of coherency</span>
-<span class="sd">    instead of a straight summation of the contributions over the moveout</span>
-<span class="sd">    curves</span>
-
+<span class="sd">    This routine performs imaging of microseismic data by diffraction stacking with </span>
+<span class="sd">    various stacking approaches and optional polarity correction.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : :obj:`numpy.ndarray`</span>
-<span class="sd">        Data of shape :math`n_r \times n_t`</span>
-<span class="sd">    n_xyz : :obj:`tuple`</span>
-<span class="sd">        Number of grid points in X-, Y-, and Z-axes for the imaging area</span>
+<span class="sd">        Data of shape :math:`n_r \times n_t`</span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in X-axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Y-axis</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Z-axis</span>
 <span class="sd">    tt : :obj:`numpy.ndarray`</span>
-<span class="sd">        Traveltime table of size :math`n_r \times n_x \times n_y \times n_z`</span>
-<span class="sd">    nforhc : :obj:`int`, optional</span>
+<span class="sd">        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`    </span>
+<span class="sd">    nforhc : :obj:`int`, optional, default: 10</span>
 <span class="sd">        Number of points for hypocenter</span>
+<span class="sd">    output_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Output type to produce. Default None is the same as &quot;max&quot;.</span>
+<span class="sd">        Types: &quot;max&quot; (output 3D volume as a maximum of the image function for all time moments), </span>
+<span class="sd">               &quot;mean&quot; (output 3D volume as an average of the image function through time), </span>
+<span class="sd">               &quot;full&quot; (output full 4D image function: x,y,z,t). in this case hc is set to None</span>
+<span class="sd">    stack_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Diffraction stacking type (imaging condition), default None is the same as &quot;absolute&quot; (absolute value).</span>
+<span class="sd">        Types: &quot;absolute&quot; (absolute value), &quot;squared&quot; (squared value), &quot;semblance&quot; (semblance-based).</span>
+<span class="sd">    swsize : :obj:`int`, optional, default: 0</span>
+<span class="sd">        Sliding time window size for semblance-based type, amount of time steps</span>
+<span class="sd">    polcor_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Polarity correction type to be used for amplitudes.</span>
+<span class="sd">        None is default for no polarity correction, &quot;mti&quot; is for polarity correction based on moment tensor inversion.</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`, optional, default: None</span>
+<span class="sd">        Array of shape (3, nrec) containing receiver coordinates.</span>
+<span class="sd">        Must be provided if polcor_type is not None</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ds_im_vol : :obj:`numpy.ndarray`</span>
-<span class="sd">        Diffraction stack volume</span>
+<span class="sd">        Diffraction stack volume, returned if output_type is not &quot;full&quot;</span>
 <span class="sd">    hc : :obj:`numpy.ndarray`</span>
-<span class="sd">        Estimated hypocentral location</span>
+<span class="sd">        Estimated hypocentral location, returned if output_type is not &quot;full&quot;</span>
+<span class="sd">    ds_full : :obj:`numpy.ndarray`</span>
+<span class="sd">        Diffraction stack 4D array (x,y,z,t), returned if output_type is &quot;full&quot;</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if data and grid sizes do not fit the traveltimes array</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if output_type value is unknown</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if stack_type value is unknown</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if polcor_type value is unknown</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if recs is None and polcor_type is not None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.</span>
+<span class="sd">    In other words, each image point represents a possible diffraction point from which seismic energy radiates. </span>
+<span class="sd">    The term &quot;diffraction stacking&quot; dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [6]_. </span>
+<span class="sd">    The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). </span>
+<span class="sd">    Here, the diffraction stacking is related to imaging of real excitation sources.</span>
+
+<span class="sd">    Diffraction stacking is applied to data with corrected event moveout (EMO),</span>
+<span class="sd">    and can be done in several ways:</span>
+<span class="sd">    </span>
+<span class="sd">    1. Absolute-value based</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        F(\mathbf{r},t) = \left| \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right|,</span>
+
+<span class="sd">    where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, </span>
+<span class="sd">    :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, </span>
+<span class="sd">    and :math:`N_R` is a number of receivers [1]_, [2]_.</span>
+
+<span class="sd">    2. Squared-value based</span>
+
+<span class="sd">    Similarly, but the stack is taken to the power of 2:   </span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        E(\mathbf{r},t) = \left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2,</span>
+<span class="sd">    </span>
+<span class="sd">    3. Semblance-based</span>
+
+<span class="sd">    Simple stacking can be further improved using a semblance-based approach.</span>
+
+<span class="sd">    The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) </span>
+<span class="sd">    to the energy of individual traces (the sum of squares) [5]_:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S(\mathbf{r},t) = \frac{\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}</span>
+<span class="sd">        {N_R \sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}    </span>
+
+<span class="sd">    In order to suppress the effect of noise even better, it is possible to extend the semblance-based approach </span>
+<span class="sd">    by introducing a sliding time window :math:`W` over which the energy measures are summed:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}</span>
+<span class="sd">        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}</span>
+
+<span class="sd">    where :math:`k` an index of the time-discretised signal within a sliding time interval </span>
+<span class="sd">    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [7]_.</span>
+
+<span class="sd">    Depending on the desired output, the function can output either a 3D volume and a location, </span>
+<span class="sd">    or a full 4D array (time dimension + 3 spatial dimensions).</span>
+<span class="sd">    </span>
+<span class="sd">    By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        I(\mathbf{r}) = \max_t F(\mathbf{r},t).</span>
+<span class="sd">    </span>
+<span class="sd">    Optionally, one can output a 3D image volume obtained as a mean of the 4D image function over time, e.g.:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        I(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).</span>
+
+<span class="sd">    The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.</span>
+
+<span class="sd">    Polarity correction, if requested, is done using moment tensor inversion:</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Anikiev, D. (2015). Joint detection, location and source mechanism </span>
+<span class="sd">       determination of microseismic events (Doctoral dissertation). </span>
+<span class="sd">       St. Petersburg State University. St. Petersburg. </span>
+<span class="sd">       https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf</span>
+
+<span class="sd">    .. [2] Anikiev, D., Valenta, J., Staněk, F. &amp; Eisner, L. (2014). Joint location and </span>
+<span class="sd">       source mechanism inversion of microseismic events: Benchmarking on seismicity </span>
+<span class="sd">       induced by hydraulic fracturing. Geophysical Journal International, 198(1), </span>
+<span class="sd">       249–258. </span>
+<span class="sd">       https://doi.org/10.1093/gji/ggu126</span>
+
+<span class="sd">    .. [3] Claerbout, J. F. (1971). Toward a unified theory of reflector mapping. </span>
+<span class="sd">       Geophysics, 36(3), 467-481. https://doi.org/10.1190/1.1440185</span>
+
+<span class="sd">    .. [4] Claerbout, J. (1985). Imaging the earth&#39;s interior. Oxford, England: Blackwell </span>
+<span class="sd">       Scientific Publications. https://sepwww.stanford.edu/sep/prof/iei2/</span>
+<span class="sd">    </span>
+<span class="sd">    .. [5] Neidell, N. S., &amp; Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES </span>
+<span class="sd">       FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. </span>
+<span class="sd">       https://doi.org/10.1190/1.1440186</span>
+
+<span class="sd">    .. [6] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic </span>
+<span class="sd">       recordings. Moscow: Nedra. [In Russian].</span>
+
+<span class="sd">    .. [7] Trojanowski, J., &amp; Eisner, L. (2016). Comparison of migration‐based location </span>
+<span class="sd">       and detection methods for microseismic events. Geophysical Prospecting, 65(1), </span>
+<span class="sd">       47–63. </span>
+<span class="sd">       https://doi.org/10.1111/1365-2478.12366</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get sizes</span>
-    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">n_xyz</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">size</span>
     <span class="n">ngrid</span> <span class="o">=</span> <span class="n">nx</span><span class="o">*</span><span class="n">ny</span><span class="o">*</span><span class="n">nz</span>
-    <span class="n">nr</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>   
+
+    <span class="c1"># Check sizes</span>
+    <span class="k">if</span> <span class="n">nr</span> <span class="o">!=</span> <span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of traces in data is not consistent with traveltimes: </span><span class="si">{</span><span class="n">nr</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nx</span> <span class="o">!=</span> <span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input nx is not consistent with traveltimes: </span><span class="si">{</span><span class="n">nx</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ny</span> <span class="o">!=</span> <span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input ny is not consistent with traveltimes: </span><span class="si">{</span><span class="n">ny</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nz</span> <span class="o">!=</span> <span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input nz is not consistent with traveltimes: </span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Check output type</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_type</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span><span class="s2">&quot;full&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output type is unknown: </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check stacking type</span>
+    <span class="k">if</span> <span class="n">stack_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stack_type</span> <span class="o">=</span> <span class="s2">&quot;absolute&quot;</span>
+    <span class="k">if</span> <span class="n">stack_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;absolute&quot;</span><span class="p">,</span><span class="s2">&quot;squared&quot;</span><span class="p">,</span><span class="s2">&quot;semblance&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Diffraction stacking type is unknown: </span><span class="si">{</span><span class="n">stack_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check polarity correction</span>
+    <span class="k">if</span> <span class="n">polcor_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">polcor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mti&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polarity correction type is unknown: </span><span class="si">{</span><span class="n">polcor_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">recs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Receiver coordinates are required for polarity correction type </span><span class="si">{</span><span class="n">polcor_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Reshape tt array</span>
     <span class="n">ttg</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># Initialise ds image array</span>
+    <span class="c1"># Initialise image arrays</span>
+    <span class="n">ds_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nt</span><span class="p">,</span><span class="n">ngrid</span><span class="p">))</span>
     <span class="n">ds_im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ngrid</span><span class="p">)</span>
 
+    <span class="c1"># Find time sample shifts for all grid points</span>
+    <span class="n">itshifts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">ttg</span> <span class="o">-</span> <span class="n">ttg</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="c1"># Precompute vectorized Green tensor derivatives for grid points</span>
+    <span class="k">if</span> <span class="n">polcor_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check sizes of recs</span>
+        <span class="k">if</span> <span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Size of the receiver coordinates array is not consistent: </span><span class="si">{</span><span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nr</span> <span class="o">!=</span> <span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of traces in data is not consistent with array of receiver coordinates: </span><span class="si">{</span><span class="n">nr</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">vgtd_grid</span> <span class="o">=</span> <span class="n">vgtd</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span><span class="n">recs</span><span class="o">=</span><span class="n">recs</span><span class="p">)</span>
+        <span class="n">gtg_inv_grid</span> <span class="o">=</span> <span class="n">mgtdinv</span><span class="p">(</span><span class="n">g</span><span class="o">=</span><span class="n">vgtd_grid</span><span class="p">)</span>
+            
     <span class="c1"># Loop over grid points</span>
-    <span class="k">for</span> <span class="n">igrid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ngrid</span><span class="p">):</span>
-        <span class="c1"># Get traveltime curve</span>
-        <span class="n">tcurve</span> <span class="o">=</span> <span class="n">ttg</span><span class="p">[:,</span><span class="n">igrid</span><span class="p">]</span>
-        <span class="c1"># Get minimum time</span>
-        <span class="n">tmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tcurve</span><span class="p">)</span>
-        <span class="c1"># Get shifts</span>
-        <span class="n">itshifts</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">tcurve</span> <span class="o">-</span> <span class="n">tmin</span><span class="p">)</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
-        <span class="c1"># Perform moveout correction for data</span>
-        <span class="n">data_mc</span> <span class="o">=</span> <span class="n">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span><span class="n">itshifts</span><span class="o">=</span><span class="n">itshifts</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">igrid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ngrid</span><span class="p">):</span>        
 
-        <span class="n">ds_im</span><span class="p">[</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">semblance_stack</span><span class="p">(</span><span class="n">data_mc</span><span class="p">))</span>
+        <span class="c1"># Perform event moveout correction for data</span>
+        <span class="n">data_mc</span> <span class="o">=</span> <span class="n">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                                     <span class="n">itshifts</span><span class="o">=</span><span class="n">itshifts</span><span class="p">[:,</span><span class="n">igrid</span><span class="p">])</span>
 
-    <span class="n">ds_im_vol</span> <span class="o">=</span> <span class="n">ds_im</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span>
-    
-    <span class="n">hc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_max_locs</span><span class="p">(</span><span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="n">nforhc</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">hc</span></div>
+        <span class="c1"># Perform polarity correction for data if needed</span>
+        <span class="k">if</span> <span class="n">polcor_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_pc</span> <span class="o">=</span> <span class="n">polarity_correction</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data_mc</span><span class="p">,</span>
+                                          <span class="n">polcor_type</span><span class="o">=</span><span class="n">polcor_type</span><span class="p">,</span>
+                                          <span class="n">g</span><span class="o">=</span><span class="n">vgtd_grid</span><span class="p">[:,:,</span><span class="n">igrid</span><span class="p">],</span>
+                                          <span class="n">gtg_inv</span><span class="o">=</span><span class="n">gtg_inv_grid</span><span class="p">[:,:,</span><span class="n">igrid</span><span class="p">]</span>
+                                          <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_pc</span> <span class="o">=</span> <span class="n">data_mc</span>
+
+        <span class="c1"># Perform stacking based on the type</span>
+        <span class="k">if</span> <span class="n">stack_type</span> <span class="o">==</span> <span class="s2">&quot;absolute&quot;</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data_pc</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">stack_type</span> <span class="o">==</span> <span class="s2">&quot;squared&quot;</span><span class="p">:</span>       
+            <span class="n">ds</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data_pc</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>            
+        <span class="k">elif</span> <span class="n">stack_type</span> <span class="o">==</span> <span class="s2">&quot;semblance&quot;</span><span class="p">:</span>            
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">semblance_stack</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data_pc</span><span class="p">,</span>
+                                 <span class="n">swsize</span><span class="o">=</span><span class="n">swsize</span><span class="p">)</span>
+
+        <span class="c1"># Fill based on the output type</span>
+        <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
+            <span class="n">ds_im</span><span class="p">[</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+            <span class="n">ds_im</span><span class="p">[</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds_full</span><span class="p">[:,</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span>
+
+    <span class="c1"># Construct output based on its type</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">]:</span>
+        <span class="n">ds_im_vol</span> <span class="o">=</span> <span class="n">ds_im</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span>            
+        <span class="n">hc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_max_locs</span><span class="p">(</span><span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="n">nforhc</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Return 3D array and location</span>
+        <span class="k">return</span> <span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">hc</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Return reshaped 4D array</span>
+        <span class="k">return</span> <span class="n">ds_full</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>
 
 </pre></div>
 
@@ -549,7 +761,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

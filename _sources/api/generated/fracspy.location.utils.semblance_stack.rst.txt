@@ -1,0 +1,12 @@
+﻿fracspy.location.utils.semblance\_stack
+=======================================
+
+.. currentmodule:: fracspy.location.utils
+
+.. autofunction:: semblance_stack
+
+.. include:: backreferences/fracspy.location.utils.semblance_stack.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

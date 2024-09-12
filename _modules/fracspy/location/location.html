@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>fracspy.location.location &#8212; fracspy</title>
+        <title>fracspy.location.location &#8212; FraCSPy</title>
     
 
   
@@ -50,6 +50,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/fracspy/location/location';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     
@@ -127,8 +128,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -144,7 +151,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -282,7 +289,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -412,18 +419,18 @@ document.write(`
 <span class="p">]</span>
 
 
-<span class="kn">from</span> <span class="nn">fracspy.location.migration</span> <span class="kn">import</span> <span class="n">diffstack</span><span class="p">,</span> <span class="n">semblancediffstack</span>
+<span class="kn">from</span> <span class="nn">fracspy.location.migration</span> <span class="kn">import</span> <span class="n">kmigration</span><span class="p">,</span> <span class="n">diffstack</span>
 <span class="kn">from</span> <span class="nn">fracspy.location.imaging</span> <span class="kn">import</span> <span class="n">lsi</span><span class="p">,</span> <span class="n">sparselsi</span>
 <span class="kn">from</span> <span class="nn">fracspy.location.xcorri</span> <span class="kn">import</span> <span class="n">xcorri</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="n">_location_kind</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;diffstack&quot;</span><span class="p">:</span> <span class="n">diffstack</span><span class="p">,</span>
-                  <span class="s2">&quot;semblancediffstack&quot;</span><span class="p">:</span> <span class="n">semblancediffstack</span><span class="p">,</span>
+<span class="n">_location_kind</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;kmigration&quot;</span><span class="p">:</span> <span class="n">kmigration</span><span class="p">,</span>
+                  <span class="s2">&quot;diffstack&quot;</span><span class="p">:</span> <span class="n">diffstack</span><span class="p">,</span>                    
                   <span class="s2">&quot;lsi&quot;</span><span class="p">:</span> <span class="n">lsi</span><span class="p">,</span>
                   <span class="s2">&quot;sparselsi&quot;</span><span class="p">:</span> <span class="n">sparselsi</span><span class="p">,</span>
                   <span class="s2">&quot;xcorri&quot;</span><span class="p">:</span> <span class="n">xcorri</span><span class="p">,</span>
                   <span class="p">}</span>
-
 
 <div class="viewcode-block" id="Location">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.location.Location.html#fracspy.location.location.Location">[docs]</a>
@@ -431,7 +438,8 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Event location</span>
 
 <span class="sd">    This class acts as an abstract interface for users to perform</span>
-<span class="sd">    event location on a microseismic dataset</span>
+<span class="sd">    event location on a microseismic dataset.</span>
+<span class="sd">    It assumes that grid vectors are regularly spaced.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -445,9 +453,12 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_xyz</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">size</span>
 
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;diffstack&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kmigration&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform event location</span>
 
 <span class="sd">        This method performs event location for the provided dataset using</span>
@@ -457,7 +468,7 @@ document.write(`
 <span class="sd">          and/or imaging methods as the internal parameters are not modified during the</span>
 <span class="sd">          location procedure.</span>
 
-<span class="sd">        Parameters</span>
+<span class="sd">	    Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        data : :obj:`numpy.ndarray`</span>
 <span class="sd">            Data of shape :math`n_r \times n_t`</span>
@@ -467,16 +478,64 @@ document.write(`
 <span class="sd">        kwargs : :obj:`dict`, optional</span>
 <span class="sd">            Keyword arguments to pass to the location algorithm</span>
 
-<span class="sd">        Returns</span>
+<span class="sd">	    Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        im : :obj:`numpy.ndarray`</span>
 <span class="sd">            Migrated volume</span>
 <span class="sd">        hc : :obj:`numpy.ndarray`</span>
 <span class="sd">            Estimated hypocentral location</span>
+<span class="sd">	</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;diffstack&quot;</span><span class="p">:</span>
+            <span class="n">im</span><span class="p">,</span> <span class="n">hc</span> <span class="o">=</span> <span class="n">_location_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">im</span><span class="p">,</span> <span class="n">hc</span> <span class="o">=</span> <span class="n">_location_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_xyz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">hc</span>
+        
+    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the grid array from the internal grid vectors</span>
+<span class="sd">        </span>
+<span class="sd">        This method constructs the grid array of size (3, self.n_xyz) </span>
+<span class="sd">        from the internal grid vectors.</span>
+
+<span class="sd">        .. note:: This method can be called multiple times as the internal parameters are not modified.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">im</span><span class="p">,</span> <span class="n">hc</span> <span class="o">=</span> <span class="n">_location_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_xyz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">hc</span></div>
+        <span class="c1"># Create a meshgrid</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+        <span class="c1"># Stack the arrays into a (3, self.n_xyz) array</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Z</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">indtogrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the grid coordinates for points provided as grid indices</span>
+
+<span class="sd">        This method computes the spatial grid coordinates of points with coordinates provided as grid indices.</span>
+<span class="sd">        Points have shape (3,npoints) where `npoints` is number of points.</span>
+
+<span class="sd">        .. note:: This method can be called multiple times as the internal parameters are not modified.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dz</span>
+        <span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">gridtoind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the grid indices for points with coordinates on a grid</span>
+
+<span class="sd">        This method computes the grid indices for point with provided spatial grid coordinates</span>
+<span class="sd">        Points have shape (3,npoints) where `npoints` is number of points.</span>
+
+<span class="sd">        .. note:: This method can be called multiple times as the internal parameters are not modified.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+            <span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+            <span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dz</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="p">])</span></div>
 
 </pre></div>
 
@@ -519,7 +578,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

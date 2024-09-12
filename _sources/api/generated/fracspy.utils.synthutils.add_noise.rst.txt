@@ -1,0 +1,12 @@
+﻿fracspy.utils.synthutils.add\_noise
+===================================
+
+.. currentmodule:: fracspy.utils.synthutils
+
+.. autofunction:: add_noise
+
+.. include:: backreferences/fracspy.utils.synthutils.add_noise.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

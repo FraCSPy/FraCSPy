@@ -1,0 +1,12 @@
+﻿fracspy.location.utils.polarity\_correction
+===========================================
+
+.. currentmodule:: fracspy.location.utils
+
+.. autofunction:: polarity_correction
+
+.. include:: backreferences/fracspy.location.utils.polarity_correction.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

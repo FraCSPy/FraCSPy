@@ -103,8 +103,7 @@ fig, axs = locimage3d(microseismic_image_noisy,
                       z0=int(np.round(max_loc[2])),
                       xlim=[x[0],x[-1]],
                       ylim=[y[0],y[-1]],
-                      zlim=[z[0],z[-1]],
-                      secondcross=True, 
+                      zlim=[z[0],z[-1]],                      
                       secondcrossloc=source_location,
                       clipval=[0,1])
 plt.tight_layout()

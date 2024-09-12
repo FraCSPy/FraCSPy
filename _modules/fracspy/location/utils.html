@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>fracspy.location.utils &#8212; fracspy</title>
+        <title>fracspy.location.utils &#8212; FraCSPy</title>
     
 
   
@@ -50,6 +50,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/fracspy/location/utils';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     
@@ -127,8 +128,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -144,7 +151,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -282,7 +289,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -408,7 +415,7 @@ document.write(`
                   
   <h1>Source code for fracspy.location.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve2d</span>
 
 <span class="k">def</span> <span class="nf">_get_centroid</span><span class="p">(</span><span class="n">array_xyz</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">array_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -466,11 +473,49 @@ document.write(`
     <span class="k">return</span> <span class="n">ev_loc</span><span class="p">,</span> <span class="n">ev_locs</span></div>
 
 
+<span class="k">def</span> <span class="nf">get_location_misfit</span><span class="p">(</span><span class="n">loca</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">locb</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the location misfit between two lists of locations (loca and locb) </span>
+<span class="sd">    possibly scaled by a list of step values.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    loca : :obj:`list`</span>
+<span class="sd">        The first list of locations</span>
+<span class="sd">    locb : :obj:`list`</span>
+<span class="sd">        The second list of locations</span>
+<span class="sd">    steps : :obj:`list`, optional, default: None</span>
+<span class="sd">        A list of scaling factors. Defaults to None.</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        list: The location misfit between the two input lists</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the input lists have different lengths.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">loca</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">locb</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input location lists must have the same length.&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">loca</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Steps list must have the same length as location lists.&quot;</span><span class="p">)</span>
+    
+    <span class="n">loca_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">loca</span><span class="p">)</span>
+    <span class="n">locb_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">locb</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">steps_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">((</span><span class="n">loca_array</span> <span class="o">-</span> <span class="n">locb_array</span><span class="p">)</span> <span class="o">*</span> <span class="n">steps_array</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">loca_array</span> <span class="o">-</span> <span class="n">locb_array</span><span class="p">)</span>
+
+<div class="viewcode-block" id="dist2rec">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.dist2rec.html#fracspy.location.utils.dist2rec">[docs]</a>
 <span class="k">def</span> <span class="nf">dist2rec</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Receivers-to-grid distances</span>
-
-<span class="sd">    Compute distances from a 3D grid of points to array of receivers</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute distances from a 3D grid of points to array of receivers.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -494,103 +539,326 @@ document.write(`
     <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">recs</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
                 <span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
                 <span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="mi">2</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">d</span>
+    <span class="k">return</span> <span class="n">d</span></div>
 
 
-<span class="k">def</span> <span class="nf">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">itshifts</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Moveout correction for microseismic data.</span>
+<div class="viewcode-block" id="moveout_correction">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.moveout_correction.html#fracspy.location.utils.moveout_correction">[docs]</a>
+<span class="k">def</span> <span class="nf">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">itshifts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Moveout correction for microseismic data.</span>
 
-<span class="sd">    This function applies a moveout correction to microsseismic data by shifting</span>
-<span class="sd">    each sample in time according to its corresponding shift value.</span>
-
+<span class="sd">    This function applies a moveout correction to microseismic data by shifting each sample in time </span>
+<span class="sd">    according to its corresponding time index shift value.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data - input seismic data [nr, nt]</span>
-<span class="sd">    itshifts - array of shift values [nr]</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        Input seismic data [nr, nt]</span>
+<span class="sd">    itshifts : :obj:`numpy.ndarray`</span>
+<span class="sd">        Array of time index shift values [nr]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    data_corrected - microseismic data with corrected moveout [nr, nt]</span>
+<span class="sd">    data_corrected : :obj:`numpy.ndarray`</span>
+<span class="sd">        Microseismic data with corrected moveout [nr, nt]</span>
 
 <span class="sd">    Notes</span>
-<span class="sd">    ----</span>
-<span class="sd">    The function checks that all values in `itshifts` are non-negative and that the length of `itshifts`</span>
-<span class="sd">    matches the number of rows in `data`.</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function checks that the length of `itshifts` matches the number of rows in `data`.    </span>
+<span class="sd">    The input `itshifts` array is converted to integer.</span>
+<span class="sd">    Shifting is done towards the beginning of time for positive `itshifts` values and </span>
+<span class="sd">    in the opposite direction for negative.</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">    &gt;&gt;&gt; # Assuming you have a 2D array &quot;data&quot; with shape (nr, nt) and an array &quot;itshifts&quot; with shape (nr,)</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; # Assuming you have a 2D array &quot;data&quot; with shape (nr, nt) and an array &quot;itshifts&quot; with shape (nr,):</span>
 <span class="sd">    &gt;&gt;&gt; corrected_data = moveout_correction(data, itshifts)</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &gt;&gt;&gt; # To make reverse correction, apply the negative &quot;itshifts&quot;:</span>
+<span class="sd">    &gt;&gt;&gt; data_restored = moveout_correction(corrected_data, -itshifts)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get size</span>
     <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-    
+   
     <span class="c1"># Check size</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">itshifts</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nr</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of itshifts must match the number of rows in data.&quot;</span><span class="p">)</span>
+      
+    <span class="c1"># Create an array of zeros with the same shape as data</span>
+    <span class="n">data_corrected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     
-    <span class="n">data_corrected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Create an array of zeros with the same shape as data</span>
-
-    <span class="c1"># Check if all values in itshifts are positive</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">itshifts</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All values in itshifts must be non-negative.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Calculate the shifted indices for each row</span>
-    <span class="c1">#shifted_indices = np.arange(nt) - itshifts[:, np.newaxis]</span>
-    <span class="n">shifted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span> <span class="o">-</span> <span class="n">itshifts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="c1"># Convert shifts to integers</span>
+    <span class="n">itshifts_int</span> <span class="o">=</span> <span class="n">itshifts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        
+    <span class="c1"># Calculate the shifted indices for each row and clip them to ensure they stay within bounds</span>
+    <span class="n">shifted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span> <span class="o">-</span> <span class="n">itshifts_int</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     
-    <span class="c1"># Clip indices to ensure they stay within bounds</span>
-    <span class="n">shifted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">shifted_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
     <span class="c1"># Copy values from data to result using fancy indexing</span>
     <span class="n">data_corrected</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nr</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">shifted_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
 
-    <span class="c1"># # Loop through each row</span>
-    <span class="c1"># for i in range(nr):</span>
-    <span class="c1">#     # Calculate the shift for this row</span>
-    <span class="c1">#     shift = int(itshifts[i])</span>
+    <span class="k">return</span> <span class="n">data_corrected</span></div>
+
+
+<span class="k">def</span> <span class="nf">vgtd</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
+         <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
+         <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
+         <span class="n">recs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute vectorized Green&#39;s tensor derivative for multiple source points.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : :obj:`numpy.ndarray` or float</span>
+<span class="sd">        Imaging area grid vector in X-axis or single X coordinate</span>
+<span class="sd">    y : :obj:`numpy.ndarray` or float</span>
+<span class="sd">        Imaging area grid vector in Y-axis or single Y coordinate</span>
+<span class="sd">    z : :obj:`numpy.ndarray` or float</span>
+<span class="sd">        Imaging area grid vector in Z-axis or single Z coordinate</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`</span>
+<span class="sd">        Array of shape (3, nrec) containing receiver coordinates</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    g : :obj:`numpy.ndarray` </span>
+<span class="sd">        Array of shape (6, nrec, ngrid) containing the Green&#39;s tensor derivative for each source point,</span>
+<span class="sd">        where ngrid is a number of grid points (ngrid=1 if x,y,z are single values)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert single values to arrays if necessary</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         
-    <span class="c1">#     # Move values towards the beginning of the array</span>
-    <span class="c1">#     #data_corrected[i, :shift] = 0  # Fill the gap with zeros</span>
-    <span class="c1">#     data_corrected[i, shift:] = data[i, :-shift]  # Move values</span>
+    <span class="c1"># Create a meshgrid</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+    <span class="c1"># Stack the arrays into a (3, ngrid) array</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Z</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+    
+    <span class="c1"># Compute relative positions and distances</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="n">recs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">sources</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># shape (3, nrec, ngrid)</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rs</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># shape (nrec, ngrid), squared distances</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>  <span class="c1"># shape (nrec, ngrid), distances</span>
+    
+    <span class="c1"># Normalize and take care of division by zero</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">rs_norm</span> <span class="o">=</span> <span class="n">rs</span><span class="o">/</span><span class="n">r</span>
+    <span class="n">rs_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">rs_norm</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rs_norm</span><span class="p">)</span>
+    <span class="c1"># Extract normalized components</span>
+    <span class="n">rsx</span><span class="p">,</span> <span class="n">rsy</span><span class="p">,</span> <span class="n">rsz</span> <span class="o">=</span> <span class="n">rs_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rs_norm</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rs_norm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># each shape (nrec, ngrid)</span>
+    
+    <span class="c1"># Compute Green tensor derivative components</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="n">rsx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rsx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1"># shape (6, nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsx</span> <span class="o">*</span> <span class="n">rsx</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsy</span> <span class="o">*</span> <span class="n">rsy</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsz</span> <span class="o">*</span> <span class="n">rsz</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rsx</span> <span class="o">*</span> <span class="n">rsy</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rsx</span> <span class="o">*</span> <span class="n">rsz</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    <span class="n">g</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rsy</span> <span class="o">*</span> <span class="n">rsz</span> <span class="o">*</span> <span class="n">rsz</span>  <span class="c1"># shape (nrec, ngrid)</span>
+    
+    <span class="c1"># Return the Green tensor derivative vector for all grid points</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">data_corrected</span>
+<span class="k">def</span> <span class="nf">svd_inv</span><span class="p">(</span><span class="n">M</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-15</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the inverse of a matrix using SVD with regularization.</span>
+<span class="sd">   </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : :obj:`numpy.ndarray` </span>
+<span class="sd">        The input matrix to invert.</span>
+<span class="sd">    threshold : :obj:`float` , optional</span>
+<span class="sd">        Threshold for considering singular values as zero. Default is 1e-15.</span>
+<span class="sd">       </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    M_inv : :obj:`numpy.ndarray` </span>
+<span class="sd">        The regularized inverse of the input matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Compute regularized inverse singular values</span>
+    <span class="n">s_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">s_inv</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">s</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+    
+    <span class="c1"># Compute the inverse</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Vt</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">s_inv</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">mgtdinv</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct the 6x6 matrix from Green&#39;s tensor derivatives and compute its inverse for each grid point.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    g : :obj:`numpy.ndarray` </span>
+<span class="sd">        Array of shape (6, nrec, ngrid) containing the Green&#39;s tensor derivative for each source point.</span>
+<span class="sd">        If size is (6, nrec) it treats it as it is for one single source point.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gtg_inv : :obj:`numpy.ndarray` </span>
+<span class="sd">        A set of 6x6 matrices, one for each grid point, of size (6, 6, ngrid) or (6 ,6)</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="c1"># Check number of components</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="mi">6</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;g must have 6 components!&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Check dimension and compute</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># Case 1: g is of shape (6, nrec, ngrid)</span>
+        
+        <span class="c1"># Construct gtg as a 6x6 matrix from g for each grid point </span>
+        <span class="n">gtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;imk,jmk-&gt;ijk&#39;</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>  <span class="c1"># shape (6, 6, ngrid)</span>
+        
+        <span class="c1"># Inverse of the 6x6 matrix for each grid point        </span>
+        <span class="c1">#gtg_inv = np.linalg.inv(gtg.transpose(2,0,1)).transpose(1,2,0)</span>
 
-<span class="k">def</span> <span class="nf">semblance_stack</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Computes the semblance stack for a given input array</span>
+        <span class="c1"># Initialize gtg_inv with the same shape as gtg</span>
+        <span class="n">gtg_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">gtg</span><span class="p">)</span>
+
+        <span class="c1"># Iterate over each grid point</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gtg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Try inverse of the 6x6 matrix</span>
+                <span class="n">gtg_inv</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">gtg</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="c1"># If inversion fails, use SVD with regularization</span>
+                <span class="n">gtg_inv</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">svd_inv</span><span class="p">(</span><span class="n">gtg</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="k">elif</span> <span class="n">g</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># Case 2: g is of shape (6, nrec)        </span>
+        
+        <span class="c1"># Compute GTG matrix (single 6x6 matrix)</span>
+        <span class="n">gtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># Shape (6, 6)</span>
+        
+        <span class="c1"># Compute the inverse</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Try inverse of the 6x6 matrix</span>
+            <span class="n">gtg_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">gtg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="c1"># If inversion fails, use SVD with regularization</span>
+            <span class="n">gtg_inv</span> <span class="o">=</span> <span class="n">svd_inv</span><span class="p">(</span><span class="n">gtg</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid shape for g: </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">. Expected 2D or 3D array.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Return the 6x6 inverse matrices for all grid points</span>
+    <span class="k">return</span> <span class="n">gtg_inv</span>
+
+<div class="viewcode-block" id="polarity_correction">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.polarity_correction.html#fracspy.location.utils.polarity_correction">[docs]</a>
+<span class="k">def</span> <span class="nf">polarity_correction</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>                         
+                        <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;mti&quot;</span><span class="p">,</span>
+                        <span class="n">g</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">gtg_inv</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Polarity correction for microseismic data with corrected event moveout.</span>
+
+<span class="sd">    This function applies a polarity correction to microseismic data with corrected event moveout.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data - The input array with shape (nr, nt), where nr is the number of receivers and nt is the number of time samples, usually microseismic data with corrected moveout [nr, nt]</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        input seismic data with corrected event moveout [nr, nt]    </span>
+<span class="sd">    polcor_type : :obj:`str`, optional, default: &quot;mti&quot;</span>
+<span class="sd">        Polarity correction type to be used for data amplitudes.</span>
+<span class="sd">    g : :obj:`numpy.ndarray`, optional, default: None</span>
+<span class="sd">        Array of shape (6, nrec) containing the vectorized Green tensor derivative.</span>
+<span class="sd">        Required for &quot;mti&quot; polcor_type.</span>
+<span class="sd">    gtg_inv : :obj:`numpy.ndarray`, optional, default: None </span>
+<span class="sd">        6x6 matrix constructed as an inverse from the matrix derived from vectorized Green tensor derivative.</span>
+<span class="sd">        Required for &quot;mti&quot; polcor_type.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    semblance_values: A 1D array with shape (nt,) containing the semblance values for each time sample.</span>
-
-<span class="sd">    Description</span>
-<span class="sd">    -------</span>
-<span class="sd">    The semblance_stack function computes the semblance stack, which is a measure of the coherence or similarity between the seismic data and the noise. </span>
-<span class="sd">    The semblance value at each time sample is calculated as the ratio of the numerator (the sum of squared amplitudes) to the denominator (the sum of squares of the total amplitude minus the square of the sum).</span>
-
-<span class="sd">    Mathematical Formula</span>
-<span class="sd">    -------</span>
-<span class="sd">    The formula for computing the semblance stack is:</span>
-
-<span class="sd">    semblance = numerator / denominator</span>
-
-<span class="sd">    where:</span>
-
-<span class="sd">    numerator = Σ(data^2, axis=0)</span>
-<span class="sd">    denominator = nr * Σ(data^2, axis=0) - (Σ(data, axis=0))^2</span>
-<span class="sd">    nr is the number of receivers</span>
+<span class="sd">    data_corrected : :obj:`numpy.ndarray`</span>
+<span class="sd">        microseismic data with corrected polarity [nr, nt]</span>
 <span class="sd">    </span>
 <span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Polarity correction is done using the moment tensor inversion.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if polcor_type value is unknown</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get size</span>
+    <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Check polarity correction type</span>
+    <span class="k">if</span> <span class="n">polcor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mti&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polarity correction type is unknown: </span><span class="si">{</span><span class="n">polcor_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Perform polarity correction based on the type</span>
+    <span class="k">if</span> <span class="n">polcor_type</span><span class="o">==</span><span class="s2">&quot;mti&quot;</span><span class="p">:</span>
+        <span class="c1"># Check input</span>
+        <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The g input is required for polarity correction type </span><span class="si">{</span><span class="n">polcor_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gtg_inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The gtg_inv is required for polarity correction type </span><span class="si">{</span><span class="n">polcor_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Compute the vectorized moment tensor for each time moment</span>
+        <span class="c1"># M=((G^T*G)^-1)*G^T*A</span>
+        <span class="n">mt</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">gtg_inv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+
+        <span class="c1"># Compute the polarity sign of the dot product between mt and g</span>
+        <span class="n">sign_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        
+        <span class="c1"># Apply the polarity correction to the data</span>
+        <span class="n">data_corrected</span> <span class="o">=</span> <span class="n">sign_matrix</span> <span class="o">*</span> <span class="n">data</span>
+
+    <span class="k">return</span> <span class="n">data_corrected</span></div>
+
+
+<div class="viewcode-block" id="semblance_stack">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.semblance_stack.html#fracspy.location.utils.semblance_stack">[docs]</a>
+<span class="k">def</span> <span class="nf">semblance_stack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">swsize</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the semblance stack for a given input array.</span>
+
+<span class="sd">    The semblance_stack function computes the semblance, which is a measure of the coherence </span>
+<span class="sd">    or similarity between the seismic traces. </span>
+<span class="sd">    If swsize is 0, the semblance value at each time sample is calculated as the ratio of the numerator </span>
+<span class="sd">    (the squared sum of amplitudes at each trace) to the denominator </span>
+<span class="sd">    (the sum of squares of amplitudes at each trace, multiplied by the number of traces).</span>
+
+<span class="sd">    The formula for computing the semblance is:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S(it) = \frac{\left[\sum_{R=1}^{N_R} d_R(it)\right]^2}</span>
+<span class="sd">        {N_R \sum_{R=1}^{N_R} \left[d_R(it)\right]^2}  </span>
+
+<span class="sd">    where :math:`N_R` is the number of receivers, and :math:`d_R(it)` is amplitude at trace :math:`R` </span>
+<span class="sd">    and time sample :math:`it`.</span>
+
+<span class="sd">    A sliding window approach is used when swsize &gt; 0.</span>
+<span class="sd">    For each time sample, it considers a window of size 2*swsize + 1 centered on that sample.</span>
+<span class="sd">    The numerator and denominator are computed within this window for each time sample.</span>
+<span class="sd">    At the edges of the data, where a full window is not available, the function uses as much data as is available.</span>
+
+<span class="sd">    The formula for computing the semblance with a sliding window :math:`W` (defined by swsize) is:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S_W(it) = \frac{\sum_{k=max(0,it-W)}^{min(nt,it+W+1)}\left[\sum_{R=1}^{N_R} d_R(it)\right]^2}</span>
+<span class="sd">        {N_R \sum_{k=max(0,it-W)}^{min(nt,it+W+1)}\sum_{R=1}^{N_R} \left[d_R(it)\right]^2}</span>
+
+<span class="sd">    where :math:`nt` is the maximum number of time samples.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        The input array with shape (nr, nt), where nr is the number of receivers and nt is the number </span>
+<span class="sd">        of time samples, usually microseismic data with corrected moveout [nr, nt]</span>
+<span class="sd">    swsize : :obj:`int`, optional, default: 0</span>
+<span class="sd">        Sliding time window size for semblance, time steps</span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    semblance_values: :obj:`numpy.ndarray`</span>
+<span class="sd">        A 1D array with shape (nt,) containing the semblance values for each time sample.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----- </span>
 <span class="sd">    The function initializes an array semblance_values with shape (nt,) to store the semblance values.</span>
-<span class="sd">    It then computes the numerator and denominator of the semblance equation using NumPy operations.</span>
+<span class="sd">    It then computes the numerator and denominator of the semblance equation using NumPy and SciPy operations.</span>
 <span class="sd">    To avoid division by zero, it sets any denominators that are equal to zero to a small value (1e-10).</span>
 <span class="sd">    Finally, it returns the computed semblance values.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the shape of the input data, which should be (nr, nt)</span>
     <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
     
@@ -598,34 +866,95 @@ document.write(`
     <span class="c1"># The size of this array is determined by the number of time samples (nt)</span>
     <span class="n">semblance_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
 
+    <span class="c1"># Compute semblance with or without sliding time window</span>
+    <span class="k">if</span> <span class="n">swsize</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Compute the numerator of the semblance equation                </span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="c1"># Compute the denominator of the semblance equation        </span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">nr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Avoid division by zero</span>
+        <span class="n">denominator</span><span class="p">[</span><span class="n">denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-10</span>
+
+        <span class="c1"># Compute the semblance values using the numerator and denominator</span>
+        <span class="c1"># The semblance value at each time sample is calculated as the ratio of the numerator to the denominator</span>
+        <span class="n">semblance_values</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+    <span class="k">elif</span> <span class="n">swsize</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sliding time window size (swsize) can not be negative:</span><span class="si">{</span><span class="n">swsize</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Simple for-loop implementation (slow)</span>
+        <span class="c1"># for it in range(nt):</span>
+        <span class="c1">#     # Determine the start and end of the window</span>
+        <span class="c1">#     start = int(max(0, it - swsize))</span>
+        <span class="c1">#     end = int(min(nt, it + swsize + 1))            </span>
+            
+        <span class="c1">#     # Extract the data within the window</span>
+        <span class="c1">#     window_data = data[:, start:end]</span>
+            
+        <span class="c1">#     # Compute numerator and denominator for this window</span>
+        <span class="c1">#     numerator = np.sum(np.sum(window_data, axis=0) ** 2)</span>
+        <span class="c1">#     denominator = nr * np.sum(np.sum(window_data ** 2, axis=0))</span>
+            
+        <span class="c1">#     # Avoid division by zero</span>
+        <span class="c1">#     if denominator == 0:</span>
+        <span class="c1">#         denominator = 1e-10</span>
+            
+        <span class="c1">#     # Compute semblance value for this time sample</span>
+        <span class="c1">#     semblance_values[it] = numerator / denominator</span>
+        <span class="c1"># Create a window for convolution</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">swsize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Compute the sum of data across receivers</span>
+        <span class="n">data_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Compute the squared sum using convolution</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">data_sum</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">window</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Compute the sum of squared data</span>
+        <span class="n">data_squared_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Compute the denominator using convolution</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">nr</span> <span class="o">*</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">data_squared_sum</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">window</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Avoid division by zero</span>
+        <span class="n">denominator</span><span class="p">[</span><span class="n">denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-10</span>
+        
+        <span class="c1"># Compute semblance values</span>
+        <span class="n">semblance_values</span> <span class="o">=</span> <span class="n">numerator</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">/</span> <span class="n">denominator</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">semblance_values</span></div>
+
+
+<span class="k">def</span> <span class="nf">are_values_close</span><span class="p">(</span><span class="n">desired</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">actual</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">decimal</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the numerator and denominator of the semblance equation</span>
-<span class="sd">    The numerator is the sum of squared amplitudes, and the denominator is a function </span>
-<span class="sd">    of the total amplitude and the square root of the variance.</span>
+<span class="sd">    Check if the values in two arrays are close to each other up to a specified number of decimal places.</span>
+
+<span class="sd">    The function checks whether the absolute difference between `desired` and `actual` </span>
+<span class="sd">    is less than 1.5 times 10 raised to the power of `-decimal` for each pair of elements.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    desired : :obj:`np.ndarray`</span>
+<span class="sd">        The desired values to compare.</span>
+<span class="sd">    actual : :obj:`np.ndarray` </span>
+<span class="sd">        The actual values to compare.</span>
+<span class="sd">    decimal : :obj:`int`, optional</span>
+<span class="sd">        The number of decimal places to consider for the comparison. Default is 6.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        A boolean array where each element is True if the corresponding elements in `desired` </span>
+<span class="sd">        and `actual` are close within the specified decimal precision, False otherwise.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; are_values_close(np.array([1.000001, 1.0001]), np.array([1.000002, 1.0002]), decimal=6)</span>
+<span class="sd">    array([ True, False])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Compute the numerator of the semblance equation</span>
-    <span class="c1"># This is simply the sum of the squares of each data point</span>
-    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="c1"># Compute the denominator of the semblance equation</span>
-    <span class="c1"># The denominator is a function of the total amplitude and the square root of the variance</span>
-    <span class="n">sum_data_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">denominator</span> <span class="o">=</span> <span class="n">nr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">sum_data_squared</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check for division by zero and set any zeros to a small value (1e-10)</span>
-<span class="sd">    This is necessary because the denominator cannot be zero</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Avoid division by zero</span>
-    <span class="n">denominator</span><span class="p">[</span><span class="n">denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-10</span>
-
-    <span class="c1"># Compute the semblance values using the numerator and denominator</span>
-    <span class="c1"># The semblance value at each time sample is calculated as the ratio of the numerator to the denominator</span>
-    <span class="n">semblance_values</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
-
-    <span class="k">return</span> <span class="n">semblance_values</span>
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">decimal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">desired</span> <span class="o">-</span> <span class="n">actual</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tolerance</span>
 </pre></div>
 
                 </article>
@@ -667,7 +996,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

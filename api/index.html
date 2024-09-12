@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>FraCSPy API &#8212; fracspy</title>
+        <title>FraCSPy API &#8212; FraCSPy</title>
     
 
   
@@ -53,6 +53,7 @@
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="fracspy.modelling.kirchhoff.Kirchhoff" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html" />
@@ -132,8 +133,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -149,7 +156,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -289,7 +296,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -377,8 +384,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.kmigration.html">fracspy.location.migration.kmigration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.imaging.lsi.html">fracspy.location.imaging.lsi</a></li>
@@ -391,7 +398,14 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.location.Location.html">fracspy.location.location.Location</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.utils.synthutils.add_noise.html">fracspy.utils.synthutils.add_noise</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.dist2rec.html">fracspy.location.utils.dist2rec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.moveout_correction.html">fracspy.location.utils.moveout_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.polarity_correction.html">fracspy.location.utils.polarity_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.location.utils.semblance_stack.html">fracspy.location.utils.semblance_stack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
@@ -510,11 +524,11 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Imaging/Inversion<a class="headerlink" href="#imaging-inversion" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack" title="fracspy.location.migration.diffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffstack</span></code></a>(data, n_xyz, Op[, nforhc])</p></td>
-<td><p>Kirchhoff migration for microseismic source location</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.migration.kmigration.html#fracspy.location.migration.kmigration" title="fracspy.location.migration.kmigration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kmigration</span></code></a>(data, n_xyz, Op[, nforhc])</p></td>
+<td><p>Kirchhoff migration for microseismic source location.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.migration.semblancediffstack.html#fracspy.location.migration.semblancediffstack" title="fracspy.location.migration.semblancediffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">semblancediffstack</span></code></a>(data, n_xyz, tt, dt[, nforhc])</p></td>
-<td><p>Diffraction stacking for microseismic source location</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack" title="fracspy.location.migration.diffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffstack</span></code></a>(data, x, y, z, tt, dt[, nforhc, ...])</p></td>
+<td><p>Diffraction stacking for microseismic source location.</p></td>
 </tr>
 </tbody>
 </table>
@@ -551,8 +565,28 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <h3>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.utils.synthutils.add_noise.html#fracspy.utils.synthutils.add_noise" title="fracspy.utils.synthutils.add_noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_noise</span></code></a>(data[, noise_type, snr, trind, seed])</p></td>
+<td><p>Contaminate seismic data with noise of different type.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.utils.get_max_locs.html#fracspy.location.utils.get_max_locs" title="fracspy.location.utils.get_max_locs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_max_locs</span></code></a>(ssimage[, n_max, rem_edge, ...])</p></td>
 <td><p>Source location from image</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.utils.dist2rec.html#fracspy.location.utils.dist2rec" title="fracspy.location.utils.dist2rec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dist2rec</span></code></a>(recs, gx, gy, gz)</p></td>
+<td><p>Compute distances from a 3D grid of points to array of receivers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.utils.moveout_correction.html#fracspy.location.utils.moveout_correction" title="fracspy.location.utils.moveout_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveout_correction</span></code></a>(data, itshifts)</p></td>
+<td><p>Moveout correction for microseismic data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.location.utils.polarity_correction.html#fracspy.location.utils.polarity_correction" title="fracspy.location.utils.polarity_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">polarity_correction</span></code></a>(data[, polcor_type, g, ...])</p></td>
+<td><p>Polarity correction for microseismic data with corrected event moveout.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.location.utils.semblance_stack.html#fracspy.location.utils.semblance_stack" title="fracspy.location.utils.semblance_stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">semblance_stack</span></code></a>(data[, swsize])</p></td>
+<td><p>Computes the semblance stack for a given input array.</p></td>
 </tr>
 </tbody>
 </table>
@@ -678,7 +712,9 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imaging-inversion">Imaging/Inversion</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moment-tensor-inversion">Moment Tensor Inversion</a><ul class="nav section-nav flex-column">
@@ -718,7 +754,7 @@ from pre-processing to source mechanism inversion. It is composed of the followi
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

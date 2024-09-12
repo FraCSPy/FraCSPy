@@ -229,7 +229,7 @@ point to each receiver.
 
  .. code-block:: none
 
-    Dot test passed, v^H(Opu)=-23245.633604576426 - u^H(Op^Hv)=-23245.633604576364
+    Dot test passed, v^H(Opu)=-5710.095725025444 - u^H(Op^Hv)=-5710.09572502543
 
 
 
@@ -360,7 +360,7 @@ the source location is likely to be a smoothed product, as opposed
 
 
     L = fracspy.location.Location(x, y, z)
-    migrated, mig_hc = L.apply(vz, kind="diffstack", Op=Op, nforhc=10)
+    migrated, mig_hc = L.apply(vz, kind="kmigration", Op=Op, nforhc=10)
 
     print('True Hypo-Center:', [sx,sy,sz])
     print('Migration Hypo-Centers:', mig_hc)
@@ -387,10 +387,6 @@ the source location is likely to be a smoothed product, as opposed
 
     True Hypo-Center: [26, 34, 60]
     Migration Hypo-Centers: [26.2 34.  61. ]
-    /home/runner/work/FraCSPy/FraCSPy/fracspy/visualisation/eventimages.py:92: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-      fig.tight_layout()
-    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:215: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-      plt.tight_layout()
 
 
 
@@ -444,8 +440,6 @@ Let's start with the least-squares solution
 
     True Hypo-Center: [26, 34, 60]
     LSQR Inversion Hypo-Centers: [26.  34.  63.8]
-    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:243: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-      plt.tight_layout()
 
 
 
@@ -487,8 +481,6 @@ We move on now to the sparsity-promoting solution
 
     True Hypo-Center: [26, 34, 60]
     FISTA Inversion Hypo-Centers: [25.8 34.  60. ]
-    /home/runner/work/FraCSPy/FraCSPy/tutorials/Location_KirchhoffBased_tutorial.py:259: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-      plt.tight_layout()
 
 
 
@@ -496,7 +488,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (3 minutes 6.421 seconds)
+   **Total running time of the script:** (2 minutes 59.099 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_KirchhoffBased_tutorial.py:

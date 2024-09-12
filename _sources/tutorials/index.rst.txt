@@ -32,7 +32,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as">
+    <div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like). We also consider only P-waves for simplicity here, and single-component receivers.">
 
 .. only:: html
 
@@ -44,6 +44,23 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Diffraction Stacking Localisation - Simple scenario</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We consider here a homogeneous subsurface model and  a point Double-Couple (DC) microseismic source. We also consider only P-waves for simplicity here.">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_Location_DSMTI_tutorial_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Diffraction Stacking Localisation With Moment Tensor Inversion</div>
     </div>
 
 
@@ -93,6 +110,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
    /tutorials/MT_AmplitudeInversion_tutorial
    /tutorials/Location_DiffractionStacking_tutorial
+   /tutorials/Location_DSMTI_tutorial
    /tutorials/Location_KirchhoffBased_tutorial
    /tutorials/MT_WaveformInversion_tutorial
 

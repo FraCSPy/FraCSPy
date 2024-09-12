@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Tutorials &#8212; fracspy</title>
+        <title>Tutorials &#8212; FraCSPy</title>
     
 
   
@@ -53,6 +53,7 @@
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/index';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Amplitude-based Moment Tensor Inversion" href="MT_AmplitudeInversion_tutorial.html" />
@@ -132,8 +133,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -149,7 +156,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -285,7 +292,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -365,6 +372,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html">Amplitude-based Moment Tensor Inversion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Location_DiffractionStacking_tutorial.html">Diffraction Stacking Localisation - Simple scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Location_DSMTI_tutorial.html">Diffraction Stacking Localisation With Moment Tensor Inversion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Location_KirchhoffBased_tutorial.html">Kirchhoff-Based Localisation - Single component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MT_WaveformInversion_tutorial.html">Waveform-based Moment Tensor Inversion - Multicomponent</a></li>
 </ul>
@@ -427,9 +435,12 @@ document.write(`
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards):"><img alt="" src="../_images/sphx_glr_MT_AmplitudeInversion_tutorial_thumb.png" />
 <p><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html#sphx-glr-tutorials-mt-amplitudeinversion-tutorial-py"><span class="std std-ref">Amplitude-based Moment Tensor Inversion</span></a></p>
   <div class="sphx-glr-thumbnail-title">Amplitude-based Moment Tensor Inversion</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="In this tutorial we will consider a simple scenario where the subsurface is homogenous, and traveltimes are computed analytically as"><img alt="" src="../_images/sphx_glr_Location_DiffractionStacking_tutorial_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like). We also consider only P-waves for simplicity here, and single-component receivers."><img alt="" src="../_images/sphx_glr_Location_DiffractionStacking_tutorial_thumb.png" />
 <p><a class="reference internal" href="Location_DiffractionStacking_tutorial.html#sphx-glr-tutorials-location-diffractionstacking-tutorial-py"><span class="std std-ref">Diffraction Stacking Localisation - Simple scenario</span></a></p>
   <div class="sphx-glr-thumbnail-title">Diffraction Stacking Localisation - Simple scenario</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a homogeneous subsurface model and  a point Double-Couple (DC) microseismic source. We also consider only P-waves for simplicity here."><img alt="" src="../_images/sphx_glr_Location_DSMTI_tutorial_thumb.png" />
+<p><a class="reference internal" href="Location_DSMTI_tutorial.html#sphx-glr-tutorials-location-dsmti-tutorial-py"><span class="std std-ref">Diffraction Stacking Localisation With Moment Tensor Inversion</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Diffraction Stacking Localisation With Moment Tensor Inversion</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:"><img alt="" src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_thumb.png" />
 <p><a class="reference internal" href="Location_KirchhoffBased_tutorial.html#sphx-glr-tutorials-location-kirchhoffbased-tutorial-py"><span class="std std-ref">Kirchhoff-Based Localisation - Single component</span></a></p>
   <div class="sphx-glr-thumbnail-title">Kirchhoff-Based Localisation - Single component</div>
@@ -499,7 +510,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

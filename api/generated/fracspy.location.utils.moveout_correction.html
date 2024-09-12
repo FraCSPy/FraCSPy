@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>fracspy.location.migration.semblancediffstack &#8212; fracspy</title>
+        <title>fracspy.location.utils.moveout_correction &#8212; FraCSPy</title>
     
 
   
@@ -50,11 +50,12 @@
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.location.migration.semblancediffstack';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.location.utils.moveout_correction';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="fracspy.location.imaging.lsi" href="fracspy.location.imaging.lsi.html" />
-    <link rel="prev" title="fracspy.location.migration.diffstack" href="fracspy.location.migration.diffstack.html" />
+    <link rel="next" title="fracspy.location.utils.polarity_correction" href="fracspy.location.utils.polarity_correction.html" />
+    <link rel="prev" title="fracspy.location.utils.dist2rec" href="fracspy.location.utils.dist2rec.html" />
     
     <script src="../../_static/require.js"></script>
 
@@ -130,8 +131,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -147,7 +154,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -287,7 +294,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -374,9 +381,9 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTSKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTSKirchhoff</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.kmigration.html">fracspy.location.migration.kmigration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.imaging.lsi.html">fracspy.location.imaging.lsi</a></li>
@@ -389,7 +396,14 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.location.Location.html">fracspy.location.location.Location</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.utils.synthutils.add_noise.html">fracspy.utils.synthutils.add_noise</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.dist2rec.html">fracspy.location.utils.dist2rec</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.location.utils.moveout_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.polarity_correction.html">fracspy.location.utils.polarity_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.semblance_stack.html">fracspy.location.utils.semblance_stack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.mtinversion.mtai.MTA.html">fracspy.mtinversion.mtai.MTA</a></li>
@@ -467,40 +481,42 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="fracspy-location-migration-semblancediffstack">
-<h1>fracspy.location.migration.semblancediffstack<a class="headerlink" href="#fracspy-location-migration-semblancediffstack" title="Link to this heading">#</a></h1>
+  <section id="fracspy-location-utils-moveout-correction">
+<h1>fracspy.location.utils.moveout_correction<a class="headerlink" href="#fracspy-location-utils-moveout-correction" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="fracspy.location.migration.semblancediffstack">
-<span class="sig-prename descclassname"><span class="pre">fracspy.location.migration.</span></span><span class="sig-name descname"><span class="pre">semblancediffstack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nforhc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/migration.html#semblancediffstack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.migration.semblancediffstack" title="Link to this definition">#</a></dt>
-<dd><p>Diffraction stacking for microseismic source location</p>
-<p>This routine performs imaging of microseismic data by diffraction
-stacking . In practice,
-this approach is similar to <a class="reference internal" href="fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack" title="fracspy.location.migration.diffstack"><code class="xref py py-func docutils literal notranslate"><span class="pre">fracspy.location.migration.diffstack</span></code></a>
-with the main difference that semblance is used as measure of coherency
-instead of a straight summation of the contributions over the moveout
-curves</p>
+<dt class="sig sig-object py" id="fracspy.location.utils.moveout_correction">
+<span class="sig-prename descclassname"><span class="pre">fracspy.location.utils.</span></span><span class="sig-name descname"><span class="pre">moveout_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itshifts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/location/utils.html#moveout_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.location.utils.moveout_correction" title="Link to this definition">#</a></dt>
+<dd><p>Moveout correction for microseismic data.</p>
+<p>This function applies a moveout correction to microseismic data by shifting each sample in time 
+according to its corresponding time index shift value.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Data of shape :math`n_r         imes n_t`</p>
+<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Input seismic data [nr, nt]</p>
 </dd>
-<dt><strong>n_xyz</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Number of grid points in X-, Y-, and Z-axes for the imaging area</p>
-</dd>
-<dt><strong>tt</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Traveltime table of size :math`n_r      imes n_x        imes n_y        imes n_z`</p>
-</dd>
-<dt><strong>nforhc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional</span></dt><dd><p>Number of points for hypocenter</p>
+<dt><strong>itshifts</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Array of time index shift values [nr]</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>ds_im_vol</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Diffraction stack volume</p>
-</dd>
-<dt><strong>hc</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Estimated hypocentral location</p>
+<dt><strong>data_corrected</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Microseismic data with corrected moveout [nr, nt]</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The function checks that the length of <cite>itshifts</cite> matches the number of rows in <cite>data</cite>.    
+The input <cite>itshifts</cite> array is converted to integer.
+Shifting is done towards the beginning of time for positive <cite>itshifts</cite> values and 
+in the opposite direction for negative.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Assuming you have a 2D array &quot;data&quot; with shape (nr, nt) and an array &quot;itshifts&quot; with shape (nr,):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_data</span> <span class="o">=</span> <span class="n">moveout_correction</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">itshifts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># To make reverse correction, apply the negative &quot;itshifts&quot;:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_restored</span> <span class="o">=</span> <span class="n">moveout_correction</span><span class="p">(</span><span class="n">corrected_data</span><span class="p">,</span> <span class="o">-</span><span class="n">itshifts</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -516,20 +532,20 @@ curves</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="fracspy.location.migration.diffstack.html"
+       href="fracspy.location.utils.dist2rec.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">fracspy.location.migration.diffstack</p>
+        <p class="prev-next-title">fracspy.location.utils.dist2rec</p>
       </div>
     </a>
     <a class="right-next"
-       href="fracspy.location.imaging.lsi.html"
+       href="fracspy.location.utils.polarity_correction.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fracspy.location.imaging.lsi</p>
+        <p class="prev-next-title">fracspy.location.utils.polarity_correction</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -551,7 +567,7 @@ curves</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fracspy.location.migration.semblancediffstack"><code class="docutils literal notranslate"><span class="pre">semblancediffstack</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fracspy.location.utils.moveout_correction"><code class="docutils literal notranslate"><span class="pre">moveout_correction</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -580,7 +596,7 @@ curves</p>
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

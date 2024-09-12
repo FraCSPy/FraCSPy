@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>fracspy.mtinversion.mtai.MTA &#8212; fracspy</title>
+        <title>fracspy.mtinversion.mtai.MTA &#8212; FraCSPy</title>
     
 
   
@@ -53,10 +53,11 @@
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.mtinversion.mtai.MTA';</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="fracspy.mtinversion.mtwi.MTW" href="fracspy.mtinversion.mtwi.MTW.html" />
-    <link rel="prev" title="fracspy.location.utils.get_max_locs" href="fracspy.location.utils.get_max_locs.html" />
+    <link rel="prev" title="fracspy.location.utils.semblance_stack" href="fracspy.location.utils.semblance_stack.html" />
     
     <script src="../../_static/require.js"></script>
 
@@ -132,8 +133,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
   
-    <p class="title logo__title">fracspy</p>
   
 </a></div>
     
@@ -149,7 +156,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -289,7 +296,7 @@ document.write(`
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../index.html">
-    FraCSPy
+    Overview
   </a>
 </li>
 
@@ -377,8 +384,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.mt_kirchhoff.MTMKirchhoff.html">fracspy.modelling.mt_kirchhoff.MTMKirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.kmigration.html">fracspy.location.migration.kmigration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.diffstack.html">fracspy.location.migration.diffstack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fracspy.location.migration.semblancediffstack.html">fracspy.location.migration.semblancediffstack</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.imaging.lsi.html">fracspy.location.imaging.lsi</a></li>
@@ -391,7 +398,14 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.location.Location.html">fracspy.location.location.Location</a></li>
 </ul>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.utils.synthutils.add_noise.html">fracspy.utils.synthutils.add_noise</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.get_max_locs.html">fracspy.location.utils.get_max_locs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.dist2rec.html">fracspy.location.utils.dist2rec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.moveout_correction.html">fracspy.location.utils.moveout_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.polarity_correction.html">fracspy.location.utils.polarity_correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.location.utils.semblance_stack.html">fracspy.location.utils.semblance_stack</a></li>
 </ul>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">fracspy.mtinversion.mtai.MTA</a></li>
@@ -533,12 +547,12 @@ moment-tensor modelling of far-field amplitudes</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="fracspy.location.utils.get_max_locs.html"
+       href="fracspy.location.utils.semblance_stack.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">fracspy.location.utils.get_max_locs</p>
+        <p class="prev-next-title">fracspy.location.utils.semblance_stack</p>
       </div>
     </a>
     <a class="right-next"
@@ -597,7 +611,7 @@ moment-tensor modelling of far-field amplitudes</p>
 
   <p class="copyright">
     
-      © Copyright 2024, fracspy Development Team.
+      © Copyright 2024, FraCSPy Development Team.
       <br/>
     
   </p>

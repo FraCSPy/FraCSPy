@@ -19,3 +19,4 @@ dependencies:
   - scikit-learn
   - scikit-fmm
   - obspy
+  - cmcrameri

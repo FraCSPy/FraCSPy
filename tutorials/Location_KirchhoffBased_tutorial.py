@@ -202,7 +202,7 @@ plt.tight_layout()
 # # to the desired single location.
 
 L = fracspy.location.Location(x, y, z)
-migrated, mig_hc = L.apply(vz, kind="diffstack", Op=Op, nforhc=10)
+migrated, mig_hc = L.apply(vz, kind="kmigration", Op=Op, nforhc=10)
 
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', mig_hc)

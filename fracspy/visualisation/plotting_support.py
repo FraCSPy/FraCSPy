@@ -93,24 +93,39 @@ def plot_reconstruction_2d(data, datarec, Fop, x, t, dx, f, ks, vel):
     plt.tight_layout()
 
 
-def clim(data, ratio=95):
+def clim(data:np.ndarray, ratio:float=95):
     """Clipping based on percentiles
+    
     Define clipping values for plotting based on percentiles of input data
+    
     Parameters
     ----------
-    data : :obj:`np.ndarray`
+    data : :obj:`numpy.ndarray`
         Full data
     ratio : :obj:`float`
         Clipping ratio
-    Parameters
-    ----------
-    -c : :obj:`float`
-        Minimum value
-    c : :obj:`float`
-        Maximum value
+
+    Returns
+    -------
+    limits : :obj:`tuple`
+        Tuple of (Minimum value, Maximum value)
+
+    Notes
+    -----
+        If data has both negative and positive values, limits are (-c,c) where c is clipped maximum absolute value of data.
+        If data has only non-negative values, limits are (0,c).
+        If data has only non-positive values, limits are (-c,0).        
     """
     c = np.percentile(np.absolute(data), ratio)
-    return -c, c
+
+    if np.all(data>=0):
+        limits = (0,c)
+    elif np.all(data<=0):
+        limits = (-c,0)
+    else:
+        limits = (-c,c)
+
+    return limits
 
 
 def explode_volume(volume, t=None, x=None, y=None,
@@ -120,6 +135,8 @@ def explode_volume(volume, t=None, x=None, y=None,
                    tcrop=None, xcrop=None, ycrop=None,
                    labels=('[s]', '[km]', '[km]'),
                    tlabel='t', xlabel='x', ylabel='y',
+                   secondcrossloc=None, secondcrosslinespec=None,
+                   crosslegend=None,
                    ratio=None, linespec=None, interp=None, title='',
                    filename=None, save_opts=None):
     """Display 3D volume
@@ -162,7 +179,13 @@ def explode_volume(volume, t=None, x=None, y=None,
     xlabels : :obj:`bool`, optional
         Label to use for x axis
     ylabels : :obj:`bool`, optional
-        Label to use for y axis
+        Label to use for y axis    
+    secondcrossloc : :obj:`tuple`, optional, default is None
+        Indices of second cross location [x,y,z]
+    secondcrosslinespec : :obj:`dict`, optional
+        Specifications for lines of second cross
+    crosslegend : tuple of str, optional
+        Legend labels for crosses, only used if secondcrossloc is not None, default is None
     ratio : :obj:`float`, optional
         Figure aspect ratio (if ``None``, inferred from the volume sizes directly)
     linespec : :obj:`dict`, optional
@@ -180,10 +203,13 @@ def explode_volume(volume, t=None, x=None, y=None,
     fig : :obj:`matplotlib.pyplot.Figure`
         Figure handle
     axs : :obj:`matplotlib.pyplot.Axis`
-        Axes handes
+        Axes handles
     """
+    secondcross = secondcrossloc is not None
     if linespec is None:
         linespec = dict(ls='-', lw=1.5, color='#0DF690')
+    if secondcrosslinespec is None:
+        secondcrosslinespec = dict(ls=':', lw=1.5, color='k')
     nt, nx, ny = volume.shape
     t_label, x_label, y_label = labels
 
@@ -206,6 +232,10 @@ def explode_volume(volume, t=None, x=None, y=None,
     tline = dt * t + tlim[0] + 0.5 * dt
     xline = dx * x + xlim[0] + 0.5 * dx
     yline = dy * y + ylim[0] + 0.5 * dy
+    if secondcross:
+        sc_tline = dt * secondcrossloc[2] + tlim[0] + 0.5 * dt
+        sc_xline = dx * secondcrossloc[0] + xlim[0] + 0.5 * dx
+        sc_yline = dy * secondcrossloc[1] + ylim[0] + 0.5 * dy
 
     # instantiate plots
     fig = plt.figure(figsize=figsize)
@@ -229,6 +259,9 @@ def explode_volume(volume, t=None, x=None, y=None,
     ax.imshow(volume[:, :, y], extent=[xlim[0], xlim[1], tlim[1], tlim[0]], **opts)
     ax.axvline(x=xline, **linespec)
     ax.axhline(y=tline, **linespec)
+    if secondcross:
+        ax.axvline(x=sc_xline, **secondcrosslinespec)
+        ax.axhline(y=sc_tline, **secondcrosslinespec)
     if xcrop is not None:
         ax.set_xlim(xcrop)
     if tcrop is not None:
@@ -236,8 +269,19 @@ def explode_volume(volume, t=None, x=None, y=None,
 
     # top plot
     c = ax_top.imshow(volume[t].T, extent=[xlim[0], xlim[1], ylim[1], ylim[0]], **opts)
-    ax_top.axvline(x=xline, **linespec)
+    if secondcross and crosslegend is not None:
+        ax_top.axvline(x=xline, **linespec, label=crosslegend[0])
+    else:
+        ax_top.axvline(x=xline, **linespec)
     ax_top.axhline(y=yline, **linespec)
+    if secondcross:
+        if crosslegend is not None:
+            ax_top.axvline(x=sc_xline, **secondcrosslinespec, label=crosslegend[1])
+        else:
+            ax_top.axvline(x=sc_xline, **secondcrosslinespec)
+        ax_top.axhline(y=sc_yline, **secondcrosslinespec)
+        if crosslegend is not None:
+            ax_top.legend()
     ax_top.invert_yaxis()
     if xcrop is not None:
         ax_top.set_xlim(xcrop)
@@ -253,6 +297,9 @@ def explode_volume(volume, t=None, x=None, y=None,
     ax_right.imshow(volume[:, x], extent=[ylim[0], ylim[1], tlim[1], tlim[0]], **opts)
     ax_right.axvline(x=yline, **linespec)
     ax_right.axhline(y=tline, **linespec)
+    if secondcross:
+        ax_right.axvline(x=sc_yline, **secondcrosslinespec)
+        ax_right.axhline(y=sc_tline, **secondcrosslinespec)
     if ycrop is not None:
         ax_right.set_xlim(ycrop)
     if tcrop is not None:

@@ -23,7 +23,7 @@ approximation of the Green's function is adopted:
 where :math:`t(\mathbf{x_r}, \mathbf{x})` is the traveltime and :math:`a(\mathbf{x_r}, \mathbf{x})` is the amplitude.
 However, we currently discard the amplitude component.
 
-In this tutorial we will consider the a simple scenario where the subsurface is homogenous, as such we can compute an
+In this tutorial we will consider a simple scenario where the subsurface is homogenous, as such we can compute an
 analytical expression for the traveltime. Similarly, an eikonal solver can also be used in this scenario as well as in
 more complex cases when we deal with heterogenous media.
 

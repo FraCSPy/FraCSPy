@@ -67,10 +67,7 @@ class Location():
             Estimated hypocentral location
 
         """
-        if kind == "diffstack":
-            im, hc = _location_kind[kind](data, self.x, self.y, self.z, **kwargs)
-        else:
-            im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)
+        im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)[:2]
 
         return im, hc
         

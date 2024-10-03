@@ -2,6 +2,7 @@ import numpy as np
 
 from fracspy.location.utils import *
 
+
 def kmigration(data, n_xyz, Op, nforhc=10):
     r"""Kirchhoff migration for microseismic source location.
 
@@ -33,6 +34,7 @@ def kmigration(data, n_xyz, Op, nforhc=10):
     return migrated, hc
 
 def diffstack(data: np.ndarray,
+              n_xyz: tuple,
               x: np.ndarray,
               y: np.ndarray,
               z: np.ndarray,
@@ -53,6 +55,8 @@ def diffstack(data: np.ndarray,
     ----------
     data : :obj:`numpy.ndarray`
         Data of shape :math:`n_r \times n_t`
+    n_xyz : :obj:`tuple`
+        Number of grid points in X-, Y-, and Z-axes for the imaging area
     x : :obj:`numpy.ndarray`
         Imaging area grid vector in X-axis
     y : :obj:`numpy.ndarray`
@@ -202,8 +206,8 @@ def diffstack(data: np.ndarray,
 
     """
     # Get sizes
-    nx, ny, nz = x.size, y.size, z.size
-    ngrid = nx*ny*nz
+    nx, ny, nz = n_xyz
+    ngrid = nx * ny * nz
     nr, nt = data.shape   
 
     # Check sizes

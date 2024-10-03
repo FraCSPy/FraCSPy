@@ -289,6 +289,7 @@ start_time = time()
 print("Squared-value diffraction stacking without polarity correction...")
 dstacked_sqd, hc_sqd = L.apply(data_vz,
                                 kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="squared",
                                 output_type = "mean")
@@ -311,6 +312,7 @@ start_time = time()
 print("Squared-value diffraction stacking with polarity correction based on MTI...")
 dstacked_sqd_mti, hc_sqd_mti = L.apply(data_vz,
                                        kind="diffstack",
+                                       x=gx, y=gy, z=gz,
                                        tt=tt, dt=dt, nforhc=10,
                                        stack_type="squared",
                                        output_type = "mean",
@@ -330,6 +332,7 @@ start_time = time()
 print("Semblance-based diffraction stacking with polarity correction based on MTI...")
 dstacked_sem_mti, hc_sem_mti = L.apply(data_vz,
                                 kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,                                
                                 stack_type="semblance", swsize = swsize,
                                 output_type = "mean",
@@ -393,7 +396,7 @@ fig,axs = locimage3d(dstacked_sqd_mti,
                      x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
                      secondcrossloc=hc_sqd_mti,
                      crosslegend=crosslegend,
-                     xlim=xlim,ylim=ylim,zlim=zlim)
+                     xlim=xlim, ylim=ylim, zlim=zlim)
 
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sqd_mti)))
@@ -405,7 +408,7 @@ fig,axs = locimage3d(dstacked_sem_mti,
                      x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
                      secondcrossloc=hc_sem_mti,
                      crosslegend=crosslegend,
-                     xlim=xlim,ylim=ylim,zlim=zlim)
+                     xlim=xlim, ylim=ylim, zlim=zlim)
 
 print('-------------------------------------------------------')
 print('Event hypocenter from semblance-based diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sem_mti)))

@@ -74,7 +74,7 @@ conda remove -n fracspy -all
 
 ## Documentation
 
-The latest stable documentation based on [Sphinx](https://www.sphinx-doc.org) is available online at: <>
+The latest stable documentation based on [Sphinx](https://www.sphinx-doc.org) is available online at: <https://fracspy.github.io/FraCSPy>
 
 One can also build the documentation locally:
 

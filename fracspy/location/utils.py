@@ -1,7 +1,26 @@
 import numpy as np
 from scipy.signal import convolve2d
+from typing import Union
+
 
 def _get_centroid(array_xyz):
+    """
+    Computes the centroid (mean) of a set of points in 3D space.
+
+    This function calculates the centroid of a set of points represented by a 2D numpy array with shape (3, N), where N is the number of points.
+    The centroid is the average of all the points along each axis (x, y, z).
+
+    Parameters
+    ----------
+    array_xyz : numpy.ndarray
+        A 2D numpy array of shape (3, N) where each column represents a point in 3D space with coordinates (x, y, z).
+
+    Returns
+    -------
+    numpy.ndarray
+        A 1D numpy array of shape (3,) representing the centroid of the points, with the mean values for each of the x, y, and z coordinates.
+    """
+
     return np.mean(array_xyz, axis=1)
 
 
@@ -54,6 +73,7 @@ def get_max_locs(ssimage, n_max=50, rem_edge=True, edgebuf=10, absval=True):
 
     return ev_loc, ev_locs
 
+
 def get_location_misfit(loca:list, locb:list, steps:list = None):
     r"""
     Calculate the location misfit between two lists of locations (loca and locb) 
@@ -93,6 +113,7 @@ def get_location_misfit(loca:list, locb:list, steps:list = None):
     else:
         return list(loca_array - locb_array)
 
+
 def dist2rec(recs, gx, gy, gz):
     r"""Compute distances from a 3D grid of points to array of receivers.
 
@@ -119,6 +140,7 @@ def dist2rec(recs, gx, gy, gz):
                 (recs[1][:, None, None, None] - gy)**2 +
                 (recs[2][:, None, None, None] - gz)**2)
     return d
+
 
 def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
     r"""Moveout correction for microseismic data.
@@ -173,9 +195,9 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
 
     return data_corrected
 
-def vgtd(x: np.ndarray | float, 
-         y: np.ndarray | float, 
-         z: np.ndarray | float, 
+def vgtd(x: Union[np.ndarray, float],
+         y: Union[np.ndarray, float],
+         z: Union[np.ndarray, float],
          recs: np.ndarray) -> np.ndarray:
     r"""
     Compute vectorized Green's tensor derivative for multiple source points.
@@ -316,7 +338,7 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
     return gtg_inv
 
 def polarity_correction(data: np.ndarray,                         
-                        polcor_type: str="mti",
+                        polcor_type: str = "mti",
                         g: np.ndarray = None,
                         gtg_inv: np.ndarray = None):
     r"""Polarity correction for microseismic data with corrected event moveout.
@@ -377,7 +399,8 @@ def polarity_correction(data: np.ndarray,
 
     return data_corrected
 
-def semblance_stack(data:np.ndarray, swsize:int=0):
+
+def semblance_stack(data:np.ndarray, swsize:int = 0):
     r"""Computes the semblance stack for a given input array.
 
     The semblance_stack function computes the semblance, which is a measure of the coherence 

@@ -2,11 +2,9 @@ __all__ = [
     "Location",
 ]
 
-
-from fracspy.location.migration import kmigration, diffstack
-from fracspy.location.imaging import lsi, sparselsi
-from fracspy.location.xcorri import xcorri
 import numpy as np
+from fracspy.location.migration import diffstack, kmigration
+from fracspy.location.imaging import lsi, sparselsi, xcorri
 
 
 _location_kind = {"kmigration": kmigration,
@@ -15,6 +13,7 @@ _location_kind = {"kmigration": kmigration,
                   "sparselsi": sparselsi,
                   "xcorri": xcorri,
                   }
+
 
 class Location():
     """Event location
@@ -50,7 +49,7 @@ class Location():
           and/or imaging methods as the internal parameters are not modified during the
           location procedure.
 
-	    Parameters
+        Parameters
         ----------
         data : :obj:`numpy.ndarray`
             Data of shape :math`n_r \times n_t`
@@ -60,18 +59,15 @@ class Location():
         kwargs : :obj:`dict`, optional
             Keyword arguments to pass to the location algorithm
 
-	    Returns
+        Returns
         -------
         im : :obj:`numpy.ndarray`
             Migrated volume
         hc : :obj:`numpy.ndarray`
             Estimated hypocentral location
-	
+
         """
-        if kind == "diffstack":
-            im, hc = _location_kind[kind](data, self.x, self.y, self.z, **kwargs)
-        else:
-            im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)
+        im, hc = _location_kind[kind](data, self.n_xyz, **kwargs)[:2]
 
         return im, hc
         

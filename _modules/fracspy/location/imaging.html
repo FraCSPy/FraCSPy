@@ -414,11 +414,13 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for fracspy.location.imaging</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pylops</span>
-
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span> 
 <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">lsqr</span>
+<span class="kn">import</span> <span class="nn">pylops</span>
 <span class="kn">from</span> <span class="nn">pylops.optimization.sparsity</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">StepLR</span>
 <span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="n">get_max_locs</span>
 
 
@@ -500,6 +502,122 @@ document.write(`
         <span class="n">inv</span> <span class="o">=</span> <span class="n">fista</span><span class="p">(</span><span class="n">Op</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">niter</span><span class="o">=</span><span class="n">niter</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">l1eps</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">verbose</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span>
     <span class="n">hc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_max_locs</span><span class="p">(</span><span class="n">inv</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="n">nforhc</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">inv</span><span class="p">,</span> <span class="n">hc</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">xcorr_of</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pearson correlation coefficient</span>
+
+<span class="sd">    Compute the Pearson correlation coefficient between two datasets</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : :obj:`torch.Tensor`</span>
+<span class="sd">        First dataset</span>
+<span class="sd">    y : :obj:`torch.Tensor`</span>
+<span class="sd">        Second dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r2 : :obj:`float`</span>
+<span class="sd">        Pearson correlation coefficient</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r2</span>
+
+
+<div class="viewcode-block" id="xcorri">
+<a class="viewcode-back" href="../../../api/generated/fracspy.location.imaging.xcorri.html#fracspy.location.imaging.xcorri">[docs]</a>
+<span class="k">def</span> <span class="nf">xcorri</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">l1eps</span><span class="o">=</span><span class="mf">8e-1</span><span class="p">,</span>
+           <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cross-correlation-based imaging for microseismic source location</span>
+
+<span class="sd">    This routine performs imaging of microseismic data by inversion using an</span>
+<span class="sd">    objective function based on the Pearson correlation coefficient. This idea</span>
+<span class="sd">    is borrowed from the field of seismic migration, and more specifically from</span>
+<span class="sd">    [1]_, and is intended to create a location algorithm that is less sensitive to</span>
+<span class="sd">    inaccuracies in the knowledge of the source signature.</span>
+
+<span class="sd">    .. [1] Zhang, Y., and Duan, L., and  Xie, Y. &quot;A stable and practical implementation</span>
+<span class="sd">       of least-squares reverse time migration&quot;, Geophysics, Vol. 80, 1, pp. 1JF-Z39, 2015.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data of shape :math`n_r \times n_t`</span>
+<span class="sd">    n_xyz : :obj:`tuple`</span>
+<span class="sd">        Number of grid points in X-, Y-, and Z-axes for the imaging area</span>
+<span class="sd">    Op : :obj:` pyfrac.modelling.kirchhoff.Kirchhoff`</span>
+<span class="sd">        Kirchhoff operator</span>
+<span class="sd">    niter : :obj:`int`, optional</span>
+<span class="sd">        Number of iterations</span>
+<span class="sd">    l1eps : :obj:`float`, optional</span>
+<span class="sd">        Weight of the L1 regularization term</span>
+<span class="sd">    lr : :obj:`int`, optional</span>
+<span class="sd">        Learning rate used by the optimizer</span>
+<span class="sd">    nforhc : :obj:`int`, optional</span>
+<span class="sd">        Number of points for hypocenter</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mls_torch : :obj:`numpy.ndarray`</span>
+<span class="sd">        Migrated volume</span>
+<span class="sd">    hc : :obj:`numpy.ndarray`</span>
+<span class="sd">        Estimated hypocentral location</span>
+<span class="sd">    dls_torch : :obj:`numpy.ndarray`</span>
+<span class="sd">        Predicted data volume</span>
+<span class="sd">    losshist : :obj:`list`</span>
+<span class="sd">        Loss history</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialise with migrated image</span>
+    <span class="n">migrated</span> <span class="o">=</span> <span class="p">(</span><span class="n">Op</span><span class="o">.</span><span class="n">H</span> <span class="o">@</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_xyz</span><span class="p">)</span>
+    <span class="n">dmigrated</span> <span class="o">=</span> <span class="n">Op</span> <span class="o">@</span> <span class="n">migrated</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">scaling</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="n">dmigrated</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">migrated</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="n">scaling</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># make sure we compute the gradient with respect to m</span>
+
+    <span class="c1"># Initialise torch operator and torch tensors</span>
+    <span class="n">TOp</span> <span class="o">=</span> <span class="n">pylops</span><span class="o">.</span><span class="n">TorchOperator</span><span class="p">(</span><span class="n">Op</span><span class="p">)</span>
+    <span class="n">dobs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+    <span class="c1"># Optimization</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">([</span><span class="n">m</span><span class="p">],</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">StepLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">losshist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">niter</span><span class="p">)</span>
+    <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">niter</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">TOp</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="c1"># data term</span>
+        <span class="n">lossd</span> <span class="o">=</span> <span class="n">xcorr_of</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">dobs</span><span class="p">)</span>
+
+        <span class="c1"># L1 regularization</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">if</span> <span class="n">l1eps</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reg</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+
+        <span class="c1"># total loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">lossd</span> <span class="o">+</span> <span class="n">l1eps</span> <span class="o">*</span> <span class="n">reg</span>
+
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">losshist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;Data Loss&quot;</span><span class="p">:</span> <span class="n">lossd</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s2">&quot;L1reg Loss&quot;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s2">&quot;Total Loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()})</span>
+
+    <span class="n">dls_torch</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">mls_torch</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_xyz</span><span class="p">)</span>
+    <span class="n">hc</span><span class="p">,</span> <span class="n">hcs</span> <span class="o">=</span> <span class="n">get_max_locs</span><span class="p">(</span><span class="n">mls_torch</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="n">nforhc</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mls_torch</span><span class="p">,</span> <span class="n">hc</span><span class="p">,</span> <span class="n">dls_torch</span><span class="p">,</span> <span class="n">losshist</span></div>
 
 </pre></div>
 

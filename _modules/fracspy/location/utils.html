@@ -416,8 +416,27 @@ document.write(`
   <h1>Source code for fracspy.location.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve2d</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
 
 <span class="k">def</span> <span class="nf">_get_centroid</span><span class="p">(</span><span class="n">array_xyz</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the centroid (mean) of a set of points in 3D space.</span>
+
+<span class="sd">    This function calculates the centroid of a set of points represented by a 2D numpy array with shape (3, N), where N is the number of points.</span>
+<span class="sd">    The centroid is the average of all the points along each axis (x, y, z).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array_xyz : numpy.ndarray</span>
+<span class="sd">        A 2D numpy array of shape (3, N) where each column represents a point in 3D space with coordinates (x, y, z).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        A 1D numpy array of shape (3,) representing the centroid of the points, with the mean values for each of the x, y, and z coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">array_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
@@ -473,6 +492,7 @@ document.write(`
     <span class="k">return</span> <span class="n">ev_loc</span><span class="p">,</span> <span class="n">ev_locs</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">get_location_misfit</span><span class="p">(</span><span class="n">loca</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">locb</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the location misfit between two lists of locations (loca and locb) </span>
@@ -512,6 +532,7 @@ document.write(`
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">loca_array</span> <span class="o">-</span> <span class="n">locb_array</span><span class="p">)</span>
 
+
 <div class="viewcode-block" id="dist2rec">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.dist2rec.html#fracspy.location.utils.dist2rec">[docs]</a>
 <span class="k">def</span> <span class="nf">dist2rec</span><span class="p">(</span><span class="n">recs</span><span class="p">,</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">):</span>
@@ -540,6 +561,7 @@ document.write(`
                 <span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
                 <span class="p">(</span><span class="n">recs</span><span class="p">[</span><span class="mi">2</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">gz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">d</span></div>
+
 
 
 <div class="viewcode-block" id="moveout_correction">
@@ -598,9 +620,9 @@ document.write(`
     <span class="k">return</span> <span class="n">data_corrected</span></div>
 
 
-<span class="k">def</span> <span class="nf">vgtd</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
-         <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
-         <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">vgtd</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+         <span class="n">y</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+         <span class="n">z</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
          <span class="n">recs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute vectorized Green&#39;s tensor derivative for multiple source points.</span>
@@ -743,7 +765,7 @@ document.write(`
 <div class="viewcode-block" id="polarity_correction">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.polarity_correction.html#fracspy.location.utils.polarity_correction">[docs]</a>
 <span class="k">def</span> <span class="nf">polarity_correction</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>                         
-                        <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;mti&quot;</span><span class="p">,</span>
+                        <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mti&quot;</span><span class="p">,</span>
                         <span class="n">g</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                         <span class="n">gtg_inv</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Polarity correction for microseismic data with corrected event moveout.</span>
@@ -805,9 +827,10 @@ document.write(`
     <span class="k">return</span> <span class="n">data_corrected</span></div>
 
 
+
 <div class="viewcode-block" id="semblance_stack">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.utils.semblance_stack.html#fracspy.location.utils.semblance_stack">[docs]</a>
-<span class="k">def</span> <span class="nf">semblance_stack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">swsize</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">semblance_stack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">swsize</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the semblance stack for a given input array.</span>
 
 <span class="sd">    The semblance_stack function computes the semblance, which is a measure of the coherence </span>

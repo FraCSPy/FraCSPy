@@ -375,6 +375,7 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html">Amplitude-based Moment Tensor Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Location_CrossCorrelationImaging_tutorial.html">Cross-Correlation-Based Localisation - Single component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Location_DiffractionStacking_tutorial.html">Diffraction Stacking Localisation - Simple scenario</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Location_DSMTI_tutorial.html">Diffraction Stacking Localisation With Moment Tensor Inversion</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Kirchhoff-Based Localisation - Single component</a></li>
@@ -459,7 +460,7 @@ approximation of the Green’s function is adopted:</p>
     e^{j \omega t(\mathbf{x_r}, \mathbf{x})}\]</div>
 <p>where <span class="math notranslate nohighlight">\(t(\mathbf{x_r}, \mathbf{x})\)</span> is the traveltime and <span class="math notranslate nohighlight">\(a(\mathbf{x_r}, \mathbf{x})\)</span> is the amplitude.
 However, we currently discard the amplitude component.</p>
-<p>In this tutorial we will consider the a simple scenario where the subsurface is homogenous, as such we can compute an
+<p>In this tutorial we will consider a simple scenario where the subsurface is homogenous, as such we can compute an
 analytical expression for the traveltime. Similarly, an eikonal solver can also be used in this scenario as well as in
 more complex cases when we deal with heterogenous media.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -566,7 +567,7 @@ point to each receiver.</p>
 <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.bool_" title="numpy.bool_" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">_</span></a> <span class="o">=</span> <a href="https://pylops.readthedocs.io/en/latest/api/generated/pylops.utils.dottest.html#pylops.utils.dottest" title="pylops.utils.dottest" class="sphx-glr-backref-module-pylops-utils sphx-glr-backref-type-py-function"><span class="n">dottest</span></a><span class="p">(</span><span class="n">Op</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Dot test passed, v^H(Opu)=-5710.095725025444 - u^H(Op^Hv)=-5710.09572502543
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Dot test passed, v^H(Opu)=-5710.095725025381 - u^H(Op^Hv)=-5710.095725025408
 </pre></div>
 </div>
 </section>
@@ -699,7 +700,7 @@ LSQR Inversion Hypo-Centers: [26.  34.  63.8]
 FISTA Inversion Hypo-Centers: [25.8 34.  60. ]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 59.099 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 54.840 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-location-kirchhoffbased-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d0548ea7534e466e49a4d299be515f06/Location_KirchhoffBased_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Location_KirchhoffBased_tutorial.ipynb</span></code></a></p>

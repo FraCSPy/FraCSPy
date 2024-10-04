@@ -418,6 +418,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
+
 <div class="viewcode-block" id="kmigration">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.kmigration.html#fracspy.location.migration.kmigration">[docs]</a>
 <span class="k">def</span> <span class="nf">kmigration</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_xyz</span><span class="p">,</span> <span class="n">Op</span><span class="p">,</span> <span class="n">nforhc</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
@@ -454,6 +455,7 @@ document.write(`
 <div class="viewcode-block" id="diffstack">
 <a class="viewcode-back" href="../../../api/generated/fracspy.location.migration.diffstack.html#fracspy.location.migration.diffstack">[docs]</a>
 <span class="k">def</span> <span class="nf">diffstack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+              <span class="n">n_xyz</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
               <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
               <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
               <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -474,6 +476,8 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    data : :obj:`numpy.ndarray`</span>
 <span class="sd">        Data of shape :math:`n_r \times n_t`</span>
+<span class="sd">    n_xyz : :obj:`tuple`</span>
+<span class="sd">        Number of grid points in X-, Y-, and Z-axes for the imaging area</span>
 <span class="sd">    x : :obj:`numpy.ndarray`</span>
 <span class="sd">        Imaging area grid vector in X-axis</span>
 <span class="sd">    y : :obj:`numpy.ndarray`</span>
@@ -623,8 +627,8 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get sizes</span>
-    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">ngrid</span> <span class="o">=</span> <span class="n">nx</span><span class="o">*</span><span class="n">ny</span><span class="o">*</span><span class="n">nz</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">n_xyz</span>
+    <span class="n">ngrid</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
     <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>   
 
     <span class="c1"># Check sizes</span>

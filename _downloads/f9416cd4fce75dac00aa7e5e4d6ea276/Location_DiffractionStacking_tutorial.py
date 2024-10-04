@@ -395,7 +395,8 @@ print(f"Traveltime array shape: {tt.shape}")
 start_time = time()
 print("Absolute-value diffraction stacking...")
 dstacked_abs, hc_abs = L.apply(frwddata, 
-                      kind="diffstack",                            
+                      kind="diffstack",
+                      x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
                       stack_type="absolute")
 end_time = time()
@@ -408,7 +409,8 @@ print(f"Computation time: {end_time - start_time} seconds")
 start_time = time()
 print("Squared-value diffraction stacking...")
 dstacked_sqd, hc_sqd = L.apply(frwddata, 
-                      kind="diffstack",                            
+                      kind="diffstack",
+                      x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
                       stack_type="squared")
 end_time = time()
@@ -422,7 +424,8 @@ start_time = time()
 print("Semblance-based diffraction stacking...")
 # Run the stacking using Location class
 dstacked_semb, hc_semb = L.apply(frwddata, 
-                      kind="diffstack",                       
+                      kind="diffstack",
+                      x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
                       stack_type="semblance")
 end_time = time()
@@ -440,7 +443,8 @@ start_time = time()
 print("Semblance-based diffraction stacking...")
 # Run the stacking using Location class
 dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
-                      kind="diffstack",   
+                      kind="diffstack",
+                      x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
                       stack_type="semblance", swsize=swsize)
 end_time = time()
@@ -462,15 +466,18 @@ print(f"Computation time: {end_time - start_time} seconds")
 start_time = time()
 print("Absolute-value diffraction stacking...")
 dstacked_abs_wn, hc_abs_wn = L.apply(frwddata_wn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="absolute")
 dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="absolute")
 dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="absolute")
 end_time = time()
@@ -483,15 +490,18 @@ print(f"Computation time: {end_time - start_time} seconds")
 start_time = time()
 print("Squared-value diffraction stacking...")
 dstacked_sqd_wn, hc_sqd_wn = L.apply(frwddata_wn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="squared")
 dstacked_sqd_sn, hc_sqd_sn = L.apply(frwddata_sn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="squared")
 dstacked_sqd_rn, hc_sqd_rn = L.apply(frwddata_rn, 
-                            kind="diffstack", 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
                             stack_type="squared")
 end_time = time()
@@ -506,15 +516,18 @@ print(f"Sliding window size in samples: {swsize}")
 start_time = time()
 print("Semblance-based diffraction stacking...")
 dstacked_semb_swin_wn, hc_semb_swin_wn = L.apply(frwddata_wn, 
-                                        kind="diffstack", 
+                                        kind="diffstack",
+                                        x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
                                         stack_type="semblance", swsize=swsize)
 dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
-                                        kind="diffstack", 
+                                        kind="diffstack",
+                                        x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
                                         stack_type="semblance", swsize=swsize)
 dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
-                                        kind="diffstack", 
+                                        kind="diffstack",
+                                        x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
                                         stack_type="semblance", swsize=swsize)
 end_time = time()

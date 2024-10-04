@@ -460,7 +460,7 @@ any polarity correction, for reference
 Perform squared-value diffraction stacking without polarity correction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 287-298
+.. GENERATED FROM PYTHON SOURCE LINES 287-299
 
 .. code-block:: Python
 
@@ -469,6 +469,7 @@ Perform squared-value diffraction stacking without polarity correction
     print("Squared-value diffraction stacking without polarity correction...")
     dstacked_sqd, hc_sqd = L.apply(data_vz,
                                     kind="diffstack",
+                                    x=gx, y=gy, z=gz,
                                     tt=tt, dt=dt, nforhc=10,
                                     stack_type="squared",
                                     output_type = "mean")
@@ -484,24 +485,24 @@ Perform squared-value diffraction stacking without polarity correction
  .. code-block:: none
 
     Squared-value diffraction stacking without polarity correction...
-    Computation time: 10.10541558265686 seconds
+    Computation time: 10.128570318222046 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 301-305
+.. GENERATED FROM PYTHON SOURCE LINES 302-306
 
 Apply diffraction stacking witth polarity correction using MTI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply various diffraction stacking algorithms with 
 polarity correction using moment tensor inversion
 
-.. GENERATED FROM PYTHON SOURCE LINES 307-309
+.. GENERATED FROM PYTHON SOURCE LINES 308-310
 
 Perform squared-value diffraction stacking with polarity correction with MTI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 309-321
+.. GENERATED FROM PYTHON SOURCE LINES 310-323
 
 .. code-block:: Python
 
@@ -510,6 +511,7 @@ Perform squared-value diffraction stacking with polarity correction with MTI
     print("Squared-value diffraction stacking with polarity correction based on MTI...")
     dstacked_sqd_mti, hc_sqd_mti = L.apply(data_vz,
                                            kind="diffstack",
+                                           x=gx, y=gy, z=gz,
                                            tt=tt, dt=dt, nforhc=10,
                                            stack_type="squared",
                                            output_type = "mean",
@@ -526,17 +528,17 @@ Perform squared-value diffraction stacking with polarity correction with MTI
  .. code-block:: none
 
     Squared-value diffraction stacking with polarity correction based on MTI...
-    Computation time: 15.152605533599854 seconds
+    Computation time: 15.09127950668335 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 322-324
+.. GENERATED FROM PYTHON SOURCE LINES 324-326
 
 Perform semblance-based diffraction stacking with polarity correction with MTI
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-341
+.. GENERATED FROM PYTHON SOURCE LINES 326-344
 
 .. code-block:: Python
 
@@ -549,6 +551,7 @@ Perform semblance-based diffraction stacking with polarity correction with MTI
     print("Semblance-based diffraction stacking with polarity correction based on MTI...")
     dstacked_sem_mti, hc_sem_mti = L.apply(data_vz,
                                     kind="diffstack",
+                                    x=gx, y=gy, z=gz,
                                     tt=tt, dt=dt, nforhc=10,                                
                                     stack_type="semblance", swsize = swsize,
                                     output_type = "mean",
@@ -567,12 +570,12 @@ Perform semblance-based diffraction stacking with polarity correction with MTI
 
     Sliding window size in samples: 100
     Semblance-based diffraction stacking with polarity correction based on MTI...
-    Computation time: 21.185272693634033 seconds
+    Computation time: 21.179158926010132 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 344-352
+.. GENERATED FROM PYTHON SOURCE LINES 347-355
 
 Visualisation of results
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -583,12 +586,12 @@ resulting images are focused in the correct location which fluctuates in
 depth, reflecting the time-depth tradeoff.
 Uncertainty in depth direction is much higher due to surface acquisition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 355-357
+.. GENERATED FROM PYTHON SOURCE LINES 358-360
 
 Plot resulting image volumes from squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 357-413
+.. GENERATED FROM PYTHON SOURCE LINES 360-416
 
 .. code-block:: Python
 
@@ -631,7 +634,7 @@ Plot resulting image volumes from squared-value diffraction stacking
                          x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
                          secondcrossloc=hc_sqd_mti,
                          crosslegend=crosslegend,
-                         xlim=xlim,ylim=ylim,zlim=zlim)
+                         xlim=xlim, ylim=ylim, zlim=zlim)
 
     print('-------------------------------------------------------')
     print('Event hypocenter from squared-value diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sqd_mti)))
@@ -643,7 +646,7 @@ Plot resulting image volumes from squared-value diffraction stacking
                          x0=true_index_location[0],y0=true_index_location[1],z0=true_index_location[2],
                          secondcrossloc=hc_sem_mti,
                          crosslegend=crosslegend,
-                         xlim=xlim,ylim=ylim,zlim=zlim)
+                         xlim=xlim, ylim=ylim, zlim=zlim)
 
     print('-------------------------------------------------------')
     print('Event hypocenter from semblance-based diffraction stacking with polarity correction:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*L.indtogrid(hc_sem_mti)))
@@ -704,7 +707,7 @@ Plot resulting image volumes from squared-value diffraction stacking
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 48.649 seconds)
+   **Total running time of the script:** (0 minutes 48.535 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_DSMTI_tutorial.py:

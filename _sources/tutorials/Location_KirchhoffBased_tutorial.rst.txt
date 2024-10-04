@@ -42,7 +42,7 @@ approximation of the Green's function is adopted:
 where :math:`t(\mathbf{x_r}, \mathbf{x})` is the traveltime and :math:`a(\mathbf{x_r}, \mathbf{x})` is the amplitude.
 However, we currently discard the amplitude component.
 
-In this tutorial we will consider the a simple scenario where the subsurface is homogenous, as such we can compute an
+In this tutorial we will consider a simple scenario where the subsurface is homogenous, as such we can compute an
 analytical expression for the traveltime. Similarly, an eikonal solver can also be used in this scenario as well as in
 more complex cases when we deal with heterogenous media.
 
@@ -229,7 +229,7 @@ point to each receiver.
 
  .. code-block:: none
 
-    Dot test passed, v^H(Opu)=-5710.095725025444 - u^H(Op^Hv)=-5710.09572502543
+    Dot test passed, v^H(Opu)=-5710.095725025381 - u^H(Op^Hv)=-5710.095725025408
 
 
 
@@ -488,7 +488,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 59.099 seconds)
+   **Total running time of the script:** (2 minutes 54.840 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_KirchhoffBased_tutorial.py:

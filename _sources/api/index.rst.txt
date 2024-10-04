@@ -57,12 +57,6 @@ Imaging/Inversion
 
     lsi
     sparselsi
-
-.. currentmodule:: fracspy.location.xcorri
-
-.. autosummary::
-   :toctree: generated/
-
     xcorri
 
 .. currentmodule:: fracspy.location.location

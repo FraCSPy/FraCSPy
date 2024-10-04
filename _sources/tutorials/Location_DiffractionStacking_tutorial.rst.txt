@@ -387,7 +387,7 @@ This test can help to detect errors in the operator implementation.
 
  .. code-block:: none
 
-    Dot test passed, v^H(Opu)=-4332.598858365269 - u^H(Op^Hv)=-4332.598858365271
+    Dot test passed, v^H(Opu)=12354.859719384538 - u^H(Op^Hv)=12354.85971938456
 
 
 
@@ -447,7 +447,7 @@ Apply operator to model data
 
  .. code-block:: none
 
-    Computation time: 10.133890628814697 seconds
+    Computation time: 9.809874057769775 seconds
 
 
 
@@ -676,7 +676,7 @@ volume.
 Perform absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 394-404
+.. GENERATED FROM PYTHON SOURCE LINES 394-405
 
 .. code-block:: Python
 
@@ -684,7 +684,8 @@ Perform absolute-value diffraction stacking
     start_time = time()
     print("Absolute-value diffraction stacking...")
     dstacked_abs, hc_abs = L.apply(frwddata, 
-                          kind="diffstack",                            
+                          kind="diffstack",
+                          x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
                           stack_type="absolute")
     end_time = time()
@@ -699,17 +700,17 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 17.24898076057434 seconds
+    Computation time: 17.475756883621216 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 405-407
+.. GENERATED FROM PYTHON SOURCE LINES 406-408
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 407-417
+.. GENERATED FROM PYTHON SOURCE LINES 408-419
 
 .. code-block:: Python
 
@@ -717,7 +718,8 @@ Perform squared-value diffraction stacking
     start_time = time()
     print("Squared-value diffraction stacking...")
     dstacked_sqd, hc_sqd = L.apply(frwddata, 
-                          kind="diffstack",                            
+                          kind="diffstack",
+                          x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
                           stack_type="squared")
     end_time = time()
@@ -732,17 +734,17 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 17.37857937812805 seconds
+    Computation time: 17.514066696166992 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 418-420
+.. GENERATED FROM PYTHON SOURCE LINES 420-422
 
 Perform semblance-based diffraction stacking without sliding time window
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 420-431
+.. GENERATED FROM PYTHON SOURCE LINES 422-434
 
 .. code-block:: Python
 
@@ -751,7 +753,8 @@ Perform semblance-based diffraction stacking without sliding time window
     print("Semblance-based diffraction stacking...")
     # Run the stacking using Location class
     dstacked_semb, hc_semb = L.apply(frwddata, 
-                          kind="diffstack",                       
+                          kind="diffstack",
+                          x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
                           stack_type="semblance")
     end_time = time()
@@ -766,17 +769,17 @@ Perform semblance-based diffraction stacking without sliding time window
  .. code-block:: none
 
     Semblance-based diffraction stacking...
-    Computation time: 19.77123522758484 seconds
+    Computation time: 20.05271601676941 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 432-434
+.. GENERATED FROM PYTHON SOURCE LINES 435-437
 
 Perform semblance-based diffraction stacking with sliding time window
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 434-450
+.. GENERATED FROM PYTHON SOURCE LINES 437-454
 
 .. code-block:: Python
 
@@ -789,7 +792,8 @@ Perform semblance-based diffraction stacking with sliding time window
     print("Semblance-based diffraction stacking...")
     # Run the stacking using Location class
     dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
-                          kind="diffstack",   
+                          kind="diffstack",
+                          x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
                           stack_type="semblance", swsize=swsize)
     end_time = time()
@@ -806,24 +810,24 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 23.447152853012085 seconds
+    Computation time: 23.57133913040161 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 453-457
+.. GENERATED FROM PYTHON SOURCE LINES 457-461
 
 Apply diffraction stacking to noise-contaminated data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply diffraction stacking algorithms to data contaminated 
 with noise
 
-.. GENERATED FROM PYTHON SOURCE LINES 459-461
+.. GENERATED FROM PYTHON SOURCE LINES 463-465
 
 Perform absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 461-479
+.. GENERATED FROM PYTHON SOURCE LINES 465-486
 
 .. code-block:: Python
 
@@ -831,15 +835,18 @@ Perform absolute-value diffraction stacking
     start_time = time()
     print("Absolute-value diffraction stacking...")
     dstacked_abs_wn, hc_abs_wn = L.apply(frwddata_wn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="absolute")
     dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="absolute")
     dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="absolute")
     end_time = time()
@@ -854,17 +861,17 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 51.9507622718811 seconds
+    Computation time: 52.448566198349 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 480-482
+.. GENERATED FROM PYTHON SOURCE LINES 487-489
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 482-500
+.. GENERATED FROM PYTHON SOURCE LINES 489-510
 
 .. code-block:: Python
 
@@ -872,15 +879,18 @@ Perform squared-value diffraction stacking
     start_time = time()
     print("Squared-value diffraction stacking...")
     dstacked_sqd_wn, hc_sqd_wn = L.apply(frwddata_wn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="squared")
     dstacked_sqd_sn, hc_sqd_sn = L.apply(frwddata_sn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="squared")
     dstacked_sqd_rn, hc_sqd_rn = L.apply(frwddata_rn, 
-                                kind="diffstack", 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
                                 stack_type="squared")
     end_time = time()
@@ -895,17 +905,17 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 52.19347667694092 seconds
+    Computation time: 52.37751483917236 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 501-503
+.. GENERATED FROM PYTHON SOURCE LINES 511-513
 
 Perform semblance-based diffraction stacking with sliding time window
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 503-524
+.. GENERATED FROM PYTHON SOURCE LINES 513-537
 
 .. code-block:: Python
 
@@ -915,15 +925,18 @@ Perform semblance-based diffraction stacking with sliding time window
     start_time = time()
     print("Semblance-based diffraction stacking...")
     dstacked_semb_swin_wn, hc_semb_swin_wn = L.apply(frwddata_wn, 
-                                            kind="diffstack", 
+                                            kind="diffstack",
+                                            x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
                                             stack_type="semblance", swsize=swsize)
     dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
-                                            kind="diffstack", 
+                                            kind="diffstack",
+                                            x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
                                             stack_type="semblance", swsize=swsize)
     dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
-                                            kind="diffstack", 
+                                            kind="diffstack",
+                                            x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
                                             stack_type="semblance", swsize=swsize)
     end_time = time()
@@ -940,18 +953,18 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 70.02050638198853 seconds
+    Computation time: 70.59344935417175 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 527-530
+.. GENERATED FROM PYTHON SOURCE LINES 540-543
 
 Visualisation of results
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Here we visualise the slices of the resulting image volume
 
-.. GENERATED FROM PYTHON SOURCE LINES 532-538
+.. GENERATED FROM PYTHON SOURCE LINES 545-551
 
 Plot resulting image volumes from absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -960,7 +973,7 @@ receiver geometry, whereas focusing is related to the selected imaging
 condition (absolute value).
 You can see how noise of different kind affects the result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 538-603
+.. GENERATED FROM PYTHON SOURCE LINES 551-616
 
 .. code-block:: Python
 
@@ -1093,13 +1106,13 @@ You can see how noise of different kind affects the result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 604-607
+.. GENERATED FROM PYTHON SOURCE LINES 617-620
 
 Plot resulting image volumes from squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 You can see that the focusing is better when using squared values
 
-.. GENERATED FROM PYTHON SOURCE LINES 607-661
+.. GENERATED FROM PYTHON SOURCE LINES 620-674
 
 .. code-block:: Python
 
@@ -1221,7 +1234,7 @@ You can see that the focusing is better when using squared values
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 662-670
+.. GENERATED FROM PYTHON SOURCE LINES 675-683
 
 Plot resulting image volume from semblance-based diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1232,7 +1245,7 @@ but slightly increases the location error.
 Semblance-based stacking is generally acting in the presence of noise better 
 than absolute-based stacking.
 
-.. GENERATED FROM PYTHON SOURCE LINES 670-734
+.. GENERATED FROM PYTHON SOURCE LINES 683-747
 
 .. code-block:: Python
 
@@ -1380,7 +1393,7 @@ than absolute-based stacking.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (4 minutes 27.753 seconds)
+   **Total running time of the script:** (4 minutes 29.229 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_DiffractionStacking_tutorial.py:

@@ -1,0 +1,12 @@
+﻿fracspy.location.imaging.xcorri
+===============================
+
+.. currentmodule:: fracspy.location.imaging
+
+.. autofunction:: xcorri
+
+.. include:: backreferences/fracspy.location.imaging.xcorri.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

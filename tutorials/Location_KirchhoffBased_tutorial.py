@@ -1,6 +1,6 @@
 r"""
-Kirchhoff-Based Localisation - Single component
-===============================================
+2.1 Kirchhoff-Based Localisation - Single component
+===================================================
 This tutorial illustrates how to perform source localisation using a Kirchhoff-based
 modelling operator.
 

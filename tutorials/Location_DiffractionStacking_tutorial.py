@@ -1,10 +1,9 @@
 r"""
+2.2 Diffraction Stacking: Localisation
+======================================
+This tutorial illustrates how to perform source localisation using diffraction stacking. 
 
-Diffraction Stacking Localisation - Simple scenario
-===================================================
-This tutorial illustrates how to perform source localisation using diffraction stacking based on semblance. 
-
-We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
+We consider here a simple scenario with a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
 We also consider only P-waves for simplicity here, and single-component receivers.
 
 Traveltimes
@@ -20,7 +19,7 @@ and :math:`v` is medium wave velocity (e.g. P-wave velocity :math:`v_p`).
 
 Waveforms
 ^^^^^^^^^
-The input data waveforms are computed with the help of PyLops operator which involves finite-difference (FD) modelling.
+The input data waveforms are computed with the help of PyLops Kirchhoff operator which uses Kirchhoff integral relation with high-frequency Green's functions.
 
 See more information here:
 https://pylops.readthedocs.io
@@ -29,7 +28,7 @@ Diffraction stacking
 ^^^^^^^^^^^^^^^^^^^^
 The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
 In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
-The term ‘diffraction stacking’ dates back to the works of Claerbout (1971, 1985) and Timoshin (1972). 
+The term 'diffraction stacking' dates back to the works of Claerbout (1971, 1985) and Timoshin (1972). 
 The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
 Here, the diffraction stacking is related to imaging of real excitation sources.
 
@@ -59,10 +58,9 @@ and origin time of an event (Anikiev et al. 2014).
 Another option would be to stack squared values:
         
 .. math::
-        E(\mathbf{r},t) = \left(\sum_{R=1}^{N_R} A_R 
-        \left(t + T_R(\mathbf{r})\right)\right)^2,
+        E(\mathbf{r},t) = \left(\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right)^2,
         
-This simple modification comes from idea of summation of signal energy rather than the amplitudes.
+This simple modification comes from an idea of summation of signal energy rather than the amplitudes (Landa et al. 2006).
 
 However, simple stacking of the absolute or squared values can be further improved, e.g., using a semblance-based approach. 
 The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
@@ -90,17 +88,69 @@ the semblance-based approach by introducing a sliding time window :math:`W` over
 where :math:`k` an index of the time-discretised signal within a sliding time interval 
 consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` (Trojanowski and Eisner, 2016).
 
-Finally, assuming that there is only one event in the given time window, 
-the actual 3D volume of the image function can obtained by computing a maximum of the 4D image function.
+Finally, location and origin times of events are determined as the values corresponding to the local maxima of the selected 4-D imaging function.
 
-All approaches listed above are implemented in :py:class:`fracspy.location.migration.diffstack`.
+Assuming that there is only one event in the given time window, its location can be estimated from a 3D volume of the spatial image function 
+obtained by searching for a maximum of :math:`F(\mathbf{r},t)` over the time for each spatial point :math:`\mathbf{r}`:
 
-Note that neither of the approaches described here take into account the potential polarity changes of the signal.
+.. math::
+        F_s(\mathbf{r}) = F(\mathbf{r},t_{max}(\mathbf{r})),
+
+where :math:`t_{max}`
+
+.. math::
+        t_{max}(\mathbf{r}) = \arg\!\max_{t} F(\mathbf{r},t)
+
+Alternatively, and average value over time can be computed at each spatial point :math:`\mathbf{r}`.
+
+The 4-D search is time consuming and if it is necessary to determine only the event location, 
+one can collapse the time dimension by summing the squared image function values over time, e.g.:
+
+.. math::
+        F_s(\mathbf{r}) = \sum_t F^2(\mathbf{r},t).
+
+This idea of summation of the squared image function values here also comes from the path-integral seismic imaging (Landa et al., 2006).
+
+In the end, all the three methods will leave only the spatial dependence, and the estimated event location (hypocenter) :math:`\mathbf{r}_{est}` will be
+associated with the maximum of function :math:`F_s(\mathbf{r})`:
+
+.. math::
+        \mathbf{r}_{est} = \arg\!\max_{\mathbf{r}} F_s(\mathbf{r})
+
+All the approaches listed above (the various imaging functions as well as the collapsing of the time dimension into a 3D volume) 
+are implemented in :py:class:`fracspy.location.migration.diffstack`, and imaging functions with time dimension methods can be used in any combination. 
+However, a combination of summation of the squared values over time with the semblance-based stacking will destroy the scaling of the semblance-based imaging function.
+To keep the scaling from 0 to 1 while keeping the ability to cover the whole time range, it is advised to use the average over time instead.
+
+Obviously, the absolute-value stacking combined with the summation of the squared values over time will give the same result (up to the scaling coefficient) 
+as the squared-valued stacking combined with the average over time.
+And if the squared-valued stacking is combined with the summation of the squared values over time it will give a power of 4, which will, of course, provide a more focussed images in a synthetic case, 
+but in case of real data application can be harmful.
+
+Note also that the approach with the maximum value over time is the most universal, because it can provide a reasonable image function for the strongest event even if several events are interfering in one dataset.
+In this tutorial we have only one microseismic event and we apply the average over time in all cases for comparability.
+In case of the absolute-value stacking we additionally apply the maximum over time for comparison.
+
+Note that neither of the imaging approaches described here take into account the potential polarity changes of the signal.
 Therefore, seismograms generated by shear source mechanisms (with positive and negative P-wave and S-wave polarizations) 
 cause these methods to fail to produce high stack values at the true origin time 
 and location because of the destructive interference of the signal (e.g. Anikiev et al., 2014, Trojanowski and Eisner, 2016).
 
-We discuss this issue and stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
+We discuss this issue and introduce diffraction stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
+
+The described location methodology allows determination of the source location from the data
+without picking of arrivals on individual traces. The origin time :math:`t_{est}` of the located event can be determined from :math:`t_{max}` 
+at the grid point associated with the estimated location :math:`\mathbf{r}_{est}` and the corresponding traveltime:
+
+.. math::
+        \mathbf{t}_{est} = t_{max}(\mathbf{r}_{est}) - T_R(\mathbf{r}_{est}).
+
+However, the approach implies that the time window of the processed data contains records 
+only for a single microseismic event, otherwise multiple event signatures will superimpose and location will become biased.
+
+We discuss joint detection and location of multiple events and introduce detection based on diffraction stacking 
+in :ref:`sphx_glr_tutorials_Detection_DiffractionStacking_tutorial.py`.
+
 
 References
 ^^^^^^^^^^
@@ -119,6 +169,9 @@ Geophysics, 36(3), 467-481. https://doi.org/10.1190/1.1440185
 
 Claerbout, J. (1985). Imaging the earth's interior. Oxford, England: Blackwell 
 Scientific Publications. https://sepwww.stanford.edu/sep/prof/iei2/
+
+Landa, E., Fomel, S., & Moser, T. (2006). Path‐integral seismic imaging. 
+Geophysical Prospecting, 54(5), 491–503. https://doi.org/10.1111/j.1365-2478.2006.00552.x
 
 Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
 FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
@@ -203,13 +256,13 @@ nr = recs.shape[1]
 print(f"Receiver array shape: {recs.shape}")
 
 ###############################################################################
-# Microseismic sources
-# """"""""""""""""""""
+# Microseismic source
+# """""""""""""""""""
 
 isx, isy, isz = [nx//4, ny//2, nz//2]
 microseismic = np.zeros((nx, ny, nz))
 microseismic[isx, isy, isz] = 1.
-sx, sy, sz = isx*dx, isx*dy, isz*dz 
+sx, sy, sz = isx*dx, isy*dy, isz*dz 
 
 #%%
 
@@ -398,7 +451,8 @@ dstacked_abs, hc_abs = L.apply(frwddata,
                       kind="diffstack",
                       x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
-                      stack_type="absolute")
+                      stack_type="absolute",
+                      output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -412,7 +466,8 @@ dstacked_sqd, hc_sqd = L.apply(frwddata,
                       kind="diffstack",
                       x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
-                      stack_type="squared")
+                      stack_type="squared",
+                      output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -427,7 +482,8 @@ dstacked_semb, hc_semb = L.apply(frwddata,
                       kind="diffstack",
                       x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
-                      stack_type="semblance")
+                      stack_type="semblance",
+                      output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -446,7 +502,8 @@ dstacked_semb_swin, hc_semb_swin = L.apply(frwddata,
                       kind="diffstack",
                       x=gx, y=gy, z=gz,
                       tt=tt, dt=dt, nforhc=10,
-                      stack_type="semblance", swsize=swsize)
+                      stack_type="semblance", swsize=swsize,
+                      output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -457,7 +514,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 # Apply diffraction stacking to noise-contaminated data
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Here we apply diffraction stacking algorithms to data contaminated 
-# with noise
+# with noise.
 
 ###############################################################################
 # Perform absolute-value diffraction stacking
@@ -469,17 +526,47 @@ dstacked_abs_wn, hc_abs_wn = L.apply(frwddata_wn,
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="absolute")
+                            stack_type="absolute",
+                            output_type="mean")
 dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="absolute")
+                            stack_type="absolute",
+                            output_type="mean")
 dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="absolute")
+                            stack_type="absolute",
+                            output_type="mean")
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+###############################################################################
+# Perform absolute-value diffraction stacking with maximum over time
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+start_time = time()
+print("Absolute-value diffraction stacking...")
+dstacked_abs_max_wn, hc_abs_max_wn = L.apply(frwddata_wn, 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
+                            tt=tt, dt=dt, nforhc=10,
+                            stack_type="absolute",
+                            output_type="max")
+dstacked_abs_max_sn, hc_abs_max_sn = L.apply(frwddata_sn, 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
+                            tt=tt, dt=dt, nforhc=10,
+                            stack_type="absolute",
+                            output_type="max")
+dstacked_abs_max_rn, hc_abs_max_rn = L.apply(frwddata_rn, 
+                            kind="diffstack",
+                            x=gx, y=gy, z=gz,
+                            tt=tt, dt=dt, nforhc=10,
+                            stack_type="absolute",
+                            output_type="max")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -493,17 +580,20 @@ dstacked_sqd_wn, hc_sqd_wn = L.apply(frwddata_wn,
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="squared")
+                            stack_type="squared",
+                            output_type="mean")
 dstacked_sqd_sn, hc_sqd_sn = L.apply(frwddata_sn, 
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="squared")
+                            stack_type="squared",
+                            output_type="mean")
 dstacked_sqd_rn, hc_sqd_rn = L.apply(frwddata_rn, 
                             kind="diffstack",
                             x=gx, y=gy, z=gz,
                             tt=tt, dt=dt, nforhc=10,
-                            stack_type="squared")
+                            stack_type="squared",
+                            output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -519,17 +609,20 @@ dstacked_semb_swin_wn, hc_semb_swin_wn = L.apply(frwddata_wn,
                                         kind="diffstack",
                                         x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
-                                        stack_type="semblance", swsize=swsize)
+                                        stack_type="semblance", swsize=swsize,
+                                        output_type="mean")
 dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
                                         kind="diffstack",
                                         x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
-                                        stack_type="semblance", swsize=swsize)
+                                        stack_type="semblance", swsize=swsize,
+                                        output_type="mean")
 dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
                                         kind="diffstack",
                                         x=gx, y=gy, z=gz,
                                         tt=tt, dt=dt, nforhc=10,
-                                        stack_type="semblance", swsize=swsize)
+                                        stack_type="semblance", swsize=swsize,
+                                        output_type="mean")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
 
@@ -548,6 +641,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 # receiver geometry, whereas focusing is related to the selected imaging 
 # condition (absolute value).
 # You can see how noise of different kind affects the result.
+# You can also see how changing the output can influence the result.
 
 # Get the spatial limits for plotting
 xlim = (min(gx),max(gx))
@@ -612,6 +706,42 @@ fig,axs = locimage3d(dstacked_abs_rn,
 print('-------------------------------------------------------')
 print('Event hypocenter from absolute-value diffraction stacking for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_abs_rn,[dx, dy, dz])))
 print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_rn, [dx, dy, dz])))
+
+# Results of application to data contaminated with white noise with max over time:
+fig,axs = locimage3d(dstacked_abs_max_wn, 
+                     cmap=cmap,                     
+                     x0=isx, y0=isy, z0=isz,
+                     secondcrossloc=hc_abs_max_wn,
+                     crosslegend=crosslegend,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
+fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn},\nwith maximum over time applied")
+print('-------------------------------------------------------')
+print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_abs_max_wn,[dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_wn, [dx, dy, dz])))
+
+# Results of application to data contaminated with spiky noise with max over time:
+fig,axs = locimage3d(dstacked_abs_max_sn, 
+                     cmap=cmap,                     
+                     x0=isx, y0=isy, z0=isz,
+                     secondcrossloc=hc_abs_max_sn,
+                     crosslegend=crosslegend,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
+fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn},\nwith maximum over time applied")
+print('-------------------------------------------------------')
+print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_sn,*np.multiply(hc_abs_max_sn,[dx, dy, dz])))
+print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_sn, [dx, dy, dz])))
+
+# Results of application to data contaminated with ringy noise with max over time:
+fig,axs = locimage3d(dstacked_abs_max_rn, 
+                     cmap=cmap,                     
+                     x0=isx, y0=isy, z0=isz,
+                     secondcrossloc=hc_abs_max_rn,
+                     crosslegend=crosslegend,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
+fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn},\nwith maximum over time applied")
+print('-------------------------------------------------------')
+print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_abs_max_rn,[dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_rn, [dx, dy, dz])))
 
 ###############################################################################
 # Plot resulting image volumes from squared-value diffraction stacking

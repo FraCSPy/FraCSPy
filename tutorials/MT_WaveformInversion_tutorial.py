@@ -1,6 +1,6 @@
 r"""
-Waveform-based Moment Tensor Inversion - Multicomponent
-=======================================================
+3.2 Waveform-based Moment Tensor Inversion - Multicomponent
+===========================================================
 This is a follow-up of the Amplitude-based Moment Tensor Inversion tutorial. In this tutorial, we will extend the
 MT inversion algorithm to work directly with waveforms instead of picked amplitudes. By avoiding any picking,
 this method can determine the moment tensor of a microseismic source when the source location is not known a-prior.

@@ -68,10 +68,12 @@ def diffstack(data: np.ndarray,
     nforhc : :obj:`int`, optional, default: 10
         Number of points for hypocenter
     output_type : :obj:`str`, optional, default: None
-        Output type to produce. Default None is the same as "max".
-        Types: "max" (output 3D volume as a maximum of the image function for all time moments), 
-               "mean" (output 3D volume as an average of the image function through time), 
-               "full" (output full 4D image function: x,y,z,t). in this case hc is set to None
+        Output type to produce. In the default case of None it is set to "max".
+        Types:
+            "max" (output 3D volume as a maximum of the image function through time),
+            "mean" (output 3D volume as an average of the image function through time),                
+            "sumsq" (output 3D volume as a stack of the squared image function values through time),
+            "full" (output full 4D image function: x,y,z,t). In this case hc is set to None.
     stack_type : :obj:`str`, optional, default: None
         Diffraction stacking type (imaging condition), default None is the same as "absolute" (absolute value).
         Types: "absolute" (absolute value), "squared" (squared value), "semblance" (semblance-based).
@@ -223,7 +225,7 @@ def diffstack(data: np.ndarray,
     # Check output type
     if output_type is None:
         output_type = "max"
-    if output_type not in ["max","mean","full"]:
+    if output_type not in ["max","mean","sumsq","full"]:
         raise ValueError(f"Output type is unknown: {output_type}")
 
     # Check stacking type
@@ -289,12 +291,14 @@ def diffstack(data: np.ndarray,
         if output_type == "max":
             ds_im[igrid] = np.max(ds)
         elif output_type == "mean":
-            ds_im[igrid] = np.mean(ds)            
+            ds_im[igrid] = np.mean(ds)
+        elif output_type == "sumsq":
+            ds_im[igrid] = np.sum(ds**2)
         else:
             ds_full[:,igrid] = ds
 
     # Construct output based on its type
-    if output_type in ["max","mean"]:
+    if output_type in ["max","mean","sumsq"]:
         ds_im_vol = ds_im.reshape(nx, ny, nz)            
         hc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
         # Return 3D array and location

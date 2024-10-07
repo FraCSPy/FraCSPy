@@ -1,6 +1,6 @@
 r"""
-Amplitude-based Moment Tensor Inversion
-=======================================
+3.1 Amplitude-based Moment Tensor Inversion
+===========================================
 This tutorial illustrates how we can determine the moment tensor of a microseismic source based
 on the amplitudes of the first P-wave arrival, assuming a known source location.
 

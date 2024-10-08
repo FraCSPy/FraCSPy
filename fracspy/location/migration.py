@@ -68,12 +68,12 @@ def diffstack(data: np.ndarray,
     nforhc : :obj:`int`, optional, default: 10
         Number of points for hypocenter
     output_type : :obj:`str`, optional, default: None
-        Output type to produce. In the default case of None it is set to "max".
+        Defines the output type. In the default case of None it is set to "max".
         Types:
-            "max" (output 3D volume as a maximum of the image function through time),
-            "mean" (output 3D volume as an average of the image function through time),                
-            "sumsq" (output 3D volume as a stack of the squared image function values through time),
-            "full" (output full 4D image function: x,y,z,t). In this case hc is set to None.
+        - "max" (output 3D volume as a maximum of the image function through time),
+        - "mean" (output 3D volume as an average of the image function through time),                
+        - "sumsq" (output 3D volume as a stack of the squared image function values through time),
+        - "full" (output full 4D image function: x,y,z,t). In this case hc is set to None.
     stack_type : :obj:`str`, optional, default: None
         Diffraction stacking type (imaging condition), default None is the same as "absolute" (absolute value).
         Types: "absolute" (absolute value), "squared" (squared value), "semblance" (semblance-based).
@@ -91,9 +91,9 @@ def diffstack(data: np.ndarray,
     ds_im_vol : :obj:`numpy.ndarray`
         Diffraction stack volume, returned if output_type is not "full"
     hc : :obj:`numpy.ndarray`
-        Estimated hypocentral location, returned if output_type is not "full"
+        Estimated hypocentral location, if output_type is not "full" is set to None
     ds_full : :obj:`numpy.ndarray`
-        Diffraction stack 4D array (x,y,z,t), returned if output_type is "full"
+        Diffraction stack full array of shape (nt, n_xyz), returned if output_type is "full"
 
     Raises
     ------
@@ -113,7 +113,7 @@ def diffstack(data: np.ndarray,
 
     The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
     In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
-    The term "diffraction stacking" dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [6]_. 
+    The term "diffraction stacking" dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [7]_. 
     The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
     Here, the diffraction stacking is related to imaging of real excitation sources.
 
@@ -155,7 +155,7 @@ def diffstack(data: np.ndarray,
         {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}
 
     where :math:`k` an index of the time-discretised signal within a sliding time interval 
-    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [7]_.
+    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [8]_.
 
     Depending on the desired output, the function can output either a 3D volume and a location, 
     or a full 4D array (time dimension + 3 spatial dimensions).
@@ -163,17 +163,47 @@ def diffstack(data: np.ndarray,
     By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:
 
     .. math::
-        I(\mathbf{r}) = \max_t F(\mathbf{r},t).
+        F_s(\mathbf{r}) = \max_t F(\mathbf{r},t).
     
     Optionally, one can output a 3D image volume obtained as a mean of the 4D image function over time, e.g.:
 
     .. math::
-        I(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).
+        F_s(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).
 
-    The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.
+    Another option is to output a 3D image volume obtained as a sum of squared values of the 4D image function over time, e.g.:
 
-    Polarity correction, if requested, is done using moment tensor inversion:
+    .. math::
+        F_s(\mathbf{r}) = \sum_t F^2(\mathbf{r},t).
 
+    The full 4D output is useful for subsequent detection of multiple events.
+
+    Polarity correction, if requested, is done using moment tensor inversion [2]_:
+
+    .. math::
+        F_{pc}(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} \phi_R(\mathbf{r}) A_R^{EMO+PC} \right|,
+
+    where 
+    
+    .. math::
+        A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right),
+
+    and :math:`\phi_R(\mathbf{r})` are the defined trough a :math:`\mathrm{sign}` function:
+
+    .. math::
+        \phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,
+
+    where :math:`\mathbf{M}(\mathbf{r})` is the vectorized moment tensor derived [6]_ as
+
+    .. math::
+        \mathbf{M}(\mathbf{r}) = \left(\sum_{R=1}^{N_R} \mathbf{G}_R^T(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\right)^{-1} \mathbf{d}(\mathbf{r}),
+
+    where :math:`\mathbf{G}_R^{\phantom{T}}(\mathbf{r})` is the vectorized derivative of Green's function for receiver :math:`R` 
+    and :math:`\mathbf{d}(\mathbf{r})` is a vector obtained from amplitudes of the corresponding waveforms:
+
+    .. math::
+        \mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).
+
+    More details on the described inversion including stability issues can be found in Zhebel & Eisner (2014) [9]_.
 
     References
     ----------
@@ -198,13 +228,18 @@ def diffstack(data: np.ndarray,
        FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
        https://doi.org/10.1190/1.1440186
 
-    .. [6] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic 
+    .. [6] Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of waveform data: synthetic waveforms. 
+        Physics of the Earth and Planetary Interiors, 30(2–3), 242–259. https://doi.org/10.1016/0031-9201(82)90111-x
+
+    .. [7] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic 
        recordings. Moscow: Nedra. [In Russian].
 
-    .. [7] Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
+    .. [8] Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
        and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
-       47–63. 
-       https://doi.org/10.1111/1365-2478.12366
+       47–63. https://doi.org/10.1111/1365-2478.12366
+
+    .. [9] Zhebel, O., & Eisner, L. (2014). Simultaneous microseismic event localization and source mechanism determination. 
+       Geophysics, 80(1), KS1–KS9. https://doi.org/10.1190/geo2014-0055.1
 
     """
     # Get sizes
@@ -294,15 +329,16 @@ def diffstack(data: np.ndarray,
             ds_im[igrid] = np.mean(ds)
         elif output_type == "sumsq":
             ds_im[igrid] = np.sum(ds**2)
-        else:
-            ds_full[:,igrid] = ds
+        elif output_type == "full":                        
+            ds_full[:, igrid] = ds            
 
     # Construct output based on its type
-    if output_type in ["max","mean","sumsq"]:
+    if output_type in ["full"]:
+        # Return full array and location as None
+        hc = None
+        return ds_full, hc
+    else:
         ds_im_vol = ds_im.reshape(nx, ny, nz)            
         hc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
         # Return 3D array and location
         return ds_im_vol, hc
-    else:
-        # Return reshaped 4D array
-        return ds_full.reshape(nt, nx, ny, nz)

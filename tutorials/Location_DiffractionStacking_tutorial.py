@@ -138,7 +138,7 @@ and location because of the destructive interference of the signal (e.g. Anikiev
 
 We discuss this issue and introduce diffraction stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
 
-The described location methodology allows determination of the source location from the data
+The described localisation methodology allows determination of the source location from the data
 without picking of arrivals on individual traces. The origin time :math:`t_{est}` of the located event can be determined from :math:`t_{max}` 
 at the grid point associated with the estimated location :math:`\mathbf{r}_{est}` and the corresponding traveltime:
 
@@ -146,9 +146,9 @@ at the grid point associated with the estimated location :math:`\mathbf{r}_{est}
         \mathbf{t}_{est} = t_{max}(\mathbf{r}_{est}) - T_R(\mathbf{r}_{est}).
 
 However, the approach implies that the time window of the processed data contains records 
-only for a single microseismic event, otherwise multiple event signatures will superimpose and location will become biased.
+only for a single microseismic event, otherwise multiple event signatures will superimpose and image function will become biased.
 
-We discuss joint detection and location of multiple events and introduce detection based on diffraction stacking 
+We discuss this issue as well as joint detection and localisation of multiple events using diffraction stacking 
 in :ref:`sphx_glr_tutorials_Detection_DiffractionStacking_tutorial.py`.
 
 
@@ -357,7 +357,6 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 fig, ax = traceimage(frwddata, climQ=99.99)
 ax.set_title('Noise-free modelled data')
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
@@ -367,7 +366,6 @@ fig.set_size_inches(10, 3)  # set size in inches
 
 fig, ax = traceimage(frwddata_wn, climQ=99.99)
 ax.set_title(f"Modelled data contaminated with white noise of SNR={snr_wn}")
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
@@ -377,7 +375,6 @@ fig.set_size_inches(10, 3)  # set size in inches
 
 fig, ax = traceimage(frwddata_sn, climQ=99.99)
 ax.set_title(f"Modelled data contaminated with spiky noise of SNR={snr_sn}")
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
@@ -387,7 +384,6 @@ fig.set_size_inches(10, 3)  # set size in inches
 
 fig, ax = traceimage(frwddata_rn, climQ=99.99)
 ax.set_title(f"Modelled data contaminated with ringy noise of SNR={snr_rn}")
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
@@ -774,7 +770,7 @@ fig,axs = locimage3d(dstacked_sqd_wn,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_sqd_wn,[dx, dy, dz])))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_wn, [dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_sqd_wn, [dx, dy, dz])))
 
 # Results of application to data contaminated with spiky noise:
 fig,axs = locimage3d(dstacked_sqd_sn, 
@@ -786,7 +782,7 @@ fig,axs = locimage3d(dstacked_sqd_sn,
                      xlim=xlim,ylim=ylim,zlim=zlim)
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_sn,*np.multiply(hc_sqd_sn,[dx, dy, dz])))
-print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_sn, [dx, dy, dz])))
+print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_sqd_sn, [dx, dy, dz])))
 
 # Results of application to data contaminated with ringy noise:
 fig,axs = locimage3d(dstacked_sqd_rn, 

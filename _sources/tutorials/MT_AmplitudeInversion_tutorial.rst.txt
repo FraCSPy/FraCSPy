@@ -18,8 +18,8 @@
 .. _sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py:
 
 
-Amplitude-based Moment Tensor Inversion
-=======================================
+3.1 Amplitude-based Moment Tensor Inversion
+===========================================
 This tutorial illustrates how we can determine the moment tensor of a microseismic source based
 on the amplitudes of the first P-wave arrival, assuming a known source location.
 
@@ -297,7 +297,7 @@ We finally solve our inverse problem to obtain an estimate of the moment tensor
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 26.257 seconds)
+   **Total running time of the script:** (0 minutes 24.695 seconds)
 
 
 .. _sphx_glr_download_tutorials_MT_AmplitudeInversion_tutorial.py:

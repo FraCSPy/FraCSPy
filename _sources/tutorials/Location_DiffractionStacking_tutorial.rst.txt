@@ -18,11 +18,11 @@
 .. _sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py:
 
 
-Diffraction Stacking Localisation - Simple scenario
-===================================================
-This tutorial illustrates how to perform source localisation using diffraction stacking based on semblance. 
+2.2 Diffraction Stacking: Localisation
+======================================
+This tutorial illustrates how to perform source localisation using diffraction stacking. 
 
-We consider here a simple scenario of a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
+We consider here a simple scenario with a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like).
 We also consider only P-waves for simplicity here, and single-component receivers.
 
 Traveltimes
@@ -38,7 +38,7 @@ and :math:`v` is medium wave velocity (e.g. P-wave velocity :math:`v_p`).
 
 Waveforms
 ^^^^^^^^^
-The input data waveforms are computed with the help of PyLops operator which involves finite-difference (FD) modelling.
+The input data waveforms are computed with the help of PyLops Kirchhoff operator which uses Kirchhoff integral relation with high-frequency Green's functions.
 
 See more information here:
 https://pylops.readthedocs.io
@@ -47,7 +47,7 @@ Diffraction stacking
 ^^^^^^^^^^^^^^^^^^^^
 The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
 In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
-The term ‘diffraction stacking’ dates back to the works of Claerbout (1971, 1985) and Timoshin (1972). 
+The term 'diffraction stacking' dates back to the works of Claerbout (1971, 1985) and Timoshin (1972). 
 The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
 Here, the diffraction stacking is related to imaging of real excitation sources.
 
@@ -77,10 +77,9 @@ and origin time of an event (Anikiev et al. 2014).
 Another option would be to stack squared values:
         
 .. math::
-        E(\mathbf{r},t) = \left(\sum_{R=1}^{N_R} A_R 
-        \left(t + T_R(\mathbf{r})\right)\right)^2,
+        E(\mathbf{r},t) = \left(\sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r})\right)^2,
         
-This simple modification comes from idea of summation of signal energy rather than the amplitudes.
+This simple modification comes from an idea of summation of signal energy rather than the amplitudes (Landa et al. 2006).
 
 However, simple stacking of the absolute or squared values can be further improved, e.g., using a semblance-based approach. 
 The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
@@ -108,17 +107,69 @@ the semblance-based approach by introducing a sliding time window :math:`W` over
 where :math:`k` an index of the time-discretised signal within a sliding time interval 
 consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` (Trojanowski and Eisner, 2016).
 
-Finally, assuming that there is only one event in the given time window, 
-the actual 3D volume of the image function can obtained by computing a maximum of the 4D image function.
+Finally, location and origin times of events are determined as the values corresponding to the local maxima of the selected 4-D imaging function.
 
-All approaches listed above are implemented in :py:class:`fracspy.location.migration.diffstack`.
+Assuming that there is only one event in the given time window, its location can be estimated from a 3D volume of the spatial image function 
+obtained by searching for a maximum of :math:`F(\mathbf{r},t)` over the time for each spatial point :math:`\mathbf{r}`:
 
-Note that neither of the approaches described here take into account the potential polarity changes of the signal.
+.. math::
+        F_s(\mathbf{r}) = F(\mathbf{r},t_{max}(\mathbf{r})),
+
+where :math:`t_{max}`
+
+.. math::
+        t_{max}(\mathbf{r}) = \arg\!\max_{t} F(\mathbf{r},t)
+
+Alternatively, and average value over time can be computed at each spatial point :math:`\mathbf{r}`.
+
+The 4-D search is time consuming and if it is necessary to determine only the event location, 
+one can collapse the time dimension by summing the squared image function values over time, e.g.:
+
+.. math::
+        F_s(\mathbf{r}) = \sum_t F^2(\mathbf{r},t).
+
+This idea of summation of the squared image function values here also comes from the path-integral seismic imaging (Landa et al., 2006).
+
+In the end, all the three methods will leave only the spatial dependence, and the estimated event location (hypocenter) :math:`\mathbf{r}_{est}` will be
+associated with the maximum of function :math:`F_s(\mathbf{r})`:
+
+.. math::
+        \mathbf{r}_{est} = \arg\!\max_{\mathbf{r}} F_s(\mathbf{r})
+
+All the approaches listed above (the various imaging functions as well as the collapsing of the time dimension into a 3D volume) 
+are implemented in :py:class:`fracspy.location.migration.diffstack`, and imaging functions with time dimension methods can be used in any combination. 
+However, a combination of summation of the squared values over time with the semblance-based stacking will destroy the scaling of the semblance-based imaging function.
+To keep the scaling from 0 to 1 while keeping the ability to cover the whole time range, it is advised to use the average over time instead.
+
+Obviously, the absolute-value stacking combined with the summation of the squared values over time will give the same result (up to the scaling coefficient) 
+as the squared-valued stacking combined with the average over time.
+And if the squared-valued stacking is combined with the summation of the squared values over time it will give a power of 4, which will, of course, provide a more focussed images in a synthetic case, 
+but in case of real data application can be harmful.
+
+Note also that the approach with the maximum value over time is the most universal, because it can provide a reasonable image function for the strongest event even if several events are interfering in one dataset.
+In this tutorial we have only one microseismic event and we apply the average over time in all cases for comparability.
+In case of the absolute-value stacking we additionally apply the maximum over time for comparison.
+
+Note that neither of the imaging approaches described here take into account the potential polarity changes of the signal.
 Therefore, seismograms generated by shear source mechanisms (with positive and negative P-wave and S-wave polarizations) 
 cause these methods to fail to produce high stack values at the true origin time 
 and location because of the destructive interference of the signal (e.g. Anikiev et al., 2014, Trojanowski and Eisner, 2016).
 
-We discuss this issue and stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
+We discuss this issue and introduce diffraction stacking with polarity correction in :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`.
+
+The described location methodology allows determination of the source location from the data
+without picking of arrivals on individual traces. The origin time :math:`t_{est}` of the located event can be determined from :math:`t_{max}` 
+at the grid point associated with the estimated location :math:`\mathbf{r}_{est}` and the corresponding traveltime:
+
+.. math::
+        \mathbf{t}_{est} = t_{max}(\mathbf{r}_{est}) - T_R(\mathbf{r}_{est}).
+
+However, the approach implies that the time window of the processed data contains records 
+only for a single microseismic event, otherwise multiple event signatures will superimpose and location will become biased.
+
+We discuss joint detection and location of multiple events and introduce detection based on diffraction stacking 
+in :ref:`sphx_glr_tutorials_Detection_DiffractionStacking_tutorial.py`.
+
 
 References
 ^^^^^^^^^^
@@ -138,6 +189,9 @@ Geophysics, 36(3), 467-481. https://doi.org/10.1190/1.1440185
 Claerbout, J. (1985). Imaging the earth's interior. Oxford, England: Blackwell 
 Scientific Publications. https://sepwww.stanford.edu/sep/prof/iei2/
 
+Landa, E., Fomel, S., & Moser, T. (2006). Path‐integral seismic imaging. 
+Geophysical Prospecting, 54(5), 491–503. https://doi.org/10.1111/j.1365-2478.2006.00552.x
+
 Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
 FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
 https://doi.org/10.1190/1.1440186
@@ -149,12 +203,12 @@ Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location
 and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
 47–63. https://doi.org/10.1111/1365-2478.12366
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-140
+.. GENERATED FROM PYTHON SOURCE LINES 191-193
 
 Load all necessary packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-167
+.. GENERATED FROM PYTHON SOURCE LINES 193-220
 
 .. code-block:: Python
 
@@ -192,19 +246,19 @@ Load all necessary packages
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-174
+.. GENERATED FROM PYTHON SOURCE LINES 223-227
 
 Setup
 ^^^^^
 Here we setup the parameters of the velocity model, geometry of receivers and 
 microseismic source for forward modelling
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-178
+.. GENERATED FROM PYTHON SOURCE LINES 229-231
 
 Velocity Model
 """"""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-188
+.. GENERATED FROM PYTHON SOURCE LINES 231-241
 
 .. code-block:: Python
 
@@ -231,12 +285,12 @@ Velocity Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-191
+.. GENERATED FROM PYTHON SOURCE LINES 242-244
 
 Receivers
 """""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 191-205
+.. GENERATED FROM PYTHON SOURCE LINES 244-258
 
 .. code-block:: Python
 
@@ -267,12 +321,12 @@ Receivers
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-208
+.. GENERATED FROM PYTHON SOURCE LINES 259-261
 
-Microseismic sources
-""""""""""""""""""""
+Microseismic source
+"""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-214
+.. GENERATED FROM PYTHON SOURCE LINES 261-267
 
 .. code-block:: Python
 
@@ -280,7 +334,7 @@ Microseismic sources
     isx, isy, isz = [nx//4, ny//2, nz//2]
     microseismic = np.zeros((nx, ny, nz))
     microseismic[isx, isy, isz] = 1.
-    sx, sy, sz = isx*dx, isx*dy, isz*dz 
+    sx, sy, sz = isx*dx, isy*dy, isz*dz 
 
 
 
@@ -289,13 +343,13 @@ Microseismic sources
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-220
+.. GENERATED FROM PYTHON SOURCE LINES 270-273
 
 Generate synthetic data
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-227
+.. GENERATED FROM PYTHON SOURCE LINES 273-280
 
 .. code-block:: Python
 
@@ -319,12 +373,12 @@ Generate synthetic data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-230
+.. GENERATED FROM PYTHON SOURCE LINES 281-283
 
 Create signal wavelet
 """""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 230-233
+.. GENERATED FROM PYTHON SOURCE LINES 283-286
 
 .. code-block:: Python
 
@@ -338,12 +392,12 @@ Create signal wavelet
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 234-236
+.. GENERATED FROM PYTHON SOURCE LINES 287-289
 
 Initialise operator
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-248
+.. GENERATED FROM PYTHON SOURCE LINES 289-301
 
 .. code-block:: Python
 
@@ -366,13 +420,13 @@ Initialise operator
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 249-252
+.. GENERATED FROM PYTHON SOURCE LINES 302-305
 
 Check operator with dottest
 """""""""""""""""""""""""""
 This test can help to detect errors in the operator implementation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 252-255
+.. GENERATED FROM PYTHON SOURCE LINES 305-308
 
 .. code-block:: Python
 
@@ -387,18 +441,18 @@ This test can help to detect errors in the operator implementation.
 
  .. code-block:: none
 
-    Dot test passed, v^H(Opu)=12354.859719384538 - u^H(Op^Hv)=12354.85971938456
+    Dot test passed, v^H(Opu)=-2962.495358257179 - u^H(Op^Hv)=-2962.495358257182
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 256-259
+.. GENERATED FROM PYTHON SOURCE LINES 309-312
 
 Forward modelling
 """""""""""""""""
 Apply operator to model data
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-296
+.. GENERATED FROM PYTHON SOURCE LINES 312-349
 
 .. code-block:: Python
 
@@ -447,17 +501,17 @@ Apply operator to model data
 
  .. code-block:: none
 
-    Computation time: 9.809874057769775 seconds
+    Computation time: 9.814730167388916 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 299-301
+.. GENERATED FROM PYTHON SOURCE LINES 352-354
 
 Plot input data
 ^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 301-311
+.. GENERATED FROM PYTHON SOURCE LINES 354-364
 
 .. code-block:: Python
 
@@ -483,12 +537,12 @@ Plot input data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 312-314
+.. GENERATED FROM PYTHON SOURCE LINES 365-367
 
 Plot modelled data contaminated with white noise
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 314-321
+.. GENERATED FROM PYTHON SOURCE LINES 367-374
 
 .. code-block:: Python
 
@@ -511,12 +565,12 @@ Plot modelled data contaminated with white noise
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 322-324
+.. GENERATED FROM PYTHON SOURCE LINES 375-377
 
 Plot modelled data contaminated with spiky noise
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-331
+.. GENERATED FROM PYTHON SOURCE LINES 377-384
 
 .. code-block:: Python
 
@@ -539,12 +593,12 @@ Plot modelled data contaminated with spiky noise
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 332-334
+.. GENERATED FROM PYTHON SOURCE LINES 385-387
 
 Plot modelled data contaminated with ringy noise
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 334-341
+.. GENERATED FROM PYTHON SOURCE LINES 387-394
 
 .. code-block:: Python
 
@@ -567,12 +621,12 @@ Plot modelled data contaminated with ringy noise
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 342-344
+.. GENERATED FROM PYTHON SOURCE LINES 395-397
 
 Plot receiver geometry
 """"""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 344-355
+.. GENERATED FROM PYTHON SOURCE LINES 397-408
 
 .. code-block:: Python
 
@@ -605,18 +659,18 @@ Plot receiver geometry
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 358-360
+.. GENERATED FROM PYTHON SOURCE LINES 411-413
 
 Prepare for location
 ^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 362-365
+.. GENERATED FROM PYTHON SOURCE LINES 415-418
 
 Define location class using grid vectors
 """"""""""""""""""""""""""""""""""""""""
 Use the original velocity model grid for location (the grid can be different)
 
-.. GENERATED FROM PYTHON SOURCE LINES 365-374
+.. GENERATED FROM PYTHON SOURCE LINES 418-427
 
 .. code-block:: Python
 
@@ -636,12 +690,12 @@ Use the original velocity model grid for location (the grid can be different)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 375-377
+.. GENERATED FROM PYTHON SOURCE LINES 428-430
 
 Prepare traveltimes
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 377-382
+.. GENERATED FROM PYTHON SOURCE LINES 430-435
 
 .. code-block:: Python
 
@@ -663,7 +717,7 @@ Prepare traveltimes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 385-390
+.. GENERATED FROM PYTHON SOURCE LINES 438-443
 
 Apply diffraction stacking to clean data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -671,12 +725,12 @@ Here we apply various diffraction stacking algorithms to clean noise-free
 data, get the image volume and determine location from the maximum of this 
 volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 392-394
+.. GENERATED FROM PYTHON SOURCE LINES 445-447
 
 Perform absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 394-405
+.. GENERATED FROM PYTHON SOURCE LINES 447-459
 
 .. code-block:: Python
 
@@ -687,7 +741,8 @@ Perform absolute-value diffraction stacking
                           kind="diffstack",
                           x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
-                          stack_type="absolute")
+                          stack_type="absolute",
+                          output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -700,17 +755,17 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 17.475756883621216 seconds
+    Computation time: 17.92054510116577 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 406-408
+.. GENERATED FROM PYTHON SOURCE LINES 460-462
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 408-419
+.. GENERATED FROM PYTHON SOURCE LINES 462-474
 
 .. code-block:: Python
 
@@ -721,7 +776,8 @@ Perform squared-value diffraction stacking
                           kind="diffstack",
                           x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
-                          stack_type="squared")
+                          stack_type="squared",
+                          output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -734,17 +790,17 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 17.514066696166992 seconds
+    Computation time: 17.97635841369629 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 420-422
+.. GENERATED FROM PYTHON SOURCE LINES 475-477
 
 Perform semblance-based diffraction stacking without sliding time window
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 422-434
+.. GENERATED FROM PYTHON SOURCE LINES 477-490
 
 .. code-block:: Python
 
@@ -756,7 +812,8 @@ Perform semblance-based diffraction stacking without sliding time window
                           kind="diffstack",
                           x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
-                          stack_type="semblance")
+                          stack_type="semblance",
+                          output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -769,17 +826,17 @@ Perform semblance-based diffraction stacking without sliding time window
  .. code-block:: none
 
     Semblance-based diffraction stacking...
-    Computation time: 20.05271601676941 seconds
+    Computation time: 20.44386625289917 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 435-437
+.. GENERATED FROM PYTHON SOURCE LINES 491-493
 
 Perform semblance-based diffraction stacking with sliding time window
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 437-454
+.. GENERATED FROM PYTHON SOURCE LINES 493-511
 
 .. code-block:: Python
 
@@ -795,7 +852,8 @@ Perform semblance-based diffraction stacking with sliding time window
                           kind="diffstack",
                           x=gx, y=gy, z=gz,
                           tt=tt, dt=dt, nforhc=10,
-                          stack_type="semblance", swsize=swsize)
+                          stack_type="semblance", swsize=swsize,
+                          output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -810,24 +868,24 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 23.57133913040161 seconds
+    Computation time: 24.168867588043213 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 457-461
+.. GENERATED FROM PYTHON SOURCE LINES 514-518
 
 Apply diffraction stacking to noise-contaminated data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply diffraction stacking algorithms to data contaminated 
-with noise
+with noise.
 
-.. GENERATED FROM PYTHON SOURCE LINES 463-465
+.. GENERATED FROM PYTHON SOURCE LINES 520-522
 
 Perform absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 465-486
+.. GENERATED FROM PYTHON SOURCE LINES 522-546
 
 .. code-block:: Python
 
@@ -838,17 +896,20 @@ Perform absolute-value diffraction stacking
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="absolute")
+                                stack_type="absolute",
+                                output_type="mean")
     dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="absolute")
+                                stack_type="absolute",
+                                output_type="mean")
     dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="absolute")
+                                stack_type="absolute",
+                                output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -861,17 +922,64 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 52.448566198349 seconds
+    Computation time: 53.63671875 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 487-489
+.. GENERATED FROM PYTHON SOURCE LINES 547-549
+
+Perform absolute-value diffraction stacking with maximum over time
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. GENERATED FROM PYTHON SOURCE LINES 549-573
+
+.. code-block:: Python
+
+
+    start_time = time()
+    print("Absolute-value diffraction stacking...")
+    dstacked_abs_max_wn, hc_abs_max_wn = L.apply(frwddata_wn, 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
+                                tt=tt, dt=dt, nforhc=10,
+                                stack_type="absolute",
+                                output_type="max")
+    dstacked_abs_max_sn, hc_abs_max_sn = L.apply(frwddata_sn, 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
+                                tt=tt, dt=dt, nforhc=10,
+                                stack_type="absolute",
+                                output_type="max")
+    dstacked_abs_max_rn, hc_abs_max_rn = L.apply(frwddata_rn, 
+                                kind="diffstack",
+                                x=gx, y=gy, z=gz,
+                                tt=tt, dt=dt, nforhc=10,
+                                stack_type="absolute",
+                                output_type="max")
+    end_time = time()
+    print(f"Computation time: {end_time - start_time} seconds")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Absolute-value diffraction stacking...
+    Computation time: 52.00430226325989 seconds
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 574-576
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 489-510
+.. GENERATED FROM PYTHON SOURCE LINES 576-600
 
 .. code-block:: Python
 
@@ -882,17 +990,20 @@ Perform squared-value diffraction stacking
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="squared")
+                                stack_type="squared",
+                                output_type="mean")
     dstacked_sqd_sn, hc_sqd_sn = L.apply(frwddata_sn, 
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="squared")
+                                stack_type="squared",
+                                output_type="mean")
     dstacked_sqd_rn, hc_sqd_rn = L.apply(frwddata_rn, 
                                 kind="diffstack",
                                 x=gx, y=gy, z=gz,
                                 tt=tt, dt=dt, nforhc=10,
-                                stack_type="squared")
+                                stack_type="squared",
+                                output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -905,17 +1016,17 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 52.37751483917236 seconds
+    Computation time: 53.68271040916443 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 511-513
+.. GENERATED FROM PYTHON SOURCE LINES 601-603
 
 Perform semblance-based diffraction stacking with sliding time window
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 513-537
+.. GENERATED FROM PYTHON SOURCE LINES 603-630
 
 .. code-block:: Python
 
@@ -928,17 +1039,20 @@ Perform semblance-based diffraction stacking with sliding time window
                                             kind="diffstack",
                                             x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
-                                            stack_type="semblance", swsize=swsize)
+                                            stack_type="semblance", swsize=swsize,
+                                            output_type="mean")
     dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
                                             kind="diffstack",
                                             x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
-                                            stack_type="semblance", swsize=swsize)
+                                            stack_type="semblance", swsize=swsize,
+                                            output_type="mean")
     dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
                                             kind="diffstack",
                                             x=gx, y=gy, z=gz,
                                             tt=tt, dt=dt, nforhc=10,
-                                            stack_type="semblance", swsize=swsize)
+                                            stack_type="semblance", swsize=swsize,
+                                            output_type="mean")
     end_time = time()
     print(f"Computation time: {end_time - start_time} seconds")
 
@@ -953,18 +1067,18 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 70.59344935417175 seconds
+    Computation time: 72.43840980529785 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 540-543
+.. GENERATED FROM PYTHON SOURCE LINES 633-636
 
 Visualisation of results
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Here we visualise the slices of the resulting image volume
 
-.. GENERATED FROM PYTHON SOURCE LINES 545-551
+.. GENERATED FROM PYTHON SOURCE LINES 638-645
 
 Plot resulting image volumes from absolute-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -972,8 +1086,9 @@ The form and inclination of the location spot reflect the
 receiver geometry, whereas focusing is related to the selected imaging 
 condition (absolute value).
 You can see how noise of different kind affects the result.
+You can also see how changing the output can influence the result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 551-616
+.. GENERATED FROM PYTHON SOURCE LINES 645-746
 
 .. code-block:: Python
 
@@ -1042,6 +1157,42 @@ You can see how noise of different kind affects the result.
     print('Event hypocenter from absolute-value diffraction stacking for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_abs_rn,[dx, dy, dz])))
     print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_rn, [dx, dy, dz])))
 
+    # Results of application to data contaminated with white noise with max over time:
+    fig,axs = locimage3d(dstacked_abs_max_wn, 
+                         cmap=cmap,                     
+                         x0=isx, y0=isy, z0=isz,
+                         secondcrossloc=hc_abs_max_wn,
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn},\nwith maximum over time applied")
+    print('-------------------------------------------------------')
+    print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_abs_max_wn,[dx, dy, dz])))
+    print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_wn, [dx, dy, dz])))
+
+    # Results of application to data contaminated with spiky noise with max over time:
+    fig,axs = locimage3d(dstacked_abs_max_sn, 
+                         cmap=cmap,                     
+                         x0=isx, y0=isy, z0=isz,
+                         secondcrossloc=hc_abs_max_sn,
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn},\nwith maximum over time applied")
+    print('-------------------------------------------------------')
+    print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_sn,*np.multiply(hc_abs_max_sn,[dx, dy, dz])))
+    print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_sn, [dx, dy, dz])))
+
+    # Results of application to data contaminated with ringy noise with max over time:
+    fig,axs = locimage3d(dstacked_abs_max_rn, 
+                         cmap=cmap,                     
+                         x0=isx, y0=isy, z0=isz,
+                         secondcrossloc=hc_abs_max_rn,
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location with absolute-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn},\nwith maximum over time applied")
+    print('-------------------------------------------------------')
+    print('Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_abs_max_rn,[dx, dy, dz])))
+    print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_max_rn, [dx, dy, dz])))
+
 
 
 
@@ -1076,29 +1227,64 @@ You can see how noise of different kind affects the result.
          :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_009.png
          :class: sphx-glr-multi-img
 
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_010.png
+         :alt: Location with absolute-value diffraction stacking: data contaminated with white noise of SNR=1, with maximum over time applied
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_010.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_011.png
+         :alt: Location with absolute-value diffraction stacking: data contaminated with spiky noise of SNR=0.1, with maximum over time applied
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_011.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_012.png
+         :alt: Location with absolute-value diffraction stacking: data contaminated with ringy noise of SNR=0.2, with maximum over time applied
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_012.png
+         :class: sphx-glr-multi-img
+
 
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
     True event hypocenter:
-    [48.00 m, 48.00 m, 100.00 m]
+    [48.00 m, 100.00 m, 100.00 m]
     -------------------------------------------------------
     Event hypocenter from absolute-value diffraction stacking for clean data:
-    [46.80 m, 100.40 m, 100.00 m]
+    [47.60 m, 100.00 m, 100.80 m]
     Location error:
-    [1.20 m, -0.40 m, 0.00 m]
+    [0.40 m, 0.00 m, -0.80 m]
     -------------------------------------------------------
     Event hypocenter from absolute-value diffraction stacking for data contaminated with white noise of SNR=1.0:
+    [47.60 m, 100.00 m, 97.20 m]
+    Location error:
+    [0.40 m, 0.00 m, 2.80 m]
+    -------------------------------------------------------
+    Event hypocenter from absolute-value diffraction stacking for data contaminated with spiky noise of SNR=0.1:
+    [49.60 m, 98.40 m, 100.80 m]
+    Location error: [-1.60 m, 1.60 m, -0.80 m]
+    -------------------------------------------------------
+    Event hypocenter from absolute-value diffraction stacking for data contaminated with ringy noise of SNR=0.2:
+    [27.20 m, 94.80 m, 154.00 m]
+    Location error:
+    [20.80 m, 5.20 m, -54.00 m]
+    -------------------------------------------------------
+    Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with white noise of SNR=1.0:
     [46.00 m, 101.20 m, 96.80 m]
     Location error:
     [2.00 m, -1.20 m, 3.20 m]
     -------------------------------------------------------
-    Event hypocenter from absolute-value diffraction stacking for data contaminated with spiky noise of SNR=0.1:
+    Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with spiky noise of SNR=0.1:
     [44.00 m, 99.20 m, 107.20 m]
     Location error: [4.00 m, 0.80 m, -7.20 m]
     -------------------------------------------------------
-    Event hypocenter from absolute-value diffraction stacking for data contaminated with ringy noise of SNR=0.2:
+    Event hypocenter from absolute-value diffraction stacking with maximum over time applied for data contaminated with ringy noise of SNR=0.2:
     [46.00 m, 100.00 m, 105.20 m]
     Location error:
     [2.00 m, 0.00 m, -5.20 m]
@@ -1106,13 +1292,13 @@ You can see how noise of different kind affects the result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 617-620
+.. GENERATED FROM PYTHON SOURCE LINES 747-750
 
 Plot resulting image volumes from squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 You can see that the focusing is better when using squared values
 
-.. GENERATED FROM PYTHON SOURCE LINES 620-674
+.. GENERATED FROM PYTHON SOURCE LINES 750-804
 
 .. code-block:: Python
 
@@ -1178,30 +1364,30 @@ You can see that the focusing is better when using squared values
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_010.png
-         :alt: Location with squared-value diffraction stacking: clean data
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_010.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_011.png
-         :alt: Location with squared-value diffraction stacking: data contaminated with white noise of SNR=1
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_011.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_012.png
-         :alt: Location with squared-value diffraction stacking: data contaminated with spiky noise of SNR=0.1
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_012.png
-         :class: sphx-glr-multi-img
-
-    *
-
       .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_013.png
-         :alt: Location with squared-value diffraction stacking: data contaminated with ringy noise of SNR=0.2
+         :alt: Location with squared-value diffraction stacking: clean data
          :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_013.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_014.png
+         :alt: Location with squared-value diffraction stacking: data contaminated with white noise of SNR=1
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_014.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_015.png
+         :alt: Location with squared-value diffraction stacking: data contaminated with spiky noise of SNR=0.1
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_015.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_016.png
+         :alt: Location with squared-value diffraction stacking: data contaminated with ringy noise of SNR=0.2
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_016.png
          :class: sphx-glr-multi-img
 
 
@@ -1210,31 +1396,31 @@ You can see that the focusing is better when using squared values
  .. code-block:: none
 
     True event hypocenter:
-    [48.00 m, 48.00 m, 100.00 m]
+    [48.00 m, 100.00 m, 100.00 m]
     -------------------------------------------------------
     Event hypocenter from squared-value diffraction stacking for clean data:
-    [46.80 m, 100.40 m, 100.00 m]
+    [48.00 m, 100.00 m, 98.00 m]
     Location error:
-    [1.20 m, -0.40 m, 0.00 m]
+    [0.00 m, 0.00 m, 2.00 m]
     -------------------------------------------------------
     Event hypocenter from squared-value diffraction stacking for data contaminated with white noise of SNR=1.0:
-    [46.00 m, 101.20 m, 96.80 m]
+    [48.40 m, 99.20 m, 94.40 m]
     Location error:
-    [2.00 m, -1.20 m, 3.20 m]
+    [0.40 m, 0.00 m, 2.80 m]
     -------------------------------------------------------
     Event hypocenter from squared-value diffraction stacking for data contaminated with spiky noise of SNR=0.1:
-    [44.00 m, 99.20 m, 107.20 m]
-    Location error: [4.00 m, 0.80 m, -7.20 m]
+    [47.20 m, 100.00 m, 101.60 m]
+    Location error: [-1.60 m, 1.60 m, -0.80 m]
     -------------------------------------------------------
     Event hypocenter from squared-value diffraction stacking for data contaminated with ringy noise of SNR=0.2:
-    [46.00 m, 100.00 m, 105.20 m]
+    [48.80 m, 100.40 m, 104.80 m]
     Location error:
-    [2.00 m, 0.00 m, -5.20 m]
+    [-0.80 m, -0.40 m, -4.80 m]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 675-683
+.. GENERATED FROM PYTHON SOURCE LINES 805-813
 
 Plot resulting image volume from semblance-based diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1245,7 +1431,7 @@ but slightly increases the location error.
 Semblance-based stacking is generally acting in the presence of noise better 
 than absolute-based stacking.
 
-.. GENERATED FROM PYTHON SOURCE LINES 683-747
+.. GENERATED FROM PYTHON SOURCE LINES 813-877
 
 .. code-block:: Python
 
@@ -1321,37 +1507,37 @@ than absolute-based stacking.
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_014.png
-         :alt: Location with semblance-based diffraction stacking: clean data
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_014.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_015.png
-         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, clean data
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_015.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_016.png
-         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with white noise of SNR=1
-         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_016.png
-         :class: sphx-glr-multi-img
-
-    *
-
       .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_017.png
-         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with spiky noise of SNR=0.1
+         :alt: Location with semblance-based diffraction stacking: clean data
          :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_017.png
          :class: sphx-glr-multi-img
 
     *
 
       .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_018.png
-         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with ringy noise of SNR=0.2
+         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, clean data
          :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_018.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_019.png
+         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with white noise of SNR=1
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_019.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_020.png
+         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with spiky noise of SNR=0.1
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_020.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_021.png
+         :alt: Location with semblance-based diffraction stacking: sliding window of 25 samples, data contaminated with ringy noise of SNR=0.2
+         :srcset: /tutorials/images/sphx_glr_Location_DiffractionStacking_tutorial_021.png
          :class: sphx-glr-multi-img
 
 
@@ -1360,32 +1546,32 @@ than absolute-based stacking.
  .. code-block:: none
 
     True event hypocenter:
-    [48.00 m, 48.00 m, 100.00 m]
+    [48.00 m, 100.00 m, 100.00 m]
     -------------------------------------------------------
     Event hypocenter from semblance-based diffraction stacking for clean data:
-    [48.00 m, 100.40 m, 98.80 m]
+    [48.80 m, 100.00 m, 96.80 m]
     Location error:
-    [0.00 m, -0.40 m, 1.20 m]
+    [-0.80 m, 0.00 m, 3.20 m]
     -------------------------------------------------------
     Event hypocenter from semblance-based diffraction stacking with sliding window of 25 samples for clean data:
+    [50.00 m, 100.00 m, 96.00 m]
+    Location error:
+    [-2.00 m, 0.00 m, 4.00 m]
+    -------------------------------------------------------
+    Event hypocenter from semblance-based diffraction stacking with sliding window of 25 samples for data contaminated with white noise of SNR=1.0:
     [48.80 m, 100.00 m, 96.00 m]
     Location error:
     [-0.80 m, 0.00 m, 4.00 m]
     -------------------------------------------------------
-    Event hypocenter from semblance-based diffraction stacking with sliding window of 25 samples for data contaminated with white noise of SNR=1.0:
-    [48.40 m, 99.20 m, 93.20 m]
-    Location error:
-    [-0.40 m, 0.80 m, 6.80 m]
-    -------------------------------------------------------
     Event hypocenter from semblance-based diffraction stacking with sliding window of 25 samples for data contaminated with spiky noise of SNR=0.1:
-    [49.20 m, 100.40 m, 95.20 m]
+    [47.60 m, 99.60 m, 102.00 m]
     Location error:
-    [-1.20 m, -0.40 m, 4.80 m]
+    [0.40 m, 0.40 m, -2.00 m]
     -------------------------------------------------------
     Event hypocenter from semblance-based diffraction stacking with sliding window of 25 samples for data contaminated with ringy noise of SNR=0.2:
-    [49.20 m, 100.40 m, 105.20 m]
+    [49.20 m, 100.40 m, 104.00 m]
     Location error:
-    [-1.20 m, -0.40 m, -5.20 m]
+    [-1.20 m, -0.40 m, -4.00 m]
 
 
 
@@ -1393,7 +1579,7 @@ than absolute-based stacking.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (4 minutes 29.229 seconds)
+   **Total running time of the script:** (5 minutes 28.454 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_DiffractionStacking_tutorial.py:

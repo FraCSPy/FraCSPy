@@ -18,13 +18,12 @@
 .. _sphx_glr_tutorials_Location_DSMTI_tutorial.py:
 
 
-Diffraction Stacking Localisation With Moment Tensor Inversion
-==============================================================
+2.3 Diffraction Stacking: Localisation With Polarity Correction
+===============================================================
 This tutorial illustrates how to perform source localisation using 
-diffraction stacking with moment tensor inversion. 
+diffraction stacking with polarity correction by moment tensor inversion. 
 
-We consider here a homogeneous subsurface model and 
-a point Double-Couple (DC) microseismic source.
+We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source.
 We also consider only P-waves for simplicity here.
 
 Traveltimes
@@ -40,11 +39,10 @@ at :math:`\mathbf{x_s}` and a receiver at :math:`\mathbf{x_r}`, and
 
 Waveforms
 ^^^^^^^^^
-The input data waveforms are computed with the help of PyLops operator which
-involves finite-difference (FD) modelling.
+The input data waveforms were precomputed with the help of the finite-difference (FD) modelling using SOFI3D (Bohlen, 2002).
 
 See more:
-https://pylops.readthedocs.io
+https://docs.csc.fi/apps/sofi3d/
 
 Diffraction stacking with moment tensor inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,8 +50,64 @@ Diffraction stacking with moment tensor inversion
 Basics of the simple diffraction stacking are explained in
 :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
 
+Microseismic events usually have non-explosive radiation pattern, which means that the
+polarities of the P- or S-wave amplitudes can be both positive and negative. 
+For example, in case of a simple diffraction stacking of waveforms recorded from a pure double-couple 
+strike-slip source with receivers symmetrically distributed around the event's epicenter, 
+the stack value at the true source position will be equal to zero (Zhebel, 2014; Anikiev, 2015).
+To resolve this problem, one can account for polarities of a signal while applying
+the stacking procedure. 
+
+The polarities of a potential microseismic event can be estimated by computing 
+the seismic moment tensor (SMT) at every image point and every potential origin time 
+using the least squares inversion of the amplitudes corresponding to the traveltime moveout.
+Sipkin (1982) showed that the moment tensor can be efficiently computed by
+
+.. math::
+        \mathbf{M}(\mathbf{r}) = \left(\sum_{R=1}^{N_R} \mathbf{G}_R^T(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\right)^{-1} \mathbf{d}(\mathbf{r}),
+
+where :math:`\mathbf{M}(\mathbf{r})` is the vectorized moment tensor, :math:`\mathbf{G}_R^{\phantom{T}}(\mathbf{r})` is the vectorized
+derivative of Green's function for receiver :math:`R` and :math:`\mathbf{d}(\mathbf{r})` is a vector obtained from amplitudes of the corresponding waveforms:
+
+.. math::
+        \mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).
+
+More details on the described inversion including stability issues can be found in Zhebel & Eisner (2012).
+        
+The SMT inversion step is done for each potential origin time :math:`t` and each image point :math:`r` 
+as we know neither the location nor the origin time of a microseismic event. 
+The moment tensor is then used to correct polarities of the stacked traces:
+
+.. math::
+        F_{pc}(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} \phi_R(\mathbf{r}) A_R 
+        \left(t + T_R(\mathbf{r})\right)\right|,
+
+where :math:`F_{pc}(\mathbf{r},t)` is a 4-D image function taking into account polarity correction and :math:`\phi_R(\mathbf{r})` are the
+weights
+
+.. math::
+        \phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,
+
+that selectively reverse the signs of the amplitudes :math:`A_R` and allow constructive interference of
+signal amplitudes (Anikiev et al., 2014).
+
+Generally, computation of the SMT requires appropriate approximation of Green’s function (see, e.g., Aki & Richards, 2002; Červený, 2001) according to medium complexity and acquisition configuration.
+However, due to the fact that we are interested only in the sign of the Green’s function derivatives :math:`G_R(\mathbf{r})`, this computation can be significantly simplified.
+
+Assuming the polarity correction is implemented to the data with moveout correction, we can introduce :math:`A_R^{EMO+PC}` as 
+
+.. math::
+        A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right).
+
+Hence, all imaging functions described in :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
+
+Localisation using diffraction stacking with polarity correction by SMT inversion described above is implemented in :py:class:`fracspy.location.migration.diffstack`.
+The polarity correction can also be applied to EMO-corrected data independently using :py:class:`fracspy.location.utils.polarity_correction`, provided the expected event location.
+
 References
 ^^^^^^^^^^
+Aki, K., & Richards, P. (2002). Quantitative seismology (2nd ed.). Sausalito, Calif.: University Science Books.
+
 Anikiev, D. (2015). Joint detection, location and source mechanism 
 determination of microseismic events (Doctoral dissertation). 
 St. Petersburg State University. St. Petersburg. 
@@ -64,20 +118,28 @@ source mechanism inversion of microseismic events: Benchmarking on seismicity
 induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
 249–258. https://doi.org/10.1093/gji/ggu126
 
-Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
-FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
-https://doi.org/10.1190/1.1440186
+Bohlen, T. (2002). Parallel 3-D viscoelastic finite difference seismic modelling. 
+Computers & Geosciences, 28(8), 887–899. https://doi.org/10.1016/s0098-3004(02)00006-7
 
-Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
-and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
-47–63. https://doi.org/10.1111/1365-2478.12366
+Červený, V. (2001). Seismic ray theory. Cambridge, U.K.: Cambridge University Press.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-63
+Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of
+waveform data: synthetic waveforms. Physics of the Earth and Planetary Interiors, 30(2),
+242-259.
+
+Zhebel, O. (2014). Imaging of seismic events: The role of imaging conditions, acquisition
+geometry and source mechanisms (Doctoral dissertation, Hamburg University).
+
+Zhebel, O., & Eisner, L. (2012). Simultaneous microseismic event localization and source
+mechanism determination: 82nd Annual International Meeting, SEG Technical Program
+Expanded Abstracts, 341, 1–5.
+
+.. GENERATED FROM PYTHON SOURCE LINES 123-125
 
 Load all necessary packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-94
+.. GENERATED FROM PYTHON SOURCE LINES 125-156
 
 .. code-block:: Python
 
@@ -119,16 +181,16 @@ Load all necessary packages
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-101
+.. GENERATED FROM PYTHON SOURCE LINES 159-165
 
-##############################################################################
- Load model and seismic data
- ---------------------------
- For this example, we will use a toy example of a small homogenous model with a gridded surface receiver
- array, same as in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
+Load model and seismic data
+---------------------------
+For this example, we will use a toy example of a small homogenous model with 
+a gridded surface receiver # array, same as 
+in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
 The data are modelled using the SOFI3D Finite Difference package.
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-154
+.. GENERATED FROM PYTHON SOURCE LINES 165-218
 
 .. code-block:: Python
 
@@ -192,7 +254,7 @@ The data are modelled using the SOFI3D Finite Difference package.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-160
+.. GENERATED FROM PYTHON SOURCE LINES 219-224
 
 Plot input data
 ^^^^^^^^^^^^^^^
@@ -200,7 +262,7 @@ Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the  traces; this is the information that we utilise
 to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-166
+.. GENERATED FROM PYTHON SOURCE LINES 224-230
 
 .. code-block:: Python
 
@@ -222,12 +284,12 @@ to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-169
+.. GENERATED FROM PYTHON SOURCE LINES 231-233
 
 Plot source location and receiver geometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-180
+.. GENERATED FROM PYTHON SOURCE LINES 233-244
 
 .. code-block:: Python
 
@@ -239,8 +301,8 @@ Plot source location and receiver geometry
     ax.scatter(sx,sy, marker='*')
     ax.set_title('Receiver Geometry: map view')
     ax.legend(['Receivers', 'Source'],loc='upper right')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
+    _ = ax.set_xlabel('x')
+    _ = ax.set_ylabel('y')
 
 
 
@@ -251,16 +313,10 @@ Plot source location and receiver geometry
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    Text(111.68055555555553, 0.5, 'y')
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-186
+.. GENERATED FROM PYTHON SOURCE LINES 245-250
 
 ##############################################################################
  Test basic functions
@@ -268,12 +324,12 @@ Plot source location and receiver geometry
  Here we test basic elements of diffraction stacking like moveout and polarity
  correction
 
-.. GENERATED FROM PYTHON SOURCE LINES 188-190
+.. GENERATED FROM PYTHON SOURCE LINES 252-254
 
 Test moveout correction and plot corrected data
 """""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-211
+.. GENERATED FROM PYTHON SOURCE LINES 254-275
 
 .. code-block:: Python
 
@@ -322,12 +378,12 @@ Test moveout correction and plot corrected data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 212-214
+.. GENERATED FROM PYTHON SOURCE LINES 276-278
 
 Test polarity correction and plot corrected data
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 214-241
+.. GENERATED FROM PYTHON SOURCE LINES 278-305
 
 .. code-block:: Python
 
@@ -382,13 +438,13 @@ Test polarity correction and plot corrected data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-247
+.. GENERATED FROM PYTHON SOURCE LINES 308-311
 
 Prepare for location
 ^^^^^^^^^^^^^^^^^^^^
 Set up the location class and grid, compute traveltimes
 
-.. GENERATED FROM PYTHON SOURCE LINES 249-254
+.. GENERATED FROM PYTHON SOURCE LINES 313-318
 
 Define location class using grid vectors
 """"""""""""""""""""""""""""""""""""""""
@@ -396,7 +452,7 @@ We can use the original velocity model grid for location,
 but for the sake of having more representative image we shift the grid deeper
 Moreover, we reduce the grid step twice for efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-268
+.. GENERATED FROM PYTHON SOURCE LINES 318-332
 
 .. code-block:: Python
 
@@ -421,12 +477,12 @@ Moreover, we reduce the grid step twice for efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 269-271
+.. GENERATED FROM PYTHON SOURCE LINES 333-335
 
 Prepare traveltimes
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 271-276
+.. GENERATED FROM PYTHON SOURCE LINES 335-340
 
 .. code-block:: Python
 
@@ -448,19 +504,19 @@ Prepare traveltimes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 279-283
+.. GENERATED FROM PYTHON SOURCE LINES 343-347
 
 Apply diffraction stacking without polarity correction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply a diffraction stacking algorithm without 
 any polarity correction, for reference
 
-.. GENERATED FROM PYTHON SOURCE LINES 285-287
+.. GENERATED FROM PYTHON SOURCE LINES 349-351
 
 Perform squared-value diffraction stacking without polarity correction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 287-299
+.. GENERATED FROM PYTHON SOURCE LINES 351-363
 
 .. code-block:: Python
 
@@ -485,24 +541,24 @@ Perform squared-value diffraction stacking without polarity correction
  .. code-block:: none
 
     Squared-value diffraction stacking without polarity correction...
-    Computation time: 10.128570318222046 seconds
+    Computation time: 10.064584493637085 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 302-306
+.. GENERATED FROM PYTHON SOURCE LINES 366-370
 
 Apply diffraction stacking witth polarity correction using MTI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply various diffraction stacking algorithms with 
 polarity correction using moment tensor inversion
 
-.. GENERATED FROM PYTHON SOURCE LINES 308-310
+.. GENERATED FROM PYTHON SOURCE LINES 372-374
 
 Perform squared-value diffraction stacking with polarity correction with MTI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 310-323
+.. GENERATED FROM PYTHON SOURCE LINES 374-387
 
 .. code-block:: Python
 
@@ -528,17 +584,17 @@ Perform squared-value diffraction stacking with polarity correction with MTI
  .. code-block:: none
 
     Squared-value diffraction stacking with polarity correction based on MTI...
-    Computation time: 15.09127950668335 seconds
+    Computation time: 14.988281726837158 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-326
+.. GENERATED FROM PYTHON SOURCE LINES 388-390
 
 Perform semblance-based diffraction stacking with polarity correction with MTI
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 326-344
+.. GENERATED FROM PYTHON SOURCE LINES 390-408
 
 .. code-block:: Python
 
@@ -570,12 +626,12 @@ Perform semblance-based diffraction stacking with polarity correction with MTI
 
     Sliding window size in samples: 100
     Semblance-based diffraction stacking with polarity correction based on MTI...
-    Computation time: 21.179158926010132 seconds
+    Computation time: 21.17358684539795 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 347-355
+.. GENERATED FROM PYTHON SOURCE LINES 411-419
 
 Visualisation of results
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -586,12 +642,12 @@ resulting images are focused in the correct location which fluctuates in
 depth, reflecting the time-depth tradeoff.
 Uncertainty in depth direction is much higher due to surface acquisition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 358-360
+.. GENERATED FROM PYTHON SOURCE LINES 422-424
 
 Plot resulting image volumes from squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 360-416
+.. GENERATED FROM PYTHON SOURCE LINES 424-480
 
 .. code-block:: Python
 
@@ -707,7 +763,7 @@ Plot resulting image volumes from squared-value diffraction stacking
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 48.535 seconds)
+   **Total running time of the script:** (0 minutes 48.202 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_DSMTI_tutorial.py:

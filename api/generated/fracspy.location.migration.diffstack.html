@@ -494,7 +494,7 @@ various stacking approaches and optional polarity correction.</p>
 <dd class="field-odd"><dl>
 <dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Data of shape <span class="math notranslate nohighlight">\(n_r \times n_t\)</span></p>
 </dd>
-<dt><strong>n_xyz</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Number of grid points in X-, Y-, and Z-axes for the imaging area</p>
+<dt><strong>n_xyz</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Number of grid points in X-, Y-, and Z-axes for the imaging area</p>
 </dd>
 <dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Imaging area grid vector in X-axis</p>
 </dd>
@@ -504,21 +504,23 @@ various stacking approaches and optional polarity correction.</p>
 </dd>
 <dt><strong>tt</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Traveltime table of size <span class="math notranslate nohighlight">\(n_r \times n_x \times n_y \times n_z\)</span></p>
 </dd>
-<dt><strong>nforhc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 10</span></dt><dd><p>Number of points for hypocenter</p>
+<dt><strong>nforhc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 10</span></dt><dd><p>Number of points for hypocenter</p>
 </dd>
-<dt><strong>output_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Output type to produce. Default None is the same as “max”.
-Types: “max” (output 3D volume as a maximum of the image function for all time moments),</p>
+<dt><strong>output_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Output type to produce. In the default case of None it is set to “max”.
+Types:</p>
 <blockquote>
-<div><p>“mean” (output 3D volume as an average of the image function through time), 
-“full” (output full 4D image function: x,y,z,t). in this case hc is set to None</p>
+<div><p>“max” (output 3D volume as a maximum of the image function through time),
+“mean” (output 3D volume as an average of the image function through time),                
+“sumsq” (output 3D volume as a stack of the squared image function values through time),
+“full” (output full 4D image function: x,y,z,t). In this case hc is set to None.</p>
 </div></blockquote>
 </dd>
-<dt><strong>stack_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Diffraction stacking type (imaging condition), default None is the same as “absolute” (absolute value).
+<dt><strong>stack_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Diffraction stacking type (imaging condition), default None is the same as “absolute” (absolute value).
 Types: “absolute” (absolute value), “squared” (squared value), “semblance” (semblance-based).</p>
 </dd>
-<dt><strong>swsize</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 0</span></dt><dd><p>Sliding time window size for semblance-based type, amount of time steps</p>
+<dt><strong>swsize</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 0</span></dt><dd><p>Sliding time window size for semblance-based type, amount of time steps</p>
 </dd>
-<dt><strong>polcor_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Polarity correction type to be used for amplitudes.
+<dt><strong>polcor_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Polarity correction type to be used for amplitudes.
 None is default for no polarity correction, “mti” is for polarity correction based on moment tensor inversion.</p>
 </dd>
 <dt><strong>recs</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, optional, default: None</span></dt><dd><p>Array of shape (3, nrec) containing receiver coordinates.

@@ -18,8 +18,8 @@
 .. _sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py:
 
 
-Kirchhoff-Based Localisation - Single component
-===============================================
+2.1 Kirchhoff-Based Localisation - Single component
+===================================================
 This tutorial illustrates how to perform source localisation using a Kirchhoff-based
 modelling operator.
 
@@ -488,7 +488,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 54.840 seconds)
+   **Total running time of the script:** (2 minutes 54.789 seconds)
 
 
 .. _sphx_glr_download_tutorials_Location_KirchhoffBased_tutorial.py:

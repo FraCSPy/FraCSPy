@@ -1,12 +1,10 @@
 r"""
-
-Diffraction Stacking Localisation With Moment Tensor Inversion
-==============================================================
+2.3 Diffraction Stacking: Localisation With Polarity Correction
+===============================================================
 This tutorial illustrates how to perform source localisation using 
-diffraction stacking with moment tensor inversion. 
+diffraction stacking with polarity correction by moment tensor inversion. 
 
-We consider here a homogeneous subsurface model and 
-a point Double-Couple (DC) microseismic source.
+We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source.
 We also consider only P-waves for simplicity here.
 
 Traveltimes
@@ -22,11 +20,10 @@ at :math:`\mathbf{x_s}` and a receiver at :math:`\mathbf{x_r}`, and
 
 Waveforms
 ^^^^^^^^^
-The input data waveforms are computed with the help of PyLops operator which
-involves finite-difference (FD) modelling.
+The input data waveforms were precomputed with the help of the finite-difference (FD) modelling using SOFI3D (Bohlen, 2002).
 
 See more:
-https://pylops.readthedocs.io
+https://docs.csc.fi/apps/sofi3d/
 
 Diffraction stacking with moment tensor inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -34,8 +31,64 @@ Diffraction stacking with moment tensor inversion
 Basics of the simple diffraction stacking are explained in
 :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
 
+Microseismic events usually have non-explosive radiation pattern, which means that the
+polarities of the P- or S-wave amplitudes can be both positive and negative. 
+For example, in case of a simple diffraction stacking of waveforms recorded from a pure double-couple 
+strike-slip source with receivers symmetrically distributed around the event's epicenter, 
+the stack value at the true source position will be equal to zero (Zhebel, 2014; Anikiev, 2015).
+To resolve this problem, one can account for polarities of a signal while applying
+the stacking procedure. 
+
+The polarities of a potential microseismic event can be estimated by computing 
+the seismic moment tensor (SMT) at every image point and every potential origin time 
+using the least squares inversion of the amplitudes corresponding to the traveltime moveout.
+Sipkin (1982) showed that the moment tensor can be efficiently computed by
+
+.. math::
+        \mathbf{M}(\mathbf{r}) = \left(\sum_{R=1}^{N_R} \mathbf{G}_R^T(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\right)^{-1} \mathbf{d}(\mathbf{r}),
+
+where :math:`\mathbf{M}(\mathbf{r})` is the vectorized moment tensor, :math:`\mathbf{G}_R^{\phantom{T}}(\mathbf{r})` is the vectorized
+derivative of Green's function for receiver :math:`R` and :math:`\mathbf{d}(\mathbf{r})` is a vector obtained from amplitudes of the corresponding waveforms:
+
+.. math::
+        \mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).
+
+More details on the described inversion including stability issues can be found in Zhebel & Eisner (2012).
+        
+The SMT inversion step is done for each potential origin time :math:`t` and each image point :math:`r` 
+as we know neither the location nor the origin time of a microseismic event. 
+The moment tensor is then used to correct polarities of the stacked traces:
+
+.. math::
+        F_{pc}(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} \phi_R(\mathbf{r}) A_R 
+        \left(t + T_R(\mathbf{r})\right)\right|,
+
+where :math:`F_{pc}(\mathbf{r},t)` is a 4-D image function taking into account polarity correction and :math:`\phi_R(\mathbf{r})` are the
+weights
+
+.. math::
+        \phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,
+
+that selectively reverse the signs of the amplitudes :math:`A_R` and allow constructive interference of
+signal amplitudes (Anikiev et al., 2014).
+
+Generally, computation of the SMT requires appropriate approximation of Green’s function (see, e.g., Aki & Richards, 2002; Červený, 2001) according to medium complexity and acquisition configuration.
+However, due to the fact that we are interested only in the sign of the Green’s function derivatives :math:`G_R(\mathbf{r})`, this computation can be significantly simplified.
+
+Assuming the polarity correction is implemented to the data with moveout correction, we can introduce :math:`A_R^{EMO+PC}` as 
+
+.. math::
+        A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right).
+
+Hence, all imaging functions described in :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
+
+Localisation using diffraction stacking with polarity correction by SMT inversion described above is implemented in :py:class:`fracspy.location.migration.diffstack`.
+The polarity correction can also be applied to EMO-corrected data independently using :py:class:`fracspy.location.utils.polarity_correction`, provided the expected event location.
+
 References
 ^^^^^^^^^^
+Aki, K., & Richards, P. (2002). Quantitative seismology (2nd ed.). Sausalito, Calif.: University Science Books.
+
 Anikiev, D. (2015). Joint detection, location and source mechanism 
 determination of microseismic events (Doctoral dissertation). 
 St. Petersburg State University. St. Petersburg. 
@@ -46,13 +99,22 @@ source mechanism inversion of microseismic events: Benchmarking on seismicity
 induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
 249–258. https://doi.org/10.1093/gji/ggu126
 
-Neidell, N. S., & Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
-FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
-https://doi.org/10.1190/1.1440186
+Bohlen, T. (2002). Parallel 3-D viscoelastic finite difference seismic modelling. 
+Computers & Geosciences, 28(8), 887–899. https://doi.org/10.1016/s0098-3004(02)00006-7
 
-Trojanowski, J., & Eisner, L. (2016). Comparison of migration‐based location 
-and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
-47–63. https://doi.org/10.1111/1365-2478.12366
+Červený, V. (2001). Seismic ray theory. Cambridge, U.K.: Cambridge University Press.
+
+Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of
+waveform data: synthetic waveforms. Physics of the Earth and Planetary Interiors, 30(2),
+242-259.
+
+Zhebel, O. (2014). Imaging of seismic events: The role of imaging conditions, acquisition
+geometry and source mechanisms (Doctoral dissertation, Hamburg University).
+
+Zhebel, O., & Eisner, L. (2012). Simultaneous microseismic event localization and source
+mechanism determination: 82nd Annual International Meeting, SEG Technical Program
+Expanded Abstracts, 341, 1–5.
+
 """
 
 #%%
@@ -92,12 +154,14 @@ from time import time
 
 
 #%%
+
 ###############################################################################
 # Load model and seismic data
 # ---------------------------
-# For this example, we will use a toy example of a small homogenous model with a gridded surface receiver
-# array, same as in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
-#The data are modelled using the SOFI3D Finite Difference package.
+# For this example, we will use a toy example of a small homogenous model with 
+# a gridded surface receiver # array, same as 
+# in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
+# The data are modelled using the SOFI3D Finite Difference package.
 
 # Directory containing input data
 input_dir = '../data/pyfrac_SOFIModelling'
@@ -174,8 +238,8 @@ ax.scatter(recs[0],recs[1])
 ax.scatter(sx,sy, marker='*')
 ax.set_title('Receiver Geometry: map view')
 ax.legend(['Receivers', 'Source'],loc='upper right')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
+_ = ax.set_xlabel('x')
+_ = ax.set_ylabel('y')
 
 #%%
 ###############################################################################

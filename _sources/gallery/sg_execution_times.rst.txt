@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:05.906** total execution time for 7 files **from gallery**:
+**00:05.892** total execution time for 7 files **from gallery**:
 
 .. container::
 
@@ -33,22 +33,22 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``plot_SeismicWiggles.py``)
-     - 00:04.389
+     - 00:04.379
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``plot_EventImages.py``)
-     - 00:00.899
+     - 00:00.907
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``plot_SeismicTraceImage.py``)
-     - 00:00.271
+     - 00:00.291
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``plot_ComparingBeachballs.py``)
-     - 00:00.162
+     - 00:00.164
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``plot_ComparingMTmatrices.py``)
-     - 00:00.121
+     - 00:00.085
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``plot_MTmatrix.py``)
-     - 00:00.039
+     - 00:00.041
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``plot_Beachball.py``)
      - 00:00.025

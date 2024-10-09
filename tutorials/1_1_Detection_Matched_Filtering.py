@@ -24,6 +24,7 @@ Methodology
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 import os
 import json
 import pandas as pd

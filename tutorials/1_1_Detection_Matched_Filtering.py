@@ -39,7 +39,6 @@ from time import time
 from datetime import datetime
 
 from fracspy.detection.matched_filtering import *
-from fracspy.detection.associate_detected_events import *
 
 
 

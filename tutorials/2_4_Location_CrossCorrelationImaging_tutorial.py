@@ -1,5 +1,5 @@
 r"""
-2.2 Cross-Correlation-Based Localisation - Single component
+2.4 Cross-Correlation-Based Localisation - Single component
 ===========================================================
 This tutorial illustrates how to perform source localisation by inversion
 using a Kirchhoff-based modelling operator together with a correlation-based

@@ -30,6 +30,12 @@ def matched_filtering(trace,
     dt : int
         The sampling rate of the continuous data stream in Hz. This is essential for calculating 
         the number of samples per template and managing time-window calculations appropriately.
+        
+    st_ID : str
+        Station Identifier, can be a station name, number, etc.
+
+    t0 : UTCDateTime
+        start time of trace data
 
     TEMPLATE_DURATION : int
         The duration of each template in seconds. This specifies how long each template lasts.

@@ -325,7 +325,8 @@ def explode_volume(volume, t=None, x=None, y=None,
 def detection_curves(msf:np.ndarray,
                      slf:np.ndarray=None,
                      slt:float=3,
-                     t:np.ndarray=None,                      
+                     idp:np.ndarray=None,
+                     t:np.ndarray=None,
                      figsize:tuple=(8, 8), 
                      cmap:Union[str,mcolors.Colormap]=None,
                      tlim:tuple=None, 
@@ -337,6 +338,7 @@ def detection_curves(msf:np.ndarray,
                      tunitlabel:str=None,
                      linespec:dict=None,
                      title:str='',
+                     titlefontsize:float=16,
                      filename:str=None, 
                      save_opts:dict=None):
     """Display detection curves.
@@ -351,6 +353,8 @@ def detection_curves(msf:np.ndarray,
         Time-dependent STA/LTA function
     slt : :obj:`float`, optional, default: 3
         STA/LTA threshold for the filled plot, must be non-negative
+    idp : :obj:`numpy.ndarray`
+        Integer array of time indices of determined peaks
     t : :obj:`numpy.ndarray`, optional
         Time axis vector    
     figsize : :obj:`tuple`, optional
@@ -375,6 +379,8 @@ def detection_curves(msf:np.ndarray,
         Specifications for lines indicating the selected slices
     title : :obj:`str`, optional
         Figure title
+    titlefontsize : :obj:`float`, optional
+        Figure title font size
     filename : :obj:`str`, optional
         Figure full path (if provided the figure is saved at this path)
     save_opts : :obj:`dict`, optional
@@ -398,7 +404,7 @@ def detection_curves(msf:np.ndarray,
 
     Notes
     -----
-
+    Optionally plots STA/LTA and identified MSF peaks.
 
     """    
     # Check that msf and slf are 1D arrays
@@ -452,7 +458,7 @@ def detection_curves(msf:np.ndarray,
     fig = plt.figure(figsize=figsize)
 
     # Set title
-    fig.suptitle(title, fontsize=18, fontweight='bold', y=0.94)
+    fig.suptitle(title, fontsize=titlefontsize, fontweight='bold', y=0.94)
 
     # Create axes grid
     gs = fig.add_gridspec(2, 1, 
@@ -480,6 +486,15 @@ def detection_curves(msf:np.ndarray,
     # Add grid lines
     #ax_msf.grid(True, which='both', axis='x')
     ax_msf.grid(True, which='both')
+
+    # Add peaks
+    if idp is not None:
+        # Use scatter for dots, s controls the size
+        ax_msf.scatter(t[idp], msf[idp], color='red', s=30, label=f'Identified peaks')  
+         # Add dashed vertical lines from each peak to the baseline (y=0)
+        vlinespec = dict(ls='dashed', lw=1.5, color='red')
+        ax_msf.vlines(t[idp], ymin=0, ymax=msf[idp], **vlinespec)
+        ax_msf.legend(loc='upper right')
     
     # Plot slf if provided, using different colors for above/below threshold
     if slf is not None:
@@ -490,9 +505,14 @@ def detection_curves(msf:np.ndarray,
             ax_slf.fill_between(t, slftop, slt, color=slfcolor_top, alpha=1, label=f'STA/LTA >= {slt}')
             # Fill triggered zone in msf
             ax_msf.fill_between(t, msf, 0, where=(slf >= slt), color=slfcolor_top, alpha=0.5, label=f'Triggered detection')
-            # Set legend
-            ax_msf.legend(loc='upper right')
-        
+            # Check if legend has already been added
+            if ax_msf.get_legend() is None:  
+                # Create legend
+                ax_msf.legend(loc='upper right')
+            else:
+                # Update legend
+                ax_msf.legend()
+
         if np.any(slf < slt):
             # Fill below the threshold
             slfbot = copy.deepcopy(slf)

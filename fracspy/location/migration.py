@@ -65,23 +65,24 @@ def diffstack(data: np.ndarray,
         Imaging area grid vector in Z-axis
     tt : :obj:`numpy.ndarray`
         Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`    
+    dt : :obj:`float`
+        Time step
     nforhc : :obj:`int`, optional, default: 10
         Number of points for hypocenter
     output_type : :obj:`str`, optional, default: None
-        Defines the output type. In the default case of None it is set to "max".
-        Types:
-        - "max" (output 3D volume as a maximum of the image function through time),
-        - "mean" (output 3D volume as an average of the image function through time),                
-        - "sumsq" (output 3D volume as a stack of the squared image function values through time),
-        - "full" (output full 4D image function: x,y,z,t). In this case hc is set to None.
+        Defines the output type. In the default case of None it is set to ``max``.
+        Types: ``max`` (output 3D volume as a maximum of the image function through time),
+        ``mean`` (output 3D volume as an average of the image function through time),                
+        ``sumsq`` (output 3D volume as a stack of the squared image function values through time),
+        ``full`` (output full 4D image function: x,y,z,t). In this case hc is set to None.
     stack_type : :obj:`str`, optional, default: None
-        Diffraction stacking type (imaging condition), default None is the same as "absolute" (absolute value).
-        Types: "absolute" (absolute value), "squared" (squared value), "semblance" (semblance-based).
+        Diffraction stacking type (imaging condition), default None is the same as ``squared``.
+        Types: ``absolute`` (absolute-value), ``squared`` (squared-value), ``semblance`` (semblance-based).
     swsize : :obj:`int`, optional, default: 0
         Sliding time window size for semblance-based type, amount of time steps
     polcor_type : :obj:`str`, optional, default: None
         Polarity correction type to be used for amplitudes.
-        None is default for no polarity correction, "mti" is for polarity correction based on moment tensor inversion.
+        None is default: no polarity correction, ``mti`` is for polarity correction based on moment tensor inversion.
     recs : :obj:`numpy.ndarray`, optional, default: None
         Array of shape (3, nrec) containing receiver coordinates.
         Must be provided if polcor_type is not None
@@ -110,7 +111,6 @@ def diffstack(data: np.ndarray,
 
     Notes
     -----
-
     The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
     In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
     The term "diffraction stacking" dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [7]_. 
@@ -127,7 +127,7 @@ def diffstack(data: np.ndarray,
 
     where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, 
     :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, 
-    and :math:`N_R` is a number of receivers [1]_, [2]_.
+    and :math:`N_R` is a number of receivers [1]_.
 
     2. Squared-value based
 
@@ -187,7 +187,7 @@ def diffstack(data: np.ndarray,
     .. math::
         A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right),
 
-    and :math:`\phi_R(\mathbf{r})` are the defined trough a :math:`\mathrm{sign}` function:
+    and :math:`\phi_R(\mathbf{r})` are the defined through the :math:`\mathrm{sign}` function:
 
     .. math::
         \phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,
@@ -211,7 +211,7 @@ def diffstack(data: np.ndarray,
        determination of microseismic events (Doctoral dissertation). 
        St. Petersburg State University. St. Petersburg. 
        https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf
-
+    
     .. [2] Anikiev, D., Valenta, J., Staněk, F. & Eisner, L. (2014). Joint location and 
        source mechanism inversion of microseismic events: Benchmarking on seismicity 
        induced by hydraulic fracturing. Geophysical Journal International, 198(1), 

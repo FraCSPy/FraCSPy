@@ -18,7 +18,11 @@ Detection
 .. autosummary::
    :toctree: generated/
 
-    maxdiffstack   
+    maxdiffstack
+    stalta
+    detect_peaks
+    estimate_origin_times
+    diffstack_detect
 
 Localisation
 ------------

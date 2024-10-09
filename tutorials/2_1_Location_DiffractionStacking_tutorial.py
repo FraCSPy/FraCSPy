@@ -1,5 +1,5 @@
 r"""
-2.2 Diffraction Stacking: Localisation
+2.1 Diffraction Stacking: Localisation
 ======================================
 This tutorial illustrates how to perform source localisation using diffraction stacking. 
 
@@ -143,7 +143,7 @@ without picking of arrivals on individual traces. The origin time :math:`t_{est}
 at the grid point associated with the estimated location :math:`\mathbf{r}_{est}` and the corresponding traveltime:
 
 .. math::
-        \mathbf{t}_{est} = t_{max}(\mathbf{r}_{est}) - T_R(\mathbf{r}_{est}).
+        \mathbf{t}_{est} = t_{max}(\mathbf{r}_{est}) - \min_{R} T_R(\mathbf{r}_{est}).
 
 However, the approach implies that the time window of the processed data contains records 
 only for a single microseismic event, otherwise multiple event signatures will superimpose and image function will become biased.

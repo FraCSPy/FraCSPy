@@ -1,5 +1,5 @@
 r"""
-2.2 Diffraction Stacking: Localisation
+2.1 Diffraction Stacking: Localisation
 ======================================
 This tutorial illustrates how to perform source localisation using diffraction stacking. 
 

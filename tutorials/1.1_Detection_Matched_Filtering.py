@@ -1,6 +1,6 @@
 r"""
-Matched Filtering for Event Template Detection (Preparing Templates)
-=================================================
+1.1 Template Matching Detection
+===============================
 
 Overview
 --------
@@ -32,15 +32,16 @@ from fracspy.detection.matched_filtering import *
 from fracspy.detection.associate_detected_events import *
 ###############################################################################
 # Constants
-# ---------------------------
+# ---------
 NUMBER_OF_TEMPLATES = 10  #: Number of templates to extract
 TEMPLATE_DURATION = 4      #: Duration of each template (in seconds)
 # Specify the month and day you want to work on
 target_month = 11  # Example: November
 target_day = 1    # Example: 22nd
+
 ###############################################################################
 # Read Continuous Data and Event Catalog
-# ---------------------------
+# --------------------------------------
 # Create a directory for the matched templates and to save the templates if it doesn't exist.
 matched_dir = f"../data/TOC2ME_Data/Matched_Output/"
 output_dir = f"../data/TOC2ME_Data/Matched_Output/database/"

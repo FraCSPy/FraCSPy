@@ -79,6 +79,8 @@ Bulletin of the Seismological Society of America, 88(1), 95–106. https://doi.o
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import cmcrameri.cm as cmc
 
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
@@ -95,6 +97,7 @@ from fracspy.detection.stacking import *
 # Import visualisation utils
 from fracspy.visualisation.traceviz import traceimage
 from fracspy.visualisation.eventimages import locimage3d
+from fracspy.visualisation.plotting_support import *
 
 # Deal with warnings (for a cleaner code)
 import warnings
@@ -432,8 +435,8 @@ print(f"Computation time: {end_time - start_time} seconds")
 #%%
 
 ###############################################################################
-# Visualisation of results
-# ^^^^^^^^^^^^^^^^^^^^^^^^
+# Visualisation of location results
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Here we visualise the slices of the resulting image volume
 
 # Get the spatial limits for plotting
@@ -525,16 +528,50 @@ print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_mis
 
 start_time = time()
 print("Squared-value diffraction stacking detection applied to clean data...")
-msf,ds_full = maxdiffstack(data=frwddata,
-                           x=gx,
-                           y=gy,
-                           z=gz,
-                           tt=tt,
-                           dt=dt,                                                    
-                           stack_type="squared",
-                           output_type="full")
+msf,_ = maxdiffstack(data=frwddata,
+                     x=gx,
+                     y=gy,
+                     z=gz,
+                     tt=tt,
+                     dt=dt,                                                    
+                     stack_type="squared")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
+
+
+
+#%%
+
+# Define time windows for STA/LTA
+stw=0.02
+ltw=4*stw
+gtw=0.04
+
+# Compute STA/LTA
+slf,sta,lta = stalta(tdf=msf,dt=dt,stw=stw,ltw=ltw,gtw=gtw)
+
+
+#%
+
+###############################################################################
+# Visualisation of detection results
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the detection curves
+
+# Make time vector
+t = np.arange(0, nt * dt, dt)
+
+# Create a new colormap with two distinct colors from batlow colorsheme
+cmap = mcolors.ListedColormap([cmc.batlow(80), cmc.batlow(225)], name="two_color_batlow")
+#cmap  = None
+
+#slf=msf/max(msf)*5
+fig,axs = detection_curves(msf=msf,
+                           slf=slf,
+                           slt=3,
+                           t=t,
+                           cmap=cmap)
+
 
 #%%
 
@@ -543,3 +580,41 @@ print(f"Computation time: {end_time - start_time} seconds")
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Here we apply diffraction stacking detection algorithm to noisy data
 
+###############################################################################
+# Perform detection using squared-value diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+start_time = time()
+print("Squared-value diffraction stacking detection applied to noisy data...")
+msf_wn,_ = maxdiffstack(data=frwddata_wn,
+                        x=gx,
+                        y=gy,
+                        z=gz,
+                        tt=tt,
+                        dt=dt,                                                    
+                        stack_type="squared")
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+#%%
+# Compute STA/LTA
+slf_wn,sta_wn,lta_wn = stalta(tdf=msf_wn,dt=dt,stw=stw,ltw=ltw,gtw=gtw)
+
+###############################################################################
+# Visualisation of detection results
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the detection curves
+
+# Make time vector
+t = np.arange(0, nt * dt, dt)
+
+# Create a new colormap with two distinct colors from batlow colorsheme
+cmap = mcolors.ListedColormap([cmc.batlow(80), cmc.batlow(225)], name="two_color_batlow")
+#cmap  = None
+
+#slf=msf/max(msf)*5
+fig,axs = detection_curves(msf=msf_wn,
+                           slf=slf_wn,
+                           slt=3,
+                           t=t,
+                           cmap=cmap)

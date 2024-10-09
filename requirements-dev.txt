@@ -24,3 +24,4 @@ svgwrite
 cairosvg
 pillow
 setuptools_scm
+openpyxl

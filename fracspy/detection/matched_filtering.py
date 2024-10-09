@@ -6,20 +6,28 @@ import os
 import json
 from fracspy.detection.Xcorr import *
 
-def matched_filtering(st, template_paths,SAMPLE_RATE,TEMPLATE_DURATION,TEMPLATE_LENGTH,WINDOW_STEP,CORRELATION_THRESHOLD):
+def matched_filtering(trace, 
+                      trace_templates, 
+                      dt,
+                      st_ID,
+                      t0,
+                      TEMPLATE_DURATION,
+                      TEMPLATE_LENGTH,
+                      WINDOW_STEP,
+                      CORRELATION_THRESHOLD):
     """
     Perform matched filtering on continuous data.
 
     Parameters
     ----------
-    st : obspy.Stream
+    trace : obspy.Stream
         The continuous data stream to analyze, typically containing seismic waveform data.
 
-    template_paths : list
+    trace_templates : list
         A list of file paths pointing to the template arrays corresponding to the current station. 
         Each template is used to match segments of the continuous data during the filtering process.
 
-    SAMPLE_RATE : int
+    dt : int
         The sampling rate of the continuous data stream in Hz. This is essential for calculating 
         the number of samples per template and managing time-window calculations appropriately.
 
@@ -50,49 +58,45 @@ def matched_filtering(st, template_paths,SAMPLE_RATE,TEMPLATE_DURATION,TEMPLATE_
     results_dict = {}
 
     # Calculate the number of segments with a moving window of 1 second
-    num_segments = int(len(st[0].data) / SAMPLE_RATE) - TEMPLATE_DURATION + 1
+    num_segments = int(len(trace) / (1/dt)) - TEMPLATE_DURATION + 1
 
     # Iterate through each segment of the continuous data with a moving window
     for i in range(num_segments):
         # Extract a segment of continuous data corresponding to the template length
-        start_index = i * SAMPLE_RATE  # Convert seconds to sample index
-        segment = st[0].data[start_index:start_index + TEMPLATE_LENGTH]
+        start_index = i * int(1/dt)  # Convert seconds to sample index
+        segment = trace[start_index:start_index + TEMPLATE_LENGTH]
 
         # Normalize the segment to have a maximum absolute value of 1
         if np.max(np.abs(segment)) == 0:  # Check to avoid division by zero
             continue
         segment /= np.max(np.abs(segment))
 
+        # For each template, compute the matched filter
+        results = []
+        
         # Process each template file corresponding to the current station
-        for template_file in template_paths:
+        for template in trace_templates:
 
-            # Load the extracted template
-            template_data = np.load(template_file)
+            # Ensure the template has the appropriate size
+            if len(template) != TEMPLATE_LENGTH:
+                print(f"Template size mismatch for {os.path.basename(template_file)}. Skipping.")
+                continue
 
-            # For each template, compute the matched filter
-            results = []
-
-            for template in template_data:
-                # Ensure the template has the appropriate size
-                if len(template) != TEMPLATE_LENGTH:
-                    print(f"Template size mismatch for {os.path.basename(template_file)}. Skipping.")
-                    continue
-
-                # Cross-correlate the normalized segment with the template
-                results.append(np.abs(Xcorr(segment, template)))
+            # Cross-correlate the normalized segment with the template
+            results.append(np.abs(Xcorr(segment, template)))
 
             # Find the maximum correlation value and its index
             max_corr_index = np.argmax(results)
             max_corr_value = results[max_corr_index]
 
             # Calculate the start time based on the segment index
-            start_time = st[0].stats.starttime + (i * WINDOW_STEP)
+            start_time = t0 + (i * WINDOW_STEP)
 
             # Check if the maximum correlation exceeds the threshold
             if max_corr_value > CORRELATION_THRESHOLD:
                 # Store the information in the results dictionary
                 results_dict[start_time.isoformat()] = {
-                    "station": st[0].stats.station,
+                    "station": st_ID,
                     "max_correlation": max_corr_value,
                     "segment_index": i
                 }

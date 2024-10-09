@@ -7,14 +7,14 @@ import os
 # ---------------------------                                                    
 # Read JSON files and group events detected within the same time window.       
 
-def associate_detected_events(output_dir, time_window=4, num_station=3):
+def associate_detected_events(results_dict, time_window=4, num_station=3):
     """
     Associates detected events across different stations based on time.
 
     Parameters
     ----------
-    output_dir : str
-        Directory where the JSON result files for each station are stored.
+    results_dict : list
+        List of dictionaries containing event information per station
     time_window : int
         Time window in seconds to consider events as associated (default: 4 seconds).
     num_station : int
@@ -29,24 +29,17 @@ def associate_detected_events(output_dir, time_window=4, num_station=3):
     """
     
     events = []
-
-    # Read all JSON files in the specified output directory
-    json_files = glob.glob(os.path.join(output_dir, '*.json'))
-
-    # Load all detected events from each JSON file
-    for json_file in json_files:
-        with open(json_file, 'r') as f:
-            station_results = json.load(f)
-            
-            for event_time_str, event_details in station_results.items():
-                # Convert to UTC time
-                time_float = obspy.UTCDateTime(event_time_str).timestamp
-                events.append({
-                    'time': time_float,
-                    'station': event_details['station'],
-                    'max_correlation': event_details['max_correlation'],
-                })
-
+    
+    for trace_results_dict in results_dict:
+        for event_time_str, event_details in trace_results_dict.items():
+            # Convert to UTC time
+            time_float = obspy.UTCDateTime(event_time_str).timestamp
+            events.append({
+                'time': time_float,
+                'station': event_details['station'],
+                'max_correlation': event_details['max_correlation'],
+            })
+        
     # Now group events based on the time window
     associated_events = []
     events.sort(key=lambda x: x['time'])  # Sort events by time

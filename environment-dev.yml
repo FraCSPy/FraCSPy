@@ -30,6 +30,7 @@ dependencies:
   - nbsphinx  
   - svgwrite
   - pillow
+  - openpyxl
   - pip:
     - setuptools_scm
     - cairosvg

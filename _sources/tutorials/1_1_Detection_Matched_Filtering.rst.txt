@@ -24,16 +24,13 @@
 Overview
 --------
 This part of the code is designed to prepare templates for seismic event detection. 
-It accomplishes this by reading event times from an event catalog and extracting the corresponding data 
-from continuous seismic recordings. The primary aim is to save these extracted templates for each station, 
-enabling their use in subsequent matched filtering analysis.
+It accomplishes this by reading event times from an event catalog and extracting the corresponding data from continuous seismic recordings. The primary aim is to save these extracted templates for each station, enabling their use in subsequent matched filtering analysis.
 
 Methodology
 -----------
 - **Data Preparation**:
     - The script reads continuous waveform data, that should be downloaded using the script in 
-    "ToC2ME_WorkedExamples" directory.
-/preparation", and extracts templates based on the seismic catalog.
+    "ToC2ME_WorkedExamples" directory. In this example the data will be downloaded on the fly
     - A band-pass filter is applied to the continuous data, targeting a frequency range of 1-200 Hz.
     - Event times from the catalog are utilized to extract corresponding templates, which are saved for each station.
     - Each extracted template is normalized to ensure a maximum absolute value of 1.
@@ -41,7 +38,7 @@ Methodology
 - **Output**:
     - Each template is stored as a NumPy file in a specified output directory.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-45
+.. GENERATED FROM PYTHON SOURCE LINES 22-42
 
 .. code-block:: Python
 
@@ -72,12 +69,12 @@ Methodology
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-48
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 Constants
 ---------
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-64
+.. GENERATED FROM PYTHON SOURCE LINES 45-61
 
 .. code-block:: Python
 
@@ -104,17 +101,17 @@ Constants
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 Read continuous data and previously extracted templates
--------------------------------------------------------
+=======================================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-71
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 Load event catalogue
-^^^^^^^^^^^^^^^^^^^^
+-------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-92
+.. GENERATED FROM PYTHON SOURCE LINES 68-89
 
 .. code-block:: Python
 
@@ -147,19 +144,19 @@ Load event catalogue
 
  .. code-block:: none
 
-    /home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:80: FutureWarning: Passing bytes to 'read_excel' is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
+    /home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:77: FutureWarning: Passing bytes to 'read_excel' is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
       df = pd.read_excel(pd.io.excel.ExcelFile(response.content))
     Data was successfully downloaded and loaded into the DataFrame.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-95
+.. GENERATED FROM PYTHON SOURCE LINES 90-92
 
 Load continuous seismic data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-134
+.. GENERATED FROM PYTHON SOURCE LINES 92-131
 
 .. code-block:: Python
 
@@ -211,17 +208,17 @@ Load continuous seismic data
  .. code-block:: none
 
     Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-    Done! Loading time: 103.6019914150238 seconds
+    Done! Loading time: 342.5305390357971 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-137
+.. GENERATED FROM PYTHON SOURCE LINES 132-134
 
 Build Station Templates
------------------------
+=======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-160
+.. GENERATED FROM PYTHON SOURCE LINES 134-157
 
 .. code-block:: Python
 
@@ -255,12 +252,12 @@ Build Station Templates
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-163
+.. GENERATED FROM PYTHON SOURCE LINES 158-160
 
 Plotting
-^^^^^^^^
+=====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-183
+.. GENERATED FROM PYTHON SOURCE LINES 160-180
 
 .. code-block:: Python
 
@@ -296,12 +293,12 @@ Plotting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-186
+.. GENERATED FROM PYTHON SOURCE LINES 181-183
 
 Matched Filtering (Cross-correlation)
--------------------------------------
+=====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-217
+.. GENERATED FROM PYTHON SOURCE LINES 183-214
 
 .. code-block:: Python
 
@@ -375,12 +372,12 @@ Matched Filtering (Cross-correlation)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-220
+.. GENERATED FROM PYTHON SOURCE LINES 215-217
 
 Plotting Detected Events
-^^^^^^^^^^^^^^^^^^^^^^^^
+=====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-253
+.. GENERATED FROM PYTHON SOURCE LINES 217-250
 
 .. code-block:: Python
 
@@ -429,15 +426,15 @@ Plotting Detected Events
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-259
+.. GENERATED FROM PYTHON SOURCE LINES 251-256
 
 Associate Detected Events Across Stations
------------------------------------------
+=========================================
 This part of the code loads the results of detected seismic events saved in JSON format, 
 associates detected events across different stations based on their timestamps, and saves 
 the results containing only events detected  by at least two stations within a specified time window.
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-266
+.. GENERATED FROM PYTHON SOURCE LINES 256-263
 
 .. code-block:: Python
 
@@ -465,7 +462,7 @@ the results containing only events detected  by at least two stations within a s
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (12 minutes 20.827 seconds)
+   **Total running time of the script:** (16 minutes 11.377 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_1_Detection_Matched_Filtering.py:

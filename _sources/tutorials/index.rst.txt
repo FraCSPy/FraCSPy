@@ -15,7 +15,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Overview -------- This part of the code is designed to prepare templates for seismic event detection.  It accomplishes this by reading event times from an event catalog and extracting the corresponding data  from continuous seismic recordings. The primary aim is to save these extracted templates for each station,  enabling their use in subsequent matched filtering analysis.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Overview -------- This part of the code is designed to prepare templates for seismic event detection.  It accomplishes this by reading event times from an event catalog and extracting the corresponding data from continuous seismic recordings. The primary aim is to save these extracted templates for each station, enabling their use in subsequent matched filtering analysis.">
 
 .. only:: html
 

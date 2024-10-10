@@ -401,6 +401,12 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">1.1 Template Matching Detection</a></li>
+
+
+
+
+
+
 <li class="toctree-l1"><a class="reference internal" href="1_2_Detection_DiffractionStacking_tutorial.html">1.2 Diffraction Stacking: Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_1_Location_DiffractionStacking_tutorial.html">2.1 Diffraction Stacking: Localisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_2_Location_DSMTI_tutorial.html">2.2 Diffraction Stacking: Localisation With Polarity Correction</a></li>
@@ -475,9 +481,7 @@ to download the full example code.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This part of the code is designed to prepare templates for seismic event detection.
-It accomplishes this by reading event times from an event catalog and extracting the corresponding data
-from continuous seismic recordings. The primary aim is to save these extracted templates for each station,
-enabling their use in subsequent matched filtering analysis.</p>
+It accomplishes this by reading event times from an event catalog and extracting the corresponding data from continuous seismic recordings. The primary aim is to save these extracted templates for each station, enabling their use in subsequent matched filtering analysis.</p>
 </section>
 <section id="methodology">
 <h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading">#</a></h2>
@@ -486,22 +490,15 @@ enabling their use in subsequent matched filtering analysis.</p>
 <dt><strong>Data Preparation</strong>:</dt><dd><ul class="simple">
 <li><p>The script reads continuous waveform data, that should be downloaded using the script in</p></li>
 </ul>
-<p>“ToC2ME_WorkedExamples” directory.</p>
+<p>“ToC2ME_WorkedExamples” directory. In this example the data will be downloaded on the fly
+- A band-pass filter is applied to the continuous data, targeting a frequency range of 1-200 Hz.
+- Event times from the catalog are utilized to extract corresponding templates, which are saved for each station.
+- Each extracted template is normalized to ensure a maximum absolute value of 1.</p>
 </dd>
 </dl>
 </li>
-</ul>
-<dl class="simple">
-<dt>/preparation”, and extracts templates based on the seismic catalog.</dt><dd><ul class="simple">
-<li><p>A band-pass filter is applied to the continuous data, targeting a frequency range of 1-200 Hz.</p></li>
-<li><p>Event times from the catalog are utilized to extract corresponding templates, which are saved for each station.</p></li>
-<li><p>Each extracted template is normalized to ensure a maximum absolute value of 1.</p></li>
-</ul>
-</dd>
-</dl>
-<ul class="simple">
 <li><dl class="simple">
-<dt><strong>Output</strong>:</dt><dd><ul>
+<dt><strong>Output</strong>:</dt><dd><ul class="simple">
 <li><p>Each template is stored as a NumPy file in a specified output directory.</p></li>
 </ul>
 </dd>
@@ -544,10 +541,11 @@ enabling their use in subsequent matched filtering analysis.</p>
 </pre></div>
 </div>
 </section>
+</section>
 <section id="read-continuous-data-and-previously-extracted-templates">
-<h2>Read continuous data and previously extracted templates<a class="headerlink" href="#read-continuous-data-and-previously-extracted-templates" title="Link to this heading">#</a></h2>
+<h1>Read continuous data and previously extracted templates<a class="headerlink" href="#read-continuous-data-and-previously-extracted-templates" title="Link to this heading">#</a></h1>
 <section id="load-event-catalogue">
-<h3>Load event catalogue<a class="headerlink" href="#load-event-catalogue" title="Link to this heading">#</a></h3>
+<h2>Load event catalogue<a class="headerlink" href="#load-event-catalogue" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the short event catalog from an Excel file.</span>
 <span class="c1"># Provide URL for the catalogue</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">catalogue_url</span></a> <span class="o">=</span> <span class="s1">&#39;https://zenodo.org/records/6826326/files/ToC2ME_catalog.xlsx?download=1&#39;</span>
@@ -568,14 +566,14 @@ enabling their use in subsequent matched filtering analysis.</p>
 <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">catalog</span></a> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sort_values.html#pandas.DataFrame.sort_values" title="pandas.DataFrame.sort_values" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">catalog</span><span class="o">.</span><span class="n">sort_values</span></a><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Magnitude&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NUMBER_OF_TEMPLATES</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:80: FutureWarning: Passing bytes to &#39;read_excel&#39; is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:77: FutureWarning: Passing bytes to &#39;read_excel&#39; is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
   df = pd.read_excel(pd.io.excel.ExcelFile(response.content))
 Data was successfully downloaded and loaded into the DataFrame.
 </pre></div>
 </div>
 </section>
 <section id="load-continuous-seismic-data">
-<h3>Load continuous seismic data<a class="headerlink" href="#load-continuous-seismic-data" title="Link to this heading">#</a></h3>
+<h2>Load continuous seismic data<a class="headerlink" href="#load-continuous-seismic-data" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define client</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;IRIS&quot;</span><span class="p">)</span>
 <span class="c1"># Starting time close to selected event #1</span>
@@ -614,13 +612,13 @@ Data was successfully downloaded and loaded into the DataFrame.
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-Done! Loading time: 103.6019914150238 seconds
+Done! Loading time: 342.5305390357971 seconds
 </pre></div>
 </div>
 </section>
 </section>
 <section id="build-station-templates">
-<h2>Build Station Templates<a class="headerlink" href="#build-station-templates" title="Link to this heading">#</a></h2>
+<h1>Build Station Templates<a class="headerlink" href="#build-station-templates" title="Link to this heading">#</a></h1>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dt</span></a> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="o">+</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dt</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dt</span></a><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">datetime</span></a><span class="p">)</span>
 
@@ -645,8 +643,9 @@ Done! Loading time: 103.6019914150238 seconds
         <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="o">+=</span><span class="mi">1</span>
 </pre></div>
 </div>
+</section>
 <section id="plotting">
-<h3>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h3>
+<h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h1>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select one template to plot; here we take the first one as an example</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">example_template</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">templates</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
@@ -665,9 +664,8 @@ Done! Loading time: 103.6019914150238 seconds
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_1_1_Detection_Matched_Filtering_001.png" srcset="../_images/sphx_glr_1_1_Detection_Matched_Filtering_001.png" alt="Seismic Event Template for Station: 1120" class = "sphx-glr-single-img"/></section>
-</section>
 <section id="matched-filtering-cross-correlation">
-<h2>Matched Filtering (Cross-correlation)<a class="headerlink" href="#matched-filtering-cross-correlation" title="Link to this heading">#</a></h2>
+<h1>Matched Filtering (Cross-correlation)<a class="headerlink" href="#matched-filtering-cross-correlation" title="Link to this heading">#</a></h1>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">results_dict</span></a> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tr_index</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trace</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trace_array</span></a><span class="p">):</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">station_name</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">station_list</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tr_index</span></a><span class="p">]</span>
@@ -725,8 +723,9 @@ Using Station: 1128
 Number of detected events for 1128: 20
 </pre></div>
 </div>
+</section>
 <section id="plotting-detected-events">
-<h3>Plotting Detected Events<a class="headerlink" href="#plotting-detected-events" title="Link to this heading">#</a></h3>
+<h1>Plotting Detected Events<a class="headerlink" href="#plotting-detected-events" title="Link to this heading">#</a></h1>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trace_results_dict</span></a><span class="p">:</span>  <span class="c1"># Check if there are detected events</span>
     <span class="c1"># Select the first detected event for demonstration</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">first_event_time</span></a> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trace_results_dict</span></a><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Using the first event&#39;s start time</span>
@@ -760,9 +759,8 @@ Number of detected events for 1128: 20
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_1_1_Detection_Matched_Filtering_002.png" srcset="../_images/sphx_glr_1_1_Detection_Matched_Filtering_002.png" alt="Detected Event at 1128" class = "sphx-glr-single-img"/></section>
-</section>
 <section id="associate-detected-events-across-stations">
-<h2>Associate Detected Events Across Stations<a class="headerlink" href="#associate-detected-events-across-stations" title="Link to this heading">#</a></h2>
+<h1>Associate Detected Events Across Stations<a class="headerlink" href="#associate-detected-events-across-stations" title="Link to this heading">#</a></h1>
 <p>This part of the code loads the results of detected seismic events saved in JSON format,
 associates detected events across different stations based on their timestamps, and saves
 the results containing only events detected  by at least two stations within a specified time window.</p>
@@ -776,7 +774,7 @@ the results containing only events detected  by at least two stations within a s
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of associated detected events: 20
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (12 minutes 20.827 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (16 minutes 11.377 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-1-1-detection-matched-filtering-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/efb6036d7a6e48ab4898227b1ee4730d/1_1_Detection_Matched_Filtering.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">1_1_Detection_Matched_Filtering.ipynb</span></code></a></p>
@@ -789,7 +787,6 @@ the results containing only events detected  by at least two stations within a s
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</section>
 </section>
 
 
@@ -838,24 +835,24 @@ the results containing only events detected  by at least two stations within a s
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1.1 Template Matching Detection</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology">Methodology</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constants">Constants</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-continuous-data-and-previously-extracted-templates">Read continuous data and previously extracted templates</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-event-catalogue">Load event catalogue</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-continuous-seismic-data">Load continuous seismic data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-station-templates">Build Station Templates</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting">Plotting</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#read-continuous-data-and-previously-extracted-templates">Read continuous data and previously extracted templates</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-event-catalogue">Load event catalogue</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-continuous-seismic-data">Load continuous seismic data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matched-filtering-cross-correlation">Matched Filtering (Cross-correlation)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-detected-events">Plotting Detected Events</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#build-station-templates">Build Station Templates</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting">Plotting</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#matched-filtering-cross-correlation">Matched Filtering (Cross-correlation)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-detected-events">Plotting Detected Events</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#associate-detected-events-across-stations">Associate Detected Events Across Stations</a></li>
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#associate-detected-events-across-stations">Associate Detected Events Across Stations</a></li>
-</ul>
+
   </nav></div>
 
 </div></div>

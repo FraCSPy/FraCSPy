@@ -101,6 +101,23 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This script loads the results of associated detected seismic events saved in JSON format, retrieves the corresponding data for each detected station, and plots examples of 4-second  segments starting from the detected times.">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_plot_detected_event_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_plot_detected_event.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Load and Plot Detected Events Across Stations</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Moment Tensor Plotting - Matrix Style">
 
 .. only:: html
@@ -165,6 +182,7 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
    /gallery/plot_DetectionFunctions
    /gallery/plot_EventImages
    /gallery/plot_Beachball
+   /gallery/plot_detected_event
    /gallery/plot_MTmatrix
    /gallery/plot_SeismicTraceImage
    /gallery/plot_SeismicWiggles

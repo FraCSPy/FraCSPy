@@ -71,7 +71,7 @@ Step-by-step installation for developers
 ****************************************
 For developers, FraCSPy can be installed such that any changes made are directly implemented in your local workspace. As before,
 we provide instructions on how this can be done in Linux/Mac and Windows. For both options, you will need to clone the repository
-from GitHub (it may be that you want to go off the :math:`*`-dev branch, such that you have all the latest changes).
+from GitHub (it may be that you want to go off the `*`-dev branch, such that you have all the latest changes).
 
 **Linux & Mac**
 

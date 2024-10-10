@@ -5,16 +5,13 @@ r"""
 Overview
 --------
 This part of the code is designed to prepare templates for seismic event detection. 
-It accomplishes this by reading event times from an event catalog and extracting the corresponding data 
-from continuous seismic recordings. The primary aim is to save these extracted templates for each station, 
-enabling their use in subsequent matched filtering analysis.
+It accomplishes this by reading event times from an event catalog and extracting the corresponding data from continuous seismic recordings. The primary aim is to save these extracted templates for each station, enabling their use in subsequent matched filtering analysis.
 
 Methodology
 -----------
 - **Data Preparation**:
     - The script reads continuous waveform data, that should be downloaded using the script in 
-    "ToC2ME_WorkedExamples" directory.
-/preparation", and extracts templates based on the seismic catalog.
+    "ToC2ME_WorkedExamples" directory. In this example the data will be downloaded on the fly
     - A band-pass filter is applied to the continuous data, targeting a frequency range of 1-200 Hz.
     - Event times from the catalog are utilized to extract corresponding templates, which are saved for each station.
     - Each extracted template is normalized to ensure a maximum absolute value of 1.
@@ -63,11 +60,11 @@ station_list = [str(stationID) for stationID in range(1120,1130)]
 
 ###############################################################################
 # Read continuous data and previously extracted templates
-# -------------------------------------------------------
+# =======================================================
 
 ###############################################################################
 # Load event catalogue
-# ^^^^^^^^^^^^^^^^^^^^
+# -------------------
 
 # Load the short event catalog from an Excel file.
 # Provide URL for the catalogue
@@ -91,7 +88,7 @@ catalog = catalog.sort_values(by=['Magnitude'], ascending=False).head(NUMBER_OF_
 
 ###############################################################################
 # Load continuous seismic data
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ----------------------------
 
 # Define client
 client = Client("IRIS")
@@ -133,7 +130,7 @@ trace_array = np.array(tr_data)
         
 ###############################################################################
 # Build Station Templates
-# -----------------------
+# =======================
 dt = st[0].stats.delta
 t = np.arange(t1, t2+dt, dt).astype(datetime)
 
@@ -159,7 +156,7 @@ for tr_i, trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting
-# ^^^^^^^^
+# =====================================
 
 # Select one template to plot; here we take the first one as an example
 example_template = templates[0][0]
@@ -182,7 +179,7 @@ plt.show()
 
 ###############################################################################
 # Matched Filtering (Cross-correlation)
-# -------------------------------------
+# =====================================
 
 results_dict = [] 
 for tr_index,trace in enumerate(trace_array):  
@@ -216,7 +213,7 @@ for tr_index,trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting Detected Events
-# ^^^^^^^^^^^^^^^^^^^^^^^^
+# =====================================
 
 if trace_results_dict:  # Check if there are detected events
     # Select the first detected event for demonstration
@@ -252,7 +249,7 @@ else:
 
 ###############################################################################
 # Associate Detected Events Across Stations
-# -----------------------------------------
+# =========================================
 # This part of the code loads the results of detected seismic events saved in JSON format, 
 # associates detected events across different stations based on their timestamps, and saves 
 # the results containing only events detected  by at least two stations within a specified time window.

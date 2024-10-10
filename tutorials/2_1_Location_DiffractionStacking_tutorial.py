@@ -151,7 +151,6 @@ only for a single microseismic event, otherwise multiple event signatures will s
 We discuss this issue as well as joint detection and localisation of multiple events using diffraction stacking 
 in :ref:`sphx_glr_tutorials_1_2_Detection_DiffractionStacking_tutorial.py`.
 
-
 References
 ^^^^^^^^^^
 Anikiev, D. (2015). Joint detection, location and source mechanism 
@@ -795,7 +794,6 @@ fig,axs = locimage3d(dstacked_sqd_rn,
 print('-------------------------------------------------------')
 print('Event hypocenter from squared-value diffraction stacking for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_sqd_rn,[dx, dy, dz])))
 print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_sqd_rn, [dx, dy, dz])))
-
 
 ###############################################################################
 # Plot resulting image volume from semblance-based diffraction stacking

@@ -55,8 +55,6 @@ the location determined from the maximum of :math:`F(\mathbf{r},t)` at the time 
 .. math::
         \mathbf{r}_{peak} = \arg\!\max_{\mathbf{r}} F(\mathbf{r},t_{peak}).
 
-
-
 References
 ^^^^^^^^^^
 Anikiev, D. (2015). Joint detection, location and source mechanism 
@@ -190,7 +188,6 @@ for isrc in np.arange(nsrc):
     elif isrc == 2:
         micro[isx[isrc], isy[isrc], isz[isrc]] = 0.9
     microseismic.append(micro)
-
 
 #%%
 
@@ -680,7 +677,6 @@ for isrc in np.arange(nsrc):
     print('Determined hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(hc_sem_wn[isrc][0], hc_sem_wn[isrc][1], hc_sem_wn[isrc][2]))
     print('Hypocentre estimation error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc]-hc_sem_wn[isrc][0], sy[isrc]-hc_sem_wn[isrc][1], sz[isrc]-hc_sem_wn[isrc][2]))
 print('-------------------------------------------------------')
-
 
 #%%
 

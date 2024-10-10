@@ -4,9 +4,9 @@ FraCSPy Changelog
 =================
 
 
-Version 1.0.0
+Version 0.1.0
 -------------
 
-*Released on: 01/10/2024*
+*Released on: 24/10/2024*
 
 * First official release.

@@ -1,5 +1,6 @@
 r"""
 2.2 Diffraction Stacking: Localisation With Polarity Correction
+
 ===============================================================
 This tutorial illustrates how to perform source localisation using 
 diffraction stacking with polarity correction by moment tensor inversion. 
@@ -331,7 +332,6 @@ L = Location(gx, gy, gz)
 from fracspy.location.utils import dist2rec
 tt = 1 / vp*dist2rec(recs,gx,gy,gz)
 print(f"Traveltime array shape: {tt.shape}")
-
 
 #%%
 

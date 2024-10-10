@@ -63,11 +63,11 @@ station_list = [str(stationID) for stationID in range(1120,1130)]
 
 ###############################################################################
 # Read continuous data and previously extracted templates
-# =======================================================
+# -------------------------------------------------------
 
 ###############################################################################
 # Load event catalogue
-# -------------------
+# ^^^^^^^^^^^^^^^^^^^^
 
 # Load the short event catalog from an Excel file.
 # Provide URL for the catalogue
@@ -91,7 +91,7 @@ catalog = catalog.sort_values(by=['Magnitude'], ascending=False).head(NUMBER_OF_
 
 ###############################################################################
 # Load continuous seismic data
-# ----------------------------
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # Define client
 client = Client("IRIS")
@@ -133,7 +133,7 @@ trace_array = np.array(tr_data)
         
 ###############################################################################
 # Build Station Templates
-# =======================
+# -----------------------
 dt = st[0].stats.delta
 t = np.arange(t1, t2+dt, dt).astype(datetime)
 
@@ -182,7 +182,7 @@ plt.show()
 
 ###############################################################################
 # Matched Filtering (Cross-correlation)
-# =====================================
+# -------------------------------------
 
 results_dict = [] 
 for tr_index,trace in enumerate(trace_array):  
@@ -216,7 +216,7 @@ for tr_index,trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting Detected Events
-# """"""""""""""""""""""""
+# ^^^^^^^^^^^^^^^^^^^^^^^^
 
 if trace_results_dict:  # Check if there are detected events
     # Select the first detected event for demonstration
@@ -252,7 +252,7 @@ else:
 
 ###############################################################################
 # Associate Detected Events Across Stations
-# =========================================
+# -----------------------------------------
 # This part of the code loads the results of detected seismic events saved in JSON format, 
 # associates detected events across different stations based on their timestamps, and saves 
 # the results containing only events detected  by at least two stations within a specified time window.

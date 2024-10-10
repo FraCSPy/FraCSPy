@@ -46,7 +46,8 @@ def MTSKirchhoff(
     tt_table : :obj:`numpy.ndarray`
         Travel time table.
     G_z : :obj:`numpy.ndarray`
-        Greens functions for a single component, i.e., z-component
+        Greens functions for a single component, i.e., z-component 
+        For more information check _fracspy.mtinversion.greensfunctions.py_
     Ms_scaling : :obj:`float`
         Scaling to be incorporated in the MTI
     engine : :obj:`str`, optional

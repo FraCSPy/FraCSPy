@@ -1,0 +1,12 @@
+﻿fracspy.detection.stacking.estimate\_origin\_times
+==================================================
+
+.. currentmodule:: fracspy.detection.stacking
+
+.. autofunction:: estimate_origin_times
+
+.. include:: backreferences/fracspy.detection.stacking.estimate_origin_times.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

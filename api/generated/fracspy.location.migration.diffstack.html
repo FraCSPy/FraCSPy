@@ -388,6 +388,13 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fracspy.detection.stacking.maxdiffstack.html">fracspy.detection.stacking.maxdiffstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.detection.stacking.stalta.html">fracspy.detection.stacking.stalta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.detection.stacking.detect_peaks.html">fracspy.detection.stacking.detect_peaks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.detection.stacking.estimate_origin_times.html">fracspy.detection.stacking.estimate_origin_times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fracspy.detection.stacking.diffstack_detect.html">fracspy.detection.stacking.diffstack_detect</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fracspy.modelling.kirchhoff.Kirchhoff.html">fracspy.modelling.kirchhoff.Kirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
@@ -518,24 +525,23 @@ various stacking approaches and optional polarity correction.</p>
 </dd>
 <dt><strong>tt</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Traveltime table of size <span class="math notranslate nohighlight">\(n_r \times n_x \times n_y \times n_z\)</span></p>
 </dd>
+<dt><strong>dt</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Time step</p>
+</dd>
 <dt><strong>nforhc</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 10</span></dt><dd><p>Number of points for hypocenter</p>
 </dd>
-<dt><strong>output_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Output type to produce. In the default case of None it is set to “max”.
-Types:</p>
-<blockquote>
-<div><p>“max” (output 3D volume as a maximum of the image function through time),
-“mean” (output 3D volume as an average of the image function through time),                
-“sumsq” (output 3D volume as a stack of the squared image function values through time),
-“full” (output full 4D image function: x,y,z,t). In this case hc is set to None.</p>
-</div></blockquote>
+<dt><strong>output_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Defines the output type. In the default case of None it is set to <code class="docutils literal notranslate"><span class="pre">max</span></code>.
+Types: <code class="docutils literal notranslate"><span class="pre">max</span></code> (output 3D volume as a maximum of the image function through time),
+<code class="docutils literal notranslate"><span class="pre">mean</span></code> (output 3D volume as an average of the image function through time),                
+<code class="docutils literal notranslate"><span class="pre">sumsq</span></code> (output 3D volume as a stack of the squared image function values through time),
+<code class="docutils literal notranslate"><span class="pre">full</span></code> (output full 4D image function: x,y,z,t). In this case hc is set to None.</p>
 </dd>
-<dt><strong>stack_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Diffraction stacking type (imaging condition), default None is the same as “absolute” (absolute value).
-Types: “absolute” (absolute value), “squared” (squared value), “semblance” (semblance-based).</p>
+<dt><strong>stack_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Diffraction stacking type (imaging condition), default None is the same as <code class="docutils literal notranslate"><span class="pre">squared</span></code>.
+Types: <code class="docutils literal notranslate"><span class="pre">absolute</span></code> (absolute-value), <code class="docutils literal notranslate"><span class="pre">squared</span></code> (squared-value), <code class="docutils literal notranslate"><span class="pre">semblance</span></code> (semblance-based).</p>
 </dd>
 <dt><strong>swsize</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional, default: 0</span></dt><dd><p>Sliding time window size for semblance-based type, amount of time steps</p>
 </dd>
 <dt><strong>polcor_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional, default: None</span></dt><dd><p>Polarity correction type to be used for amplitudes.
-None is default for no polarity correction, “mti” is for polarity correction based on moment tensor inversion.</p>
+None is default: no polarity correction, <code class="docutils literal notranslate"><span class="pre">mti</span></code> is for polarity correction based on moment tensor inversion.</p>
 </dd>
 <dt><strong>recs</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, optional, default: None</span></dt><dd><p>Array of shape (3, nrec) containing receiver coordinates.
 Must be provided if polcor_type is not None</p>
@@ -546,9 +552,9 @@ Must be provided if polcor_type is not None</p>
 <dd class="field-even"><dl>
 <dt><strong>ds_im_vol</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Diffraction stack volume, returned if output_type is not “full”</p>
 </dd>
-<dt><strong>hc</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Estimated hypocentral location, returned if output_type is not “full”</p>
+<dt><strong>hc</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Estimated hypocentral location, if output_type is not “full” is set to None</p>
 </dd>
-<dt><strong>ds_full</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Diffraction stack 4D array (x,y,z,t), returned if output_type is “full”</p>
+<dt><strong>ds_full</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Diffraction stack full array of shape (nt, n_xyz), returned if output_type is “full”</p>
 </dd>
 </dl>
 </dd>
@@ -570,7 +576,7 @@ Must be provided if polcor_type is not None</p>
 <p class="rubric">Notes</p>
 <p>The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.
 In other words, each image point represents a possible diffraction point from which seismic energy radiates. 
-The term “diffraction stacking” dates back to the works of Claerbout (1971, 1985) <a class="reference internal" href="#radddc95e5183-3" id="id1">[3]</a>, <a class="reference internal" href="#radddc95e5183-4" id="id2">[4]</a> and Timoshin (1972) <a class="reference internal" href="#radddc95e5183-6" id="id3">[6]</a>. 
+The term “diffraction stacking” dates back to the works of Claerbout (1971, 1985) <a class="reference internal" href="#radddc95e5183-3" id="id1">[3]</a>, <a class="reference internal" href="#radddc95e5183-4" id="id2">[4]</a> and Timoshin (1972) <a class="reference internal" href="#radddc95e5183-7" id="id3">[7]</a>. 
 The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). 
 Here, the diffraction stacking is related to imaging of real excitation sources.</p>
 <p>Diffraction stacking is applied to data with corrected event moveout (EMO),
@@ -582,7 +588,7 @@ and can be done in several ways:</p>
 \[F(\mathbf{r},t) = \left| \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right|,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> is a vector that defines a spatial position <span class="math notranslate nohighlight">\((x, y, z)\)</span> of the image point, 
 <span class="math notranslate nohighlight">\(A_R^{EMO}(t,\mathbf{r})\)</span> represents the EMO-corrected data at the receiver <span class="math notranslate nohighlight">\(R\)</span>, 
-and <span class="math notranslate nohighlight">\(N_R\)</span> is a number of receivers <a class="reference internal" href="#radddc95e5183-1" id="id4">[1]</a>, <a class="reference internal" href="#radddc95e5183-2" id="id5">[2]</a>.</p>
+and <span class="math notranslate nohighlight">\(N_R\)</span> is a number of receivers <a class="reference internal" href="#radddc95e5183-1" id="id4">[1]</a>.</p>
 <ol class="arabic simple" start="2">
 <li><p>Squared-value based</p></li>
 </ol>
@@ -594,7 +600,7 @@ and <span class="math notranslate nohighlight">\(N_R\)</span> is a number of rec
 </ol>
 <p>Simple stacking can be further improved using a semblance-based approach.</p>
 <p>The semblance is a coherency or similarity measure and can be understood as the ratio of the total energy (the square of sum of amplitudes) 
-to the energy of individual traces (the sum of squares) <a class="reference internal" href="#radddc95e5183-5" id="id6">[5]</a>:</p>
+to the energy of individual traces (the sum of squares) <a class="reference internal" href="#radddc95e5183-5" id="id5">[5]</a>:</p>
 <div class="math notranslate nohighlight">
 \[S(\mathbf{r},t) = \frac{\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
 {N_R \sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}    \]</div>
@@ -604,17 +610,36 @@ by introducing a sliding time window <span class="math notranslate nohighlight">
 \[S_W(\mathbf{r},t,W) = \frac{\sum_{k=it-W}^{it+W}\left[ \sum_{R=1}^{N_R} A_R^{EMO}(t,\mathbf{r}) \right]^2}
 {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}\]</div>
 <p>where <span class="math notranslate nohighlight">\(k\)</span> an index of the time-discretised signal within a sliding time interval 
-consisting of the <span class="math notranslate nohighlight">\(2W + 1\)</span> samples, and <span class="math notranslate nohighlight">\(it\)</span> is the index of time <span class="math notranslate nohighlight">\(t\)</span> <a class="reference internal" href="#radddc95e5183-7" id="id7">[7]</a>.</p>
+consisting of the <span class="math notranslate nohighlight">\(2W + 1\)</span> samples, and <span class="math notranslate nohighlight">\(it\)</span> is the index of time <span class="math notranslate nohighlight">\(t\)</span> <a class="reference internal" href="#radddc95e5183-8" id="id6">[8]</a>.</p>
 <p>Depending on the desired output, the function can output either a 3D volume and a location, 
 or a full 4D array (time dimension + 3 spatial dimensions).</p>
 <p>By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:</p>
 <div class="math notranslate nohighlight">
-\[I(\mathbf{r}) = \max_t F(\mathbf{r},t).\]</div>
+\[F_s(\mathbf{r}) = \max_t F(\mathbf{r},t).\]</div>
 <p>Optionally, one can output a 3D image volume obtained as a mean of the 4D image function over time, e.g.:</p>
 <div class="math notranslate nohighlight">
-\[I(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).\]</div>
-<p>The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.</p>
-<p>Polarity correction, if requested, is done using moment tensor inversion:</p>
+\[F_s(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).\]</div>
+<p>Another option is to output a 3D image volume obtained as a sum of squared values of the 4D image function over time, e.g.:</p>
+<div class="math notranslate nohighlight">
+\[F_s(\mathbf{r}) = \sum_t F^2(\mathbf{r},t).\]</div>
+<p>The full 4D output is useful for subsequent detection of multiple events.</p>
+<p>Polarity correction, if requested, is done using moment tensor inversion <a class="reference internal" href="#radddc95e5183-2" id="id7">[2]</a>:</p>
+<div class="math notranslate nohighlight">
+\[F_{pc}(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} \phi_R(\mathbf{r}) A_R^{EMO+PC} \right|,\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right),\]</div>
+<p>and <span class="math notranslate nohighlight">\(\phi_R(\mathbf{r})\)</span> are the defined through the <span class="math notranslate nohighlight">\(\mathrm{sign}\)</span> function:</p>
+<div class="math notranslate nohighlight">
+\[\phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{M}(\mathbf{r})\)</span> is the vectorized moment tensor derived <a class="reference internal" href="#radddc95e5183-6" id="id8">[6]</a> as</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}(\mathbf{r}) = \left(\sum_{R=1}^{N_R} \mathbf{G}_R^T(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\right)^{-1} \mathbf{d}(\mathbf{r}),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\)</span> is the vectorized derivative of Green’s function for receiver <span class="math notranslate nohighlight">\(R\)</span> 
+and <span class="math notranslate nohighlight">\(\mathbf{d}(\mathbf{r})\)</span> is a vector obtained from amplitudes of the corresponding waveforms:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).\]</div>
+<p>More details on the described inversion including stability issues can be found in Zhebel &amp; Eisner (2014) <a class="reference internal" href="#radddc95e5183-9" id="id9">[9]</a>.</p>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
 <div class="citation" id="radddc95e5183-1" role="doc-biblioentry">
@@ -625,7 +650,7 @@ St. Petersburg State University. St. Petersburg.
 <a class="reference external" href="https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf">https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf</a></p>
 </div>
 <div class="citation" id="radddc95e5183-2" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">2</a><span class="fn-bracket">]</span></span>
 <p>Anikiev, D., Valenta, J., Staněk, F. &amp; Eisner, L. (2014). Joint location and 
 source mechanism inversion of microseismic events: Benchmarking on seismicity 
 induced by hydraulic fracturing. Geophysical Journal International, 198(1), 
@@ -643,22 +668,31 @@ Geophysics, 36(3), 467-481. <a class="reference external" href="https://doi.org/
 Scientific Publications. <a class="reference external" href="https://sepwww.stanford.edu/sep/prof/iei2/">https://sepwww.stanford.edu/sep/prof/iei2/</a></p>
 </div>
 <div class="citation" id="radddc95e5183-5" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">5</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
 <p>Neidell, N. S., &amp; Taner, M. T. (1971). SEMBLANCE AND OTHER COHERENCY MEASURES 
 FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. 
 <a class="reference external" href="https://doi.org/10.1190/1.1440186">https://doi.org/10.1190/1.1440186</a></p>
 </div>
 <div class="citation" id="radddc95e5183-6" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">6</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">6</a><span class="fn-bracket">]</span></span>
+<p>Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of waveform data: synthetic waveforms. 
+Physics of the Earth and Planetary Interiors, 30(2–3), 242–259. <a class="reference external" href="https://doi.org/10.1016/0031-9201(82)90111-x">https://doi.org/10.1016/0031-9201(82)90111-x</a></p>
+</div>
+<div class="citation" id="radddc95e5183-7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">7</a><span class="fn-bracket">]</span></span>
 <p>Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic 
 recordings. Moscow: Nedra. [In Russian].</p>
 </div>
-<div class="citation" id="radddc95e5183-7" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">7</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="radddc95e5183-8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">8</a><span class="fn-bracket">]</span></span>
 <p>Trojanowski, J., &amp; Eisner, L. (2016). Comparison of migration‐based location 
 and detection methods for microseismic events. Geophysical Prospecting, 65(1), 
-47–63. 
-<a class="reference external" href="https://doi.org/10.1111/1365-2478.12366">https://doi.org/10.1111/1365-2478.12366</a></p>
+47–63. <a class="reference external" href="https://doi.org/10.1111/1365-2478.12366">https://doi.org/10.1111/1365-2478.12366</a></p>
+</div>
+<div class="citation" id="radddc95e5183-9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">9</a><span class="fn-bracket">]</span></span>
+<p>Zhebel, O., &amp; Eisner, L. (2014). Simultaneous microseismic event localization and source mechanism determination. 
+Geophysics, 80(1), KS1–KS9. <a class="reference external" href="https://doi.org/10.1190/geo2014-0055.1">https://doi.org/10.1190/geo2014-0055.1</a></p>
 </div>
 </div>
 </dd></dl>

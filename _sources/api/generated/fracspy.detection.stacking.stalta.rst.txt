@@ -1,0 +1,12 @@
+﻿fracspy.detection.stacking.stalta
+=================================
+
+.. currentmodule:: fracspy.detection.stacking
+
+.. autofunction:: stalta
+
+.. include:: backreferences/fracspy.detection.stacking.stalta.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

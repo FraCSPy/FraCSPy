@@ -1,0 +1,12 @@
+﻿fracspy.detection.stacking.diffstack\_detect
+============================================
+
+.. currentmodule:: fracspy.detection.stacking
+
+.. autofunction:: diffstack_detect
+
+.. include:: backreferences/fracspy.detection.stacking.diffstack_detect.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

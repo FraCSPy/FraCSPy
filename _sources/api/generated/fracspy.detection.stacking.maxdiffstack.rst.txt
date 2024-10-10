@@ -1,0 +1,12 @@
+﻿fracspy.detection.stacking.maxdiffstack
+=======================================
+
+.. currentmodule:: fracspy.detection.stacking
+
+.. autofunction:: maxdiffstack
+
+.. include:: backreferences/fracspy.detection.stacking.maxdiffstack.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

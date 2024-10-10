@@ -1,0 +1,979 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>fracspy.detection.stacking &#8212; FraCSPy</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/style.css?v=e5b2244c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=e45f66c9" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/fracspy/detection/stacking';</script>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    
+    <script src="../../../_static/require.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/fracspy_logo.png" class="logo__image only-light" alt="FraCSPy - Home"/>
+    <script>document.write(`<img src="../../../_static/fracspy_logo_dark.png" class="logo__image only-dark" alt="FraCSPy - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/index.html">
+    FraCSPy API
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../contributing.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorials/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/index.html">
+    FraCSPy API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../contributing.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../credits.html">
+    Credits
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">fracspy.dete...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for fracspy.detection.stacking</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1">#from fracspy.location.utils import *</span>
+<span class="kn">from</span> <span class="nn">fracspy.location</span> <span class="kn">import</span> <span class="n">Location</span>
+
+<div class="viewcode-block" id="maxdiffstack">
+<a class="viewcode-back" href="../../../api/generated/fracspy.detection.stacking.maxdiffstack.html#fracspy.detection.stacking.maxdiffstack">[docs]</a>
+<span class="k">def</span> <span class="nf">maxdiffstack</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">tt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                 <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>                                                    
+                 <span class="n">stack_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">swsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">recs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Maximum diffraction stack function for microseismic event detection.</span>
+
+<span class="sd">    This routine uses diffraction stacking to obtain the time-dependent maximum stack function used for microseismic event detection.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data of shape :math:`n_r \times n_t`    </span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in X-axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Y-axis</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Z-axis</span>
+<span class="sd">    tt : :obj:`numpy.ndarray`</span>
+<span class="sd">        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`</span>
+<span class="sd">    stack_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Diffraction stacking type (imaging condition), default None is the same as ``squared``.</span>
+<span class="sd">        Types: ``absolute`` (absolute value), ``squared`` (squared value), ``semblance`` (semblance-based).</span>
+<span class="sd">    swsize : :obj:`int`, optional, default: 0</span>
+<span class="sd">        Sliding time window size for semblance-based type, amount of time steps</span>
+<span class="sd">    polcor_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Polarity correction type to be used for amplitudes.</span>
+<span class="sd">        None is default for no polarity correction, ``mti`` is for polarity correction based on moment tensor inversion.</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`, optional, default: None</span>
+<span class="sd">        Array of shape (3, nrec) containing receiver coordinates.</span>
+<span class="sd">        Must be provided if polcor_type is not None</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    msf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent maximum stack function</span>
+<span class="sd">    ds_full : :obj:`numpy.ndarray`</span>
+<span class="sd">        Diffraction stack array reshaped to 4D (nt,nx,ny,nz)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For every time step :math:`t` the maximum of the diffraction stacking imaging function :math:`F(\mathbf{r},t)` over all potential locations</span>
+<span class="sd">    :math:`\mathbf{r}` is evaluated [1]_:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        F_t(t) = \max_{\mathbf{r}} F(\mathbf{r},t),</span>
+
+<span class="sd">    where :math:`F_t(t)` is referred to as the maximum stack function or MSF [2]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Anikiev, D. (2015). Joint detection, location and source mechanism </span>
+<span class="sd">       determination of microseismic events (Doctoral dissertation). </span>
+<span class="sd">       St. Petersburg State University. St. Petersburg. </span>
+<span class="sd">       https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf</span>
+
+<span class="sd">    .. [2] Anikiev, D., Valenta, J., Staněk, F. &amp; Eisner, L. (2014). Joint location and </span>
+<span class="sd">       source mechanism inversion of microseismic events: Benchmarking on seismicity </span>
+<span class="sd">       induced by hydraulic fracturing. Geophysical Journal International, 198(1), </span>
+<span class="sd">       249–258. </span>
+<span class="sd">       https://doi.org/10.1093/gji/ggu126</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get sizes</span>
+    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">ngrid</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
+    <span class="n">nr</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="c1"># Set up the location class</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">Location</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Apply diffraction stacking to get full 4D function</span>
+    <span class="n">ds_full</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                         <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;diffstack&quot;</span><span class="p">,</span>
+                         <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                         <span class="n">tt</span><span class="o">=</span><span class="n">tt</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>
+                         <span class="n">stack_type</span><span class="o">=</span><span class="n">stack_type</span><span class="p">,</span>
+                         <span class="n">swsize</span><span class="o">=</span><span class="n">swsize</span><span class="p">,</span>
+                         <span class="n">polcor_type</span><span class="o">=</span><span class="n">polcor_type</span><span class="p">,</span>
+                         <span class="n">recs</span><span class="o">=</span><span class="n">recs</span><span class="p">,</span>
+                         <span class="n">output_type</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Get the time-dependent MSF by taking maximum over the spatial dimension</span>
+    <span class="n">msf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ds_full</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Return MSF and diffraction stack 4D array, i.e. reshaped to (nt,nx,ny,nz)         </span>
+    <span class="k">return</span> <span class="n">msf</span><span class="p">,</span> <span class="n">ds_full</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="stalta">
+<a class="viewcode-back" href="../../../api/generated/fracspy.detection.stacking.stalta.html#fracspy.detection.stacking.stalta">[docs]</a>
+<span class="k">def</span> <span class="nf">stalta</span><span class="p">(</span><span class="n">tdf</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+           <span class="n">dt</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span>
+           <span class="n">stw</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span>
+           <span class="n">ltw</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span>
+           <span class="n">gtw</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;STA/LTA computation.</span>
+<span class="sd">    </span>
+<span class="sd">    Computes Short Term Average / Long Term Average (STA/LTA) </span>
+<span class="sd">    for a time-dependent function provided the short time window (STW), long time window (LTW) and a gap time window (GTW) between them.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tdf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent function of shape (nt,)</span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Time step of the tdf</span>
+<span class="sd">    stw : :obj:`float`</span>
+<span class="sd">        Short time window in seconds (must be more than two time steps)</span>
+<span class="sd">    ltw : :obj:`float`</span>
+<span class="sd">        Long time window in seconds (must be more than two time steps)</span>
+<span class="sd">    gtw : :obj:`float`, optional, default: 0</span>
+<span class="sd">        Gap time window in seconds (must be non-negative)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    slf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent STA/LTA function</span>
+<span class="sd">    sta : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent STA function</span>
+<span class="sd">    lta : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent LTA function</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The LTA and STA are defined as root mean squares of the signal in the LTW and STW with subtracted constant level.</span>
+<span class="sd">    This constant level is the minimum between the average of the signal in the STW and LTW.</span>
+<span class="sd">    The LTW goes first, then there is a GTW (if non-zero) and then goes the STW.</span>
+<span class="sd">    The value of LTA/STA is calculated for the time moment on the border of the GTW and STW.</span>
+<span class="sd">    The time function is padded appropriately on the both sides to have </span>
+<span class="sd">    a full-length preceding LTW + GTW and a full-length following STW.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get size of the function</span>
+    <span class="n">nt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tdf</span><span class="p">)</span>
+
+    <span class="c1"># Check if nt is at least 4 time steps</span>
+    <span class="k">if</span> <span class="n">nt</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">dt</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input time-dependent function must be more than three time steps.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check if stw and ltw are more than two time steps</span>
+    <span class="k">if</span> <span class="n">stw</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span> <span class="ow">or</span> <span class="n">ltw</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;STW and LTW must be more than two time steps.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check if gtw is non-negative</span>
+    <span class="k">if</span> <span class="n">gtw</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;GTW must be non-negative.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get sizes of stw, ltw and gtw, rounding and converting to integers</span>
+    <span class="n">nstw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">stw</span> <span class="o">/</span> <span class="n">dt</span><span class="p">))</span>
+    <span class="n">nltw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">ltw</span> <span class="o">/</span> <span class="n">dt</span><span class="p">))</span>
+    <span class="n">ngtw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">gtw</span> <span class="o">/</span> <span class="n">dt</span><span class="p">))</span>
+
+    <span class="c1"># Initialise STA/LTA function (SLF)</span>
+    <span class="n">slf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tdf</span><span class="p">)</span>
+
+    <span class="c1"># Initialise arrays for STA/LTA, STA, LTA</span>
+    <span class="n">slf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+    <span class="n">sta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+    <span class="n">lta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+
+    <span class="c1"># Find low level of amplitudes to substitute for zeros in tdf</span>
+    <span class="n">lowlevel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tdf</span><span class="p">)))</span>
+
+    <span class="c1"># Substitute zeros with low level in tdf to avoid nans</span>
+    <span class="n">tdf</span><span class="p">[</span><span class="n">tdf</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">lowlevel</span>
+    
+    <span class="c1"># Avoid boundary problems by padding the input signal appropriately</span>
+    <span class="n">padded_tdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">tdf</span><span class="p">,</span> <span class="p">(</span><span class="n">nltw</span> <span class="o">+</span> <span class="n">ngtw</span><span class="p">,</span> <span class="n">nstw</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;reflect&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Compute LTA and STA as the root mean square (RMS) in the respective windows</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
+        <span class="c1"># Indices for the LTA window</span>
+        <span class="n">lta_start</span> <span class="o">=</span> <span class="n">it</span>
+        <span class="n">lta_end</span> <span class="o">=</span> <span class="n">it</span> <span class="o">+</span> <span class="n">nltw</span>
+        
+        <span class="c1"># Indices for the STA window</span>
+        <span class="n">sta_start</span> <span class="o">=</span> <span class="n">it</span> <span class="o">+</span> <span class="n">nltw</span> <span class="o">+</span> <span class="n">ngtw</span>
+        <span class="n">sta_end</span> <span class="o">=</span> <span class="n">sta_start</span> <span class="o">+</span> <span class="n">nstw</span>
+        
+        <span class="c1"># Calculate RMS for LTA and STA</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">padded_tdf</span><span class="p">[</span><span class="n">lta_start</span><span class="p">:</span><span class="n">lta_end</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">padded_tdf</span><span class="p">[</span><span class="n">sta_start</span><span class="p">:</span><span class="n">sta_end</span><span class="p">]))</span>
+        <span class="n">lta</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">padded_tdf</span><span class="p">[</span><span class="n">lta_start</span><span class="p">:</span><span class="n">lta_end</span><span class="p">]</span><span class="o">-</span><span class="n">level</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">sta</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">padded_tdf</span><span class="p">[</span><span class="n">sta_start</span><span class="p">:</span><span class="n">sta_end</span><span class="p">]</span><span class="o">-</span><span class="n">level</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        
+        <span class="c1"># Calculate STA/LTA ratio, avoid division by zero        </span>
+        <span class="n">slf</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">sta</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">/</span> <span class="n">lta</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="k">if</span> <span class="n">lta</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    
+    <span class="k">return</span> <span class="n">slf</span><span class="p">,</span> <span class="n">sta</span><span class="p">,</span> <span class="n">lta</span></div>
+
+
+<div class="viewcode-block" id="detect_peaks">
+<a class="viewcode-back" href="../../../api/generated/fracspy.detection.stacking.detect_peaks.html#fracspy.detection.stacking.detect_peaks">[docs]</a>
+<span class="k">def</span> <span class="nf">detect_peaks</span><span class="p">(</span><span class="n">msf</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">slf</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                 <span class="n">slt</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Detect peaks in the maximum stack function based on STA/LTA function.</span>
+<span class="sd">    </span>
+<span class="sd">    Detect local maxima in the time-dependent maximum stack function (MSF) based on the analysis of STA/LTA function (SLF) and an STA/LTA thereshold (SLT).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    msf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent maximum stack function of shape (nt,)</span>
+<span class="sd">    slf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent STA/LTA function of shape (nt,)    </span>
+<span class="sd">    slt : :obj:`float`</span>
+<span class="sd">        STA/LTA threshold, must be non-negative</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    idp : :obj:`numpy.ndarray`</span>
+<span class="sd">        Integer array of time indices of determined peaks</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError :</span>
+<span class="sd">        if slt is negative</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The SLF is compared to the SLT. </span>
+<span class="sd">    If all values of the SLF are below the SLT, the array of time indices of determined peaks (`idp`) is set to be empty.</span>
+<span class="sd">    Otherwise, there will be one or more regions where SLf exceeds SLT. </span>
+<span class="sd">    For each of these regions, sequentially, the algorithm finds an index of the maximum value of the MSF and saves it the `idp`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check SLT</span>
+    <span class="k">if</span> <span class="n">slt</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;STA/LTA threshold must be non-negative, but it is </span><span class="si">{</span><span class="n">slt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Identify regions where SLF exceeds the threshold SLT</span>
+    <span class="n">above_threshold</span> <span class="o">=</span> <span class="n">slf</span> <span class="o">&gt;</span> <span class="n">slt</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">above_threshold</span><span class="p">):</span>
+        <span class="c1"># Return empty array if no values in SLF exceed the threshold</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="c1"># Find the boundaries of regions where SLF exceeds the threshold</span>
+    <span class="n">regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">above_threshold</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Include start and end boundaries if necessary</span>
+    <span class="k">if</span> <span class="n">above_threshold</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">above_threshold</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">above_threshold</span><span class="p">))</span>
+
+    <span class="c1"># Initialize the array for storing peak indices</span>
+    <span class="n">idp</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Iterate over the regions to detect peaks</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">regions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">regions</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Find the index of the maximum value of MSF in this region</span>
+        <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">msf</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span> <span class="o">+</span> <span class="n">start</span>
+        <span class="n">idp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_index</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="estimate_origin_times">
+<a class="viewcode-back" href="../../../api/generated/fracspy.detection.stacking.estimate_origin_times.html#fracspy.detection.stacking.estimate_origin_times">[docs]</a>
+<span class="k">def</span> <span class="nf">estimate_origin_times</span><span class="p">(</span><span class="n">idp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">ds_full</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">tt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                          <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimate origin times of the events detected with diffraction stacking.</span>
+<span class="sd">    </span>
+<span class="sd">    Estimate origin times of the events using traveltimes and the time indices </span>
+<span class="sd">    determined from the maximum stack function (MSF) using STA/LTA analysis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    idp : :obj:`numpy.ndarray`</span>
+<span class="sd">        Integer array of time indices of determined peaks</span>
+<span class="sd">    ds_full : :obj:`numpy.ndarray`</span>
+<span class="sd">        Diffraction stack full 4D array of shape (nt, nx, ny, nz)</span>
+<span class="sd">    tt : :obj:`numpy.ndarray`</span>
+<span class="sd">        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`    </span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Time step</span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in X-axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Y-axis</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Z-axis</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    eot : :obj:`numpy.ndarray`</span>
+<span class="sd">        Array of estimated origin times for each of the determined peaks</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For each determined MSF peak, the origin time :math:`t_{est}` of the corresponding event can be determined from peak time :math:`t_{peak}` as </span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{t}_{est} = t_{peak} - \min_{R} T_R(\mathbf{r}_{peak}).</span>
+
+<span class="sd">    where :math:`T_R(\mathbf{r}_{peak})` is the traveltime to receiver :math:`R` from :math:`\mathbf{r}_{peak}` - </span>
+<span class="sd">    the location determined from the maximum of the 4D imaging function :math:`F(\mathbf{r},t)` at the time moment :math:`t_{peak}`:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{r}_{peak} = \arg\!\max_{\mathbf{r}} F(\mathbf{r},t_{peak}).</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get sizes</span>
+    <span class="n">nt</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">ds_full</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Number of detected peaks</span>
+    <span class="n">nde</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idp</span><span class="p">)</span>
+
+    <span class="c1"># Create data time vector</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nt</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+    <span class="c1"># Initialize the eot array</span>
+    <span class="n">eot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nde</span><span class="p">)</span>
+
+    <span class="c1"># Loop over detections</span>
+    <span class="k">for</span> <span class="n">ide</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nde</span><span class="p">):</span>
+        <span class="c1"># Get time index</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="n">idp</span><span class="p">[</span><span class="n">ide</span><span class="p">]</span>
+
+        <span class="c1"># Find spatial indices corresponding to the maximum of ds_full at time index it</span>
+        <span class="n">ix</span><span class="p">,</span> <span class="n">iy</span><span class="p">,</span> <span class="n">iz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ds_full</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">ds_full</span><span class="p">[</span><span class="n">it</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># Get the estimated origin time</span>
+        <span class="n">eot</span><span class="p">[</span><span class="n">ide</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">tt</span><span class="p">[:,</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">eot</span></div>
+
+
+<div class="viewcode-block" id="diffstack_detect">
+<a class="viewcode-back" href="../../../api/generated/fracspy.detection.stacking.diffstack_detect.html#fracspy.detection.stacking.diffstack_detect">[docs]</a>
+<span class="k">def</span> <span class="nf">diffstack_detect</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">tt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                     <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>       
+                     <span class="n">stw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                     <span class="n">ltw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                     <span class="n">gtw</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                     <span class="n">slt</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>                                             
+                     <span class="n">stack_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">swsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                     <span class="n">polcor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">recs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Microseismic event detection based on diffraction stacking.</span>
+
+<span class="sd">    The time-dependent maximum stack function (MSF) obtained by diffraction stacking is analysed using STA/LTA.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : :obj:`numpy.ndarray`</span>
+<span class="sd">        Data of shape :math:`n_r \times n_t`    </span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in X-axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Y-axis</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Imaging area grid vector in Z-axis</span>
+<span class="sd">    tt : :obj:`numpy.ndarray`</span>
+<span class="sd">        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`</span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Time step</span>
+<span class="sd">    stw : :obj:`float`</span>
+<span class="sd">        Short time window in seconds (must be more than two time steps)</span>
+<span class="sd">    ltw : :obj:`float`</span>
+<span class="sd">        Long time window in seconds (must be more than two time steps)</span>
+<span class="sd">    gtw : :obj:`float`, optional, default: 0</span>
+<span class="sd">        Gap time window in seconds (must be non-negative)</span>
+<span class="sd">    gtw : :obj:`float`, optional, default: 0</span>
+<span class="sd">        Gap time window in seconds (must be non-negative)</span>
+<span class="sd">    stack_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Diffraction stacking type (imaging condition), default None is the same as ``squared``.</span>
+<span class="sd">        Types: ``absolute`` (absolute value), ``squared`` (squared-value), ``semblance`` (semblance-based).</span>
+<span class="sd">    swsize : :obj:`int`, optional, default: 0</span>
+<span class="sd">        Sliding time window size for semblance-based type, amount of time steps</span>
+<span class="sd">    polcor_type : :obj:`str`, optional, default: None</span>
+<span class="sd">        Polarity correction type to be used for amplitudes.</span>
+<span class="sd">        None is default for no polarity correction, ``mti`` is for polarity correction based on moment tensor inversion.</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`, optional, default: None</span>
+<span class="sd">        Array of shape (3, nrec) containing receiver coordinates.</span>
+<span class="sd">        Must be provided if polcor_type is not None</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    msf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent maximum stack function</span>
+<span class="sd">    slf : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time-dependent STA/LTA function</span>
+<span class="sd">    idp : :obj:`numpy.ndarray`</span>
+<span class="sd">        Integer array of time indices of determined peaks</span>
+<span class="sd">    eot : :obj:`numpy.ndarray`</span>
+<span class="sd">        Array of estimated origin times for each of the determined peaks</span>
+<span class="sd">    ds_full : :obj:`numpy.ndarray`</span>
+<span class="sd">        Diffraction stack full 4D array of shape (nt, nx, ny, nz)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The local maxima of the maximum stack function [1]_ (MSF) occur at the times linked to the origin times of microseismic events. </span>
+<span class="sd">    These local maxima can be found by the STA/LTA (Short Term Average / Long Term Average) method [3]_.</span>
+<span class="sd">    Local maxima are detected by measuring the ratio of average stack energy in short and long sliding time windows and</span>
+<span class="sd">    comparing this ratio with the pre-defined STA/LTA threshold (SLT). </span>
+<span class="sd">    The number of detected events depends on the signal-to-noise ratio (SNR) of the maximum stack function measured by STA/LTA [2]_.</span>
+<span class="sd">    If the SLT is too high, too few events are detected, but there is a high certainty that the detected events are real.</span>
+<span class="sd">    If a too low threshold is used, false events will be detected as real.</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Anikiev, D. (2015). Joint detection, location and source mechanism </span>
+<span class="sd">       determination of microseismic events (Doctoral dissertation). </span>
+<span class="sd">       St. Petersburg State University. St. Petersburg. </span>
+<span class="sd">       https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf</span>
+
+<span class="sd">    .. [2] Anikiev, D., Valenta, J., Staněk, F. &amp; Eisner, L. (2014). Joint location and </span>
+<span class="sd">       source mechanism inversion of microseismic events: Benchmarking on seismicity </span>
+<span class="sd">       induced by hydraulic fracturing. Geophysical Journal International, 198(1), </span>
+<span class="sd">       249–258. </span>
+<span class="sd">       https://doi.org/10.1093/gji/ggu126</span>
+
+<span class="sd">    .. [3] Trnkoczy, A. (2012). Understanding and parameter setting of STA/LTA trigger algorithm. </span>
+<span class="sd">        In: Bormann, P. (Ed.), New Manual of Seismological Observatory Practice 2 (NMSOP-2), </span>
+<span class="sd">        Potsdam: Deutsches GeoForschungsZentrum GFZ, 1-20.</span>
+<span class="sd">        https://doi.org/10.2312/GFZ.NMSOP-2_IS_8.1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get maximum stack function</span>
+    <span class="n">msf</span><span class="p">,</span><span class="n">ds_full</span> <span class="o">=</span> <span class="n">maxdiffstack</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                         <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                         <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+                         <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                         <span class="n">tt</span><span class="o">=</span><span class="n">tt</span><span class="p">,</span>
+                         <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>                                                    
+                         <span class="n">stack_type</span><span class="o">=</span><span class="n">stack_type</span><span class="p">)</span>
+    
+    <span class="c1"># Compute STA/LTA</span>
+    <span class="n">slf</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">stalta</span><span class="p">(</span><span class="n">tdf</span><span class="o">=</span><span class="n">msf</span><span class="p">,</span>
+                     <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>
+                     <span class="n">stw</span><span class="o">=</span><span class="n">stw</span><span class="p">,</span>
+                     <span class="n">ltw</span><span class="o">=</span><span class="n">ltw</span><span class="p">,</span>
+                     <span class="n">gtw</span><span class="o">=</span><span class="n">gtw</span><span class="p">)</span>
+
+    <span class="c1"># Detect msf peaks in triggered zones</span>
+    <span class="n">idp</span> <span class="o">=</span> <span class="n">detect_peaks</span><span class="p">(</span><span class="n">msf</span><span class="o">=</span><span class="n">msf</span><span class="p">,</span>
+                       <span class="n">slf</span><span class="o">=</span><span class="n">slf</span><span class="p">,</span>
+                       <span class="n">slt</span><span class="o">=</span><span class="n">slt</span><span class="p">)</span>
+
+    <span class="c1"># Estimate event origin times</span>
+    <span class="n">eot</span> <span class="o">=</span> <span class="n">estimate_origin_times</span><span class="p">(</span><span class="n">idp</span><span class="o">=</span><span class="n">idp</span><span class="p">,</span>
+                                <span class="n">ds_full</span><span class="o">=</span><span class="n">ds_full</span><span class="p">,</span>
+                                <span class="n">tt</span><span class="o">=</span><span class="n">tt</span><span class="p">,</span>
+                                <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>                                
+                                <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                                <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+                                <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">msf</span><span class="p">,</span><span class="n">slf</span><span class="p">,</span><span class="n">idp</span><span class="p">,</span><span class="n">eot</span><span class="p">,</span><span class="n">ds_full</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, FraCSPy Development Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

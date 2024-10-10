@@ -1,0 +1,12 @@
+﻿fracspy.detection.stacking.detect\_peaks
+========================================
+
+.. currentmodule:: fracspy.detection.stacking
+
+.. autofunction:: detect_peaks
+
+.. include:: backreferences/fracspy.detection.stacking.detect_peaks.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -1,7 +1,7 @@
 r"""
 1.2 Diffraction Stacking: Detection
 ===================================
-This tutorial illustrates how to perform microseismic event detection using diffraction stacking. 
+This tutorial illustrates how to perform joint microseismic event detection and localisation using diffraction stacking. 
 
 We consider here a simple case of a homogeneous subsurface model and a set of point microseismic sources with various epicenters and various origin times.
 We consider only P-waves and single-component receivers for simplicity.
@@ -26,31 +26,34 @@ https://pylops.readthedocs.io
 
 Detection by diffraction stacking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Basics of simple diffraction stacking are explained in
-:ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
+The basics of localisation by diffraction stacking are explained in
+:ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py`.
 
 Microseismic data always contain scattered energy and noise which may result in multiple
 local maxima of the 4D imaging function. Therefore, a certain criterion is required to identify these local maxima
 as detections of microseismic events.
-For this purpose a joint detection algorithm was proposed in Anikiev at al. (2014).
-For every time :math:`t` the maximum of the image function over all potential locations is
-evaluated (thus only one event at any given time :math:`t` is assumed):
+For this purpose a joint detection and localisation algorithm was proposed in Anikiev at al. (2014).
+For every time :math:`t` the maximum of the imaging function over all potential locations :math:`\mathbf{r}` is
+evaluated:
 
 .. math::
         F_t(t) = \max_{\mathbf{r}} F(\mathbf{r},t)
 
-The leading local maxima of the function :math:`F_t(t)` (later on referred to it as the
-maximum stack function or MSF) occur at the origin times of microseismic events (Anikiev 2015).
-These local maxima can be found by triggering algorithms, usually used for automatic picking of
-seismic signal, for instance, the STA/LTA (Short Term Average / Long Term Average) method
- (e.g., Withers et al., 1998; Trnkoczy, 2012). Local maxima are detected by
-measuring the ratio of average stack values in short and long sliding time windows and
-comparing this ratio with the pre-defined STA/LTA threshold. As seismic waves scatter at
-the near-surface or along the path, there can be multiple extrema in the MSF
-corresponding to later arrivals. Therefore, it is necessary to make sure that only the first
-(leading) maximum in a group is identified for event detection and location (Anikiev 2015).
+The local maxima of the function :math:`F_t(t)` (later on referred to as the maximum stack function or MSF) occur at the times linked to the origin times of microseismic events (Anikiev 2015).
+These local maxima can be found by triggering algorithms, usually used for automatic picking of seismic signal, for instance, the STA/LTA (Short Term Average / Long Term Average) method (e.g., Withers et al. 1998; Trnkoczy 2012).
+Local maxima are detected by measuring the ratio of average stack energy in short and long sliding time windows and comparing this ratio with the pre-defined STA/LTA threshold (Anikiev et al., 2014).
+For each zone triggered by the high STA/LTA once can determine a corresponding maximum (or peak) of the MSF an its time :math:`t_{peak}`.
 
+For each determined peak, the origin time :math:`t_{est}` of the corresponding event can be determined from :math:`t_{peak}` as 
+
+.. math::
+        \mathbf{t}_{est} = t_{peak} - \min_{R} T_R(\mathbf{r}_{peak}).
+
+where :math:`T_R(\mathbf{r}_{peak})` is the traveltime to receiver :math:`R` from :math:`\mathbf{r}_{peak}` - 
+the location determined from the maximum of :math:`F(\mathbf{r},t)` at the time moment :math:`t_{peak}`:
+
+.. math::
+        \mathbf{r}_{peak} = \arg\!\max_{\mathbf{r}} F(\mathbf{r},t_{peak}).
 
 References
 ^^^^^^^^^^
@@ -65,7 +68,8 @@ induced by hydraulic fracturing. Geophysical Journal International, 198(1),
 249–258. https://doi.org/10.1093/gji/ggu126
 
 Trnkoczy, A. (2012). Understanding and parameter setting of STA/LTA trigger algorithm. 
-In: Bormann, P. (Ed.), New Manual of Seismological Observatory Practice 2 (NMSOP-2), Potsdam: Deutsches GeoForschungsZentrum GFZ, 1-20.
+In: Bormann, P. (Ed.), New Manual of Seismological Observatory Practice 2 (NMSOP-2), 
+Potsdam: Deutsches GeoForschungsZentrum GFZ, 1-20.
 https://doi.org/10.2312/GFZ.NMSOP-2_IS_8.1
 
 Withers, M., Aster, R., Young, C., Beiriger, J., Harris, M., Moore, S., & Trujillo, J. (1998). 
@@ -82,6 +86,8 @@ Bulletin of the Seismological Society of America, 88(1), 95–106. https://doi.o
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import cmcrameri.cm as cmc
 
 from pylops.utils import dottest
 from pylops.utils.wavelets import ricker
@@ -93,10 +99,12 @@ from fracspy.utils.synthutils import add_noise
 # Import location utils
 from fracspy.location import Location
 from fracspy.location.utils import *
+from fracspy.detection.stacking import *
 
 # Import visualisation utils
 from fracspy.visualisation.traceviz import traceimage
 from fracspy.visualisation.eventimages import locimage3d
+from fracspy.visualisation.plotting_support import *
 
 # Deal with warnings (for a cleaner code)
 import warnings
@@ -169,14 +177,17 @@ for isrc in np.arange(nsrc):
 # Origin times in sec
 ort = [0, 0.15, 0.40]
 
-# Define different magnitudes
-microseismic0 = np.zeros((nx, ny, nz))
-microseismic1 = np.zeros((nx, ny, nz))
-microseismic2 = np.zeros((nx, ny, nz))
-microseismic0[isx[0], isy[0], isz[0]] = 1.
-microseismic1[isx[1], isy[1], isz[1]] = 0.3
-microseismic2[isx[2], isy[2], isz[2]] = 0.8
-
+# Create source arrays in a loop, using different strengths for the sources 
+microseismic = []
+for isrc in np.arange(nsrc):
+    micro = np.zeros((nx, ny, nz))
+    if isrc == 0:
+        micro[isx[isrc], isy[isrc], isz[isrc]] = 1.0
+    elif isrc == 1:
+        micro[isx[isrc], isy[isrc], isz[isrc]] = 0.3
+    elif isrc == 2:
+        micro[isx[isrc], isy[isrc], isz[isrc]] = 0.9
+    microseismic.append(micro)
 
 #%%
 
@@ -218,21 +229,15 @@ Op = Kirchhoff(z=z,
 
 _ = dottest(Op, verb=True)
 
-#%%
-
 ###############################################################################
 # Forward modelling
 # """""""""""""""""
-# Apply operator to model data for each event
-frwddata0 = (Op @ microseismic0.flatten().squeeze()).reshape(nr,nt)
-frwddata1 = (Op @ microseismic1.flatten().squeeze()).reshape(nr,nt)
-frwddata2 = (Op @ microseismic2.flatten().squeeze()).reshape(nr,nt)
+# Apply operator to model data for each event, shift by origin time and store in frwddata
 
-# Combine the data
-frwddata = np.roll(frwddata0,shift=int(ort[0]/dt), axis=1) + np.roll(frwddata1,shift=int(ort[1]/dt), axis=1) + np.roll(frwddata2,shift=int(ort[2]/dt), axis=1)
-
-#frwddata = frwddata0 + frwddata1,shift=int(ort[0]/dt), axis=1) 
-#+ np.roll(frwddata2,shift=int(ort[2]/dt), axis=1)
+frwddata = np.zeros((nr, nt))
+for isrc in np.arange(nsrc):
+    frwddata_src = (Op @ microseismic[isrc].flatten().squeeze()).reshape(nr, nt)
+    frwddata += np.roll(frwddata_src, shift=int(ort[isrc]/dt), axis=1)
 
 # Contaminate data with white noise
 # """""""""""""""""""""""""""""""""
@@ -242,27 +247,12 @@ seed=1
 
 # Fix SNR levels
 snr_wn=1
-snr_sn=1/10
-snr_rn=1/5
 
 # Fix traces for ringy noise
 trind_rn = np.arange(1,nr,11)
 
 # Add white noise of defined SNR
 frwddata_wn = add_noise(frwddata,noise_type="white",snr=snr_wn,seed=seed)
-
-# Contaminate data with spiky noise
-# """""""""""""""""""""""""""""""""
-
-# Add noise spikes with twice as bigger SNR
-frwddata_sn = add_noise(frwddata,noise_type="spiky",snr=snr_sn,seed=seed)
-
-# Contaminate data with ringy noise
-# """""""""""""""""""""""""""""""""
-
-# Add ringy noise on some traces
-frwddata_rn = add_noise(frwddata,noise_type="ringy",snr=snr_rn,
-                        trind=trind_rn,seed=seed)
 
 # Show consumed time
 end_time = time()
@@ -279,7 +269,6 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 fig, ax = traceimage(frwddata, climQ=99.99)
 ax.set_title('Noise-free modelled data')
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
 
@@ -289,29 +278,8 @@ fig.set_size_inches(10, 3)  # set size in inches
 
 fig, ax = traceimage(frwddata_wn, climQ=99.99)
 ax.set_title(f"Modelled data contaminated with white noise of SNR={snr_wn}")
-ax.set_ylabel('Time steps')
 fig = ax.get_figure()
 fig.set_size_inches(10, 3)  # set size in inches
-
-# ###############################################################################
-# # Plot modelled data contaminated with spiky noise
-# # """"""""""""""""""""""""""""""""""""""""""""""""
-
-# fig, ax = traceimage(frwddata_sn, climQ=99.99)
-# ax.set_title(f"Modelled data contaminated with spiky noise of SNR={snr_sn}")
-# ax.set_ylabel('Time steps')
-# fig = ax.get_figure()
-# fig.set_size_inches(10, 3)  # set size in inches
-
-# ###############################################################################
-# # Plot modelled data contaminated with ringy noise
-# # """"""""""""""""""""""""""""""""""""""""""""""""
-
-# fig, ax = traceimage(frwddata_rn, climQ=99.99)
-# ax.set_title(f"Modelled data contaminated with ringy noise of SNR={snr_rn}")
-# ax.set_ylabel('Time steps')
-# fig = ax.get_figure()
-# fig.set_size_inches(10, 3)  # set size in inches
 
 ###############################################################################
 # Plot receiver geometry
@@ -340,9 +308,9 @@ _ = ax.set_ylabel('y')
 # """"""""""""""""""""""""""""""""""""""""
 # Use the original velocity model grid for location (the grid can be different)
 
-gx = x
-gy = y
-gz = z
+gx = x[:]
+gy = y[:]
+gz = z[:]
 
 # Set up the location class
 
@@ -359,173 +327,54 @@ print(f"Traveltime array shape: {tt.shape}")
 #%%
 
 ###############################################################################
-# Apply diffraction stacking to clean data
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we apply various diffraction stacking algorithms to clean noise-free 
+# Localisation by diffraction stacking for clean data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply diffraction stacking algorithm to clean noise-free 
 # data, get the image volume and determine location from the maximum of this 
-# volume.
-
-###############################################################################
-# Perform absolute-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""
-
-start_time = time()
-print("Absolute-value diffraction stacking...")
-dstacked_abs, hc_abs = L.apply(frwddata, 
-                      kind="diffstack",
-                      x=gx, y=gy, z=gz,
-                      tt=tt, dt=dt, nforhc=10,
-                      stack_type="absolute",
-                      output_type="mean")
-end_time = time()
-print(f"Computation time: {end_time - start_time} seconds")
+# volume in order to show that it is still possible despite multiple records.
 
 ###############################################################################
 # Perform squared-value diffraction stacking
 # """""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
-print("Squared-value diffraction stacking...")
+print("Squared-value diffraction stacking applied to clean data...")
 dstacked_sqd, hc_sqd = L.apply(frwddata, 
-                      kind="diffstack",
-                      x=gx, y=gy, z=gz,
-                      tt=tt, dt=dt, nforhc=10,
-                      stack_type="squared")
+                               kind="diffstack",
+                               x=gx, y=gy, z=gz,
+                               tt=tt, dt=dt, nforhc=10,
+                               stack_type="squared")
 end_time = time()
 print(f"Computation time: {end_time - start_time} seconds")
-
-# ###############################################################################
-# # Perform semblance-based diffraction stacking without sliding time window
-# # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-# start_time = time()
-# print("Semblance-based diffraction stacking...")
-# # Run the stacking using Location class
-# dstacked_semb, hc_semb = L.apply(frwddata, 
-#                       kind="diffstack",
-#                       x=gx, y=gy, z=gz,
-#                       tt=tt, dt=dt, nforhc=10,
-#                       stack_type="semblance")
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
-# ###############################################################################
-# # Perform semblance-based diffraction stacking with sliding time window
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-# # Define sliding window as two periods of the signal
-# swsize = int(2/f0/dt)
-# print(f"Sliding window size in samples: {swsize}")
-
-# start_time = time()
-# print("Semblance-based diffraction stacking...")
-# # Run the stacking using Location class
-# dstacked_semb_swin, hc_semb_swin = L.apply(frwddata, 
-#                       kind="diffstack",
-#                       x=gx, y=gy, z=gz,
-#                       tt=tt, dt=dt, nforhc=10,
-#                       stack_type="semblance", swsize=swsize)
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
-
-# #%%
-
-# ###############################################################################
-# # Apply diffraction stacking to noise-contaminated data
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Here we apply diffraction stacking algorithms to data contaminated 
-# # with noise
-
-# ###############################################################################
-# # Perform absolute-value diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""
-
-# start_time = time()
-# print("Absolute-value diffraction stacking...")
-# dstacked_abs_wn, hc_abs_wn = L.apply(frwddata_wn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="absolute")
-# dstacked_abs_sn, hc_abs_sn = L.apply(frwddata_sn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="absolute")
-# dstacked_abs_rn, hc_abs_rn = L.apply(frwddata_rn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="absolute")
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
-# ###############################################################################
-# # Perform squared-value diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""
-
-# start_time = time()
-# print("Squared-value diffraction stacking...")
-# dstacked_sqd_wn, hc_sqd_wn = L.apply(frwddata_wn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="squared")
-# dstacked_sqd_sn, hc_sqd_sn = L.apply(frwddata_sn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="squared")
-# dstacked_sqd_rn, hc_sqd_rn = L.apply(frwddata_rn, 
-#                             kind="diffstack",
-#                             x=gx, y=gy, z=gz,
-#                             tt=tt, dt=dt, nforhc=10,
-#                             stack_type="squared")
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
-# ###############################################################################
-# # Perform semblance-based diffraction stacking with sliding time window
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-# # Define sliding window as two periods of the signal
-# print(f"Sliding window size in samples: {swsize}")
-# start_time = time()
-# print("Semblance-based diffraction stacking...")
-# dstacked_semb_swin_wn, hc_semb_swin_wn = L.apply(frwddata_wn, 
-#                                         kind="diffstack",
-#                                         x=gx, y=gy, z=gz,
-#                                         tt=tt, dt=dt, nforhc=10,
-#                                         stack_type="semblance", swsize=swsize)
-# dstacked_semb_swin_sn, hc_semb_swin_sn = L.apply(frwddata_sn, 
-#                                         kind="diffstack",
-#                                         x=gx, y=gy, z=gz,
-#                                         tt=tt, dt=dt, nforhc=10,
-#                                         stack_type="semblance", swsize=swsize)
-# dstacked_semb_swin_rn, hc_semb_swin_rn = L.apply(frwddata_rn, 
-#                                         kind="diffstack",
-#                                         x=gx, y=gy, z=gz,
-#                                         tt=tt, dt=dt, nforhc=10,
-#                                         stack_type="semblance", swsize=swsize)
-# end_time = time()
-# print(f"Computation time: {end_time - start_time} seconds")
-
 
 #%%
 
 ###############################################################################
-# Visualisation of results
-# ^^^^^^^^^^^^^^^^^^^^^^^^
-# Here we visualise the slices of the resulting image volume
+# Localisation by diffraction stacking for noise-contaminated data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply diffraction stacking to data contaminated 
+# with noise
 
 ###############################################################################
-# Plot resulting image volumes from absolute-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# The form and inclination of the location spot reflect the 
-# receiver geometry, whereas focusing is related to the selected imaging 
-# condition (absolute value).
-# You can see how noise of different kind affects the result.
+# Perform squared-value diffraction stacking
+# """""""""""""""""""""""""""""""""""""""""""
+
+start_time = time()
+print("Squared-value diffraction stacking applied to noisy data...")
+dstacked_sqd_wn, hc_sqd_wn = L.apply(frwddata_wn, 
+                                     kind="diffstack",
+                                     x=gx, y=gy, z=gz,
+                                     tt=tt, dt=dt, nforhc=10,
+                                     stack_type="squared")
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+#%%
+
+###############################################################################
+# Visualisation of location results
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the slices of the resulting image volume
 
 # Get the spatial limits for plotting
 xlim = (min(gx),max(gx))
@@ -536,191 +385,341 @@ zlim = (min(gz),max(gz))
 cmap='cmc.bilbao_r'
 
 # Define legend
-crosslegend=('Intersect plane (True location)','Determined location')
-
+crosslegend=('Intersect plane (True location: event 1)','Determined location')
 
 # Print true locations
-for isrc in np.arange(nsrc):
-    print('True event {:d} hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(isrc,sx[isrc], sy[isrc], sz[isrc]))
-
-# Results of application to clean data:
-fig,axs = locimage3d(dstacked_abs,                
-                      cmap=cmap,
-                      title='Location with absolute-value diffraction stacking:\nclean data',
-                      x0=isx[0], y0=isy[0], z0=isz[0],
-                      secondcrossloc=hc_abs,
-                      crosslegend=crosslegend,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
-
 print('-------------------------------------------------------')
-print('Event hypocenter from absolute-value diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_abs,[dx, dy, dz])))
-print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx[0], isy[0], isz[0]], hc_abs, [dx, dy, dz])))
-
-# # Results of application to data contaminated with white noise:
-# fig,axs = locimage3d(dstacked_abs_wn, 
-#                      cmap=cmap,
-#                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_abs_wn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from absolute-value diffraction stacking for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_abs_wn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_wn, [dx, dy, dz])))
-
-# # Results of application to data contaminated with spiky noise:
-# fig,axs = locimage3d(dstacked_abs_sn, 
-#                      cmap=cmap,
-#                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_abs_sn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from absolute-value diffraction stacking for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_sn,*np.multiply(hc_abs_sn,[dx, dy, dz])))
-# print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_sn, [dx, dy, dz])))
-
-# # Results of application to data contaminated with ringy noise:
-# fig,axs = locimage3d(dstacked_abs_rn, 
-#                      cmap=cmap,
-#                      title=f"Location with absolute-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_abs_rn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from absolute-value diffraction stacking for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_abs_rn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_rn, [dx, dy, dz])))
+for isrc in np.arange(nsrc):
+    print('True event {:d} hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(isrc+1,sx[isrc], sy[isrc], sz[isrc]))
 
 ###############################################################################
-# Plot resulting image volumes from squared-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# You can see that the focusing is better when using squared values
+# Plot resulting image volumes from diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""
+# Note the spots related to other events
 
-# Print true locations
-for isrc in np.arange(nsrc):
-    print('True event {:d} hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(isrc,sx[isrc], sy[isrc], sz[isrc]))
-    
 # Results of application to clean data:
 fig,axs = locimage3d(dstacked_sqd, 
-                      cmap=cmap,
-                      title='Location with squared-value diffraction stacking:\nclean data',
-                      x0=isx[0], y0=isy[0], z0=isz[0],
-                      secondcrossloc=hc_sqd,
-                      crosslegend=crosslegend,
-                      xlim=xlim,ylim=ylim,zlim=zlim)
+                     cmap=cmap,
+                     title='Location with squared-value diffraction stacking:\nclean data',
+                     x0=isx[0], y0=isy[0], z0=isz[0],
+                     secondcrossloc=hc_sqd,
+                     crosslegend=crosslegend,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
 
 print('-------------------------------------------------------')
-print('Event hypocenter from squared-value diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_sqd,[dx, dy, dz])))
+print('Event hypocentre from squared-value diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_sqd,[dx, dy, dz])))
 print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx[0], isy[0], isz[0]], hc_sqd, [dx, dy, dz])))
 
-# # Results of application to data contaminated with white noise:
-# fig,axs = locimage3d(dstacked_sqd_wn, 
-#                      cmap=cmap,
-#                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_sqd_wn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from squared-value diffraction stacking for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_sqd_wn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_wn, [dx, dy, dz])))
+# Results of application to data contaminated with white noise:
+fig,axs = locimage3d(dstacked_sqd_wn, 
+                     cmap=cmap,
+                     title=f"Location with squared-value diffraction stacking:\ndata contaminated with white noise of SNR={snr_wn}",
+                     x0=isx[0], y0=isy[0], z0=isz[0],
+                     secondcrossloc=hc_sqd_wn,
+                     crosslegend=crosslegend,
+                     xlim=xlim,ylim=ylim,zlim=zlim)
+print('-------------------------------------------------------')
+print('Event hypocentre from squared-value diffraction stacking for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_wn,*np.multiply(hc_sqd_wn,[dx, dy, dz])))
+print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx[0], isy[0], isz[0]], hc_sqd_wn, [dx, dy, dz])))
+print('-------------------------------------------------------')
 
-# # Results of application to data contaminated with spiky noise:
-# fig,axs = locimage3d(dstacked_sqd_sn, 
-#                      cmap=cmap,
-#                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with spiky noise of SNR={snr_sn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_sqd_sn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from squared-value diffraction stacking for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_sn,*np.multiply(hc_sqd_sn,[dx, dy, dz])))
-# print('Location error: [{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_abs_sn, [dx, dy, dz])))
+#%%
 
-# # Results of application to data contaminated with ringy noise:
-# fig,axs = locimage3d(dstacked_sqd_rn, 
-#                      cmap=cmap,
-#                      title=f"Location with squared-value diffraction stacking:\ndata contaminated with ringy noise of SNR={snr_rn}",
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_sqd_rn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# print('-------------------------------------------------------')
-# print('Event hypocenter from squared-value diffraction stacking for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(snr_rn,*np.multiply(hc_sqd_rn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_sqd_rn, [dx, dy, dz])))
+###############################################################################
+# Diffraction stacking detection for clean data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply diffraction stacking detection algorithm to noise-free data
+
+###############################################################################
+# Define detection parameters
+# """""""""""""""""""""""""""
+
+# Short time window
+stw = 0.02
+
+# Long time window
+ltw = 4*stw
+
+# Gap time window
+gtw = 0.04
+
+# STA/LTA threshold
+slt = 3
+
+###############################################################################
+# Perform detection using squared-value diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+start_time = time()
+print("Squared-value diffraction stacking detection applied to clean data...")
+(msf_sqd, 
+ slf_sqd, 
+ idp_sqd, 
+ eot_sqd, 
+ ds_full_sqd) = diffstack_detect(data = frwddata,
+                                 x = gx,
+                                 y = gy,
+                                 z = gz,
+                                 tt = tt,
+                                 dt = dt,      
+                                 stw = stw,
+                                 ltw = ltw,
+                                 gtw = gtw,
+                                 slt=slt,
+                                 stack_type="squared")
+
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+###############################################################################
+# Compare the detection results with the actual origin times
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+print('-------------------------------------------------------')
+print('Comparison of origin times for squared-value diffraction stacking detection applied to clean data:')
+for isrc in np.arange(nsrc):
+    print('Event {:d}'.format(isrc+1))
+    print('True origin time: {:.3f} s'.format(ort[isrc]))
+    print('Determined origin time: {:.3f} s'.format(eot_sqd[isrc]))
+    print('Origin time estimation error: {:.3f} s'.format(ort[isrc]-eot_sqd[isrc]))
+print('-------------------------------------------------------')
+# for isrc in np.arange(nsrc):
+    # print('True event {:d} hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(isrc+1,sx[isrc], sy[isrc], sz[isrc]))
+#print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,snr_sn,*np.multiply(hc_semb_swin_sn,[dx, dy, dz])))
+#print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb_swin_sn, [dx, dy, dz])))
 
 
-# ###############################################################################
-# # Plot resulting image volume from semblance-based diffraction stacking
-# # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# # First result show application of semblance-based diffraction stacking without
-# # sliding time window. The result has several numerical artifacts.
-# # Involving sliding window helps to reduce the artifacts and improve focusing
-# # but slightly increases the location error.
-# # Semblance-based stacking is generally acting in the presence of noise better 
-# # than absolute-based stacking.
-
-# # Print true location
-# print('True event hypocenter:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*[sx, sy, sz]))
-
-# # Results of application to clean data:
-# fig,axs = locimage3d(dstacked_semb,                       
-#                      cmap=cmap,
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_semb,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# fig.suptitle("Location with semblance-based diffraction stacking:\nclean data")
-# print('-------------------------------------------------------')
-# print('Event hypocenter from semblance-based diffraction stacking for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*np.multiply(hc_semb,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb, [dx, dy, dz])))
 
 
-# # Results of application to clean data:
-# fig,axs = locimage3d(dstacked_semb_swin,                       
-#                      cmap=cmap,
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_semb_swin,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\nclean data")
-# print('-------------------------------------------------------')
-# print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for clean data:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,*np.multiply(hc_semb_swin,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb_swin, [dx, dy, dz])))
+#%%
 
-# # Results of application to data contaminated with white noise:
-# fig,axs = locimage3d(dstacked_semb_swin_wn,                     
-#                      cmap=cmap,
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_semb_swin_wn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with white noise of SNR={snr_wn}")
-# print('-------------------------------------------------------')
-# print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for data contaminated with white noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,snr_wn,*np.multiply(hc_semb_swin_wn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb_swin_wn, [dx, dy, dz])))
+###############################################################################
+# Diffraction stacking detection for noisy data
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we apply diffraction stacking detection algorithms to noisy data
 
-# # Results of application to data contaminated with spiky noise:
-# fig,axs = locimage3d(dstacked_semb_swin_sn,                     
-#                      cmap=cmap,
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_semb_swin_sn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with spiky noise of SNR={snr_sn}")
-# print('-------------------------------------------------------')
-# print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for data contaminated with spiky noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,snr_sn,*np.multiply(hc_semb_swin_sn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb_swin_sn, [dx, dy, dz])))
+###############################################################################
+# Perform detection using squared-value diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# # Results of application to data contaminated with ringy noise:
-# fig,axs = locimage3d(dstacked_semb_swin_rn,                     
-#                      cmap=cmap,
-#                      x0=isx, y0=isy, z0=isz,
-#                      secondcrossloc=hc_semb_swin_rn,
-#                      crosslegend=crosslegend,
-#                      xlim=xlim,ylim=ylim,zlim=zlim)
-# fig.suptitle(f"Location with semblance-based diffraction stacking:\nsliding window of {swsize} samples,\ndata contaminated with ringy noise of SNR={snr_rn}")
-# print('-------------------------------------------------------')
-# print('Event hypocenter from semblance-based diffraction stacking with sliding window of {:d} samples for data contaminated with ringy noise of SNR={:.1f}:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(swsize,snr_rn,*np.multiply(hc_semb_swin_rn,[dx, dy, dz])))
-# print('Location error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(*get_location_misfit([isx, isy, isz], hc_semb_swin_rn, [dx, dy, dz])))
+start_time = time()
+print("Squared-value diffraction stacking detection applied to noisy data...")
+(msf_sqd_wn,
+ slf_sqd_wn, 
+ idp_sqd_wn, 
+ eot_sqd_wn, 
+ ds_full_sqd_wn) = diffstack_detect(data = frwddata_wn,
+                                    x = gx,
+                                    y = gy,
+                                    z = gz,
+                                    tt = tt,
+                                    dt = dt,      
+                                    stw = stw,
+                                    ltw = ltw,
+                                    gtw = gtw,
+                                    slt=slt,
+                                    stack_type="squared")
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+###############################################################################
+# Perform detection using semblance-based diffraction stacking
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# Define sliding window for semblance as two periods of the signal
+swsize = int(2/f0/dt)
+print(f"Sliding window size in samples: {swsize}")
+
+start_time = time()
+print("Semblance-based diffraction stacking detection applied to noisy data...")
+(msf_sem_wn, 
+ slf_sem_wn, 
+ idp_sem_wn, 
+ eot_sem_wn, 
+ ds_full_sem_wn) = diffstack_detect(data=frwddata_wn,
+                                    x = gx,
+                                    y = gy,
+                                    z = gz,
+                                    tt = tt,
+                                    dt = dt,      
+                                    stw = stw,
+                                    ltw = ltw,
+                                    gtw = gtw,
+                                    slt=slt,
+                                    stack_type="semblance",
+                                    swsize=swsize)
+end_time = time()
+print(f"Computation time: {end_time - start_time} seconds")
+
+###############################################################################
+# Compare the detection results with the actual origin times
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+print('-------------------------------------------------------')
+print('Comparison of origin times for squared-value diffraction stacking detection applied to noisy data:')
+for isrc in np.arange(nsrc):
+    print('Event {:d}'.format(isrc+1))
+    print('True origin time: {:.3f} s'.format(ort[isrc]))
+    print('Determined origin time: {:.3f} s'.format(eot_sqd_wn[isrc]))
+    print('Origin time estimation error: {:.3f} s'.format(ort[isrc]-eot_sqd_wn[isrc]))
+print('-------------------------------------------------------')
+print('Comparison of origin times for semblance-based diffraction stacking detection applied to noisy data:')
+for isrc in np.arange(nsrc):
+    print('Event {:d}'.format(isrc+1))
+    print('True origin time: {:.3f} s'.format(ort[isrc]))
+    print('Determined origin time: {:.3f} s'.format(eot_sem_wn[isrc]))
+    print('Origin time estimation error: {:.3f} s'.format(ort[isrc]-eot_sem_wn[isrc]))
+print('-------------------------------------------------------')
+
+
+#%%
+
+###############################################################################
+# Visualisation of detection results
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the detection curves
+
+# Make time vector
+t = np.arange(0, nt * dt, dt)
+
+# Create a new colormap with two distinct colors from batlow colorsheme
+cmap = mcolors.ListedColormap([cmc.batlow(80), cmc.batlow(225)], name="two_color_batlow")
+#cmap = None
+
+fig,axs = detection_curves(msf=msf_sqd,
+                           slf=slf_sqd,                           
+                           slt=slt,
+                           idp=idp_sqd,
+                           t=t,
+                           title='Detection for clean data based on squared-value diffraction stacking',
+                           titlefontsize=12,
+                           cmap=cmap)
+
+fig,axs = detection_curves(msf=msf_sqd_wn,
+                           slf=slf_sqd_wn,
+                           slt=slt,
+                           idp=idp_sqd_wn,
+                           t=t,
+                           title='Detection for noisy data based on squared-value diffraction stacking',
+                           titlefontsize=12,
+                           cmap=cmap)
+
+fig,axs = detection_curves(msf=msf_sem_wn,
+                           slf=slf_sem_wn,
+                           slt=slt,
+                           idp=idp_sem_wn,
+                           t=t,
+                           title='Detection for noisy data based on semblance-based diffraction stacking',
+                           titlefontsize=12,
+                           cmap=cmap)
+
+#%%
+
+###############################################################################
+# Localisation of detected events
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we determine locations of detected events
+nforhc = 10
+hc_sqd = []
+hc_sqd_wn = []
+hc_sem_wn = []
+ihc_sqd = []
+ihc_sqd_wn = []
+ihc_sem_wn = []
+ds_im_vol_sqd = []
+ds_im_vol_sqd_wn = []
+ds_im_vol_sem_wn = []
+for isrc in np.arange(nsrc):
+    ds_im_vol = np.squeeze(ds_full_sqd[idp_sqd[isrc],:,:,:])
+    ihc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
+    ihc_sqd.append(ihc)
+    hc_sqd.append(np.multiply(ihc,[dx, dy, dz]))
+    ds_im_vol_sqd.append(ds_im_vol)
+    
+    ds_im_vol = np.squeeze(ds_full_sqd_wn[idp_sqd_wn[isrc],:,:,:])
+    ihc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
+    ihc_sqd_wn.append(ihc)
+    hc_sqd_wn.append(np.multiply(ihc,[dx, dy, dz]))
+    ds_im_vol_sqd_wn.append(ds_im_vol)
+    
+    ds_im_vol = np.squeeze(ds_full_sem_wn[idp_sem_wn[isrc],:,:,:])
+    ihc, _ = get_max_locs(ds_im_vol, n_max=nforhc, rem_edge=False)
+    ihc_sem_wn.append(ihc)
+    hc_sem_wn.append(np.multiply(ihc,[dx, dy, dz]))
+    ds_im_vol_sem_wn.append(ds_im_vol)
+
+###############################################################################
+# Compare the location results with the actual hypocentres
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+print('-------------------------------------------------------')
+print('Comparison of hypocentres for squared-value diffraction stacking detection applied to clean data:')
+for isrc in np.arange(nsrc):
+    print('-------------------------------------------------------')
+    print('Event {:d}'.format(isrc+1))
+    print('True hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc], sy[isrc], sz[isrc]))
+    print('Determined hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(hc_sqd[isrc][0], hc_sqd[isrc][1], hc_sqd[isrc][2]))
+    print('Hypocentre estimation error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc]-hc_sqd[isrc][0], sy[isrc]-hc_sqd[isrc][1], sz[isrc]-hc_sqd[isrc][2]))
+print('-------------------------------------------------------')
+print('Comparison of hypocentres for squared-value diffraction stacking detection applied to noisy data:')
+for isrc in np.arange(nsrc):
+    print('-------------------------------------------------------')
+    print('Event {:d}'.format(isrc+1))
+    print('True hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc], sy[isrc], sz[isrc]))
+    print('Determined hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(hc_sqd_wn[isrc][0], hc_sqd_wn[isrc][1], hc_sqd_wn[isrc][2]))
+    print('Hypocentre estimation error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc]-hc_sqd_wn[isrc][0], sy[isrc]-hc_sqd_wn[isrc][1], sz[isrc]-hc_sqd_wn[isrc][2]))
+print('-------------------------------------------------------')
+print('Comparison of hypocentres for semblance-based diffraction stacking detection applied to noisy data:')
+for isrc in np.arange(nsrc):
+    print('-------------------------------------------------------')
+    print('Event {:d}'.format(isrc+1))
+    print('True hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc], sy[isrc], sz[isrc]))
+    print('Determined hypocentre:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(hc_sem_wn[isrc][0], hc_sem_wn[isrc][1], hc_sem_wn[isrc][2]))
+    print('Hypocentre estimation error:\n[{:.2f} m, {:.2f} m, {:.2f} m]'.format(sx[isrc]-hc_sem_wn[isrc][0], sy[isrc]-hc_sem_wn[isrc][1], sz[isrc]-hc_sem_wn[isrc][2]))
+print('-------------------------------------------------------')
+
+#%%
+
+###############################################################################
+# Visualisation of location results for all events
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Here we visualise the slices of the resulting image volume for all events
+
+# Get the spatial limits for plotting
+xlim = (min(gx),max(gx))
+ylim = (min(gy),max(gy))
+zlim = (min(gz),max(gz))
+
+# Define colormap
+cmap_loc='cmc.bilbao_r'
+
+for isrc in np.arange(nsrc):
+    # Define legend
+    crosslegend=(f"Intersect plane (True location: event {isrc+1})",'Determined location')
+
+    # Results of application of squared-value to clean data:
+    fig,axs = locimage3d(ds_im_vol_sqd[isrc], 
+                         cmap=cmap_loc,                          
+                         x0=isx[isrc], y0=isy[isrc], z0=isz[isrc],
+                         secondcrossloc=ihc_sqd[isrc],
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location of event {isrc+1} with squared-value diffraction stacking: clean data")
+    
+    # Results of application of squared-value to noisy data:
+    fig,axs = locimage3d(ds_im_vol_sqd_wn[isrc], 
+                         cmap=cmap_loc,                          
+                         x0=isx[isrc], y0=isy[isrc], z0=isz[isrc],
+                         secondcrossloc=ihc_sqd_wn[isrc],
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location of event {isrc+1} with squared-value diffraction stacking: noisy data")
+    
+    # Results of application of semblance-based to noisy data:
+    fig,axs = locimage3d(ds_im_vol_sem_wn[isrc], 
+                         cmap=cmap_loc,                          
+                         x0=isx[isrc], y0=isy[isrc], z0=isz[isrc],
+                         secondcrossloc=ihc_sem_wn[isrc],
+                         crosslegend=crosslegend,
+                         xlim=xlim,ylim=ylim,zlim=zlim)
+    fig.suptitle(f"Location of event {isrc+1} with semblance-based diffraction stacking: noisy data")

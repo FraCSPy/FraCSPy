@@ -500,23 +500,24 @@ document.write(`
 <span class="sd">        Imaging area grid vector in Z-axis</span>
 <span class="sd">    tt : :obj:`numpy.ndarray`</span>
 <span class="sd">        Traveltime table of size :math:`n_r \times n_x \times n_y \times n_z`    </span>
+<span class="sd">    dt : :obj:`float`</span>
+<span class="sd">        Time step</span>
 <span class="sd">    nforhc : :obj:`int`, optional, default: 10</span>
 <span class="sd">        Number of points for hypocenter</span>
 <span class="sd">    output_type : :obj:`str`, optional, default: None</span>
-<span class="sd">        Output type to produce. In the default case of None it is set to &quot;max&quot;.</span>
-<span class="sd">        Types:</span>
-<span class="sd">            &quot;max&quot; (output 3D volume as a maximum of the image function through time),</span>
-<span class="sd">            &quot;mean&quot; (output 3D volume as an average of the image function through time),                </span>
-<span class="sd">            &quot;sumsq&quot; (output 3D volume as a stack of the squared image function values through time),</span>
-<span class="sd">            &quot;full&quot; (output full 4D image function: x,y,z,t). In this case hc is set to None.</span>
+<span class="sd">        Defines the output type. In the default case of None it is set to ``max``.</span>
+<span class="sd">        Types: ``max`` (output 3D volume as a maximum of the image function through time),</span>
+<span class="sd">        ``mean`` (output 3D volume as an average of the image function through time),                </span>
+<span class="sd">        ``sumsq`` (output 3D volume as a stack of the squared image function values through time),</span>
+<span class="sd">        ``full`` (output full 4D image function: x,y,z,t). In this case hc is set to None.</span>
 <span class="sd">    stack_type : :obj:`str`, optional, default: None</span>
-<span class="sd">        Diffraction stacking type (imaging condition), default None is the same as &quot;absolute&quot; (absolute value).</span>
-<span class="sd">        Types: &quot;absolute&quot; (absolute value), &quot;squared&quot; (squared value), &quot;semblance&quot; (semblance-based).</span>
+<span class="sd">        Diffraction stacking type (imaging condition), default None is the same as ``squared``.</span>
+<span class="sd">        Types: ``absolute`` (absolute-value), ``squared`` (squared-value), ``semblance`` (semblance-based).</span>
 <span class="sd">    swsize : :obj:`int`, optional, default: 0</span>
 <span class="sd">        Sliding time window size for semblance-based type, amount of time steps</span>
 <span class="sd">    polcor_type : :obj:`str`, optional, default: None</span>
 <span class="sd">        Polarity correction type to be used for amplitudes.</span>
-<span class="sd">        None is default for no polarity correction, &quot;mti&quot; is for polarity correction based on moment tensor inversion.</span>
+<span class="sd">        None is default: no polarity correction, ``mti`` is for polarity correction based on moment tensor inversion.</span>
 <span class="sd">    recs : :obj:`numpy.ndarray`, optional, default: None</span>
 <span class="sd">        Array of shape (3, nrec) containing receiver coordinates.</span>
 <span class="sd">        Must be provided if polcor_type is not None</span>
@@ -526,9 +527,9 @@ document.write(`
 <span class="sd">    ds_im_vol : :obj:`numpy.ndarray`</span>
 <span class="sd">        Diffraction stack volume, returned if output_type is not &quot;full&quot;</span>
 <span class="sd">    hc : :obj:`numpy.ndarray`</span>
-<span class="sd">        Estimated hypocentral location, returned if output_type is not &quot;full&quot;</span>
+<span class="sd">        Estimated hypocentral location, if output_type is not &quot;full&quot; is set to None</span>
 <span class="sd">    ds_full : :obj:`numpy.ndarray`</span>
-<span class="sd">        Diffraction stack 4D array (x,y,z,t), returned if output_type is &quot;full&quot;</span>
+<span class="sd">        Diffraction stack full array of shape (nt, n_xyz), returned if output_type is &quot;full&quot;</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -545,10 +546,9 @@ document.write(`
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-
 <span class="sd">    The subsurface volume is discretised and each grid node is considered to be a potential source position or a so-called image point.</span>
 <span class="sd">    In other words, each image point represents a possible diffraction point from which seismic energy radiates. </span>
-<span class="sd">    The term &quot;diffraction stacking&quot; dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [6]_. </span>
+<span class="sd">    The term &quot;diffraction stacking&quot; dates back to the works of Claerbout (1971, 1985) [3]_, [4]_ and Timoshin (1972) [7]_. </span>
 <span class="sd">    The concept was initially related to seismic migration and imaging of reflectors as a set of diffraction points (in the context of the exploding reflector principle). </span>
 <span class="sd">    Here, the diffraction stacking is related to imaging of real excitation sources.</span>
 
@@ -562,7 +562,7 @@ document.write(`
 
 <span class="sd">    where :math:`\mathbf{r}` is a vector that defines a spatial position :math:`(x, y, z)` of the image point, </span>
 <span class="sd">    :math:`A_R^{EMO}(t,\mathbf{r})` represents the EMO-corrected data at the receiver :math:`R`, </span>
-<span class="sd">    and :math:`N_R` is a number of receivers [1]_, [2]_.</span>
+<span class="sd">    and :math:`N_R` is a number of receivers [1]_.</span>
 
 <span class="sd">    2. Squared-value based</span>
 
@@ -590,7 +590,7 @@ document.write(`
 <span class="sd">        {N_R \sum_{k=it-W}^{it+W}\sum_{R=1}^{N_R} \left[ A_R^{EMO}(t,\mathbf{r}) \right]^2}</span>
 
 <span class="sd">    where :math:`k` an index of the time-discretised signal within a sliding time interval </span>
-<span class="sd">    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [7]_.</span>
+<span class="sd">    consisting of the :math:`2W + 1` samples, and :math:`it` is the index of time :math:`t` [8]_.</span>
 
 <span class="sd">    Depending on the desired output, the function can output either a 3D volume and a location, </span>
 <span class="sd">    or a full 4D array (time dimension + 3 spatial dimensions).</span>
@@ -598,17 +598,47 @@ document.write(`
 <span class="sd">    By default, a 3D image volume obtained as a maximum of the 4D image function, e.g.:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        I(\mathbf{r}) = \max_t F(\mathbf{r},t).</span>
+<span class="sd">        F_s(\mathbf{r}) = \max_t F(\mathbf{r},t).</span>
 <span class="sd">    </span>
 <span class="sd">    Optionally, one can output a 3D image volume obtained as a mean of the 4D image function over time, e.g.:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        I(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).</span>
+<span class="sd">        F_s(\mathbf{r}) = \underset{t}{\text{mean}}~F(\mathbf{r}, t).</span>
 
-<span class="sd">    The full 4D output is useful for subsequent detection of multiple events based on diffraction stacking.</span>
+<span class="sd">    Another option is to output a 3D image volume obtained as a sum of squared values of the 4D image function over time, e.g.:</span>
 
-<span class="sd">    Polarity correction, if requested, is done using moment tensor inversion:</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        F_s(\mathbf{r}) = \sum_t F^2(\mathbf{r},t).</span>
 
+<span class="sd">    The full 4D output is useful for subsequent detection of multiple events.</span>
+
+<span class="sd">    Polarity correction, if requested, is done using moment tensor inversion [2]_:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        F_{pc}(\mathbf{r},t) = \left|\sum_{R=1}^{N_R} \phi_R(\mathbf{r}) A_R^{EMO+PC} \right|,</span>
+
+<span class="sd">    where </span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+<span class="sd">        A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right),</span>
+
+<span class="sd">    and :math:`\phi_R(\mathbf{r})` are the defined through the :math:`\mathrm{sign}` function:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \phi_R(\mathbf{r})=\mathrm{sign}(\mathbf{M}(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})),\quad R=1\dots N_R,</span>
+
+<span class="sd">    where :math:`\mathbf{M}(\mathbf{r})` is the vectorized moment tensor derived [6]_ as</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{M}(\mathbf{r}) = \left(\sum_{R=1}^{N_R} \mathbf{G}_R^T(\mathbf{r})\mathbf{G}_R^{\phantom{T}}(\mathbf{r})\right)^{-1} \mathbf{d}(\mathbf{r}),</span>
+
+<span class="sd">    where :math:`\mathbf{G}_R^{\phantom{T}}(\mathbf{r})` is the vectorized derivative of Green&#39;s function for receiver :math:`R` </span>
+<span class="sd">    and :math:`\mathbf{d}(\mathbf{r})` is a vector obtained from amplitudes of the corresponding waveforms:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).</span>
+
+<span class="sd">    More details on the described inversion including stability issues can be found in Zhebel &amp; Eisner (2014) [9]_.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -616,7 +646,7 @@ document.write(`
 <span class="sd">       determination of microseismic events (Doctoral dissertation). </span>
 <span class="sd">       St. Petersburg State University. St. Petersburg. </span>
 <span class="sd">       https://disser.spbu.ru/files/phdspsu2015/Anikiev_PhD_web_final.pdf</span>
-
+<span class="sd">    </span>
 <span class="sd">    .. [2] Anikiev, D., Valenta, J., Staněk, F. &amp; Eisner, L. (2014). Joint location and </span>
 <span class="sd">       source mechanism inversion of microseismic events: Benchmarking on seismicity </span>
 <span class="sd">       induced by hydraulic fracturing. Geophysical Journal International, 198(1), </span>
@@ -633,13 +663,18 @@ document.write(`
 <span class="sd">       FOR MULTICHANNEL DATA. Geophysics, 36(3), 482–497. </span>
 <span class="sd">       https://doi.org/10.1190/1.1440186</span>
 
-<span class="sd">    .. [6] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic </span>
+<span class="sd">    .. [6] Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of waveform data: synthetic waveforms. </span>
+<span class="sd">        Physics of the Earth and Planetary Interiors, 30(2–3), 242–259. https://doi.org/10.1016/0031-9201(82)90111-x</span>
+
+<span class="sd">    .. [7] Timoshin Yu. V. (1972). Fundamentals of diffraction conversion of seismic </span>
 <span class="sd">       recordings. Moscow: Nedra. [In Russian].</span>
 
-<span class="sd">    .. [7] Trojanowski, J., &amp; Eisner, L. (2016). Comparison of migration‐based location </span>
+<span class="sd">    .. [8] Trojanowski, J., &amp; Eisner, L. (2016). Comparison of migration‐based location </span>
 <span class="sd">       and detection methods for microseismic events. Geophysical Prospecting, 65(1), </span>
-<span class="sd">       47–63. </span>
-<span class="sd">       https://doi.org/10.1111/1365-2478.12366</span>
+<span class="sd">       47–63. https://doi.org/10.1111/1365-2478.12366</span>
+
+<span class="sd">    .. [9] Zhebel, O., &amp; Eisner, L. (2014). Simultaneous microseismic event localization and source mechanism determination. </span>
+<span class="sd">       Geophysics, 80(1), KS1–KS9. https://doi.org/10.1190/geo2014-0055.1</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get sizes</span>
@@ -729,18 +764,19 @@ document.write(`
             <span class="n">ds_im</span><span class="p">[</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;sumsq&quot;</span><span class="p">:</span>
             <span class="n">ds_im</span><span class="p">[</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ds</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ds_full</span><span class="p">[:,</span><span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span>
+        <span class="k">elif</span> <span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;full&quot;</span><span class="p">:</span>                        
+            <span class="n">ds_full</span><span class="p">[:,</span> <span class="n">igrid</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span>            
 
     <span class="c1"># Construct output based on its type</span>
-    <span class="k">if</span> <span class="n">output_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span><span class="s2">&quot;sumsq&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">output_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;full&quot;</span><span class="p">]:</span>
+        <span class="c1"># Return full array and location as None</span>
+        <span class="n">hc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">ds_full</span><span class="p">,</span> <span class="n">hc</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="n">ds_im_vol</span> <span class="o">=</span> <span class="n">ds_im</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span>            
         <span class="n">hc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_max_locs</span><span class="p">(</span><span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="n">nforhc</span><span class="p">,</span> <span class="n">rem_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="c1"># Return 3D array and location</span>
-        <span class="k">return</span> <span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">hc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Return reshaped 4D array</span>
-        <span class="k">return</span> <span class="n">ds_full</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">ds_im_vol</span><span class="p">,</span> <span class="n">hc</span></div>
 
 </pre></div>
 

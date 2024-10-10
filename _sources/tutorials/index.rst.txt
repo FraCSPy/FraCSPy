@@ -66,7 +66,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source. We also consider only P-waves for simplicity here.">
+    <div class="sphx-glr-thumbcontainer" tooltip="=============================================================== This tutorial illustrates how to perform source localisation using  diffraction stacking with polarity correction by moment tensor inversion. ">
 
 .. only:: html
 
@@ -77,7 +77,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">2.3 Diffraction Stacking: Localisation With Polarity Correction</div>
+      <div class="sphx-glr-thumbnail-title">2.2 Diffraction Stacking: Localisation With Polarity Correction</div>
     </div>
 
 

@@ -56,7 +56,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="fracspy.modelling.kirchhoff.Kirchhoff" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html" />
+    <link rel="next" title="fracspy.detection.stacking.maxdiffstack" href="generated/fracspy.detection.stacking.maxdiffstack.html" />
     <link rel="prev" title="3.2 Waveform-based Moment Tensor Inversion - Multicomponent" href="../tutorials/3_2_MT_WaveformInversion_tutorial.html" />
     
     <script src="../_static/require.js"></script>
@@ -388,6 +388,13 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.detection.stacking.maxdiffstack.html">fracspy.detection.stacking.maxdiffstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.detection.stacking.stalta.html">fracspy.detection.stacking.stalta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.detection.stacking.detect_peaks.html">fracspy.detection.stacking.detect_peaks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.detection.stacking.estimate_origin_times.html">fracspy.detection.stacking.estimate_origin_times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/fracspy.detection.stacking.diffstack_detect.html">fracspy.detection.stacking.diffstack_detect</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html">fracspy.modelling.kirchhoff.Kirchhoff</a></li>
 </ul>
 <ul class="nav bd-sidenav">
@@ -497,11 +504,35 @@ document.write(`
 <p>The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:</p>
 <ul class="simple">
-<li><p>Location Determination</p></li>
+<li><p>Detection</p></li>
+<li><p>Localisation</p></li>
 <li><p>Moment Tensor Inversion</p></li>
 </ul>
-<section id="location-determination">
-<h2>Location Determination<a class="headerlink" href="#location-determination" title="Link to this heading">#</a></h2>
+<section id="detection">
+<h2>Detection<a class="headerlink" href="#detection" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.detection.stacking.maxdiffstack.html#fracspy.detection.stacking.maxdiffstack" title="fracspy.detection.stacking.maxdiffstack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxdiffstack</span></code></a>(data, x, y, z, tt, dt[, ...])</p></td>
+<td><p>Maximum diffraction stack function for microseismic event detection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.detection.stacking.stalta.html#fracspy.detection.stacking.stalta" title="fracspy.detection.stacking.stalta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stalta</span></code></a>(tdf, dt, stw, ltw[, gtw])</p></td>
+<td><p>STA/LTA computation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.detection.stacking.detect_peaks.html#fracspy.detection.stacking.detect_peaks" title="fracspy.detection.stacking.detect_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect_peaks</span></code></a>(msf, slf, slt)</p></td>
+<td><p>Detect peaks in the maximum stack function based on STA/LTA function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fracspy.detection.stacking.estimate_origin_times.html#fracspy.detection.stacking.estimate_origin_times" title="fracspy.detection.stacking.estimate_origin_times"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_origin_times</span></code></a>(idp, ds_full, tt, dt, ...)</p></td>
+<td><p>Estimate origin times of the events detected with diffraction stacking.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fracspy.detection.stacking.diffstack_detect.html#fracspy.detection.stacking.diffstack_detect" title="fracspy.detection.stacking.diffstack_detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffstack_detect</span></code></a>(data, x, y, z, tt, dt, stw, ltw)</p></td>
+<td><p>Microseismic event detection based on diffraction stacking.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="localisation">
+<h2>Localisation<a class="headerlink" href="#localisation" title="Link to this heading">#</a></h2>
 <section id="modelling">
 <h3>Modelling<a class="headerlink" href="#modelling" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
@@ -686,11 +717,11 @@ from pre-processing to source mechanism inversion. It is composed of the followi
       </div>
     </a>
     <a class="right-next"
-       href="generated/fracspy.modelling.kirchhoff.Kirchhoff.html"
+       href="generated/fracspy.detection.stacking.maxdiffstack.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">fracspy.modelling.kirchhoff.Kirchhoff</p>
+        <p class="prev-next-title">fracspy.detection.stacking.maxdiffstack</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -712,7 +743,8 @@ from pre-processing to source mechanism inversion. It is composed of the followi
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#location-determination">Location Determination</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detection">Detection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#localisation">Localisation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a><ul class="nav section-nav flex-column">
 </ul>
 </li>

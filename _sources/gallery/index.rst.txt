@@ -50,6 +50,23 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Detection Function Plotting">
+
+.. only:: html
+
+  .. image:: /gallery/images/thumb/sphx_glr_plot_DetectionFunctions_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_plot_DetectionFunctions.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Detection Function Plotting</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Event Volume Plotting">
 
 .. only:: html
@@ -145,6 +162,7 @@ Below is a gallery of examples which use FraCSPy for microseismic monitoring pur
 
    /gallery/plot_ComparingBeachballs
    /gallery/plot_ComparingMTmatrices
+   /gallery/plot_DetectionFunctions
    /gallery/plot_EventImages
    /gallery/plot_Beachball
    /gallery/plot_MTmatrix

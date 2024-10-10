@@ -534,7 +534,7 @@ Perform squared-value diffraction stacking without polarity correction
  .. code-block:: none
 
     Squared-value diffraction stacking without polarity correction...
-    Computation time: 10.026976585388184 seconds
+    Computation time: 10.003389358520508 seconds
 
 
 
@@ -577,7 +577,7 @@ Perform squared-value diffraction stacking with polarity correction with MTI
  .. code-block:: none
 
     Squared-value diffraction stacking with polarity correction based on MTI...
-    Computation time: 14.85099744796753 seconds
+    Computation time: 14.917388200759888 seconds
 
 
 
@@ -619,7 +619,7 @@ Perform semblance-based diffraction stacking with polarity correction with MTI
 
     Sliding window size in samples: 100
     Semblance-based diffraction stacking with polarity correction based on MTI...
-    Computation time: 20.918784379959106 seconds
+    Computation time: 20.996480703353882 seconds
 
 
 
@@ -756,7 +756,7 @@ Plot resulting image volumes from squared-value diffraction stacking
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 47.863 seconds)
+   **Total running time of the script:** (0 minutes 47.880 seconds)
 
 
 .. _sphx_glr_download_tutorials_2_2_Location_DSMTI_tutorial.py:

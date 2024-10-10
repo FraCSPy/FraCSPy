@@ -208,7 +208,7 @@ Load continuous seismic data
  .. code-block:: none
 
     Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-    Done! Loading time: 342.5305390357971 seconds
+    Done! Loading time: 163.50918173789978 seconds
 
 
 
@@ -462,7 +462,7 @@ the results containing only events detected  by at least two stations within a s
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (16 minutes 11.377 seconds)
+   **Total running time of the script:** (13 minutes 18.886 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_1_Detection_Matched_Filtering.py:

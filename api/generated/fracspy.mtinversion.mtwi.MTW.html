@@ -50,6 +50,8 @@
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.mtinversion.mtwi.MTW';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -525,8 +527,40 @@ moment-tensor modelling of waveforms</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>X-axis</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Y-axis</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Z-axis</p>
+</dd>
+<dt><strong>recs</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Receiver locations of size <span class="math notranslate nohighlight">\(3 \times n_r\)</span></p>
+</dd>
+<dt><strong>vel</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Velocity model of size <span class="math notranslate nohighlight">\(n_x \times n_y \times n_z\)</span></p>
+</dd>
+<dt><strong>src_idx</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Source location indices (relative to x, y, and z axes)</p>
+</dd>
+<dt><strong>comp_idx</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Index of component at receiver side</p>
+</dd>
+<dt><strong>omega_p</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Peak frequency of the given wave</p>
+</dd>
 <dt><strong>aoi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></span></dt><dd><p>Area of interest for waveform computation defined as half windows to place either size of the source in center
 of region (defined by <cite>src_idx</cite>)</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Time axis for data</p>
+</dd>
+<dt><strong>wav</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Wavelet.</p>
+</dd>
+<dt><strong>wavcenter</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Index of wavelet center</p>
+</dd>
+<dt><strong>Ms_scaling</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Scaling to be incorporated in the MTI</p>
+</dd>
+<dt><strong>engine</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional</span></dt><dd><p>Engine used for computations (<code class="docutils literal notranslate"><span class="pre">numpy</span></code> or <code class="docutils literal notranslate"><span class="pre">numba</span></code>).</p>
+</dd>
+<dt><strong>multicomp</strong><span class="classifier">: obj:<cite>boolean</cite></span></dt><dd><p>Whether running for single or multicomponent data</p>
+</dd>
+<dt><strong>cosine_sourceangles</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Cosine source angles of size <span class="math notranslate nohighlight">\(3 \times n_r \times n_x \times n_y \times n_z\)</span></p>
+</dd>
+<dt><strong>dists</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Distances of size <span class="math notranslate nohighlight">\(\times n_r \times n_x \times n_y \times n_z\)</span></p>
 </dd>
 </dl>
 </dd>

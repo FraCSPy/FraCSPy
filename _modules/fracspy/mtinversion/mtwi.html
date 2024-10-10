@@ -464,10 +464,41 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        X-axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Y-axis</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Z-axis</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`</span>
+<span class="sd">        Receiver locations of size :math:`3 \times n_r`</span>
+<span class="sd">    vel : :obj:`numpy.ndarray`</span>
+<span class="sd">        Velocity model of size :math:`n_x \times n_y \times n_z`</span>
+<span class="sd">    src_idx : :obj:`numpy.ndarray`</span>
+<span class="sd">        Source location indices (relative to x, y, and z axes)</span>
+<span class="sd">    comp_idx : :obj:`int`</span>
+<span class="sd">        Index of component at receiver side</span>
+<span class="sd">    omega_p : :obj:`float`</span>
+<span class="sd">        Peak frequency of the given wave</span>
 <span class="sd">    aoi : :obj:`tuple`</span>
 <span class="sd">        Area of interest for waveform computation defined as half windows to place either size of the source in center</span>
 <span class="sd">        of region (defined by `src_idx`)</span>
-
+<span class="sd">    t : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time axis for data</span>
+<span class="sd">    wav : :obj:`numpy.ndarray`</span>
+<span class="sd">        Wavelet.</span>
+<span class="sd">    wavcenter : :obj:`int`</span>
+<span class="sd">        Index of wavelet center</span>
+<span class="sd">    Ms_scaling : :obj:`float`</span>
+<span class="sd">        Scaling to be incorporated in the MTI</span>
+<span class="sd">    engine : :obj:`str`, optional</span>
+<span class="sd">        Engine used for computations (``numpy`` or ``numba``).</span>
+<span class="sd">    multicomp : : obj:`boolean`</span>
+<span class="sd">        Whether running for single or multicomponent data</span>
+<span class="sd">    cosine_sourceangles : :obj:`numpy.ndarray`</span>
+<span class="sd">        Cosine source angles of size :math:`3 \times n_r \times n_x \times n_y \times n_z`</span>
+<span class="sd">    dists : :obj:`numpy.ndarray`</span>
+<span class="sd">        Distances of size :math:`\times n_r \times n_x \times n_y \times n_z`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">recs</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">src_idx</span><span class="p">,</span> <span class="n">comp_idx</span><span class="p">,</span>
                  <span class="n">omega_p</span><span class="p">,</span> <span class="n">aoi</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">wav</span><span class="p">,</span> <span class="n">wavc</span><span class="p">,</span>

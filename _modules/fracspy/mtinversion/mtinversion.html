@@ -515,7 +515,12 @@ document.write(`
 <span class="sd">            Index of component at receiver side</span>
 <span class="sd">        omega_p : :obj:`float`</span>
 <span class="sd">            Central frequency of source</span>
-
+<span class="sd">        kind : :obj:`string`</span>
+<span class="sd">            Type of MTI to perform, ai or wi</span>
+<span class="sd">        kwargs_engine : dict</span>
+<span class="sd">            Engine keywords arguments</span>
+<span class="sd">        kwargs_inv : dict</span>
+<span class="sd">            Inversion keywords arguments</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mtengine</span> <span class="o">=</span> <span class="n">_mt_kind</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>

@@ -470,6 +470,43 @@ document.write(`
         <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;numba&#39;</span><span class="p">,</span>
         <span class="n">checkdottest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Moment Tensor Single Component Kirchhoff operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Depth axis</span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Spatial axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Spatial axis</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`</span>
+<span class="sd">        Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`</span>
+<span class="sd">        The first axis should be ordered as (``y``,) ``x``, ``z``.</span>
+<span class="sd">    t : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time axis for data</span>
+<span class="sd">    wav : :obj:`numpy.ndarray`</span>
+<span class="sd">        Wavelet.</span>
+<span class="sd">    wavcenter : :obj:`int`</span>
+<span class="sd">        Index of wavelet center</span>
+<span class="sd">    tt_table : :obj:`numpy.ndarray`</span>
+<span class="sd">        Travel time table.</span>
+<span class="sd">    G_z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Greens functions for a single component, i.e., z-component </span>
+<span class="sd">        For more information check _fracspy.mtinversion.greensfunctions.py_</span>
+<span class="sd">    Ms_scaling : :obj:`float`</span>
+<span class="sd">        Scaling to be incorporated in the MTI</span>
+<span class="sd">    engine : :obj:`str`, optional</span>
+<span class="sd">        Engine used for computations (``numpy`` or ``numba``).</span>
+<span class="sd">    checkdottest : :obj:`Bool`, optional</span>
+<span class="sd">        Run dot test to check operator </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mstack_Op : Pylops operator</span>
+<span class="sd">        Moment Tensor Operator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">nr</span> <span class="o">=</span> <span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">Ms_Op</span> <span class="o">=</span> <span class="p">[</span><span class="n">TAKirchhoff</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
                          <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
@@ -510,6 +547,46 @@ document.write(`
         <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;numba&#39;</span><span class="p">,</span>
         <span class="n">checkdottest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Moment Tensor Multi Component Kirchhoff operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Depth axis</span>
+<span class="sd">    x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Spatial axis</span>
+<span class="sd">    y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Spatial axis</span>
+<span class="sd">    recs : :obj:`numpy.ndarray`</span>
+<span class="sd">        Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`</span>
+<span class="sd">        The first axis should be ordered as (``y``,) ``x``, ``z``.</span>
+<span class="sd">    t : :obj:`numpy.ndarray`</span>
+<span class="sd">        Time axis for data</span>
+<span class="sd">    wav : :obj:`numpy.ndarray`</span>
+<span class="sd">        Wavelet.</span>
+<span class="sd">    wavcenter : :obj:`int`</span>
+<span class="sd">        Index of wavelet center</span>
+<span class="sd">    tt_table : :obj:`numpy.ndarray`</span>
+<span class="sd">        Travel time table.</span>
+<span class="sd">    G_x : :obj:`numpy.ndarray`</span>
+<span class="sd">        Greens functions for x-component</span>
+<span class="sd">    G_y : :obj:`numpy.ndarray`</span>
+<span class="sd">        Greens functions for y-component</span>
+<span class="sd">    G_z : :obj:`numpy.ndarray`</span>
+<span class="sd">        Greens functions for z-component</span>
+<span class="sd">    Ms_scaling : :obj:`float`</span>
+<span class="sd">        Scaling to be incorporated in the MTI</span>
+<span class="sd">    engine : :obj:`str`, optional</span>
+<span class="sd">        Engine used for computations (``numpy`` or ``numba``).</span>
+<span class="sd">    checkdottest : :obj:`Bool`, optional</span>
+<span class="sd">        Run dot test to check operator </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mstack_Op : Pylops operator</span>
+<span class="sd">        3C Moment Tensor Operator </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
     <span class="n">nr</span> <span class="o">=</span> <span class="n">recs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># Build 6 True Amp Kirchoff Operators</span>

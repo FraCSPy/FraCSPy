@@ -50,6 +50,8 @@
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/fracspy.modelling.mt_kirchhoff.MTSKirchhoff';</script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -519,7 +521,46 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="fracspy.modelling.mt_kirchhoff.MTSKirchhoff">
 <span class="sig-prename descclassname"><span class="pre">fracspy.modelling.mt_kirchhoff.</span></span><span class="sig-name descname"><span class="pre">MTSKirchhoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tt_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Gz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ms_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numba'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkdottest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fracspy/modelling/mt_kirchhoff.html#MTSKirchhoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fracspy.modelling.mt_kirchhoff.MTSKirchhoff" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Moment Tensor Single Component Kirchhoff operator.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Depth axis</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Spatial axis</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Spatial axis</p>
+</dd>
+<dt><strong>recs</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Receivers in array of size <span class="math notranslate nohighlight">\(\lbrack 2 (3) \times n_r \rbrack\)</span>
+The first axis should be ordered as (<code class="docutils literal notranslate"><span class="pre">y</span></code>,) <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Time axis for data</p>
+</dd>
+<dt><strong>wav</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Wavelet.</p>
+</dd>
+<dt><strong>wavcenter</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Index of wavelet center</p>
+</dd>
+<dt><strong>tt_table</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Travel time table.</p>
+</dd>
+<dt><strong>G_z</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></span></dt><dd><p>Greens functions for a single component, i.e., z-component 
+For more information check _fracspy.mtinversion.greensfunctions.py_</p>
+</dd>
+<dt><strong>Ms_scaling</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Scaling to be incorporated in the MTI</p>
+</dd>
+<dt><strong>engine</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional</span></dt><dd><p>Engine used for computations (<code class="docutils literal notranslate"><span class="pre">numpy</span></code> or <code class="docutils literal notranslate"><span class="pre">numba</span></code>).</p>
+</dd>
+<dt><strong>checkdottest</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bool</span></code>, optional</span></dt><dd><p>Run dot test to check operator</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Mstack_Op</strong><span class="classifier">Pylops operator</span></dt><dd><p>Moment Tensor Operator</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <div style='clear:both'></div></section>
 

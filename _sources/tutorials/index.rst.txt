@@ -15,14 +15,31 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Overview -------- This part of the code is designed to prepare templates for seismic event detection.  It accomplishes this by reading event times from an event catalog and extracting the corresponding data  from continuous seismic recordings. The primary aim is to save these extracted templates for each station,  enabling their use in subsequent matched filtering analysis.">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_1_1_Detection_Matched_Filtering_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_tutorials_1_1_Detection_Matched_Filtering.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">1.1 Template Matching Detection</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple case of a homogeneous subsurface model and a set of point microseismic sources with various epicenters and various origin times. We consider only P-waves and single-component receivers for simplicity.">
 
 .. only:: html
 
-  .. image:: /tutorials/images/thumb/sphx_glr_Detection_DiffractionStacking_tutorial_thumb.png
+  .. image:: /tutorials/images/thumb/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_Detection_DiffractionStacking_tutorial.py`
+  :ref:`sphx_glr_tutorials_1_2_Detection_DiffractionStacking_tutorial.py`
 
 .. raw:: html
 
@@ -32,52 +49,18 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:">
-
-.. only:: html
-
-  .. image:: /tutorials/images/thumb/sphx_glr_Location_KirchhoffBased_tutorial_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">2.1 Kirchhoff-Based Localisation - Single component</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Similar to the other tutorials on this topic, we will consider heree a simple scenario where the subsurface is homogenous, as such we can compute an analytical expression for the traveltime. Moreover, we discard the amplitude component from the high-frequency approximation of the Green&#x27;s function adopted here. As such, we expect our modelling operator to be accurate in terms of kinematic, however inaccurate in terms of its dynamic component (amplitudes).">
-
-.. only:: html
-
-  .. image:: /tutorials/images/thumb/sphx_glr_Location_CrossCorrelationImaging_tutorial_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_tutorials_Location_CrossCorrelationImaging_tutorial.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">2.2 Cross-Correlation-Based Localisation - Single component</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple scenario with a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like). We also consider only P-waves for simplicity here, and single-component receivers.">
 
 .. only:: html
 
-  .. image:: /tutorials/images/thumb/sphx_glr_Location_DiffractionStacking_tutorial_thumb.png
+  .. image:: /tutorials/images/thumb/sphx_glr_2_1_Location_DiffractionStacking_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`
+  :ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">2.2 Diffraction Stacking: Localisation</div>
+      <div class="sphx-glr-thumbnail-title">2.1 Diffraction Stacking: Localisation</div>
     </div>
 
 
@@ -87,10 +70,10 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. only:: html
 
-  .. image:: /tutorials/images/thumb/sphx_glr_Location_DSMTI_tutorial_thumb.png
+  .. image:: /tutorials/images/thumb/sphx_glr_2_2_Location_DSMTI_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py`
+  :ref:`sphx_glr_tutorials_2_2_Location_DSMTI_tutorial.py`
 
 .. raw:: html
 
@@ -100,14 +83,48 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_2_3_Location_KirchhoffBased_tutorial_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_tutorials_2_3_Location_KirchhoffBased_tutorial.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">2.3 Kirchhoff-Based Localisation - Single component</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Similar to the other tutorials on this topic, we will consider heree a simple scenario where the subsurface is homogenous, as such we can compute an analytical expression for the traveltime. Moreover, we discard the amplitude component from the high-frequency approximation of the Green&#x27;s function adopted here. As such, we expect our modelling operator to be accurate in terms of kinematic, however inaccurate in terms of its dynamic component (amplitudes).">
+
+.. only:: html
+
+  .. image:: /tutorials/images/thumb/sphx_glr_2_4_Location_CrossCorrelationImaging_tutorial_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_tutorials_2_4_Location_CrossCorrelationImaging_tutorial.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">2.4 Cross-Correlation-Based Localisation - Single component</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards):">
 
 .. only:: html
 
-  .. image:: /tutorials/images/thumb/sphx_glr_MT_AmplitudeInversion_tutorial_thumb.png
+  .. image:: /tutorials/images/thumb/sphx_glr_3_1_MT_AmplitudeInversion_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py`
+  :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeInversion_tutorial.py`
 
 .. raw:: html
 
@@ -121,10 +138,10 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. only:: html
 
-  .. image:: /tutorials/images/thumb/sphx_glr_MT_WaveformInversion_tutorial_thumb.png
+  .. image:: /tutorials/images/thumb/sphx_glr_3_2_MT_WaveformInversion_tutorial_thumb.png
     :alt:
 
-  :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py`
+  :ref:`sphx_glr_tutorials_3_2_MT_WaveformInversion_tutorial.py`
 
 .. raw:: html
 
@@ -142,13 +159,14 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 .. toctree::
    :hidden:
 
-   /tutorials/Detection_DiffractionStacking_tutorial
-   /tutorials/Location_KirchhoffBased_tutorial
-   /tutorials/Location_CrossCorrelationImaging_tutorial
-   /tutorials/Location_DiffractionStacking_tutorial
-   /tutorials/Location_DSMTI_tutorial
-   /tutorials/MT_AmplitudeInversion_tutorial
-   /tutorials/MT_WaveformInversion_tutorial
+   /tutorials/1_1_Detection_Matched_Filtering
+   /tutorials/1_2_Detection_DiffractionStacking_tutorial
+   /tutorials/2_1_Location_DiffractionStacking_tutorial
+   /tutorials/2_2_Location_DSMTI_tutorial
+   /tutorials/2_3_Location_KirchhoffBased_tutorial
+   /tutorials/2_4_Location_CrossCorrelationImaging_tutorial
+   /tutorials/3_1_MT_AmplitudeInversion_tutorial
+   /tutorials/3_2_MT_WaveformInversion_tutorial
 
 
 

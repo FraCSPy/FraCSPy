@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**14:09.641** total execution time for 14 files **from all galleries**:
+**26:21.396** total execution time for 15 files **from all galleries**:
 
 .. container::
 
@@ -32,44 +32,47 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` (``../../tutorials/Location_DiffractionStacking_tutorial.py``)
-     - 05:28.454
+   * - :ref:`sphx_glr_tutorials_1_1_Detection_Matched_Filtering.py` (``../../tutorials/1_1_Detection_Matched_Filtering.py``)
+     - 12:13.796
      - 0.0
-   * - :ref:`sphx_glr_tutorials_Location_KirchhoffBased_tutorial.py` (``../../tutorials/Location_KirchhoffBased_tutorial.py``)
-     - 02:54.789
+   * - :ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py` (``../../tutorials/2_1_Location_DiffractionStacking_tutorial.py``)
+     - 05:26.330
      - 0.0
-   * - :ref:`sphx_glr_tutorials_MT_WaveformInversion_tutorial.py` (``../../tutorials/MT_WaveformInversion_tutorial.py``)
-     - 02:02.634
+   * - :ref:`sphx_glr_tutorials_2_3_Location_KirchhoffBased_tutorial.py` (``../../tutorials/2_3_Location_KirchhoffBased_tutorial.py``)
+     - 02:55.427
      - 0.0
-   * - :ref:`sphx_glr_tutorials_Detection_DiffractionStacking_tutorial.py` (``../../tutorials/Detection_DiffractionStacking_tutorial.py``)
-     - 01:13.542
+   * - :ref:`sphx_glr_tutorials_3_2_MT_WaveformInversion_tutorial.py` (``../../tutorials/3_2_MT_WaveformInversion_tutorial.py``)
+     - 02:03.706
      - 0.0
-   * - :ref:`sphx_glr_tutorials_Location_CrossCorrelationImaging_tutorial.py` (``../../tutorials/Location_CrossCorrelationImaging_tutorial.py``)
-     - 01:11.433
+   * - :ref:`sphx_glr_tutorials_1_2_Detection_DiffractionStacking_tutorial.py` (``../../tutorials/1_2_Detection_DiffractionStacking_tutorial.py``)
+     - 01:13.159
      - 0.0
-   * - :ref:`sphx_glr_tutorials_Location_DSMTI_tutorial.py` (``../../tutorials/Location_DSMTI_tutorial.py``)
-     - 00:48.202
+   * - :ref:`sphx_glr_tutorials_2_4_Location_CrossCorrelationImaging_tutorial.py` (``../../tutorials/2_4_Location_CrossCorrelationImaging_tutorial.py``)
+     - 01:10.552
      - 0.0
-   * - :ref:`sphx_glr_tutorials_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/MT_AmplitudeInversion_tutorial.py``)
-     - 00:24.695
+   * - :ref:`sphx_glr_tutorials_2_2_Location_DSMTI_tutorial.py` (``../../tutorials/2_2_Location_DSMTI_tutorial.py``)
+     - 00:47.956
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/3_1_MT_AmplitudeInversion_tutorial.py``)
+     - 00:24.907
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``../../examples/plot_SeismicWiggles.py``)
-     - 00:04.379
+     - 00:04.253
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``../../examples/plot_EventImages.py``)
-     - 00:00.907
+     - 00:00.789
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``../../examples/plot_SeismicTraceImage.py``)
-     - 00:00.291
+     - 00:00.222
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``../../examples/plot_ComparingBeachballs.py``)
-     - 00:00.164
+     - 00:00.125
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``../../examples/plot_ComparingMTmatrices.py``)
-     - 00:00.085
+     - 00:00.111
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``../../examples/plot_MTmatrix.py``)
-     - 00:00.041
+     - 00:00.038
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``../../examples/plot_Beachball.py``)
      - 00:00.025

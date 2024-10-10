@@ -56,7 +56,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1.2 Diffraction Stacking: Detection" href="Detection_DiffractionStacking_tutorial.html" />
+    <link rel="next" title="1.1 Template Matching Detection" href="1_1_Detection_Matched_Filtering.html" />
     <link rel="prev" title="Seismic Wiggles Plotting" href="../gallery/plot_SeismicWiggles.html" />
     
     <script src="../_static/require.js"></script>
@@ -370,13 +370,18 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Detection_DiffractionStacking_tutorial.html">1.2 Diffraction Stacking: Detection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Location_KirchhoffBased_tutorial.html">2.1 Kirchhoff-Based Localisation - Single component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Location_CrossCorrelationImaging_tutorial.html">2.2 Cross-Correlation-Based Localisation - Single component</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Location_DiffractionStacking_tutorial.html">2.2 Diffraction Stacking: Localisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Location_DSMTI_tutorial.html">2.3 Diffraction Stacking: Localisation With Polarity Correction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html">3.1 Amplitude-based Moment Tensor Inversion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MT_WaveformInversion_tutorial.html">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_1_Detection_Matched_Filtering.html">1.1 Template Matching Detection</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="1_2_Detection_DiffractionStacking_tutorial.html">1.2 Diffraction Stacking: Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_1_Location_DiffractionStacking_tutorial.html">2.1 Diffraction Stacking: Localisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_2_Location_DSMTI_tutorial.html">2.3 Diffraction Stacking: Localisation With Polarity Correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_3_Location_KirchhoffBased_tutorial.html">2.3 Kirchhoff-Based Localisation - Single component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_4_Location_CrossCorrelationImaging_tutorial.html">2.4 Cross-Correlation-Based Localisation - Single component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_1_MT_AmplitudeInversion_tutorial.html">3.1 Amplitude-based Moment Tensor Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_2_MT_WaveformInversion_tutorial.html">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</a></li>
 </ul>
 </div>
 </nav></div>
@@ -434,26 +439,29 @@ document.write(`
   <section id="tutorials">
 <span id="id1"></span><h1>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h1>
 <p>Below is a series of tutorials which use FraCSPy for microseismic monitoring purposes.</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple case of a homogeneous subsurface model and a set of point microseismic sources with various epicenters and various origin times. We consider only P-waves and single-component receivers for simplicity."><img alt="" src="../_images/sphx_glr_Detection_DiffractionStacking_tutorial_thumb.png" />
-<p><a class="reference internal" href="Detection_DiffractionStacking_tutorial.html#sphx-glr-tutorials-detection-diffractionstacking-tutorial-py"><span class="std std-ref">1.2 Diffraction Stacking: Detection</span></a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Overview -------- This part of the code is designed to prepare templates for seismic event detection.  It accomplishes this by reading event times from an event catalog and extracting the corresponding data  from continuous seismic recordings. The primary aim is to save these extracted templates for each station,  enabling their use in subsequent matched filtering analysis."><img alt="" src="../_images/sphx_glr_1_1_Detection_Matched_Filtering_thumb.png" />
+<p><a class="reference internal" href="1_1_Detection_Matched_Filtering.html#sphx-glr-tutorials-1-1-detection-matched-filtering-py"><span class="std std-ref">1.1 Template Matching Detection</span></a></p>
+  <div class="sphx-glr-thumbnail-title">1.1 Template Matching Detection</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple case of a homogeneous subsurface model and a set of point microseismic sources with various epicenters and various origin times. We consider only P-waves and single-component receivers for simplicity."><img alt="" src="../_images/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_thumb.png" />
+<p><a class="reference internal" href="1_2_Detection_DiffractionStacking_tutorial.html#sphx-glr-tutorials-1-2-detection-diffractionstacking-tutorial-py"><span class="std std-ref">1.2 Diffraction Stacking: Detection</span></a></p>
   <div class="sphx-glr-thumbnail-title">1.2 Diffraction Stacking: Detection</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:"><img alt="" src="../_images/sphx_glr_Location_KirchhoffBased_tutorial_thumb.png" />
-<p><a class="reference internal" href="Location_KirchhoffBased_tutorial.html#sphx-glr-tutorials-location-kirchhoffbased-tutorial-py"><span class="std std-ref">2.1 Kirchhoff-Based Localisation - Single component</span></a></p>
-  <div class="sphx-glr-thumbnail-title">2.1 Kirchhoff-Based Localisation - Single component</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Similar to the other tutorials on this topic, we will consider heree a simple scenario where the subsurface is homogenous, as such we can compute an analytical expression for the traveltime. Moreover, we discard the amplitude component from the high-frequency approximation of the Green&#x27;s function adopted here. As such, we expect our modelling operator to be accurate in terms of kinematic, however inaccurate in terms of its dynamic component (amplitudes)."><img alt="" src="../_images/sphx_glr_Location_CrossCorrelationImaging_tutorial_thumb.png" />
-<p><a class="reference internal" href="Location_CrossCorrelationImaging_tutorial.html#sphx-glr-tutorials-location-crosscorrelationimaging-tutorial-py"><span class="std std-ref">2.2 Cross-Correlation-Based Localisation - Single component</span></a></p>
-  <div class="sphx-glr-thumbnail-title">2.2 Cross-Correlation-Based Localisation - Single component</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple scenario with a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like). We also consider only P-waves for simplicity here, and single-component receivers."><img alt="" src="../_images/sphx_glr_Location_DiffractionStacking_tutorial_thumb.png" />
-<p><a class="reference internal" href="Location_DiffractionStacking_tutorial.html#sphx-glr-tutorials-location-diffractionstacking-tutorial-py"><span class="std std-ref">2.2 Diffraction Stacking: Localisation</span></a></p>
-  <div class="sphx-glr-thumbnail-title">2.2 Diffraction Stacking: Localisation</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source. We also consider only P-waves for simplicity here."><img alt="" src="../_images/sphx_glr_Location_DSMTI_tutorial_thumb.png" />
-<p><a class="reference internal" href="Location_DSMTI_tutorial.html#sphx-glr-tutorials-location-dsmti-tutorial-py"><span class="std std-ref">2.3 Diffraction Stacking: Localisation With Polarity Correction</span></a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a simple scenario with a homogeneous subsurface model and a point microseismic source with a uniform radiation pattern (explosion-like). We also consider only P-waves for simplicity here, and single-component receivers."><img alt="" src="../_images/sphx_glr_2_1_Location_DiffractionStacking_tutorial_thumb.png" />
+<p><a class="reference internal" href="2_1_Location_DiffractionStacking_tutorial.html#sphx-glr-tutorials-2-1-location-diffractionstacking-tutorial-py"><span class="std std-ref">2.1 Diffraction Stacking: Localisation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">2.1 Diffraction Stacking: Localisation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source. We also consider only P-waves for simplicity here."><img alt="" src="../_images/sphx_glr_2_2_Location_DSMTI_tutorial_thumb.png" />
+<p><a class="reference internal" href="2_2_Location_DSMTI_tutorial.html#sphx-glr-tutorials-2-2-location-dsmti-tutorial-py"><span class="std std-ref">2.3 Diffraction Stacking: Localisation With Polarity Correction</span></a></p>
   <div class="sphx-glr-thumbnail-title">2.3 Diffraction Stacking: Localisation With Polarity Correction</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards):"><img alt="" src="../_images/sphx_glr_MT_AmplitudeInversion_tutorial_thumb.png" />
-<p><a class="reference internal" href="MT_AmplitudeInversion_tutorial.html#sphx-glr-tutorials-mt-amplitudeinversion-tutorial-py"><span class="std std-ref">3.1 Amplitude-based Moment Tensor Inversion</span></a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed sources) using the following integral relation:"><img alt="" src="../_images/sphx_glr_2_3_Location_KirchhoffBased_tutorial_thumb.png" />
+<p><a class="reference internal" href="2_3_Location_KirchhoffBased_tutorial.html#sphx-glr-tutorials-2-3-location-kirchhoffbased-tutorial-py"><span class="std std-ref">2.3 Kirchhoff-Based Localisation - Single component</span></a></p>
+  <div class="sphx-glr-thumbnail-title">2.3 Kirchhoff-Based Localisation - Single component</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Similar to the other tutorials on this topic, we will consider heree a simple scenario where the subsurface is homogenous, as such we can compute an analytical expression for the traveltime. Moreover, we discard the amplitude component from the high-frequency approximation of the Green&#x27;s function adopted here. As such, we expect our modelling operator to be accurate in terms of kinematic, however inaccurate in terms of its dynamic component (amplitudes)."><img alt="" src="../_images/sphx_glr_2_4_Location_CrossCorrelationImaging_tutorial_thumb.png" />
+<p><a class="reference internal" href="2_4_Location_CrossCorrelationImaging_tutorial.html#sphx-glr-tutorials-2-4-location-crosscorrelationimaging-tutorial-py"><span class="std std-ref">2.4 Cross-Correlation-Based Localisation - Single component</span></a></p>
+  <div class="sphx-glr-thumbnail-title">2.4 Cross-Correlation-Based Localisation - Single component</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Starting from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards):"><img alt="" src="../_images/sphx_glr_3_1_MT_AmplitudeInversion_tutorial_thumb.png" />
+<p><a class="reference internal" href="3_1_MT_AmplitudeInversion_tutorial.html#sphx-glr-tutorials-3-1-mt-amplitudeinversion-tutorial-py"><span class="std std-ref">3.1 Amplitude-based Moment Tensor Inversion</span></a></p>
   <div class="sphx-glr-thumbnail-title">3.1 Amplitude-based Moment Tensor Inversion</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We will start once again from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards) - see the Amplitude-based Moment Tensor Inversion tutorial for more details."><img alt="" src="../_images/sphx_glr_MT_WaveformInversion_tutorial_thumb.png" />
-<p><a class="reference internal" href="MT_WaveformInversion_tutorial.html#sphx-glr-tutorials-mt-waveforminversion-tutorial-py"><span class="std std-ref">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</span></a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We will start once again from the far-field particle velocity expression from a moment tensor source in a homogeneous full space (from eq. 4.29, Aki and Richards) - see the Amplitude-based Moment Tensor Inversion tutorial for more details."><img alt="" src="../_images/sphx_glr_3_2_MT_WaveformInversion_tutorial_thumb.png" />
+<p><a class="reference internal" href="3_2_MT_WaveformInversion_tutorial.html#sphx-glr-tutorials-3-2-mt-waveforminversion-tutorial-py"><span class="std std-ref">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</span></a></p>
   <div class="sphx-glr-thumbnail-title">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
@@ -480,11 +488,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="Detection_DiffractionStacking_tutorial.html"
+       href="1_1_Detection_Matched_Filtering.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1.2 Diffraction Stacking: Detection</p>
+        <p class="prev-next-title">1.1 Template Matching Detection</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

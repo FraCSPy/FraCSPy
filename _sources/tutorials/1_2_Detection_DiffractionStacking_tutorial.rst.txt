@@ -420,7 +420,7 @@ Apply operator to model data for each event
 
  .. code-block:: none
 
-    Computation time: 10.062822580337524 seconds
+    Computation time: 9.905499935150146 seconds
 
 
 
@@ -634,7 +634,7 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 31.19650959968567 seconds
+    Computation time: 31.00172209739685 seconds
 
 
 
@@ -786,7 +786,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 30.572883367538452 seconds
+    Computation time: 30.51911211013794 seconds
 
 
 
@@ -1073,7 +1073,7 @@ You can see that the focusing is better when using squared values
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 13.046 seconds)
+   **Total running time of the script:** (1 minutes 12.758 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_2_Detection_DiffractionStacking_tutorial.py:

@@ -24,6 +24,42 @@ def MTSKirchhoff(
         engine='numba',
         checkdottest=True,
         ):
+    r"""Moment Tensor Single Component Kirchhoff operator.
+
+    Parameters
+    ----------
+    z : :obj:`numpy.ndarray`
+        Depth axis
+    x : :obj:`numpy.ndarray`
+        Spatial axis
+    y : :obj:`numpy.ndarray`
+        Spatial axis
+    recs : :obj:`numpy.ndarray`
+        Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`
+        The first axis should be ordered as (``y``,) ``x``, ``z``.
+    t : :obj:`numpy.ndarray`
+        Time axis for data
+    wav : :obj:`numpy.ndarray`
+        Wavelet.
+    wavcenter : :obj:`int`
+        Index of wavelet center
+    tt_table : :obj:`numpy.ndarray`
+        Travel time table.
+    G_z : :obj:`numpy.ndarray`
+        Greens functions for a single component, i.e., z-component
+    Ms_scaling : :obj:`float`
+        Scaling to be incorporated in the MTI
+    engine : :obj:`str`, optional
+        Engine used for computations (``numpy`` or ``numba``).
+    checkdottest : :obj:`Bool`, optional
+        Run dot test to check operator 
+
+    Returns
+    -------
+    Mstack_Op : Pylops operator
+        Moment Tensor Operator
+    """
+
     nr = recs.shape[1]
     Ms_Op = [TAKirchhoff(z=z,
                          x=x,
@@ -61,6 +97,45 @@ def MTMKirchhoff(
         engine='numba',
         checkdottest=True,
     ):
+        r"""Moment Tensor Multi Component Kirchhoff operator.
+
+    Parameters
+    ----------
+    z : :obj:`numpy.ndarray`
+        Depth axis
+    x : :obj:`numpy.ndarray`
+        Spatial axis
+    y : :obj:`numpy.ndarray`
+        Spatial axis
+    recs : :obj:`numpy.ndarray`
+        Receivers in array of size :math:`\lbrack 2 (3) \times n_r \rbrack`
+        The first axis should be ordered as (``y``,) ``x``, ``z``.
+    t : :obj:`numpy.ndarray`
+        Time axis for data
+    wav : :obj:`numpy.ndarray`
+        Wavelet.
+    wavcenter : :obj:`int`
+        Index of wavelet center
+    tt_table : :obj:`numpy.ndarray`
+        Travel time table.
+    G_x : :obj:`numpy.ndarray`
+        Greens functions for x-component
+    G_y : :obj:`numpy.ndarray`
+        Greens functions for y-component
+    G_z : :obj:`numpy.ndarray`
+        Greens functions for z-component
+    Ms_scaling : :obj:`float`
+        Scaling to be incorporated in the MTI
+    engine : :obj:`str`, optional
+        Engine used for computations (``numpy`` or ``numba``).
+    checkdottest : :obj:`Bool`, optional
+        Run dot test to check operator 
+
+    Returns
+    -------
+    Mstack_Op : Pylops operator
+        3C Moment Tensor Operator 
+    """
     nr = recs.shape[1]
 
     # Build 6 True Amp Kirchoff Operators

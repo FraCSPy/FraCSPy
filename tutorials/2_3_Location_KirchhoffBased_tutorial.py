@@ -1,35 +1,31 @@
 r"""
-2.2 Cross-Correlation-Based Localisation - Single component
-===========================================================
-This tutorial illustrates how to perform source localisation by inversion
-using a Kirchhoff-based modelling operator together with a correlation-based
-objective function.
+2.3 Kirchhoff-Based Localisation - Single component
+===================================================
+This tutorial illustrates how to perform source localisation using a Kirchhoff-based
+modelling operator.
 
-Similar to the other tutorials on this topic, we will consider heree a simple scenario
-where the subsurface is homogenous, as such we can compute an analytical expression for the
-traveltime. Moreover, we discard the amplitude component from the high-frequency
-approximation of the Green's function adopted here. As such, we expect our modelling operator
-to be accurate in terms of kinematic, however inaccurate in terms of its dynamic component
-(amplitudes).
-
-Using a standard least-squares data misfit term in an inversion approach to source
-localisation (as done in the previous tutorial) would lead to inaccurate results, unless the
-modelling operator is improved to take into account the amplitude of the wavefield. An alternative
-route, which we have decided to take here, does instead require us to design an objective function
-that is mostly sensitive to traveltime, and less so to amplitudes. Following prior work in the
-literature of least-squares imaging for active seismic data, the normalized correlation function
-(aka Pearson correlation coefficient) between the modelled and observed data is used here, as defined by:
+To begin with, we express the process of creating a microseismic recording from a source (or a set of distributed
+sources) using the following integral relation:
 
 .. math::
-        J(m(\mathbf{x})) = - \sum_{\mathbf{x_r}} \frac{\int{d^{obs}(\mathbf{x_r}, t) d^{mod}(\mathbf{x_r}, t) dt}}
-        {\sqrt{\int{d^{obs}(\mathbf{x_r}, t)^2 dt}} \sqrt{\int{d^{mod}(\mathbf{x_r}, t)^2 dt}}}
+        d(\mathbf{x_r}, t) =
+        w(t) * \int\limits_V G(\mathbf{x_r}, \mathbf{x}, t) m(\mathbf{x})\,\mathrm{d}\mathbf{x}
 
-Whilst this objective function is differentiable with respect to :math:`m(\mathbf{x})` and one could
-write a gradient 'by-hand', this tutorial is also aimed at showcasing how easy is to combine FraCSPy
-with modern software packages from the deep learning community such as PyTorch, which provide Automatic
-Differentiation (AD) functionalities. The optimization process is therefore carried out using a AD-based
-gradient of the main objective function, :math:`\partial J / \partial m(\mathbf{x})`, augumented with a L1
-regularization term that promotes sparse solutions (i.e., compact source distributions).
+where :math:`m(\mathbf{x})` represents the source distribution at every location in the subsurface
+(and effectively parametrises the source strength), :math:`G(\mathbf{x_r}, \mathbf{x}, t)` is the subsurface-to-receiver
+Green's function and finally  :math:`w(t)` is the source wavelet. In our implementation, the following high-frequency
+approximation of the Green's function is adopted:
+
+.. math::
+    G(\mathbf{x_r}, \mathbf{x}, \omega) = a(\mathbf{x_r}, \mathbf{x})
+        e^{j \omega t(\mathbf{x_r}, \mathbf{x})}
+
+where :math:`t(\mathbf{x_r}, \mathbf{x})` is the traveltime and :math:`a(\mathbf{x_r}, \mathbf{x})` is the amplitude.
+However, we currently discard the amplitude component.
+
+In this tutorial we will consider a simple scenario where the subsurface is homogenous, as such we can compute an
+analytical expression for the traveltime. Similarly, an eikonal solver can also be used in this scenario as well as in
+more complex cases when we deal with heterogenous media.
 
 """
 
@@ -194,19 +190,71 @@ plt.legend()
 plt.tight_layout()
 
 ###############################################################################
-# Source localisation by cross-correlation-based imaging
-# ------------------------------------------------------
+# Source localisation by imaging
+# ------------------------------
+# Creating an image of our microseismic source using the adjoint of the
+# modelling operator is a good first step to assess its ability to relocate
+# the energy of the event of interest to a certain subsurface location.
+#
+# In our setup, the adjoint is fast to perform. Therefore, we recommend computing
+# the adjoint to gain an initial idea on possible source locations. However,
+# the source location is likely to be a smoothed product, as opposed
+# # to the desired single location.
 
 L = fracspy.location.Location(x, y, z)
-xc_inv, xci_hc = L.apply(vz, kind="xcorri", Op=Op, nforhc=10)
+migrated, mig_hc = L.apply(vz, kind="kmigration", Op=Op, nforhc=10)
 
 print('True Hypo-Center:', [sx,sy,sz])
-print('Migration Hypo-Centers:', xci_hc)
+print('Migration Hypo-Centers:', mig_hc)
 
-fig, axs = locimage3d(xc_inv,
-                      x0=int(np.round(xci_hc[0])),
-                      y0=int(np.round(xci_hc[1])),
-                      z0=int(np.round(xci_hc[2])),
+fig, axs = locimage3d(migrated,
+                      x0=int(np.round(mig_hc[0])),
+                      y0=int(np.round(mig_hc[1])),
+                      z0=int(np.round(mig_hc[2])),
+                      p=100)
+plt.tight_layout()
+
+###############################################################################
+# Source localisation by inversion
+# --------------------------------
+# We try now to fully invert the forward operator. Two approaches will be explored:
+# first, we consider a standard least-squares solution, followed by a sparsity-promoting
+# inversion with the FISTA solver. The former approach is likely to share some
+# of the downsides of the adjoint solution unless inversion is carried out usig a very
+# large number of iterations. However, since the modelling operator is not exact, it may
+# become unstable as iterations progress. On the other hand, adding a sparsity constraints
+# can lead to a better resolved source location. Note, however, that in both cases error in
+# the velocity model cannot be compensated and will contribute to the blurring of the resulting
+# source image.
+#
+# Let's start with the least-squares solution
+
+inv, inv_hc = L.apply(vz, kind="lsi", Op=Op,
+                      nforhc=10, verbose=False)
+
+print('True Hypo-Center:', [sx,sy,sz])
+print('LSQR Inversion Hypo-Centers:', inv_hc)
+
+fig,axs = locimage3d(inv,
+                     x0=int(np.round(inv_hc[0])),
+                     y0=int(np.round(inv_hc[1])),
+                     z0=int(np.round(inv_hc[2])),
+                     p=100)
+plt.tight_layout()
+
+###############################################################################
+# We move on now to the sparsity-promoting solution
+
+fista, fista_hc = L.apply(frwddata, kind="sparselsi", Op=Op,
+                          l1eps=1e1, nforhc=10, verbose=False)
+
+print('True Hypo-Center:', [sx, sy, sz])
+print('FISTA Inversion Hypo-Centers:', fista_hc)
+
+fig, axs = locimage3d(fista,
+                      x0=int(np.round(fista_hc[0])),
+                      y0=int(np.round(fista_hc[1])),
+                      z0=int(np.round(fista_hc[2])),
                       p=100)
 plt.tight_layout()
 

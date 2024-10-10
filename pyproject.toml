@@ -39,6 +39,7 @@ dependencies = [
     "pylops >= 2.0.0",
     "torch",
     "cmcrameri",
+    "openpyxl",
 
 ]
 dynamic = ["version"]

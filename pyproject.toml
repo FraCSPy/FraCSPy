@@ -40,7 +40,8 @@ dependencies = [
     "torch",
     "cmcrameri",
     "openpyxl",
-
+    "tqdm",
+    "obspy",
 ]
 dynamic = ["version"]
 

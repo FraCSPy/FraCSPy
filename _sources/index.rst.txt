@@ -68,4 +68,5 @@ used methodologies as possible - allowing the users to choose which is right for
 
    Contributing <contributing.rst>
    Changelog <changelog.rst>
+   Citing <citing.rst>
    Credits <credits.rst>

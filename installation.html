@@ -207,6 +207,13 @@
 
 
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="citing.html">
+    Citing
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="credits.html">
     Credits
   </a>
@@ -349,6 +356,13 @@ document.write(`
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="credits.html">
     Credits
   </a>
@@ -442,7 +456,7 @@ document.write(`
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
-<p>Installation requires [Conda](<a class="reference external" href="https://conda.io">https://conda.io</a>) package manager, e.g. one can use [miniforge](<a class="github reference external" href="https://github.com/conda-forge/miniforge">conda-forge/miniforge</a>).</p>
+<p>Installation requires either <a class="reference external" href="https://pypi.org/project/pip/">pip</a> package installer or <a class="reference external" href="https://conda.io">Conda</a> package manager, e.g. one can use <a class="reference external" href="https://github.com/conda-forge/miniforge">miniforge</a>.</p>
 </section>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h2>
@@ -464,7 +478,7 @@ numerous python packages, some generic and some that are geophysics-focussed. Be
 </pre></div>
 </div>
 <p>within whatever coding environment you wish. This will pull the latest stable release and install it correctly within your working environment.</p>
-<p>If you wish to install the package in a more manual fashion, the source files can be pulled from github and then installed directly. Below we explain how to
+<p>If you wish to install the package in a more manual fashion, the source files can be pulled from GitHub and then installed directly. Below we explain how to
 do this on both a Linux/Mac environment and on a Windows environment.</p>
 <p><strong>Linux &amp; Mac</strong></p>
 <p>For Linux/Mac, you can leverage the MakeFile and simply run from the top directory of FraCSPy.</p>
@@ -477,7 +491,7 @@ do this on both a Linux/Mac environment and on a Windows environment.</p>
 </pre></div>
 </div>
 <p><strong>Windows</strong></p>
-<p>On Windows, the best way is to use [miniforge](<a class="github reference external" href="https://github.com/conda-forge/miniforge">conda-forge/miniforge</a>) prompt and run:</p>
+<p>On Windows, the best way is to use <a class="reference external" href="https://github.com/conda-forge/miniforge">miniforge</a> prompt and run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;<span class="w"> </span>install.bat
 </pre></div>
 </div>
@@ -488,7 +502,7 @@ do this on both a Linux/Mac environment and on a Windows environment.</p>
 <span id="devinstall"></span><h2>Step-by-step installation for developers<a class="headerlink" href="#step-by-step-installation-for-developers" title="Link to this heading">#</a></h2>
 <p>For developers, FraCSPy can be installed such that any changes made are directly implemented in your local workspace. As before,
 we provide instructions on how this can be done in Linux/Mac and Windows. For both options, you will need to clone the repository
-from github. (It may be that you want to go off the <a href="#id2"><span class="problematic" id="id3">*</span></a>-dev branch, such that you have all the latest changes.)</p>
+from GitHub (it may be that you want to go off the <cite>*</cite>-dev branch, such that you have all the latest changes).</p>
 <p><strong>Linux &amp; Mac</strong></p>
 <p>Option One: Local installation into the current working environment</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;<span class="w"> </span>make<span class="w"> </span>dev-install

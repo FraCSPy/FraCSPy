@@ -107,12 +107,12 @@ Constants
 .. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 Read continuous data and previously extracted templates
-=======================================================
+-------------------------------------------------------
 
 .. GENERATED FROM PYTHON SOURCE LINES 69-71
 
 Load event catalogue
--------------------
+^^^^^^^^^^^^^^^^^^^^
 
 .. GENERATED FROM PYTHON SOURCE LINES 71-92
 
@@ -157,7 +157,7 @@ Load event catalogue
 .. GENERATED FROM PYTHON SOURCE LINES 93-95
 
 Load continuous seismic data
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. GENERATED FROM PYTHON SOURCE LINES 95-134
 
@@ -211,7 +211,7 @@ Load continuous seismic data
  .. code-block:: none
 
     Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-    Done! Loading time: 402.91648507118225 seconds
+    Done! Loading time: 103.6019914150238 seconds
 
 
 
@@ -219,7 +219,7 @@ Load continuous seismic data
 .. GENERATED FROM PYTHON SOURCE LINES 135-137
 
 Build Station Templates
-=======================
+-----------------------
 
 .. GENERATED FROM PYTHON SOURCE LINES 137-160
 
@@ -299,7 +299,7 @@ Plotting
 .. GENERATED FROM PYTHON SOURCE LINES 184-186
 
 Matched Filtering (Cross-correlation)
-=====================================
+-------------------------------------
 
 .. GENERATED FROM PYTHON SOURCE LINES 186-217
 
@@ -378,7 +378,7 @@ Matched Filtering (Cross-correlation)
 .. GENERATED FROM PYTHON SOURCE LINES 218-220
 
 Plotting Detected Events
-""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. GENERATED FROM PYTHON SOURCE LINES 220-253
 
@@ -432,7 +432,7 @@ Plotting Detected Events
 .. GENERATED FROM PYTHON SOURCE LINES 254-259
 
 Associate Detected Events Across Stations
-=========================================
+-----------------------------------------
 This part of the code loads the results of detected seismic events saved in JSON format, 
 associates detected events across different stations based on their timestamps, and saves 
 the results containing only events detected  by at least two stations within a specified time window.
@@ -465,7 +465,7 @@ the results containing only events detected  by at least two stations within a s
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (17 minutes 10.833 seconds)
+   **Total running time of the script:** (12 minutes 20.827 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_1_Detection_Matched_Filtering.py:

@@ -98,7 +98,7 @@ def MTMKirchhoff(
         engine='numba',
         checkdottest=True,
     ):
-        r"""Moment Tensor Multi Component Kirchhoff operator.
+    r"""Moment Tensor Multi Component Kirchhoff operator.
 
     Parameters
     ----------
@@ -137,6 +137,7 @@ def MTMKirchhoff(
     Mstack_Op : Pylops operator
         3C Moment Tensor Operator 
     """
+        
     nr = recs.shape[1]
 
     # Build 6 True Amp Kirchoff Operators

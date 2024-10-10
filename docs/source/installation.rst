@@ -5,7 +5,7 @@ Installation
 
 Requirements
 ************
-Installation requires [Conda](https://conda.io) package manager, e.g. one can use [miniforge](https://github.com/conda-forge/miniforge).
+Installation requires either `pip <https://pypi.org/project/pip/>`_ package installer or `Conda <https://conda.io>`_ package manager, e.g. one can use `miniforge <https://github.com/conda-forge/miniforge>`_.
 
 Dependencies
 ************
@@ -20,7 +20,6 @@ numerous python packages, some generic and some that are geophysics-focussed. Be
 
 We are incredibly grateful to the developers of these packages, giving us a higher starting point for the development of FraCSPy.
 
-
 Step-by-step installation for users
 ***********************************
 There are multiple ways in which FraCSPy can be installed. The recommended way is directly via the pip platform,
@@ -32,7 +31,7 @@ There are multiple ways in which FraCSPy can be installed. The recommended way i
 
 within whatever coding environment you wish. This will pull the latest stable release and install it correctly within your working environment.
 
-If you wish to install the package in a more manual fashion, the source files can be pulled from github and then installed directly. Below we explain how to
+If you wish to install the package in a more manual fashion, the source files can be pulled from GitHub and then installed directly. Below we explain how to
 do this on both a Linux/Mac environment and on a Windows environment.
 
 **Linux & Mac**
@@ -55,7 +54,7 @@ Similarly, on Linux you can run:
 
 **Windows**
 
-On Windows, the best way is to use [miniforge](https://github.com/conda-forge/miniforge) prompt and run:
+On Windows, the best way is to use `miniforge <https://github.com/conda-forge/miniforge>`_ prompt and run:
 
 .. code-block:: bash
 
@@ -63,8 +62,6 @@ On Windows, the best way is to use [miniforge](https://github.com/conda-forge/mi
 
 
 It will install the package to environment `fracspy` and activate it.
-
-
 
 Now you are ready to use the package.
 
@@ -74,7 +71,7 @@ Step-by-step installation for developers
 ****************************************
 For developers, FraCSPy can be installed such that any changes made are directly implemented in your local workspace. As before,
 we provide instructions on how this can be done in Linux/Mac and Windows. For both options, you will need to clone the repository
-from github. (It may be that you want to go off the *-dev branch, such that you have all the latest changes.)
+from GitHub (it may be that you want to go off the :math:`*`-dev branch, such that you have all the latest changes).
 
 **Linux & Mac**
 
@@ -97,8 +94,6 @@ Option Two: Create a specific conda environment and install FraCSPy (and depende
 
     >> install-dev.bat
 
-
-
 Uninstall Package
 *****************
 If you need to add/change packages:
@@ -107,4 +102,3 @@ If you need to add/change packages:
 
     >> conda deactivate
     >> conda remove -n fracspy -all
-

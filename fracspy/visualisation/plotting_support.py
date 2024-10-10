@@ -3,6 +3,10 @@ Borrowed from Matteo
 '''
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+#import cmcrameri.cm as cmc
+from typing import Union
+import copy
 
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
@@ -160,12 +164,10 @@ def explode_volume(volume, t=None, x=None, y=None,
         Clipping min and max values
     p : :obj:`str`, optional
         Percentile of max value (to be used if ``clipval=None``)
-    tlim : :obj:`tuple`, optional
-        Limits of time axis in volume
-    xlim : :obj:`tuple`, optional
-        Limits of x axis in volume
-    ylim : :obj:`tuple`, optional
-        Limits of y axis in volume
+    cbar : :obj:`bool`, optional, default: True
+        Flag to plot color bar
+    cbarlabel : :obj:`str`, optional
+        Color bar label    
     tlim : :obj:`tuple`, optional
         Limits of cropped time axis to be visualized
     xlim : :obj:`tuple`, optional
@@ -319,3 +321,246 @@ def explode_volume(volume, t=None, x=None, y=None,
         plt.savefig(f"{filename}.{save_opts['format']}", **save_opts)
 
     return fig, (ax, ax_right, ax_top)
+
+def detection_curves(msf:np.ndarray,
+                     slf:np.ndarray=None,
+                     slt:float=3,
+                     idp:np.ndarray=None,
+                     t:np.ndarray=None,
+                     figsize:tuple=(8, 8), 
+                     cmap:Union[str,mcolors.Colormap]=None,
+                     tlim:tuple=None, 
+                     msflim:tuple=None, 
+                     slflim:tuple=None,                   
+                     msflabel:str='Maximum Stack',
+                     slflabel:str='STA/LTA',
+                     tlabel:str=None,
+                     tunitlabel:str=None,
+                     linespec:dict=None,
+                     title:str='',
+                     titlefontsize:float=16,
+                     filename:str=None, 
+                     save_opts:dict=None):
+    """Display detection curves.
+    
+    Plot time-dependent detection curves used in detection based on diffraction stacking: maximum stack function, sta/lta function (optional).
+    
+    Parameters
+    ----------
+    msf : :obj:`numpy.ndarray`
+        Time-dependent maximum stack function
+    slf : :obj:`numpy.ndarray`
+        Time-dependent STA/LTA function
+    slt : :obj:`float`, optional, default: 3
+        STA/LTA threshold for the filled plot, must be non-negative
+    idp : :obj:`numpy.ndarray`
+        Integer array of time indices of determined peaks
+    t : :obj:`numpy.ndarray`, optional
+        Time axis vector    
+    figsize : :obj:`tuple`, optional
+        Figure size
+    cmap : :obj:`str` or :obj:`matplotlib.mcolors.Colormap`, optional
+        Colormap to be used to extract frist two colors for top (above slt) and bottom (below slt) part for slf    
+    tlim : :obj:`tuple`, optional
+        Limits of time axis
+    msflim : :obj:`tuple`, optional
+        Limits of maximum stack function y-axis
+    slflim : :obj:`tuple`, optional
+        Limits of STA/LTA function y-axis    
+    msflabel : :obj:`str`, optional
+        Label to use for msf axis
+    slflabel : :obj:`str`, optional
+        Label to use for slf axis
+    tlabel : :obj:`str`, optional
+        Label to use for time axis
+    tunitlabel : :obj:`str`, optional
+        Label to use for units of the time axis    
+    linespec : :obj:`dict`, optional
+        Specifications for lines indicating the selected slices
+    title : :obj:`str`, optional
+        Figure title
+    titlefontsize : :obj:`float`, optional
+        Figure title font size
+    filename : :obj:`str`, optional
+        Figure full path (if provided the figure is saved at this path)
+    save_opts : :obj:`dict`, optional
+        Additional parameters to be provided to :func:`matplotlib.pyplot.savefig`
+    
+    Returns
+    -------
+    fig : :obj:`matplotlib.pyplot.Figure`
+        Figure handle
+    axs : :obj:`matplotlib.pyplot.Axis`
+        Axes handles
+
+    Raises
+    ------
+    ValueError :
+        if msf or slf (if not None) are not 1D arrays
+    ValueError :
+        if colormap type is unknown
+    ValueError :
+        if slf is not None and slt is negative
+
+    Notes
+    -----
+    Optionally plots STA/LTA and identified MSF peaks.
+
+    """    
+    # Check that msf and slf are 1D arrays
+    if msf.ndim != 1:
+        raise ValueError(f"msf must be a 1D array, but got array with shape {msf.shape}")
+    
+    if slf is not None and slf.ndim != 1:
+        raise ValueError(f"slf must be a 1D array, but got array with shape {slf.shape}")
+        
+    if slf is not None and slt<0:
+        raise ValueError(f"STA/LTA threshold must be non-negative, but it is {slt}")
+
+    # Get sizes
+    nt = len(msf)
+
+    # Get colors
+    if cmap is None:
+        # Get the 'Accent' colormap from Matplotlib
+        cmap = plt.get_cmap('Accent')        
+    elif isinstance(cmap,str):
+        cmap = plt.get_cmap(cmap)
+    elif not isinstance(cmap,mcolors.Colormap):
+        raise ValueError(f"Colormap type is unknown: {cmap}")
+    
+    # Extract the first two colors
+    slfcolor_top = cmap(0)  # Color for the slf part above threshold
+    slfcolor_bot = cmap(1)  # Color for the slf part below threshold    
+    
+    # Check linespec
+    if linespec is None:        
+        linespec = dict(ls='-', lw=1.5, color='black')
+    
+    # Check t vector and set t labels and t timits
+    if t is None:
+        t = np.arange(nt)
+        if tlabel is None:
+            tlabel = 'Time step'
+        if tunitlabel is None:
+            tunitlabel = ''
+        if tlim is None:
+            tlim = (0,nt-1)
+    else:
+        if tlabel is None:
+            tlabel = 'Time'
+        if tunitlabel is None:
+            tunitlabel = '[s]'
+        if tlim is None:
+            tlim = (t[0],t[-1])
+
+    # Create figure
+    fig = plt.figure(figsize=figsize)
+
+    # Set title
+    fig.suptitle(title, fontsize=titlefontsize, fontweight='bold', y=0.94)
+
+    # Create axes grid
+    gs = fig.add_gridspec(2, 1, 
+                          left=0.1, right=0.9, bottom=0.1, top=0.9,
+                          wspace=0.0, hspace=0.0)
+    
+    # Initiate axes
+    ax_msf = fig.add_subplot(gs[0, 0])
+    if slf is not None:
+        ax_slf = fig.add_subplot(gs[1, 0], sharex=ax_msf)
+    
+    # Plot MSF on the top axes
+    ax_msf.plot(t, msf, **linespec)
+    ax_msf.set_ylabel(msflabel)
+
+    # Set limits for msf y-axis
+    if msflim is None:        
+        msflim = (0, 1.05*max(msf))
+
+    ax_msf.set_ylim(msflim)
+
+    # Show ticks on top
+    ax_msf.xaxis.set_tick_params(which='both', bottom=True)
+
+    # Add grid lines
+    #ax_msf.grid(True, which='both', axis='x')
+    ax_msf.grid(True, which='both')
+
+    # Add peaks
+    if idp is not None:
+        # Use scatter for dots, s controls the size
+        ax_msf.scatter(t[idp], msf[idp], color='red', s=30, label=f'Identified peaks')  
+         # Add dashed vertical lines from each peak to the baseline (y=0)
+        vlinespec = dict(ls='dashed', lw=1.5, color='red')
+        ax_msf.vlines(t[idp], ymin=0, ymax=msf[idp], **vlinespec)
+        ax_msf.legend(loc='upper right')
+    
+    # Plot slf if provided, using different colors for above/below threshold
+    if slf is not None:
+        if np.any(slf >= slt):
+            # Fill above the threshold
+            slftop = copy.deepcopy(slf)
+            slftop[slf < slt] = np.nan
+            ax_slf.fill_between(t, slftop, slt, color=slfcolor_top, alpha=1, label=f'STA/LTA >= {slt}')
+            # Fill triggered zone in msf
+            ax_msf.fill_between(t, msf, 0, where=(slf >= slt), color=slfcolor_top, alpha=0.5, label=f'Triggered detection')
+            # Check if legend has already been added
+            if ax_msf.get_legend() is None:  
+                # Create legend
+                ax_msf.legend(loc='upper right')
+            else:
+                # Update legend
+                ax_msf.legend()
+
+        if np.any(slf < slt):
+            # Fill below the threshold
+            slfbot = copy.deepcopy(slf)
+            slfbot[slf > slt] = slt
+            ax_slf.fill_between(t, slfbot, 0, color=slfcolor_bot, alpha=1, label=f'STA/LTA < {slt}')
+
+        # Plot contour
+        ax_slf.plot(t, slf, **linespec)
+       
+        # Set limits for slf y-axis        
+        if slflim is None:            
+            slflim = (0, 1.05*max(slf))
+        
+        ax_slf.set_ylim(slflim)
+
+        # Set y label
+        ax_slf.set_ylabel(slflabel)
+
+        # Ensure that the top plot (msf) shares the same x-axis ticks as the slf plot
+        ax_msf.set_xticks(ax_slf.get_xticks())  # Copy the x-ticks from slf plot
+
+        # Show ticks on the top of the slf plot and hide bottom ticks for msf
+        ax_slf.xaxis.set_tick_params(which='both', top=True, labelbottom=True, bottom=True)
+        ax_msf.xaxis.set_tick_params(which='both', labelbottom=False, bottom=False)
+        
+        # Add grid lines for slf plot
+        #ax_slf.grid(True, which='both', axis='x')
+        ax_slf.grid(True, which='both')
+
+        # Plot STA/LTA threshold
+        sltlinespec = dict(ls='--', lw=1.5, color='black')
+        ax_slf.plot([t[0], t[-1]], [slt, slt], **sltlinespec, label=f'STA/LTA = {slt}' )
+
+        # Set legend
+        ax_slf.legend(loc='upper right')
+        
+
+    # Set limits for t-axis if provided
+    if tlim is not None:
+        ax_msf.set_xlim(tlim)
+
+
+    # Set x-axis label on the bottom plot (if slf is present) or top (if slf is absent)
+    ax_slf.set_xlabel(f'{tlabel} {tunitlabel}') if slf is not None else ax_msf.set_xlabel(f'{tlabel} {tunitlabel}')
+
+    if filename is not None:
+        if save_opts is None:
+            save_opts = {'format': 'png', 'dpi': 150, 'bbox_inches': 'tight'}
+        plt.savefig(f"{filename}.{save_opts['format']}", **save_opts)
+
+    return fig, (ax_msf, ax_slf) if slf is not None else (ax_msf,)

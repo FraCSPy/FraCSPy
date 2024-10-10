@@ -6,12 +6,26 @@ FraCSPy API
 The Application Programming Interface (API) of FraCSPy mirrors the usual microseismic workflow
 from pre-processing to source mechanism inversion. It is composed of the following modules:
 
-* Location Determination
+* Detection
+* Localisation
 * Moment Tensor Inversion
 
+Detection
+---------
 
-Location Determination
-----------------------
+.. currentmodule:: fracspy.detection.stacking
+
+.. autosummary::
+   :toctree: generated/
+
+    maxdiffstack
+    stalta
+    detect_peaks
+    estimate_origin_times
+    diffstack_detect
+
+Localisation
+------------
 
 Modelling
 ~~~~~~~~~

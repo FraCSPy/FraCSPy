@@ -140,7 +140,6 @@ from fracspy.location.migration import *
 from fracspy.visualisation.traceviz import traceimage
 from fracspy.visualisation.eventimages import locimage3d
 
-
 # Deal with warnings (for a cleaner code)
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -154,7 +153,7 @@ from time import time
 
 ###############################################################################
 # Load model and seismic data
-# ---------------------------
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # For this example, we will use a toy example of a small homogenous model with 
 # a gridded surface receiver # array, same as 
 # in :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeINversion_tutorial.py`.
@@ -344,7 +343,7 @@ print(f"Traveltime array shape: {tt.shape}")
 
 ###############################################################################
 # Perform squared-value diffraction stacking without polarity correction
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Squared-value diffraction stacking without polarity correction...")
@@ -367,7 +366,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 ###############################################################################
 # Perform squared-value diffraction stacking with polarity correction with MTI
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Squared-value diffraction stacking with polarity correction based on MTI...")
@@ -417,7 +416,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 ###############################################################################
 # Plot resulting image volumes from squared-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # Get the spatial limits for plotting
 xlim = (min(gx),max(gx))

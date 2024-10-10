@@ -36,8 +36,7 @@ from time import time
 from datetime import datetime
 
 from fracspy.detection.matched_filtering import *
-
-
+from fracspy.visualisation.Plotting_Detected_Events import *
 
 ###############################################################################
 # Constants
@@ -260,3 +259,16 @@ associated_events = associate_detected_events(results_dict,time_window=4,num_sta
 
 # Print out the associated events for review
 print(f"\nNumber of associated detected events: {len(associated_events)}")
+
+###############################################################################
+# Plotting Associate Detected Events Across Stations
+# =========================================
+# Preparing the data and the first detected event as an example
+t0 = obspy.UTCDateTime(associated_events[0]['time'])
+# Sample Index of the Detected Time
+sample_index = int((t0-st[0].stats.starttime)*st[0].stats.sampling_rate)
+# Extracting the Data
+tr_data = trace_array[:,sample_index:sample_index+4*int(st[0].stats.sampling_rate)]
+# Plot the data segments.       
+num_stations_to_plot = 6
+plot_station_data(tr_data, station_list, num_stations_to_plot)

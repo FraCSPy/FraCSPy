@@ -1,6 +1,5 @@
 r"""
 2.2 Diffraction Stacking: Localisation With Polarity Correction
-
 ===============================================================
 This tutorial illustrates how to perform source localisation using 
 diffraction stacking with polarity correction by moment tensor inversion. 

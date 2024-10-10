@@ -13,12 +13,17 @@ def Xcorr(x, y):
     the negative sum of the product of their corresponding elements, 
     effectively calculating the negative dot product. 
 
-    Parameters:
-    x (np.ndarray): The first input array (vector) to compare.
-    y (np.ndarray): The second input array (vector) to compare.
+    Parameters
+    ----------
+    x : np.ndarray
+        The first input array (vector) to compare.
+    y : np.ndarray 
+        The second input array (vector) to compare.
 
-    Returns:
-    float: The negative dot product of the normalized vectors.
+    Returns
+    -------
+    loss : float 
+        The negative dot product of the normalized vectors.
     
     Example:
         >>> x = np.array([1.0, 2.0, 3.0])
@@ -159,10 +164,11 @@ def associate_detected_events(results_dict, time_window=4, num_station=3):
 
     Returns
     -------
-    List of associated events, where each event is a dictionary containing:
-        - "time": The start time of the event in UTC format.
-        - "stations": List of stations that detected the event.
-        - "max_correlation": Maximum correlation value across stations.
+    associated_events : list
+        List of associated events, where each event is a dictionary containing:
+            - "time": The start time of the event in UTC format.
+            - "stations": List of stations that detected the event.
+            - "max_correlation": Maximum correlation value across stations.
     """
     
     events = []

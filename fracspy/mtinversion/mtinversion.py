@@ -69,7 +69,12 @@ class MTInversion():
             Index of component at receiver side
         omega_p : :obj:`float`
             Central frequency of source
-
+        kind : :obj:`string`
+            Type of MTI to perform, ai or wi
+        kwargs_engine : dict
+            Engine keywords arguments
+        kwargs_inv : dict
+            Inversion keywords arguments
         """
         mtengine = _mt_kind[kind](
             self.x, self.y, self.z,

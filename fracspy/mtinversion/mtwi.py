@@ -18,10 +18,41 @@ class MTW():
 
     Parameters
     ----------
+    x : :obj:`numpy.ndarray`
+        X-axis
+    y : :obj:`numpy.ndarray`
+        Y-axis
+    z : :obj:`numpy.ndarray`
+        Z-axis
+    recs : :obj:`numpy.ndarray`
+        Receiver locations of size :math:`3 \times n_r`
+    vel : :obj:`numpy.ndarray`
+        Velocity model of size :math:`n_x \times n_y \times n_z`
+    src_idx : :obj:`numpy.ndarray`
+        Source location indices (relative to x, y, and z axes)
+    comp_idx : :obj:`int`
+        Index of component at receiver side
+    omega_p : :obj:`float`
+        Peak frequency of the given wave
     aoi : :obj:`tuple`
         Area of interest for waveform computation defined as half windows to place either size of the source in center
         of region (defined by `src_idx`)
-
+    t : :obj:`numpy.ndarray`
+        Time axis for data
+    wav : :obj:`numpy.ndarray`
+        Wavelet.
+    wavcenter : :obj:`int`
+        Index of wavelet center
+    Ms_scaling : :obj:`float`
+        Scaling to be incorporated in the MTI
+    engine : :obj:`str`, optional
+        Engine used for computations (``numpy`` or ``numba``).
+    multicomp : : obj:`boolean`
+        Whether running for single or multicomponent data
+    cosine_sourceangles : :obj:`numpy.ndarray`
+        Cosine source angles of size :math:`3 \times n_r \times n_x \times n_y \times n_z`
+    dists : :obj:`numpy.ndarray`
+        Distances of size :math:`\times n_r \times n_x \times n_y \times n_z`
     """
     def __init__(self, x, y, z, recs, vel, src_idx, comp_idx,
                  omega_p, aoi, t, wav, wavc,

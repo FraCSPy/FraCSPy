@@ -29,7 +29,7 @@ Diffraction stacking with moment tensor inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Basics of the simple diffraction stacking are explained in
-:ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
+:ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py`.
 
 Microseismic events usually have non-explosive radiation pattern, which means that the
 polarities of the P- or S-wave amplitudes can be both positive and negative. 

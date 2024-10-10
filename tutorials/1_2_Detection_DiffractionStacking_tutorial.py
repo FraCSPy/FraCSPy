@@ -27,7 +27,7 @@ https://pylops.readthedocs.io
 Detection by diffraction stacking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The basics of localisation by diffraction stacking are explained in
-:ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
+:ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py`.
 
 Microseismic data always contain scattered energy and noise which may result in multiple
 local maxima of the 4D imaging function. Therefore, a certain criterion is required to identify these local maxima
@@ -42,7 +42,7 @@ evaluated:
 The local maxima of the function :math:`F_t(t)` (later on referred to as the maximum stack function or MSF) occur at the times linked to the origin times of microseismic events (Anikiev 2015).
 These local maxima can be found by triggering algorithms, usually used for automatic picking of seismic signal, for instance, the STA/LTA (Short Term Average / Long Term Average) method (e.g., Withers et al. 1998; Trnkoczy 2012).
 Local maxima are detected by measuring the ratio of average stack energy in short and long sliding time windows and comparing this ratio with the pre-defined STA/LTA threshold (Anikiev et al., 2014).
-For each zone tiggered by the high STA/LTA once can determine a corresponding maximum (or peak) of the MSF an its time :math:`t_{peak}`.
+For each zone triggered by the high STA/LTA once can determine a corresponding maximum (or peak) of the MSF an its time :math:`t_{peak}`.
 
 For each determined peak, the origin time :math:`t_{est}` of the corresponding event can be determined from :math:`t_{peak}` as 
 

@@ -195,12 +195,14 @@ def moveout_correction(data: np.ndarray, itshifts: np.ndarray):
 
     return data_corrected
 
+
 def vgtd(x: Union[np.ndarray, float],
          y: Union[np.ndarray, float],
          z: Union[np.ndarray, float],
          recs: np.ndarray) -> np.ndarray:
     r"""
     Compute vectorized Green's tensor derivative for multiple source points.
+
     Parameters
     ----------
     x : :obj:`numpy.ndarray` or float
@@ -211,6 +213,7 @@ def vgtd(x: Union[np.ndarray, float],
         Imaging area grid vector in Z-axis or single Z coordinate
     recs : :obj:`numpy.ndarray`
         Array of shape (3, nrec) containing receiver coordinates
+
     Returns
     -------
     g : :obj:`numpy.ndarray` 
@@ -251,6 +254,7 @@ def vgtd(x: Union[np.ndarray, float],
     # Return the Green tensor derivative vector for all grid points
     return np.squeeze(g)
 
+
 def svd_inv(M: np.ndarray, threshold: float = 1e-15):
     """
     Compute the inverse of a matrix using SVD with regularization.
@@ -275,6 +279,7 @@ def svd_inv(M: np.ndarray, threshold: float = 1e-15):
     
     # Compute the inverse
     return np.dot(Vt.T * s_inv, U.T)
+
 
 def mgtdinv(g: np.ndarray) -> np.ndarray:
     r"""
@@ -336,6 +341,7 @@ def mgtdinv(g: np.ndarray) -> np.ndarray:
 
     # Return the 6x6 inverse matrices for all grid points
     return gtg_inv
+
 
 def polarity_correction(data: np.ndarray,                         
                         polcor_type: str = "mti",
@@ -517,6 +523,7 @@ def semblance_stack(data:np.ndarray, swsize:int = 0):
         semblance_values = numerator.flatten() / denominator.flatten()
 
     return semblance_values
+
 
 def are_values_close(desired: np.ndarray, actual: np.ndarray, decimal: int = 6) -> np.ndarray:
     """

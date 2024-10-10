@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**31:28.562** total execution time for 17 files **from all galleries**:
+**30:57.269** total execution time for 17 files **from all galleries**:
 
 .. container::
 
@@ -33,53 +33,53 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_1_1_Detection_Matched_Filtering.py` (``../../tutorials/1_1_Detection_Matched_Filtering.py``)
-     - 15:08.073
+     - 15:06.299
      - 0.0
    * - :ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py` (``../../tutorials/2_1_Location_DiffractionStacking_tutorial.py``)
-     - 05:39.303
+     - 05:24.027
      - 0.0
    * - :ref:`sphx_glr_tutorials_2_3_Location_KirchhoffBased_tutorial.py` (``../../tutorials/2_3_Location_KirchhoffBased_tutorial.py``)
-     - 03:01.866
+     - 02:55.998
      - 0.0
    * - :ref:`sphx_glr_tutorials_1_2_Detection_DiffractionStacking_tutorial.py` (``../../tutorials/1_2_Detection_DiffractionStacking_tutorial.py``)
-     - 02:49.682
+     - 02:49.344
      - 0.0
    * - :ref:`sphx_glr_tutorials_3_2_MT_WaveformInversion_tutorial.py` (``../../tutorials/3_2_MT_WaveformInversion_tutorial.py``)
-     - 02:04.801
+     - 02:03.573
      - 0.0
    * - :ref:`sphx_glr_tutorials_2_4_Location_CrossCorrelationImaging_tutorial.py` (``../../tutorials/2_4_Location_CrossCorrelationImaging_tutorial.py``)
-     - 01:10.026
+     - 01:11.799
      - 0.0
    * - :ref:`sphx_glr_tutorials_2_2_Location_DSMTI_tutorial.py` (``../../tutorials/2_2_Location_DSMTI_tutorial.py``)
-     - 00:54.243
+     - 00:47.691
      - 0.0
    * - :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeInversion_tutorial.py` (``../../tutorials/3_1_MT_AmplitudeInversion_tutorial.py``)
-     - 00:26.204
+     - 00:25.153
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_detected_event.py` (``../../examples/plot_detected_event.py``)
-     - 00:08.370
+     - 00:07.350
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``../../examples/plot_SeismicWiggles.py``)
-     - 00:04.296
+     - 00:04.392
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``../../examples/plot_EventImages.py``)
-     - 00:00.892
+     - 00:00.880
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``../../examples/plot_SeismicTraceImage.py``)
-     - 00:00.262
-     - 0.0
-   * - :ref:`sphx_glr_gallery_plot_DetectionFunctions.py` (``../../examples/plot_DetectionFunctions.py``)
      - 00:00.258
      - 0.0
+   * - :ref:`sphx_glr_gallery_plot_DetectionFunctions.py` (``../../examples/plot_DetectionFunctions.py``)
+     - 00:00.218
+     - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``../../examples/plot_ComparingBeachballs.py``)
-     - 00:00.147
+     - 00:00.122
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``../../examples/plot_ComparingMTmatrices.py``)
-     - 00:00.075
+     - 00:00.103
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``../../examples/plot_MTmatrix.py``)
-     - 00:00.038
+     - 00:00.037
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``../../examples/plot_Beachball.py``)
-     - 00:00.025
+     - 00:00.024
      - 0.0

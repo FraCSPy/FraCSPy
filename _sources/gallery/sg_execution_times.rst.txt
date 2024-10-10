@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:14.363** total execution time for 9 files **from gallery**:
+**00:13.383** total execution time for 9 files **from gallery**:
 
 .. container::
 
@@ -33,29 +33,29 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_plot_detected_event.py` (``plot_detected_event.py``)
-     - 00:08.370
+     - 00:07.350
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicWiggles.py` (``plot_SeismicWiggles.py``)
-     - 00:04.296
+     - 00:04.392
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_EventImages.py` (``plot_EventImages.py``)
-     - 00:00.892
+     - 00:00.880
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_SeismicTraceImage.py` (``plot_SeismicTraceImage.py``)
-     - 00:00.262
-     - 0.0
-   * - :ref:`sphx_glr_gallery_plot_DetectionFunctions.py` (``plot_DetectionFunctions.py``)
      - 00:00.258
      - 0.0
+   * - :ref:`sphx_glr_gallery_plot_DetectionFunctions.py` (``plot_DetectionFunctions.py``)
+     - 00:00.218
+     - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingBeachballs.py` (``plot_ComparingBeachballs.py``)
-     - 00:00.147
+     - 00:00.122
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_ComparingMTmatrices.py` (``plot_ComparingMTmatrices.py``)
-     - 00:00.075
+     - 00:00.103
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_MTmatrix.py` (``plot_MTmatrix.py``)
-     - 00:00.038
+     - 00:00.037
      - 0.0
    * - :ref:`sphx_glr_gallery_plot_Beachball.py` (``plot_Beachball.py``)
-     - 00:00.025
+     - 00:00.024
      - 0.0

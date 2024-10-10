@@ -66,5 +66,6 @@ used methodologies as possible - allowing the users to choose which is right for
    :hidden:
    :caption: Getting involved
 
+   Contributing <contributing.rst>
    Changelog <changelog.rst>
    Credits <credits.rst>

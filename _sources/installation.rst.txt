@@ -68,7 +68,7 @@ It will install the package to environment `fracspy` and activate it.
 
 Now you are ready to use the package.
 
-
+.. _DevInstall:
 
 Step-by-step installation for developers
 ****************************************

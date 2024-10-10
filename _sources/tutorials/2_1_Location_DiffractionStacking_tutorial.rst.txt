@@ -501,7 +501,7 @@ Apply operator to model data
 
  .. code-block:: none
 
-    Computation time: 9.692152976989746 seconds
+    Computation time: 9.544840097427368 seconds
 
 
 
@@ -755,7 +755,7 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 17.702560424804688 seconds
+    Computation time: 17.63481378555298 seconds
 
 
 
@@ -790,7 +790,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 17.797747373580933 seconds
+    Computation time: 17.679727792739868 seconds
 
 
 
@@ -826,7 +826,7 @@ Perform semblance-based diffraction stacking without sliding time window
  .. code-block:: none
 
     Semblance-based diffraction stacking...
-    Computation time: 20.36932134628296 seconds
+    Computation time: 20.207687616348267 seconds
 
 
 
@@ -868,7 +868,7 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 24.04081892967224 seconds
+    Computation time: 23.75025987625122 seconds
 
 
 
@@ -922,7 +922,7 @@ Perform absolute-value diffraction stacking
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 53.29978919029236 seconds
+    Computation time: 52.85919404029846 seconds
 
 
 
@@ -969,7 +969,7 @@ Perform absolute-value diffraction stacking with maximum over time
  .. code-block:: none
 
     Absolute-value diffraction stacking...
-    Computation time: 51.727158308029175 seconds
+    Computation time: 51.34352469444275 seconds
 
 
 
@@ -1016,7 +1016,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking...
-    Computation time: 53.360878705978394 seconds
+    Computation time: 53.01882863044739 seconds
 
 
 
@@ -1067,7 +1067,7 @@ Perform semblance-based diffraction stacking with sliding time window
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking...
-    Computation time: 72.0481698513031 seconds
+    Computation time: 71.17891383171082 seconds
 
 
 
@@ -1579,7 +1579,7 @@ than absolute-based stacking.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (5 minutes 26.330 seconds)
+   **Total running time of the script:** (5 minutes 23.431 seconds)
 
 
 .. _sphx_glr_download_tutorials_2_1_Location_DiffractionStacking_tutorial.py:

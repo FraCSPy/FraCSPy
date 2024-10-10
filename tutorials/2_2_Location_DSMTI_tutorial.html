@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     
-        <title>Traveltimes &#8212; FraCSPy</title>
+        <title>2.2 Diffraction Stacking: Localisation With Polarity Correction &#8212; FraCSPy</title>
     
 
   
@@ -395,19 +395,7 @@ document.write(`
 
 <li class="toctree-l1"><a class="reference internal" href="1_2_Detection_DiffractionStacking_tutorial.html">1.2 Diffraction Stacking: Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_1_Location_DiffractionStacking_tutorial.html">2.1 Diffraction Stacking: Localisation</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Traveltimes</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.2 Diffraction Stacking: Localisation With Polarity Correction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_3_Location_KirchhoffBased_tutorial.html">2.3 Kirchhoff-Based Localisation - Single component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_4_Location_CrossCorrelationImaging_tutorial.html">2.4 Cross-Correlation-Based Localisation - Single component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_1_MT_AmplitudeInversion_tutorial.html">3.1 Amplitude-based Moment Tensor Inversion</a></li>
@@ -452,7 +440,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Traveltimes</li>
+    <li class="breadcrumb-item active" aria-current="page">2.2...</li>
   </ul>
 </nav>
 </div>
@@ -474,11 +462,14 @@ document.write(`
 <p><a class="reference internal" href="#sphx-glr-download-tutorials-2-2-location-dsmti-tutorial-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<p class="sphx-glr-example-title" id="sphx-glr-tutorials-2-2-location-dsmti-tutorial-py">2.2 Diffraction Stacking: Localisation With Polarity Correction</p>
+<section class="sphx-glr-example-title" id="diffraction-stacking-localisation-with-polarity-correction">
+<span id="sphx-glr-tutorials-2-2-location-dsmti-tutorial-py"></span><h1>2.2 Diffraction Stacking: Localisation With Polarity Correction<a class="headerlink" href="#diffraction-stacking-localisation-with-polarity-correction" title="Link to this heading">#</a></h1>
+<p>This tutorial illustrates how to perform source localisation using
+diffraction stacking with polarity correction by moment tensor inversion.</p>
 <p>We consider here a homogeneous subsurface model and a point Double-Couple (DC) microseismic source.
 We also consider only P-waves for simplicity here.</p>
 <section id="traveltimes">
-<h1>Traveltimes<a class="headerlink" href="#traveltimes" title="Link to this heading">#</a></h1>
+<h2>Traveltimes<a class="headerlink" href="#traveltimes" title="Link to this heading">#</a></h2>
 <p>In a homogeneous medium traveltimes are computed analytically as</p>
 <div class="math notranslate nohighlight">
 \[t(\mathbf{x_r},\mathbf{x_s}) = \frac{d(\mathbf{x_r},\mathbf{x_s})}{v}\]</div>
@@ -487,13 +478,13 @@ at <span class="math notranslate nohighlight">\(\mathbf{x_s}\)</span> and a rece
 <span class="math notranslate nohighlight">\(v\)</span> is medium wave velocity (e.g. P-wave velocity <span class="math notranslate nohighlight">\(v_p\)</span>).</p>
 </section>
 <section id="waveforms">
-<h1>Waveforms<a class="headerlink" href="#waveforms" title="Link to this heading">#</a></h1>
+<h2>Waveforms<a class="headerlink" href="#waveforms" title="Link to this heading">#</a></h2>
 <p>The input data waveforms were precomputed with the help of the finite-difference (FD) modelling using SOFI3D (Bohlen, 2002).</p>
 <p>See more:
 <a class="reference external" href="https://docs.csc.fi/apps/sofi3d/">https://docs.csc.fi/apps/sofi3d/</a></p>
 </section>
 <section id="diffraction-stacking-with-moment-tensor-inversion">
-<h1>Diffraction stacking with moment tensor inversion<a class="headerlink" href="#diffraction-stacking-with-moment-tensor-inversion" title="Link to this heading">#</a></h1>
+<h2>Diffraction stacking with moment tensor inversion<a class="headerlink" href="#diffraction-stacking-with-moment-tensor-inversion" title="Link to this heading">#</a></h2>
 <p>Basics of the simple diffraction stacking are explained in
 <a class="reference internal" href="2_1_Location_DiffractionStacking_tutorial.html#sphx-glr-tutorials-2-1-location-diffractionstacking-tutorial-py"><span class="std std-ref">2.1 Diffraction Stacking: Localisation</span></a>.</p>
 <p>Microseismic events usually have non-explosive radiation pattern, which means that the
@@ -536,7 +527,7 @@ However, due to the fact that we are interested only in the sign of the Green’
 The polarity correction can also be applied to EMO-corrected data independently using <a class="reference internal" href="../api/generated/fracspy.location.utils.polarity_correction.html#fracspy.location.utils.polarity_correction" title="fracspy.location.utils.polarity_correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">fracspy.location.utils.polarity_correction</span></code></a>, provided the expected event location.</p>
 </section>
 <section id="references">
-<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <p>Aki, K., &amp; Richards, P. (2002). Quantitative seismology (2nd ed.). Sausalito, Calif.: University Science Books.</p>
 <p>Anikiev, D. (2015). Joint detection, location and source mechanism
 determination of microseismic events (Doctoral dissertation).
@@ -556,7 +547,7 @@ geometry and source mechanisms (Doctoral dissertation, Hamburg University).</p>
 <p>Zhebel, O., &amp; Eisner, L. (2014). Simultaneous microseismic event localization and source mechanism determination. Geophysics, 80(1), KS1–KS9. <a class="reference external" href="https://doi.org/10.1190/geo2014-0055.1">https://doi.org/10.1190/geo2014-0055.1</a></p>
 </section>
 <section id="load-all-necessary-packages">
-<h1>Load all necessary packages<a class="headerlink" href="#load-all-necessary-packages" title="Link to this heading">#</a></h1>
+<h2>Load all necessary packages<a class="headerlink" href="#load-all-necessary-packages" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">fracspy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -588,7 +579,7 @@ geometry and source mechanisms (Doctoral dissertation, Hamburg University).</p>
 </div>
 </section>
 <section id="load-model-and-seismic-data">
-<h1>Load model and seismic data<a class="headerlink" href="#load-model-and-seismic-data" title="Link to this heading">#</a></h1>
+<h2>Load model and seismic data<a class="headerlink" href="#load-model-and-seismic-data" title="Link to this heading">#</a></h2>
 <p>For this example, we will use a toy example of a small homogenous model with
 a gridded surface receiver # array, same as
 in <a class="reference internal" href="3_1_MT_AmplitudeInversion_tutorial.html#sphx-glr-tutorials-3-1-mt-amplitudeinversion-tutorial-py"><span class="std std-ref">3.1 Amplitude-based Moment Tensor Inversion</span></a>.
@@ -647,7 +638,7 @@ The data are modelled using the SOFI3D Finite Difference package.</p>
 </div>
 </section>
 <section id="plot-input-data">
-<h1>Plot input data<a class="headerlink" href="#plot-input-data" title="Link to this heading">#</a></h1>
+<h2>Plot input data<a class="headerlink" href="#plot-input-data" title="Link to this heading">#</a></h2>
 <p>Let’s now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the  traces; this is the information that we utilise
 to determine the Moment Tensor.</p>
@@ -658,7 +649,7 @@ to determine the Moment Tensor.</p>
 </div>
 <img src="../_images/sphx_glr_2_2_Location_DSMTI_tutorial_001.png" srcset="../_images/sphx_glr_2_2_Location_DSMTI_tutorial_001.png" alt="SOFI FD data - Vertical Component" class = "sphx-glr-single-img"/></section>
 <section id="plot-source-location-and-receiver-geometry">
-<h1>Plot source location and receiver geometry<a class="headerlink" href="#plot-source-location-and-receiver-geometry" title="Link to this heading">#</a></h1>
+<h2>Plot source location and receiver geometry<a class="headerlink" href="#plot-source-location-and-receiver-geometry" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.set_size_inches.html#matplotlib.figure.Figure.set_size_inches" title="matplotlib.figure.Figure.set_size_inches" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span></a><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># set size in inches</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_aspect.html#matplotlib.axes.Axes.set_aspect" title="matplotlib.axes.Axes.set_aspect" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span></a><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
@@ -672,11 +663,11 @@ to determine the Moment Tensor.</p>
 </div>
 <img src="../_images/sphx_glr_2_2_Location_DSMTI_tutorial_002.png" srcset="../_images/sphx_glr_2_2_Location_DSMTI_tutorial_002.png" alt="Receiver Geometry: map view" class = "sphx-glr-single-img"/></section>
 <section id="test-basic-functions">
-<h1>Test basic functions<a class="headerlink" href="#test-basic-functions" title="Link to this heading">#</a></h1>
+<h2>Test basic functions<a class="headerlink" href="#test-basic-functions" title="Link to this heading">#</a></h2>
 <p>Here we test basic elements of diffraction stacking like moveout and polarity
 correction</p>
 <section id="test-moveout-correction-and-plot-corrected-data">
-<h2>Test moveout correction and plot corrected data<a class="headerlink" href="#test-moveout-correction-and-plot-corrected-data" title="Link to this heading">#</a></h2>
+<h3>Test moveout correction and plot corrected data<a class="headerlink" href="#test-moveout-correction-and-plot-corrected-data" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute traveltimes to receivers from the true location</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tt_true</span></a> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vp</span></a> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html#numpy.squeeze" title="numpy.squeeze" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">squeeze</span></a><span class="p">(</span><span class="n">dist2rec</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sx</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sy</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sz</span></a><span class="p">))</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">itshifts_true</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.round.html#numpy.round" title="numpy.round" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">round</span></a><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tt_true</span></a> <span class="o">-</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tt_true</span></a><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">/</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dt</span></a><span class="p">)</span>
@@ -704,7 +695,7 @@ correction</p>
 </ul>
 </section>
 <section id="test-polarity-correction-and-plot-corrected-data">
-<h2>Test polarity correction and plot corrected data<a class="headerlink" href="#test-polarity-correction-and-plot-corrected-data" title="Link to this heading">#</a></h2>
+<h3>Test polarity correction and plot corrected data<a class="headerlink" href="#test-polarity-correction-and-plot-corrected-data" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute compute vectorized Green tensor derivatives for the true location</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vgtd_true</span></a> <span class="o">=</span> <span class="n">vgtd</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sx</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sy</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">z</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sz</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="p">)</span>
 
@@ -739,10 +730,10 @@ correction</p>
 </section>
 </section>
 <section id="prepare-for-location">
-<h1>Prepare for location<a class="headerlink" href="#prepare-for-location" title="Link to this heading">#</a></h1>
+<h2>Prepare for location<a class="headerlink" href="#prepare-for-location" title="Link to this heading">#</a></h2>
 <p>Set up the location class and grid, compute traveltimes</p>
 <section id="define-location-class-using-grid-vectors">
-<h2>Define location class using grid vectors<a class="headerlink" href="#define-location-class-using-grid-vectors" title="Link to this heading">#</a></h2>
+<h3>Define location class using grid vectors<a class="headerlink" href="#define-location-class-using-grid-vectors" title="Link to this heading">#</a></h3>
 <p>We can use the original velocity model grid for location,
 but for the sake of having more representative image we shift the grid deeper
 Moreover, we reduce the grid step twice for efficiency</p>
@@ -760,7 +751,7 @@ Moreover, we reduce the grid step twice for efficiency</p>
 </div>
 </section>
 <section id="prepare-traveltimes">
-<h2>Prepare traveltimes<a class="headerlink" href="#prepare-traveltimes" title="Link to this heading">#</a></h2>
+<h3>Prepare traveltimes<a class="headerlink" href="#prepare-traveltimes" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fracspy.location.utils</span> <span class="kn">import</span> <span class="n">dist2rec</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tt</span></a> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vp</span></a><span class="o">*</span><span class="n">dist2rec</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">recs</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gx</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gy</span></a><span class="p">,</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gz</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Traveltime array shape: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tt</span><span class="o">.</span><span class="n">shape</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -772,11 +763,11 @@ Moreover, we reduce the grid step twice for efficiency</p>
 </section>
 </section>
 <section id="apply-diffraction-stacking-without-polarity-correction">
-<h1>Apply diffraction stacking without polarity correction<a class="headerlink" href="#apply-diffraction-stacking-without-polarity-correction" title="Link to this heading">#</a></h1>
+<h2>Apply diffraction stacking without polarity correction<a class="headerlink" href="#apply-diffraction-stacking-without-polarity-correction" title="Link to this heading">#</a></h2>
 <p>Here we apply a diffraction stacking algorithm without
 any polarity correction, for reference</p>
 <section id="perform-squared-value-diffraction-stacking-without-polarity-correction">
-<h2>Perform squared-value diffraction stacking without polarity correction<a class="headerlink" href="#perform-squared-value-diffraction-stacking-without-polarity-correction" title="Link to this heading">#</a></h2>
+<h3>Perform squared-value diffraction stacking without polarity correction<a class="headerlink" href="#perform-squared-value-diffraction-stacking-without-polarity-correction" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start_time</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Squared-value diffraction stacking without polarity correction...&quot;</span><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dstacked_sqd</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">hc_sqd</span></a> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_vz</span></a><span class="p">,</span>
@@ -790,17 +781,17 @@ any polarity correction, for reference</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking without polarity correction...
-Computation time: 9.974002122879028 seconds
+Computation time: 10.064666748046875 seconds
 </pre></div>
 </div>
 </section>
 </section>
 <section id="apply-diffraction-stacking-witth-polarity-correction-using-mti">
-<h1>Apply diffraction stacking witth polarity correction using MTI<a class="headerlink" href="#apply-diffraction-stacking-witth-polarity-correction-using-mti" title="Link to this heading">#</a></h1>
+<h2>Apply diffraction stacking witth polarity correction using MTI<a class="headerlink" href="#apply-diffraction-stacking-witth-polarity-correction-using-mti" title="Link to this heading">#</a></h2>
 <p>Here we apply various diffraction stacking algorithms with
 polarity correction using moment tensor inversion</p>
 <section id="perform-squared-value-diffraction-stacking-with-polarity-correction-with-mti">
-<h2>Perform squared-value diffraction stacking with polarity correction with MTI<a class="headerlink" href="#perform-squared-value-diffraction-stacking-with-polarity-correction-with-mti" title="Link to this heading">#</a></h2>
+<h3>Perform squared-value diffraction stacking with polarity correction with MTI<a class="headerlink" href="#perform-squared-value-diffraction-stacking-with-polarity-correction-with-mti" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start_time</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Squared-value diffraction stacking with polarity correction based on MTI...&quot;</span><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dstacked_sqd_mti</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">hc_sqd_mti</span></a> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_vz</span></a><span class="p">,</span>
@@ -815,12 +806,12 @@ polarity correction using moment tensor inversion</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking with polarity correction based on MTI...
-Computation time: 14.877148389816284 seconds
+Computation time: 15.05900526046753 seconds
 </pre></div>
 </div>
 </section>
 <section id="perform-semblance-based-diffraction-stacking-with-polarity-correction-with-mti">
-<h2>Perform semblance-based diffraction stacking with polarity correction with MTI<a class="headerlink" href="#perform-semblance-based-diffraction-stacking-with-polarity-correction-with-mti" title="Link to this heading">#</a></h2>
+<h3>Perform semblance-based diffraction stacking with polarity correction with MTI<a class="headerlink" href="#perform-semblance-based-diffraction-stacking-with-polarity-correction-with-mti" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define sliding window as two periods of the signal</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">swsize</span></a> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">f0</span></a><span class="o">/</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dt</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sliding window size in samples: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">swsize</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -840,13 +831,13 @@ Computation time: 14.877148389816284 seconds
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Sliding window size in samples: 100
 Semblance-based diffraction stacking with polarity correction based on MTI...
-Computation time: 20.80456805229187 seconds
+Computation time: 21.00902819633484 seconds
 </pre></div>
 </div>
 </section>
 </section>
 <section id="visualisation-of-results">
-<h1>Visualisation of results<a class="headerlink" href="#visualisation-of-results" title="Link to this heading">#</a></h1>
+<h2>Visualisation of results<a class="headerlink" href="#visualisation-of-results" title="Link to this heading">#</a></h2>
 <p>Here we visualise the slices of the resulting image volumes.
 Clearly, the result of application of stacking without polarity correction
 shows an unfocused image, whereas for stacking with polarity correction the ]
@@ -854,7 +845,7 @@ resulting images are focused in the correct location which fluctuates in
 depth, reflecting the time-depth tradeoff.
 Uncertainty in depth direction is much higher due to surface acquisition.</p>
 <section id="plot-resulting-image-volumes-from-squared-value-diffraction-stacking">
-<h2>Plot resulting image volumes from squared-value diffraction stacking<a class="headerlink" href="#plot-resulting-image-volumes-from-squared-value-diffraction-stacking" title="Link to this heading">#</a></h2>
+<h3>Plot resulting image volumes from squared-value diffraction stacking<a class="headerlink" href="#plot-resulting-image-volumes-from-squared-value-diffraction-stacking" title="Link to this heading">#</a></h3>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the spatial limits for plotting</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">xlim</span></a> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gx</span></a><span class="p">),</span><span class="nb">max</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gx</span></a><span class="p">))</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ylim</span></a> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gy</span></a><span class="p">),</span><span class="nb">max</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gy</span></a><span class="p">))</span>
@@ -936,7 +927,7 @@ Location error:
 [0.00 m, 0.00 m, 15.00 m]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 47.595 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 47.898 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-2-2-location-dsmti-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a5a21d8290298f261c6e7eb3affff05e/2_2_Location_DSMTI_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">2_2_Location_DSMTI_tutorial.ipynb</span></code></a></p>
@@ -949,6 +940,7 @@ Location error:
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
 </section>
 </section>
 
@@ -998,39 +990,38 @@ Location error:
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Traveltimes</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#waveforms">Waveforms</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#diffraction-stacking-with-moment-tensor-inversion">Diffraction stacking with moment tensor inversion</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-all-necessary-packages">Load all necessary packages</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-model-and-seismic-data">Load model and seismic data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-input-data">Plot input data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-source-location-and-receiver-geometry">Plot source location and receiver geometry</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#test-basic-functions">Test basic functions</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-moveout-correction-and-plot-corrected-data">Test moveout correction and plot corrected data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-polarity-correction-and-plot-corrected-data">Test polarity correction and plot corrected data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traveltimes">Traveltimes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveforms">Waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffraction-stacking-with-moment-tensor-inversion">Diffraction stacking with moment tensor inversion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-all-necessary-packages">Load all necessary packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-model-and-seismic-data">Load model and seismic data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-input-data">Plot input data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-source-location-and-receiver-geometry">Plot source location and receiver geometry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-basic-functions">Test basic functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-moveout-correction-and-plot-corrected-data">Test moveout correction and plot corrected data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-polarity-correction-and-plot-corrected-data">Test polarity correction and plot corrected data</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-for-location">Prepare for location</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-location-class-using-grid-vectors">Define location class using grid vectors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-traveltimes">Prepare traveltimes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-for-location">Prepare for location</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-location-class-using-grid-vectors">Define location class using grid vectors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-traveltimes">Prepare traveltimes</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-diffraction-stacking-without-polarity-correction">Apply diffraction stacking without polarity correction</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-squared-value-diffraction-stacking-without-polarity-correction">Perform squared-value diffraction stacking without polarity correction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-diffraction-stacking-without-polarity-correction">Apply diffraction stacking without polarity correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-squared-value-diffraction-stacking-without-polarity-correction">Perform squared-value diffraction stacking without polarity correction</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-diffraction-stacking-witth-polarity-correction-using-mti">Apply diffraction stacking witth polarity correction using MTI</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-squared-value-diffraction-stacking-with-polarity-correction-with-mti">Perform squared-value diffraction stacking with polarity correction with MTI</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-semblance-based-diffraction-stacking-with-polarity-correction-with-mti">Perform semblance-based diffraction stacking with polarity correction with MTI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-diffraction-stacking-witth-polarity-correction-using-mti">Apply diffraction stacking witth polarity correction using MTI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-squared-value-diffraction-stacking-with-polarity-correction-with-mti">Perform squared-value diffraction stacking with polarity correction with MTI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-semblance-based-diffraction-stacking-with-polarity-correction-with-mti">Perform semblance-based diffraction stacking with polarity correction with MTI</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation-of-results">Visualisation of results</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-resulting-image-volumes-from-squared-value-diffraction-stacking">Plot resulting image volumes from squared-value diffraction stacking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation-of-results">Visualisation of results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-resulting-image-volumes-from-squared-value-diffraction-stacking">Plot resulting image volumes from squared-value diffraction stacking</a></li>
 </ul>
 </li>
 </ul>
-
   </nav></div>
 
 </div></div>

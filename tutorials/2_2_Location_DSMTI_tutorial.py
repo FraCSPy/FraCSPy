@@ -80,7 +80,7 @@ Assuming the polarity correction is implemented to the data with moveout correct
 .. math::
         A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right).
 
-Hence, all imaging functions described in :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
+Hence, all imaging functions described in :ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
 
 Localisation using diffraction stacking with polarity correction by SMT inversion described above is implemented in :py:class:`fracspy.location.migration.diffstack`.
 The polarity correction can also be applied to EMO-corrected data independently using :py:class:`fracspy.location.utils.polarity_correction`, provided the expected event location.
@@ -157,7 +157,7 @@ from time import time
 # ---------------------------
 # For this example, we will use a toy example of a small homogenous model with 
 # a gridded surface receiver # array, same as 
-# in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
+# in :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeINversion_tutorial.py`.
 # The data are modelled using the SOFI3D Finite Difference package.
 
 # Directory containing input data
@@ -239,6 +239,7 @@ _ = ax.set_xlabel('x')
 _ = ax.set_ylabel('y')
 
 #%%
+
 ###############################################################################
 # Test basic functions
 # ^^^^^^^^^^^^^^^^^^^^
@@ -320,8 +321,6 @@ gdz = dz*2
 gx = x[::2] # use every second grid node
 gy = y[::2]
 gz = np.arange(250, 560, gdz) # shift the grid to range 250m-550m
-
-
 
 # Set up the location class
 

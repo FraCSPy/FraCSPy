@@ -149,7 +149,7 @@ However, the approach implies that the time window of the processed data contain
 only for a single microseismic event, otherwise multiple event signatures will superimpose and image function will become biased.
 
 We discuss this issue as well as joint detection and localisation of multiple events using diffraction stacking 
-in :ref:`sphx_glr_tutorials_2_1_Detection_DiffractionStacking_tutorial.py`.
+in :ref:`sphx_glr_tutorials_1_2_Detection_DiffractionStacking_tutorial.py`.
 
 
 References

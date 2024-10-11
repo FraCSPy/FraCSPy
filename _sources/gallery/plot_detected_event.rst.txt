@@ -114,7 +114,7 @@ Read Event Data Paths
  .. code-block:: none
 
     Time range: 2016-11-22T01:51:27.000000Z - 2016-11-22T01:51:32.000000Z
-    Done! Loading time: 5.61480450630188 seconds
+    Done! Loading time: 5.346136093139648 seconds
 
 
 
@@ -148,7 +148,7 @@ Plot the data segments.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.563 seconds)
+   **Total running time of the script:** (0 minutes 7.636 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_detected_event.py:

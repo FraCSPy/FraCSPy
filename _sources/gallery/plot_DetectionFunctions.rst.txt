@@ -96,7 +96,7 @@ Plot the function
 
 .. code-block:: Python
 
-    fig,axs = detection_curves(msf=signal,t=t,msflabel='Signal')
+    fig,axs = detection_curves(msf=signal,t=t,msflabel='Signal',figsize=(8, 6))
 
     #%
 
@@ -171,7 +171,7 @@ Plot both the signal and the STA/LTA
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.261 seconds)
+   **Total running time of the script:** (0 minutes 0.256 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_DetectionFunctions.py:

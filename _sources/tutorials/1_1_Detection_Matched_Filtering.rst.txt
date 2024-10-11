@@ -38,7 +38,7 @@ Methodology
 - **Output**:
     - Each template is stored as a NumPy file in a specified output directory.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-42
+.. GENERATED FROM PYTHON SOURCE LINES 22-41
 
 .. code-block:: Python
 
@@ -59,6 +59,7 @@ Methodology
     from datetime import datetime
 
     from fracspy.detection.matched_filtering import *
+    from fracspy.visualisation.Plotting_Detected_Events import *
 
 
 
@@ -67,14 +68,12 @@ Methodology
 
 
 
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 42-44
 
 Constants
 ---------
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-61
+.. GENERATED FROM PYTHON SOURCE LINES 44-60
 
 .. code-block:: Python
 
@@ -101,17 +100,17 @@ Constants
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 61-63
 
 Read continuous data and previously extracted templates
 =======================================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 Load event catalogue
 -------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-89
+.. GENERATED FROM PYTHON SOURCE LINES 67-88
 
 .. code-block:: Python
 
@@ -144,19 +143,19 @@ Load event catalogue
 
  .. code-block:: none
 
-    /home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:77: FutureWarning: Passing bytes to 'read_excel' is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
+    /home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:76: FutureWarning: Passing bytes to 'read_excel' is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
       df = pd.read_excel(pd.io.excel.ExcelFile(response.content))
     Data was successfully downloaded and loaded into the DataFrame.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-92
+.. GENERATED FROM PYTHON SOURCE LINES 89-91
 
 Load continuous seismic data
 ----------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-131
+.. GENERATED FROM PYTHON SOURCE LINES 91-130
 
 .. code-block:: Python
 
@@ -208,17 +207,17 @@ Load continuous seismic data
  .. code-block:: none
 
     Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-    Done! Loading time: 267.91888523101807 seconds
+    Done! Loading time: 229.38772130012512 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-134
+.. GENERATED FROM PYTHON SOURCE LINES 131-133
 
 Build Station Templates
 =======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-157
+.. GENERATED FROM PYTHON SOURCE LINES 133-156
 
 .. code-block:: Python
 
@@ -252,12 +251,12 @@ Build Station Templates
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-160
+.. GENERATED FROM PYTHON SOURCE LINES 157-159
 
 Plotting
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-180
+.. GENERATED FROM PYTHON SOURCE LINES 159-179
 
 .. code-block:: Python
 
@@ -293,12 +292,12 @@ Plotting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-183
+.. GENERATED FROM PYTHON SOURCE LINES 180-182
 
 Matched Filtering (Cross-correlation)
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 183-214
+.. GENERATED FROM PYTHON SOURCE LINES 182-213
 
 .. code-block:: Python
 
@@ -372,12 +371,12 @@ Matched Filtering (Cross-correlation)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-217
+.. GENERATED FROM PYTHON SOURCE LINES 214-216
 
 Plotting Detected Events
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-250
+.. GENERATED FROM PYTHON SOURCE LINES 216-249
 
 .. code-block:: Python
 
@@ -426,7 +425,7 @@ Plotting Detected Events
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 251-256
+.. GENERATED FROM PYTHON SOURCE LINES 250-255
 
 Associate Detected Events Across Stations
 =========================================
@@ -434,7 +433,7 @@ This part of the code loads the results of detected seismic events saved in JSON
 associates detected events across different stations based on their timestamps, and saves 
 the results containing only events detected  by at least two stations within a specified time window.
 
-.. GENERATED FROM PYTHON SOURCE LINES 256-263
+.. GENERATED FROM PYTHON SOURCE LINES 255-263
 
 .. code-block:: Python
 
@@ -449,6 +448,7 @@ the results containing only events detected  by at least two stations within a s
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -459,10 +459,40 @@ the results containing only events detected  by at least two stations within a s
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 264-267
+
+Plotting Associate Detected Events Across Stations
+=========================================
+Preparing the data and the first detected event as an example
+
+.. GENERATED FROM PYTHON SOURCE LINES 267-275
+
+.. code-block:: Python
+
+    t0 = obspy.UTCDateTime(associated_events[0]['time'])
+    # Sample Index of the Detected Time
+    sample_index = int((t0-st[0].stats.starttime)*st[0].stats.sampling_rate)
+    # Extracting the Data
+    tr_data = trace_array[:,sample_index:sample_index+4*int(st[0].stats.sampling_rate)]
+    # Plot the data segments.       
+    num_stations_to_plot = 6
+    plot_station_data(tr_data, station_list, num_stations_to_plot)
+
+
+
+.. image-sg:: /tutorials/images/sphx_glr_1_1_Detection_Matched_Filtering_003.png
+   :alt: 1 1 Detection Matched Filtering
+   :srcset: /tutorials/images/sphx_glr_1_1_Detection_Matched_Filtering_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (15 minutes 6.299 seconds)
+   **Total running time of the script:** (14 minutes 14.626 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_1_Detection_Matched_Filtering.py:

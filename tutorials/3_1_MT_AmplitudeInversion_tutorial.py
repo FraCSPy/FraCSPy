@@ -167,7 +167,7 @@ for i in range(nr):
 
 plt.figure(figsize=(10, 4))
 plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
-           aspect='auto', cmap='RdBu',
+           aspect='auto', cmap='seismic',
            extent=(0, nr, 150+np.min(source_times), np.min(source_times)-50))
 plt.scatter(range(nr), source_times, marker='o', facecolors='none', edgecolors='k', s=5)
 plt.tight_layout()

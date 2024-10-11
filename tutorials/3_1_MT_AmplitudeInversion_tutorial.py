@@ -49,8 +49,7 @@ the above equation can be expanded out as
 
 Here, it is important to recall that the moment tensor matrix is symmetric and can therefore be represented
 with only 6 elements. This results in the multiplication by two of the off-diagonal elements in the equation
-above. For more information on the creation of the Greens equations, refer to the source code documentation
-[LINK TO HOMOMTI DOCS]
+above. For more information on the creation of the Greens equations, refer to the source code documentation.
 
 At this point, we can set up a linear problem of the form:
 

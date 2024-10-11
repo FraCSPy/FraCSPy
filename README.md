@@ -15,9 +15,12 @@ Some functionalities include:
 - event imaging: detection, location
 - moment tensor inversion
 
-Some python libraries that are heavily utilised include:
+Some python libraries that are utilised include:
 
 - pylops
+- torch
+- obspy
+- and more...
 
 ## Requirements
 

@@ -412,7 +412,7 @@ Apply operator to model data for each event, shift by origin time and store in f
 
  .. code-block:: none
 
-    Computation time: 10.161335945129395 seconds
+    Computation time: 10.020503282546997 seconds
 
 
 
@@ -603,7 +603,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to clean data...
-    Computation time: 30.510425806045532 seconds
+    Computation time: 30.577545881271362 seconds
 
 
 
@@ -644,7 +644,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to noisy data...
-    Computation time: 30.731465339660645 seconds
+    Computation time: 30.513280153274536 seconds
 
 
 
@@ -847,7 +847,7 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to clean data...
-    Computation time: 30.10410737991333 seconds
+    Computation time: 30.208171606063843 seconds
 
 
 
@@ -950,7 +950,7 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to noisy data...
-    Computation time: 30.061561584472656 seconds
+    Computation time: 30.191433429718018 seconds
 
 
 
@@ -1000,7 +1000,7 @@ Perform detection using semblance-based diffraction stacking
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking detection applied to noisy data...
-    Computation time: 33.20837044715881 seconds
+    Computation time: 33.413222551345825 seconds
 
 
 
@@ -1447,7 +1447,7 @@ Here we visualise the slices of the resulting image volume for all events
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 49.495 seconds)
+   **Total running time of the script:** (2 minutes 49.692 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_2_Detection_DiffractionStacking_tutorial.py:

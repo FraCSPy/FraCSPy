@@ -50,7 +50,7 @@ from fracspy.utils.sofiutils import read_seis
 from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
 from fracspy.mtinversion.mtwi import *
 from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
-# sphinx_gallery_thumbnail_number = 11
+# sphinx_gallery_thumbnail_number = 7
 
 ###############################################################################
 # Load model and seismic data
@@ -185,10 +185,9 @@ mt_inv = mtw.lsi(vz, niter=100, verbose=True)
 # normalized version since the modelling operator is only accurate up to relative
 # amplitudes.
 
-mt = np.array([0, 0, 0, 1, 0, 0])
 mt_at_loc = get_mt_at_loc(mt_inv, [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
 
-MTMatrix_comparisonplot(mt, mt_at_loc / np.abs(np.array(mt_at_loc)).max())
+MTMatrix_comparisonplot(MT_selected, mt_at_loc / np.abs(np.array(mt_at_loc)).max())
 
 ###############################################################################
 # Finally we visualize the estimated kernels from the inversion.

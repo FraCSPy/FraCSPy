@@ -1,0 +1,42 @@
+{
+    "title":"FraCSPy: An Open-Source Python Framework for Conventional Microseismic Processing",    
+    "license":"MIT",
+    "upload_type":"software",
+    "description":"FraCSPy (Framework for Conventional microSeismic Processing) is an open-source Python library focused on providing conventional microseismic monitoring tools, particularly for the purpose of benchmarking newly proposed algorithms and workflows.",
+    "keywords":[
+       "earthquakes",
+       "microseismicity",
+       "microseismic monitoring",
+       "microseismic imaging",
+       "passive seismic",
+       "Earth and related environmental sciences",
+       "Geophysics",
+       "Seismology",
+       "Signal processing"
+    ],
+    "access_right":"open",    
+    "language":"eng",
+    "creators":[
+       {
+          "name":"Birnie, Claire",
+          "orcid":"0000-0002-7696-2252",
+          "type":"contactperson"
+       },
+       {
+          "name":"Ravasi, Matteo",
+          "orcid":"0000-0003-0020-2721",
+          "type":"projectmember"
+       },
+       {
+          "name":"Anikiev, Denis",
+          "orcid":"0000-0002-4729-2659",
+          "type":"projectmember"
+       },
+       {
+          "name":"Saad, Omar M.",
+          "orcid":"0000-0002-9989-8070",
+          "type":"projectmember"
+       }
+    ]
+ }
+ 

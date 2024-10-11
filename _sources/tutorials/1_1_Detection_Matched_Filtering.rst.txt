@@ -209,7 +209,7 @@ Load continuous seismic data
  .. code-block:: none
 
     Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-    Done! Loading time: 275.89267683029175 seconds
+    Done! Loading time: 270.65245747566223 seconds
 
 
 
@@ -256,7 +256,7 @@ Build Station Templates
 .. GENERATED FROM PYTHON SOURCE LINES 159-161
 
 Plotting
-=====================================
+========
 
 .. GENERATED FROM PYTHON SOURCE LINES 161-181
 
@@ -376,7 +376,7 @@ Matched Filtering (Cross-correlation)
 .. GENERATED FROM PYTHON SOURCE LINES 216-218
 
 Plotting Detected Events
-=====================================
+========================
 
 .. GENERATED FROM PYTHON SOURCE LINES 218-251
 
@@ -464,7 +464,7 @@ the results containing only events detected  by at least two stations within a s
 .. GENERATED FROM PYTHON SOURCE LINES 266-269
 
 Plotting Associate Detected Events Across Stations
-=========================================
+==================================================
 Preparing the data and the first detected event as an example
 
 .. GENERATED FROM PYTHON SOURCE LINES 269-277
@@ -494,7 +494,7 @@ Preparing the data and the first detected event as an example
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (15 minutes 12.062 seconds)
+   **Total running time of the script:** (15 minutes 4.689 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_1_Detection_Matched_Filtering.py:

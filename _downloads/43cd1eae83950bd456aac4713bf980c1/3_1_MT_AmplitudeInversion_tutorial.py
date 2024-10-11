@@ -72,7 +72,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import fracspy
-# sphinx_gallery_thumbnail_number = 3
+from fracspy.visualisation.momenttensor_plots import MTBeachball_comparisonplot
+# sphinx_gallery_thumbnail_number = 4
 
 ###############################################################################
 # Load model and seismic data
@@ -166,7 +167,7 @@ for i in range(nr):
 
 plt.figure(figsize=(10, 4))
 plt.imshow(vz[:, np.min(source_times)-50: 150+np.min(source_times)].T,
-           aspect='auto', cmap='RdBu',
+           aspect='auto', cmap='seismic',
            extent=(0, nr, 150+np.min(source_times), np.min(source_times)-50))
 plt.scatter(range(nr), source_times, marker='o', facecolors='none', edgecolors='k', s=5)
 plt.tight_layout()
@@ -187,3 +188,7 @@ plt.scatter(range(6), mt_est, c='r', marker='x', label='Estimated')
 plt.legend()
 plt.title('MT Amplitude Inversion')
 plt.tight_layout()
+
+# Beachball comparison plot
+MTBeachball_comparisonplot(mt, mt_est)
+plt.show()

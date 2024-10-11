@@ -100,7 +100,7 @@ Bulletin of the Seismological Society of America, 88(1), 95–106. https://doi.o
 Load all necessary packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-117
+.. GENERATED FROM PYTHON SOURCE LINES 85-116
 
 .. code-block:: Python
 
@@ -135,7 +135,6 @@ Load all necessary packages
 
     # Track computation time
     from time import time 
-    # sphinx_gallery_thumbnail_number = 4
 
 
 
@@ -143,19 +142,19 @@ Load all necessary packages
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
 
 Setup
 ^^^^^
 Here we setup the parameters of the velocity model, geometry of receivers and 
 microseismic source for forward modelling
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-128
+.. GENERATED FROM PYTHON SOURCE LINES 125-127
 
 Velocity Model
 """"""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-138
+.. GENERATED FROM PYTHON SOURCE LINES 127-137
 
 .. code-block:: Python
 
@@ -182,12 +181,12 @@ Velocity Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-141
+.. GENERATED FROM PYTHON SOURCE LINES 138-140
 
 Receivers
 """""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-155
+.. GENERATED FROM PYTHON SOURCE LINES 140-154
 
 .. code-block:: Python
 
@@ -218,14 +217,14 @@ Receivers
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-160
+.. GENERATED FROM PYTHON SOURCE LINES 155-159
 
 Microseismic sources
 """"""""""""""""""""
 Here we set up multiple sources at different locations 
 and with different origin times
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-192
+.. GENERATED FROM PYTHON SOURCE LINES 159-191
 
 .. code-block:: Python
 
@@ -268,13 +267,13 @@ and with different origin times
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 195-198
+.. GENERATED FROM PYTHON SOURCE LINES 194-197
 
 Generate synthetic data
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-205
+.. GENERATED FROM PYTHON SOURCE LINES 197-204
 
 .. code-block:: Python
 
@@ -298,12 +297,12 @@ Generate synthetic data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-208
+.. GENERATED FROM PYTHON SOURCE LINES 205-207
 
 Create signal wavelet
 """""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-210
+.. GENERATED FROM PYTHON SOURCE LINES 207-209
 
 .. code-block:: Python
 
@@ -316,12 +315,12 @@ Create signal wavelet
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-213
+.. GENERATED FROM PYTHON SOURCE LINES 210-212
 
 Initialise operator
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 213-225
+.. GENERATED FROM PYTHON SOURCE LINES 212-224
 
 .. code-block:: Python
 
@@ -344,13 +343,13 @@ Initialise operator
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-229
+.. GENERATED FROM PYTHON SOURCE LINES 225-228
 
 Check operator with dottest
 """""""""""""""""""""""""""
 This test can help to detect errors in the operator implementation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 229-232
+.. GENERATED FROM PYTHON SOURCE LINES 228-231
 
 .. code-block:: Python
 
@@ -370,13 +369,13 @@ This test can help to detect errors in the operator implementation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-236
+.. GENERATED FROM PYTHON SOURCE LINES 232-235
 
 Forward modelling
 """""""""""""""""
 Apply operator to model data for each event, shift by origin time and store in frwddata
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-261
+.. GENERATED FROM PYTHON SOURCE LINES 235-260
 
 .. code-block:: Python
 
@@ -413,17 +412,17 @@ Apply operator to model data for each event, shift by origin time and store in f
 
  .. code-block:: none
 
-    Computation time: 10.198348999023438 seconds
+    Computation time: 10.077115297317505 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 264-266
+.. GENERATED FROM PYTHON SOURCE LINES 263-265
 
 Plot input data
 ^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 266-275
+.. GENERATED FROM PYTHON SOURCE LINES 265-274
 
 .. code-block:: Python
 
@@ -448,12 +447,12 @@ Plot input data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 276-278
+.. GENERATED FROM PYTHON SOURCE LINES 275-277
 
 Plot modelled data contaminated with white noise
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 278-284
+.. GENERATED FROM PYTHON SOURCE LINES 277-283
 
 .. code-block:: Python
 
@@ -475,12 +474,12 @@ Plot modelled data contaminated with white noise
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 285-287
+.. GENERATED FROM PYTHON SOURCE LINES 284-286
 
 Plot receiver geometry
 """"""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 287-300
+.. GENERATED FROM PYTHON SOURCE LINES 286-299
 
 .. code-block:: Python
 
@@ -509,18 +508,18 @@ Plot receiver geometry
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 303-305
+.. GENERATED FROM PYTHON SOURCE LINES 302-304
 
 Prepare for location
 ^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 307-310
+.. GENERATED FROM PYTHON SOURCE LINES 306-309
 
 Define location class using grid vectors
 """"""""""""""""""""""""""""""""""""""""
 Use the original velocity model grid for location (the grid can be different)
 
-.. GENERATED FROM PYTHON SOURCE LINES 310-319
+.. GENERATED FROM PYTHON SOURCE LINES 309-318
 
 .. code-block:: Python
 
@@ -540,12 +539,12 @@ Use the original velocity model grid for location (the grid can be different)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 320-322
+.. GENERATED FROM PYTHON SOURCE LINES 319-321
 
 Prepare traveltimes
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 322-327
+.. GENERATED FROM PYTHON SOURCE LINES 321-326
 
 .. code-block:: Python
 
@@ -567,7 +566,7 @@ Prepare traveltimes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 330-335
+.. GENERATED FROM PYTHON SOURCE LINES 329-334
 
 Localisation by diffraction stacking for clean data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -575,12 +574,12 @@ Here we apply diffraction stacking algorithm to clean noise-free
 data, get the image volume and determine location from the maximum of this 
 volume in order to show that it is still possible despite multiple records.
 
-.. GENERATED FROM PYTHON SOURCE LINES 337-339
+.. GENERATED FROM PYTHON SOURCE LINES 336-338
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 339-350
+.. GENERATED FROM PYTHON SOURCE LINES 338-349
 
 .. code-block:: Python
 
@@ -604,24 +603,24 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to clean data...
-    Computation time: 30.645760536193848 seconds
+    Computation time: 30.46342897415161 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 353-357
+.. GENERATED FROM PYTHON SOURCE LINES 352-356
 
 Localisation by diffraction stacking for noise-contaminated data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply diffraction stacking to data contaminated 
 with noise
 
-.. GENERATED FROM PYTHON SOURCE LINES 359-361
+.. GENERATED FROM PYTHON SOURCE LINES 358-360
 
 Perform squared-value diffraction stacking
 """""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 361-372
+.. GENERATED FROM PYTHON SOURCE LINES 360-371
 
 .. code-block:: Python
 
@@ -645,18 +644,18 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to noisy data...
-    Computation time: 30.588239669799805 seconds
+    Computation time: 30.42404842376709 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 375-378
+.. GENERATED FROM PYTHON SOURCE LINES 374-377
 
 Visualisation of location results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we visualise the slices of the resulting image volume
 
-.. GENERATED FROM PYTHON SOURCE LINES 378-395
+.. GENERATED FROM PYTHON SOURCE LINES 377-394
 
 .. code-block:: Python
 
@@ -696,13 +695,13 @@ Here we visualise the slices of the resulting image volume
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 396-399
+.. GENERATED FROM PYTHON SOURCE LINES 395-398
 
 Plot resulting image volumes from diffraction stacking
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 Note the spots related to other events
 
-.. GENERATED FROM PYTHON SOURCE LINES 399-426
+.. GENERATED FROM PYTHON SOURCE LINES 398-425
 
 .. code-block:: Python
 
@@ -773,18 +772,18 @@ Note the spots related to other events
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 429-432
+.. GENERATED FROM PYTHON SOURCE LINES 428-431
 
 Diffraction stacking detection for clean data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply diffraction stacking detection algorithm to noise-free data
 
-.. GENERATED FROM PYTHON SOURCE LINES 434-436
+.. GENERATED FROM PYTHON SOURCE LINES 433-435
 
 Define detection parameters
 """""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 436-449
+.. GENERATED FROM PYTHON SOURCE LINES 435-448
 
 .. code-block:: Python
 
@@ -808,12 +807,12 @@ Define detection parameters
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 450-452
+.. GENERATED FROM PYTHON SOURCE LINES 449-451
 
 Perform detection using squared-value diffraction stacking
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 452-474
+.. GENERATED FROM PYTHON SOURCE LINES 451-473
 
 .. code-block:: Python
 
@@ -848,17 +847,17 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to clean data...
-    Computation time: 30.302121877670288 seconds
+    Computation time: 30.16142249107361 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 475-477
+.. GENERATED FROM PYTHON SOURCE LINES 474-476
 
 Compare the detection results with the actual origin times
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 477-494
+.. GENERATED FROM PYTHON SOURCE LINES 476-493
 
 .. code-block:: Python
 
@@ -906,18 +905,18 @@ Compare the detection results with the actual origin times
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 497-500
+.. GENERATED FROM PYTHON SOURCE LINES 496-499
 
 Diffraction stacking detection for noisy data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply diffraction stacking detection algorithms to noisy data
 
-.. GENERATED FROM PYTHON SOURCE LINES 502-504
+.. GENERATED FROM PYTHON SOURCE LINES 501-503
 
 Perform detection using squared-value diffraction stacking
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 504-525
+.. GENERATED FROM PYTHON SOURCE LINES 503-524
 
 .. code-block:: Python
 
@@ -951,17 +950,17 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to noisy data...
-    Computation time: 30.284151077270508 seconds
+    Computation time: 30.14653754234314 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 526-528
+.. GENERATED FROM PYTHON SOURCE LINES 525-527
 
 Perform detection using semblance-based diffraction stacking
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 528-554
+.. GENERATED FROM PYTHON SOURCE LINES 527-553
 
 .. code-block:: Python
 
@@ -1001,17 +1000,17 @@ Perform detection using semblance-based diffraction stacking
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking detection applied to noisy data...
-    Computation time: 33.60011315345764 seconds
+    Computation time: 33.38921785354614 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 555-557
+.. GENERATED FROM PYTHON SOURCE LINES 554-556
 
 Compare the detection results with the actual origin times
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 557-575
+.. GENERATED FROM PYTHON SOURCE LINES 556-574
 
 .. code-block:: Python
 
@@ -1074,13 +1073,13 @@ Compare the detection results with the actual origin times
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 578-581
+.. GENERATED FROM PYTHON SOURCE LINES 577-580
 
 Visualisation of detection results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we visualise the detection curves
 
-.. GENERATED FROM PYTHON SOURCE LINES 581-616
+.. GENERATED FROM PYTHON SOURCE LINES 580-615
 
 .. code-block:: Python
 
@@ -1150,13 +1149,13 @@ Here we visualise the detection curves
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 619-622
+.. GENERATED FROM PYTHON SOURCE LINES 618-621
 
 Localisation of detected events
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we determine locations of detected events
 
-.. GENERATED FROM PYTHON SOURCE LINES 622-651
+.. GENERATED FROM PYTHON SOURCE LINES 621-650
 
 .. code-block:: Python
 
@@ -1196,12 +1195,12 @@ Here we determine locations of detected events
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 652-654
+.. GENERATED FROM PYTHON SOURCE LINES 651-653
 
 Compare the location results with the actual hypocentres
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 654-681
+.. GENERATED FROM PYTHON SOURCE LINES 653-680
 
 .. code-block:: Python
 
@@ -1323,13 +1322,13 @@ Compare the location results with the actual hypocentres
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 684-687
+.. GENERATED FROM PYTHON SOURCE LINES 683-686
 
 Visualisation of location results for all events
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we visualise the slices of the resulting image volume for all events
 
-.. GENERATED FROM PYTHON SOURCE LINES 687-726
+.. GENERATED FROM PYTHON SOURCE LINES 686-725
 
 .. code-block:: Python
 
@@ -1448,7 +1447,7 @@ Here we visualise the slices of the resulting image volume for all events
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 50.640 seconds)
+   **Total running time of the script:** (2 minutes 49.535 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_2_Detection_DiffractionStacking_tutorial.py:

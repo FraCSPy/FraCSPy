@@ -56,7 +56,7 @@ To summarize, we will apply the following workflow:
 
 *Assumptions*: for now, the MTWI procedure assumes a homogeneous velocity model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-54
+.. GENERATED FROM PYTHON SOURCE LINES 41-55
 
 .. code-block:: Python
 
@@ -71,7 +71,8 @@ To summarize, we will apply the following workflow:
     from fracspy.utils.sofiutils import read_seis
     from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
     from fracspy.mtinversion.mtwi import *
-    # sphinx_gallery_thumbnail_number = 8
+    from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
+    # sphinx_gallery_thumbnail_number = 11
 
 
 
@@ -80,7 +81,7 @@ To summarize, we will apply the following workflow:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-63
+.. GENERATED FROM PYTHON SOURCE LINES 56-64
 
 Load model and seismic data
 ---------------------------
@@ -91,7 +92,7 @@ Finite Difference modelling software. The model is the same that we have used
 in the FD modelling to generate the data. As such, it contains additional
 boundaries, which we need to remove prior to performing localisation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-117
+.. GENERATED FROM PYTHON SOURCE LINES 64-118
 
 .. code-block:: Python
 
@@ -156,13 +157,13 @@ boundaries, which we need to remove prior to performing localisation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-121
+.. GENERATED FROM PYTHON SOURCE LINES 119-122
 
 Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the traces, this is the information that we
 utilise to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-128
+.. GENERATED FROM PYTHON SOURCE LINES 122-129
 
 .. code-block:: Python
 
@@ -185,7 +186,7 @@ utilise to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-134
+.. GENERATED FROM PYTHON SOURCE LINES 130-135
 
 Create modelling operator
 -------------------------
@@ -193,7 +194,7 @@ First, we will define a Ricker wavelet with
 peak frequency of 20Hz. This is the same wavelet that we used in modelling;
 in real applications, this will need to be estimated from the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-147
+.. GENERATED FROM PYTHON SOURCE LINES 135-148
 
 .. code-block:: Python
 
@@ -222,13 +223,13 @@ in real applications, this will need to be estimated from the data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-151
+.. GENERATED FROM PYTHON SOURCE LINES 149-152
 
 Second we define an area of interest where we expect the source to be located.
 In fact, whilst in practice one could consider the entire subsurface,
 this comes with a computational and storage burden for the Green's functions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-173
+.. GENERATED FROM PYTHON SOURCE LINES 152-174
 
 .. code-block:: Python
 
@@ -261,11 +262,11 @@ this comes with a computational and storage burden for the Green's functions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-175
+.. GENERATED FROM PYTHON SOURCE LINES 175-176
 
 Next, we create our Kirchhoff-MT operator
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-204
+.. GENERATED FROM PYTHON SOURCE LINES 176-205
 
 .. code-block:: Python
 
@@ -350,13 +351,13 @@ Next, we create our Kirchhoff-MT operator
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 205-208
+.. GENERATED FROM PYTHON SOURCE LINES 206-209
 
 Joint localisation and MT inversion
 -----------------------------------
 Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-215
+.. GENERATED FROM PYTHON SOURCE LINES 209-216
 
 .. code-block:: Python
 
@@ -416,11 +417,11 @@ Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 216-217
+.. GENERATED FROM PYTHON SOURCE LINES 217-218
 
 Let's now extract both the expected location and MT source parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-229
+.. GENERATED FROM PYTHON SOURCE LINES 218-235
 
 .. code-block:: Python
 
@@ -436,8 +437,18 @@ Let's now extract both the expected location and MT source parameters
     print('MT at true Source Location (full): \n', mt_at_loc)
     print('MT at true Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
 
+    # Compare the MT estimated versus modelled
+    mt = np.array([0, 0, 0, 1, 0, 0])
+    MTMatrix_comparisonplot(mt, mt_at_loc)
+    plt.show()
 
 
+
+
+.. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
+   :alt: 3 2 MT WaveformInversion tutorial
+   :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -458,12 +469,12 @@ Let's now extract both the expected location and MT source parameters
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 230-232
+.. GENERATED FROM PYTHON SOURCE LINES 236-238
 
 And finally we visualize the estimated kernels both from the adjoint and
 inverse approaches.
 
-.. GENERATED FROM PYTHON SOURCE LINES 232-239
+.. GENERATED FROM PYTHON SOURCE LINES 238-245
 
 .. code-block:: Python
 
@@ -479,13 +490,6 @@ inverse approaches.
 
 .. rst-class:: sphx-glr-horizontal
 
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
-         :class: sphx-glr-multi-img
 
     *
 
@@ -522,6 +526,13 @@ inverse approaches.
          :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_014.png
          :class: sphx-glr-multi-img
 
+    *
+
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_015.png
+         :alt: 3 2 MT WaveformInversion tutorial
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_015.png
+         :class: sphx-glr-multi-img
+
 
 .. rst-class:: sphx-glr-script-out
 
@@ -535,7 +546,7 @@ inverse approaches.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 7.240 seconds)
+   **Total running time of the script:** (2 minutes 3.437 seconds)
 
 
 .. _sphx_glr_download_tutorials_3_2_MT_WaveformInversion_tutorial.py:

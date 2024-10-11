@@ -19,8 +19,8 @@ def _mt4plt(mt):
         The Moment Tensor represented as a 3x3 matrix.
     mat_mt4plt : numpy.ndarray [5x5]
         The Moment Tensor represented as a padded 5x5 matrix for visualization purposes, with padding added for aesthetics.
+    
     """
-
     # Define MT matrix
     mat_mt = np.empty([3 ,3])
     mat_mt[0 ,0] = mt[0]  # M_{x,x}
@@ -58,9 +58,6 @@ def MTMatrixplot(mt, ax, cmap=None, title=True):
     title : bool, optional
         If True, a title 'Source Moment Tensor' is displayed on the plot. Default is True.
 
-    Returns
-    -------
-    None
     """
 
     if not cmap:
@@ -106,9 +103,6 @@ def MTBeachball(mt, ax):
     ax: pyplot axis
         Figure axis on which to plot, e.g., fig,ax = plt.subplots(1,1)
 
-    Returns
-    -------
-
     Notes
     -----
     Must first convert the moment tensor into the obspy required format: NM x 6 (M11, M22, M33, M12, M13, M23 -
@@ -139,12 +133,9 @@ def MTMatrix_comparisonplot(mt, mt_est):
     Parameters
     ----------
     mt : numpy array [1x6]
-        Known Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
+        Known Moment Tensor array following mt definition defined in :func:`fracspy.mtinversion.utils.MT_comp_dict`
     mt_est : numpy array [1x6]
-        Estimated Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
-
-    Returns
-    -------
+        Estimated Moment Tensor array following mt definition defined in :func:`fracspy.mtinversion.utils.MT_comp_dict`
 
     '''
     fig, axs = plt.subplots(1, 2, figsize=[10, 5])
@@ -158,16 +149,12 @@ def MTBeachball_comparisonplot(mt, mt_est):
     '''
     Creates a side-by-side beachball plot comparison between a known and an estimated Moment Tensor.
 
-
     Parameters
     ----------
     mt : numpy array [1x6]
         Known Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
     mt_est : numpy array [1x6]
         Estimated Moment Tensor array following mt definition defined in  pyfrac.mtsolvers.mtutils.get_mt_computation_dict
-
-    Returns
-    -------
 
     '''
     fig, axs = plt.subplots(1, 2, figsize=[10, 5])

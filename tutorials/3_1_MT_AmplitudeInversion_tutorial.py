@@ -72,6 +72,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import fracspy
+# sphinx_gallery_thumbnail_number = 3
 
 ###############################################################################
 # Load model and seismic data

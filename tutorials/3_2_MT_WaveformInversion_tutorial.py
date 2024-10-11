@@ -49,7 +49,7 @@ from pylops.utils.wavelets import ricker
 from fracspy.utils.sofiutils import read_seis
 from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
 from fracspy.mtinversion.mtwi import *
-
+# sphinx_gallery_thumbnail_number = 8
 
 ###############################################################################
 # Load model and seismic data
@@ -60,6 +60,8 @@ from fracspy.mtinversion.mtwi import *
 # Finite Difference modelling software. The model is the same that we have used
 # in the FD modelling to generate the data. As such, it contains additional
 # boundaries, which we need to remove prior to performing localisation.
+
+default_cmap = 'seismic'
 
 # Directory containing input data
 input_dir = '../data/pyfrac_SOFIModelling'
@@ -118,9 +120,9 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 # utilise to determine the Moment Tensor.
 
 fig, axs = plt.subplots(3, 1,figsize=[10, 8])
-axs[0].imshow(vx.T, aspect='auto',cmap='binary_r')
-axs[1].imshow(vy.T, aspect='auto',cmap='binary_r')
-axs[2].imshow(vz.T, aspect='auto',cmap='binary_r')
+axs[0].imshow(vx.T, aspect='auto',cmap=default_cmap)
+axs[1].imshow(vy.T, aspect='auto',cmap=default_cmap)
+axs[2].imshow(vz.T, aspect='auto',cmap=default_cmap)
 plt.tight_layout()
 
 ###############################################################################
@@ -183,9 +185,9 @@ data = mtw.model(MT_aoi)
 for ivc, vc in enumerate([vx, vy, vz]):
     fig, axs = plt.subplots(1, 3, figsize=[15,5],
                             sharey=True, sharex=True)
-    axs[0].imshow(data[ivc].T, aspect='auto',cmap='RdBu')
-    axs[1].imshow(vc.T, aspect='auto',cmap='RdBu')
-    axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap='RdBu')
+    axs[0].imshow(data[ivc].T, aspect='auto',cmap=default_cmap)
+    axs[1].imshow(vc.T, aspect='auto',cmap=default_cmap)
+    axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap=default_cmap)
     axs[2].set_ylim([350,270])
     axs[2].set_xlim([0,20])
     for ax in axs: ax.axhline(300)

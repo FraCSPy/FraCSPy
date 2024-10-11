@@ -73,13 +73,13 @@ A comparison of select trigger algorithms for automated global seismic phase and
 Bulletin of the Seismological Society of America, 88(1), 95–106. https://doi.org/10.1785/bssa0880010095
 
 """
-
 #%%
 
 ###############################################################################
 # Load all necessary packages
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+# sphinx_gallery_thumbnail_number = 6
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -105,7 +105,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 # Track computation time
 from time import time 
-
+# sphinx_gallery_thumbnail_number = 4
 #%%
 
 ###############################################################################

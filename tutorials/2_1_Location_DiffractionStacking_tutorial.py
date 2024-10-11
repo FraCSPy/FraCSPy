@@ -216,6 +216,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 # Track computation time
 from time import time 
+# sphinx_gallery_thumbnail_number = 13
 
 #%%
 

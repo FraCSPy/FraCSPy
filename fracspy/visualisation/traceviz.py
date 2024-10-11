@@ -3,6 +3,9 @@ import numpy as np
 import warnings
 
 
+default_cmap = 'seismic'
+
+
 def wiggleplot(data, dt=0.004, norm_indiv=True, figsize=[12, 6], rec_label=True, xhline=True):
     """
     Plots seismic traces as wiggles, with options for normalization and customization of the plot appearance.
@@ -89,7 +92,7 @@ def wiggleplot(data, dt=0.004, norm_indiv=True, figsize=[12, 6], rec_label=True,
     return fig, axs
 
 
-def traceimage(data, dt=0.004, norm_indiv=False, figsize=[12, 6], cbar=True, climQ=90, cmap='seismic', ax=None):
+def traceimage(data, dt=0.004, norm_indiv=False, figsize=[12, 6], cbar=True, climQ=90, cmap=default_cmap, ax=None):
     """
     Plots a seismic trace image of the given data.
 

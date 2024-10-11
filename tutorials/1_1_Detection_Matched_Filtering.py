@@ -23,6 +23,7 @@ Methodology
     - Each template is stored as a NumPy file in a specified output directory.
 """
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -39,7 +40,7 @@ from time import time
 from datetime import datetime
 
 from fracspy.detection.matched_filtering import *
-
+# sphinx_gallery_thumbnail_number = 3
 
 
 ###############################################################################

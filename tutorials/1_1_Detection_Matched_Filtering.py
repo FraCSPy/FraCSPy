@@ -65,7 +65,7 @@ station_list = [str(stationID) for stationID in range(1120,1130)]
 
 ###############################################################################
 # Load event catalogue
-# -------------------
+# --------------------
 
 # Load the short event catalog from an Excel file.
 # Provide URL for the catalogue
@@ -157,7 +157,7 @@ for tr_i, trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting
-# =====================================
+# ========
 
 # Select one template to plot; here we take the first one as an example
 example_template = templates[0][0]
@@ -214,7 +214,7 @@ for tr_index,trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting Detected Events
-# =====================================
+# ========================
 
 if trace_results_dict:  # Check if there are detected events
     # Select the first detected event for demonstration
@@ -264,7 +264,7 @@ print(f"\nNumber of associated detected events: {len(associated_events)}")
 
 ###############################################################################
 # Plotting Associate Detected Events Across Stations
-# =========================================
+# ==================================================
 # Preparing the data and the first detected event as an example
 t0 = obspy.UTCDateTime(associated_events[0]['time'])
 # Sample Index of the Detected Time

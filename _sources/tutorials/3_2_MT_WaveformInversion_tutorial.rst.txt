@@ -18,8 +18,8 @@
 .. _sphx_glr_tutorials_3_2_MT_WaveformInversion_tutorial.py:
 
 
-3.2 Waveform-based Moment Tensor Inversion - Multicomponent
-===========================================================
+3.2 Waveform-based Moment Tensor Inversion
+==========================================
 This is a follow-up of the Amplitude-based Moment Tensor Inversion tutorial. In this tutorial, we will extend the
 MT inversion algorithm to work directly with waveforms instead of picked amplitudes. By avoiding any picking,
 this method can determine the moment tensor of a microseismic source when the source location is not known a-prior.
@@ -72,7 +72,7 @@ To summarize, we will apply the following workflow:
     from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
     from fracspy.mtinversion.mtwi import *
     from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
-    # sphinx_gallery_thumbnail_number = 11
+    # sphinx_gallery_thumbnail_number = 7
 
 
 
@@ -92,7 +92,7 @@ Finite Difference modelling software. The model is the same that we have used
 in the FD modelling to generate the data. As such, it contains additional
 boundaries, which we need to remove prior to performing localisation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-118
+.. GENERATED FROM PYTHON SOURCE LINES 64-108
 
 .. code-block:: Python
 
@@ -127,22 +127,12 @@ boundaries, which we need to remove prior to performing localisation.
 
     # Load seismic data (note that Vz is Vy given the SOFI convention)
     expname = 'MT-90-90-180_Homogeneous_griddedarray'
-
-    vx = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vx.txt' % expname), nr=nr)
-    vy = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vz.txt' % expname), nr=nr)
-    vz = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vy.txt' % expname), nr=nr)
-    vx = vx[:,t_shift:t_shift+tdur]
-    vy = vy[:,t_shift:t_shift+tdur]
-    vz = vz[:,t_shift:t_shift+tdur]
-
-    # Scale data to the maximum of vz
-    efd_scaler = np.max(abs(vz))
-    vx /= efd_scaler
-    vy /= efd_scaler
+    vz = read_seis(os.path.join(input_dir, 'outputs', 'su', 
+                                '%s_vy.txt' % expname), 
+                   nr=nr)
+    vz = vz[:, t_shift: t_shift + tdur]
+    efd_scaler = np.max(abs(vz))  # Scaler to make data more friendly
     vz /= efd_scaler
-
-    # Combine into a single array
-    FD_data = np.array([vx, vy, vz])
 
     # Remove absorbing boundaries for both the model and receiver coordinates
     mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
@@ -157,28 +147,24 @@ boundaries, which we need to remove prior to performing localisation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-122
+.. GENERATED FROM PYTHON SOURCE LINES 109-112
 
 Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the traces, this is the information that we
 utilise to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-129
+.. GENERATED FROM PYTHON SOURCE LINES 112-115
 
 .. code-block:: Python
 
 
-    fig, axs = plt.subplots(3, 1,figsize=[10, 8])
-    axs[0].imshow(vx.T, aspect='auto',cmap=default_cmap)
-    axs[1].imshow(vy.T, aspect='auto',cmap=default_cmap)
-    axs[2].imshow(vz.T, aspect='auto',cmap=default_cmap)
-    plt.tight_layout()
+    fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 
 
 
 
 .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_001.png
-   :alt: 3 2 MT WaveformInversion tutorial
+   :alt: Seismic Recording
    :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_001.png
    :class: sphx-glr-single-img
 
@@ -186,7 +172,7 @@ utilise to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-135
+.. GENERATED FROM PYTHON SOURCE LINES 116-121
 
 Create modelling operator
 -------------------------
@@ -194,7 +180,7 @@ First, we will define a Ricker wavelet with
 peak frequency of 20Hz. This is the same wavelet that we used in modelling;
 in real applications, this will need to be estimated from the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-148
+.. GENERATED FROM PYTHON SOURCE LINES 121-134
 
 .. code-block:: Python
 
@@ -223,13 +209,13 @@ in real applications, this will need to be estimated from the data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-152
+.. GENERATED FROM PYTHON SOURCE LINES 135-138
 
 Second we define an area of interest where we expect the source to be located.
 In fact, whilst in practice one could consider the entire subsurface,
 this comes with a computational and storage burden for the Green's functions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-174
+.. GENERATED FROM PYTHON SOURCE LINES 138-160
 
 .. code-block:: Python
 
@@ -252,7 +238,7 @@ this comes with a computational and storage burden for the Green's functions.
 
     # MT in area of interest
     MT_aoi = np.zeros([6, nx_aoi, ny_aoi, nz_aoi])  # MT components as images
-    MT_selected = -1 * np.array([0,0,0,1,0,0])
+    MT_selected = -1 * np.array([0, 0, 0, 1, 0, 0])
     MT_aoi[:, nx_aoi//2, ny_aoi//2, nz_aoi//2] = MT_selected
 
 
@@ -262,11 +248,11 @@ this comes with a computational and storage burden for the Green's functions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-176
+.. GENERATED FROM PYTHON SOURCE LINES 161-162
 
 Next, we create our Kirchhoff-MT operator
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-205
+.. GENERATED FROM PYTHON SOURCE LINES 162-171
 
 .. code-block:: Python
 
@@ -274,99 +260,34 @@ Next, we create our Kirchhoff-MT operator
     Ms_scaling = 1.92e10
     mtw = MTW(x, y, z, recs, mod, sloc_ind,
               2, omega_p, (hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi),
-              t, wav, wavc, multicomp=True,
+              t, wav, wavc, multicomp=False,
               Ms_scaling=Ms_scaling,
               engine='numba')
     data = mtw.model(MT_aoi)
 
-    # Visualization
-    for ivc, vc in enumerate([vx, vy, vz]):
-        fig, axs = plt.subplots(1, 3, figsize=[15,5],
-                                sharey=True, sharex=True)
-        axs[0].imshow(data[ivc].T, aspect='auto',cmap=default_cmap)
-        axs[1].imshow(vc.T, aspect='auto',cmap=default_cmap)
-        axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap=default_cmap)
-        axs[2].set_ylim([350,270])
-        axs[2].set_xlim([0,20])
-        for ax in axs: ax.axhline(300)
-        fig.tight_layout()
-
-        fig, axs = plt.subplots(1,2, figsize=[15,5], sharey=True)
-        axs[0].plot(data[ivc, 0], 'k', label='FD')
-        axs[0].plot(vc[0], 'r', label='Kirch')
-        axs[0].legend()
-        axs[1].plot(data[ivc, 20], 'k')
-        axs[1].plot(vc[20], 'r')
-        fig.tight_layout()
-
-
-
-
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_003.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_003.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_004.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_004.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_005.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_005.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_006.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_006.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_007.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_007.png
-         :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_008.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_008.png
-         :class: sphx-glr-multi-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-209
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 172-175
 
 Joint localisation and MT inversion
 -----------------------------------
 Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 209-216
+.. GENERATED FROM PYTHON SOURCE LINES 175-182
 
 .. code-block:: Python
 
 
     # Adjoint
-    mt_adj = mtw.adjoint(FD_data)
+    mt_adj = mtw.adjoint(vz)
 
     # Inversion
-    mt_inv = mtw.lsi(FD_data, niter=100, verbose=True)
+    mt_inv = mtw.lsi(vz, niter=100, verbose=True)
 
 
 
@@ -378,114 +299,97 @@ Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
  
     LSQR            Least-squares solution of  Ax = b
-    The matrix A has 214500 rows and 115506 columns
+    The matrix A has 71500 rows and 115506 columns
     damp = 0.00000000000000e+00   calc_var =        0
     atol = 0.00e+00                 conlim = 1.00e+08
     btol = 0.00e+00               iter_lim =      100
  
        Itn      x[0]       r1norm     r2norm   Compatible    LS      Norm A   Cond A
-         0  0.00000e+00   2.674e+01  2.674e+01    1.0e+00  3.8e+02
-         1 -1.34479e-06   1.647e+01  1.647e+01    6.2e-01  4.3e-01   1.3e+04  1.0e+00
-         2 -1.12899e-06   1.098e+01  1.098e+01    4.1e-01  2.5e-01   1.5e+04  2.5e+00
-         3  2.85393e-07   9.598e+00  9.598e+00    3.6e-01  1.8e-01   1.8e+04  3.8e+00
-         4  2.15309e-06   8.569e+00  8.569e+00    3.2e-01  2.0e-01   2.0e+04  5.6e+00
-         5  3.08077e-06   7.905e+00  7.905e+00    3.0e-01  8.0e-02   2.4e+04  7.9e+00
-         6  2.41881e-06   7.350e+00  7.350e+00    2.7e-01  7.7e-02   2.5e+04  1.0e+01
-         7  1.33417e-06   7.097e+00  7.097e+00    2.7e-01  8.9e-02   2.6e+04  1.2e+01
-         8 -6.59734e-08   6.827e+00  6.827e+00    2.6e-01  6.1e-02   2.9e+04  1.5e+01
-         9 -8.32663e-07   6.714e+00  6.714e+00    2.5e-01  3.7e-02   3.1e+04  1.7e+01
-        10 -1.33084e-06   6.651e+00  6.651e+00    2.5e-01  4.3e-02   3.3e+04  1.9e+01
-        90  1.01378e-05   4.444e+00  4.444e+00    1.7e-01  2.9e-03   9.0e+04  6.3e+02
-        91  1.03259e-05   4.441e+00  4.441e+00    1.7e-01  2.9e-03   9.1e+04  6.4e+02
-        92  1.08270e-05   4.434e+00  4.434e+00    1.7e-01  2.7e-03   9.1e+04  6.5e+02
-        93  1.11654e-05   4.429e+00  4.429e+00    1.7e-01  2.8e-03   9.2e+04  6.6e+02
-        94  1.13276e-05   4.427e+00  4.427e+00    1.7e-01  3.5e-03   9.2e+04  6.6e+02
-        95  1.18840e-05   4.418e+00  4.418e+00    1.7e-01  2.9e-03   9.3e+04  6.8e+02
-        96  1.21480e-05   4.414e+00  4.414e+00    1.7e-01  3.3e-03   9.3e+04  6.9e+02
-        97  1.29290e-05   4.404e+00  4.404e+00    1.6e-01  5.1e-03   9.3e+04  7.0e+02
-        98  1.32693e-05   4.399e+00  4.399e+00    1.6e-01  3.4e-03   9.4e+04  7.1e+02
-        99  1.37259e-05   4.393e+00  4.393e+00    1.6e-01  2.8e-03   9.5e+04  7.3e+02
-       100  1.40819e-05   4.386e+00  4.386e+00    1.6e-01  5.7e-03   9.5e+04  7.4e+02
+         0  0.00000e+00   2.334e+01  2.334e+01    1.0e+00  4.2e+02
+         1 -1.15762e-06   1.355e+01  1.355e+01    5.8e-01  4.5e-01   1.2e+04  1.0e+00
+         2 -1.71343e-06   8.313e+00  8.313e+00    3.6e-01  3.0e-01   1.4e+04  2.5e+00
+         3 -7.81990e-07   6.895e+00  6.895e+00    3.0e-01  2.1e-01   1.7e+04  3.8e+00
+         4  4.13818e-07   6.036e+00  6.036e+00    2.6e-01  2.5e-01   1.9e+04  5.4e+00
+         5  1.64581e-06   4.969e+00  4.969e+00    2.1e-01  1.1e-01   2.2e+04  8.0e+00
+         6  1.42365e-06   4.358e+00  4.358e+00    1.9e-01  1.2e-01   2.3e+04  1.0e+01
+         7  1.02796e-06   4.057e+00  4.057e+00    1.7e-01  1.2e-01   2.5e+04  1.2e+01
+         8 -1.57272e-08   3.647e+00  3.647e+00    1.6e-01  1.2e-01   2.7e+04  1.5e+01
+         9 -8.50817e-07   3.404e+00  3.404e+00    1.5e-01  6.3e-02   2.9e+04  1.7e+01
+        10 -1.20292e-06   3.311e+00  3.311e+00    1.4e-01  6.5e-02   3.1e+04  1.9e+01
+        90 -6.78468e-06   8.598e-01  8.598e-01    3.7e-02  4.1e-03   8.6e+04  5.6e+02
+        91 -6.48549e-06   8.572e-01  8.572e-01    3.7e-02  5.9e-03   8.6e+04  5.7e+02
+        92 -6.31525e-06   8.558e-01  8.558e-01    3.7e-02  5.4e-03   8.7e+04  5.7e+02
+        93 -6.01709e-06   8.533e-01  8.533e-01    3.7e-02  4.0e-03   8.8e+04  5.8e+02
+        94 -5.46185e-06   8.488e-01  8.488e-01    3.6e-02  8.5e-03   8.8e+04  6.0e+02
+        95 -5.13239e-06   8.462e-01  8.462e-01    3.6e-02  4.8e-03   8.9e+04  6.1e+02
+        96 -4.70270e-06   8.428e-01  8.428e-01    3.6e-02  5.3e-03   8.9e+04  6.2e+02
+        97 -4.54091e-06   8.417e-01  8.417e-01    3.6e-02  5.2e-03   8.9e+04  6.3e+02
+        98 -4.18106e-06   8.392e-01  8.392e-01    3.6e-02  5.2e-03   9.0e+04  6.4e+02
+        99 -3.97774e-06   8.380e-01  8.380e-01    3.6e-02  5.8e-03   9.1e+04  6.4e+02
+       100 -3.61493e-06   8.358e-01  8.358e-01    3.6e-02  5.0e-03   9.1e+04  6.6e+02
  
     LSQR finished
     The iteration limit has been reached                      
  
-    istop =       7   r1norm = 4.4e+00   anorm = 9.5e+04   arnorm = 2.4e+03
-    itn   =     100   r2norm = 4.4e+00   acond = 7.4e+02   xnorm  = 2.1e-02
+    istop =       7   r1norm = 8.4e-01   anorm = 9.1e+04   arnorm = 3.8e+02
+    itn   =     100   r2norm = 8.4e-01   acond = 6.6e+02   xnorm  = 8.6e-03
  
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-218
+.. GENERATED FROM PYTHON SOURCE LINES 183-187
 
-Let's now extract both the expected location and MT source parameters
+Let's now compare the expected and true MT source parameters at the true 
+location. Note that for the expected MT parameters, we display their 
+normalized version since the modelling operator is only accurate up to relative
+amplitudes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-235
+.. GENERATED FROM PYTHON SOURCE LINES 187-192
 
 .. code-block:: Python
 
 
-    exp_sloc, _ = get_mt_max_locs(mt_inv)
-    print('Expected Source Location (AOI coord. ref.): \n', exp_sloc)
+    mt_at_loc = get_mt_at_loc(mt_inv, [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
 
-    mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(), [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
-    print('MT at expected Source Location (full): \n', mt_at_loc)
-    print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
-
-    mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(),  [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
-    print('MT at true Source Location (full): \n', mt_at_loc)
-    print('MT at true Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
-
-    # Compare the MT estimated versus modelled
-    mt = np.array([0, 0, 0, 1, 0, 0])
-    MTMatrix_comparisonplot(mt, mt_at_loc)
-    plt.show()
+    MTMatrix_comparisonplot(MT_selected, mt_at_loc / np.abs(np.array(mt_at_loc)).max())
 
 
 
 
-.. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
+.. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_003.png
    :alt: 3 2 MT WaveformInversion tutorial
-   :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
+   :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_003.png
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Expected Source Location (AOI coord. ref.): 
-     [13.94 12.7  11.32]
-    MT at expected Source Location (full): 
-     (0.032167409144727495, 0.07879811563715645, 0.051881040398387375, 0.014743971157421468, -0.2683915865820688, -0.6145561946045404)
-    MT at expected Source Location (rounded): 
-     [ 0.03  0.08  0.05  0.01 -0.27 -0.61]
-    MT at true Source Location (full): 
-     (-0.0019573553987442447, 0.01409416978624956, -0.011238380751432244, -0.05093337723466572, -0.03673497317194854, -0.1457423269817509)
-    MT at true Source Location (rounded): 
-     [-0.    0.01 -0.01 -0.05 -0.04 -0.15]
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 193-194
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-238
+Finally we visualize the estimated kernels from the inversion.
 
-And finally we visualize the estimated kernels both from the adjoint and
-inverse approaches.
-
-.. GENERATED FROM PYTHON SOURCE LINES 238-245
+.. GENERATED FROM PYTHON SOURCE LINES 194-209
 
 .. code-block:: Python
 
 
-    clim = 5e-4
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-    fracspy.visualisation.eventimages.locimage3d(mt_inv[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+    clim = 1e-4
+
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[0], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Mxx')
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[1], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Myy')
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[2], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Mzz')
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[3], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Mxy')
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[4], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Mxz')
+    fracspy.visualisation.eventimages.locimage3d(mt_inv[5], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                                 clipval=[-clim, clim], title='Mzz')
+
 
 
 .. rst-class:: sphx-glr-horizontal
@@ -493,44 +397,44 @@ inverse approaches.
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_010.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_010.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_004.png
+         :alt: Mxx
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_004.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_011.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_011.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_005.png
+         :alt: Myy
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_005.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_012.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_012.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_006.png
+         :alt: Mzz
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_006.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_013.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_013.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_007.png
+         :alt: Mxy
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_007.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_014.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_014.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_008.png
+         :alt: Mxz
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_008.png
          :class: sphx-glr-multi-img
 
     *
 
-      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_015.png
-         :alt: 3 2 MT WaveformInversion tutorial
-         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_015.png
+      .. image-sg:: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
+         :alt: Mzz
+         :srcset: /tutorials/images/sphx_glr_3_2_MT_WaveformInversion_tutorial_009.png
          :class: sphx-glr-multi-img
 
 
@@ -546,7 +450,7 @@ inverse approaches.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 4.275 seconds)
+   **Total running time of the script:** (1 minutes 0.741 seconds)
 
 
 .. _sphx_glr_download_tutorials_3_2_MT_WaveformInversion_tutorial.py:

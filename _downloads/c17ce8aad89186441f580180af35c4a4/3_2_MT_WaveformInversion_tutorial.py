@@ -1,6 +1,6 @@
 r"""
-3.2 Waveform-based Moment Tensor Inversion - Multicomponent
-===========================================================
+3.2 Waveform-based Moment Tensor Inversion
+==========================================
 This is a follow-up of the Amplitude-based Moment Tensor Inversion tutorial. In this tutorial, we will extend the
 MT inversion algorithm to work directly with waveforms instead of picked amplitudes. By avoiding any picking,
 this method can determine the moment tensor of a microseismic source when the source location is not known a-prior.
@@ -50,7 +50,7 @@ from fracspy.utils.sofiutils import read_seis
 from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
 from fracspy.mtinversion.mtwi import *
 from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
-# sphinx_gallery_thumbnail_number = 11
+# sphinx_gallery_thumbnail_number = 7
 
 ###############################################################################
 # Load model and seismic data
@@ -92,22 +92,12 @@ nr = recs_xzy.shape[1]
 
 # Load seismic data (note that Vz is Vy given the SOFI convention)
 expname = 'MT-90-90-180_Homogeneous_griddedarray'
-
-vx = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vx.txt' % expname), nr=nr)
-vy = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vz.txt' % expname), nr=nr)
-vz = read_seis(os.path.join(input_dir, 'outputs', 'su', '%s_vy.txt' % expname), nr=nr)
-vx = vx[:,t_shift:t_shift+tdur]
-vy = vy[:,t_shift:t_shift+tdur]
-vz = vz[:,t_shift:t_shift+tdur]
-
-# Scale data to the maximum of vz
-efd_scaler = np.max(abs(vz))
-vx /= efd_scaler
-vy /= efd_scaler
+vz = read_seis(os.path.join(input_dir, 'outputs', 'su', 
+                            '%s_vy.txt' % expname), 
+               nr=nr)
+vz = vz[:, t_shift: t_shift + tdur]
+efd_scaler = np.max(abs(vz))  # Scaler to make data more friendly
 vz /= efd_scaler
-
-# Combine into a single array
-FD_data = np.array([vx, vy, vz])
 
 # Remove absorbing boundaries for both the model and receiver coordinates
 mod = mod_w_bounds[abs_bounds:-abs_bounds, abs_bounds:-abs_bounds, :-abs_bounds] # z has free surface
@@ -120,11 +110,7 @@ recs = np.array([recs_xzy[0]-(abs_bounds*dx), recs_xzy[2]-(abs_bounds*dx), recs_
 # changes in polarity across the traces, this is the information that we
 # utilise to determine the Moment Tensor.
 
-fig, axs = plt.subplots(3, 1,figsize=[10, 8])
-axs[0].imshow(vx.T, aspect='auto',cmap=default_cmap)
-axs[1].imshow(vy.T, aspect='auto',cmap=default_cmap)
-axs[2].imshow(vz.T, aspect='auto',cmap=default_cmap)
-plt.tight_layout()
+fig, ax = fracspy.visualisation.traceviz.traceimage(vz, climQ=99.99, figsize=(10, 4))
 
 ###############################################################################
 # Create modelling operator
@@ -168,7 +154,7 @@ nz_aoi = zfi - zsi
 
 # MT in area of interest
 MT_aoi = np.zeros([6, nx_aoi, ny_aoi, nz_aoi])  # MT components as images
-MT_selected = -1 * np.array([0,0,0,1,0,0])
+MT_selected = -1 * np.array([0, 0, 0, 1, 0, 0])
 MT_aoi[:, nx_aoi//2, ny_aoi//2, nz_aoi//2] = MT_selected
 
 ###############################################################################
@@ -177,30 +163,10 @@ MT_aoi[:, nx_aoi//2, ny_aoi//2, nz_aoi//2] = MT_selected
 Ms_scaling = 1.92e10
 mtw = MTW(x, y, z, recs, mod, sloc_ind,
           2, omega_p, (hwin_nx_aoi, hwin_ny_aoi, hwin_nz_aoi),
-          t, wav, wavc, multicomp=True,
+          t, wav, wavc, multicomp=False,
           Ms_scaling=Ms_scaling,
           engine='numba')
 data = mtw.model(MT_aoi)
-
-# Visualization
-for ivc, vc in enumerate([vx, vy, vz]):
-    fig, axs = plt.subplots(1, 3, figsize=[15,5],
-                            sharey=True, sharex=True)
-    axs[0].imshow(data[ivc].T, aspect='auto',cmap=default_cmap)
-    axs[1].imshow(vc.T, aspect='auto',cmap=default_cmap)
-    axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap=default_cmap)
-    axs[2].set_ylim([350,270])
-    axs[2].set_xlim([0,20])
-    for ax in axs: ax.axhline(300)
-    fig.tight_layout()
-
-    fig, axs = plt.subplots(1,2, figsize=[15,5], sharey=True)
-    axs[0].plot(data[ivc, 0], 'k', label='FD')
-    axs[0].plot(vc[0], 'r', label='Kirch')
-    axs[0].legend()
-    axs[1].plot(data[ivc, 20], 'k')
-    axs[1].plot(vc[20], 'r')
-    fig.tight_layout()
 
 ###############################################################################
 # Joint localisation and MT inversion
@@ -208,38 +174,35 @@ for ivc, vc in enumerate([vx, vy, vz]):
 # Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
 # Adjoint
-mt_adj = mtw.adjoint(FD_data)
+mt_adj = mtw.adjoint(vz)
 
 # Inversion
-mt_inv = mtw.lsi(FD_data, niter=100, verbose=True)
+mt_inv = mtw.lsi(vz, niter=100, verbose=True)
 
 ###############################################################################
-# Let's now extract both the expected location and MT source parameters
+# Let's now compare the expected and true MT source parameters at the true 
+# location. Note that for the expected MT parameters, we display their 
+# normalized version since the modelling operator is only accurate up to relative
+# amplitudes.
 
-exp_sloc, _ = get_mt_max_locs(mt_inv)
-print('Expected Source Location (AOI coord. ref.): \n', exp_sloc)
+mt_at_loc = get_mt_at_loc(mt_inv, [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
 
-mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(), [int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2])])
-print('MT at expected Source Location (full): \n', mt_at_loc)
-print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
-
-mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(),  [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
-print('MT at true Source Location (full): \n', mt_at_loc)
-print('MT at true Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
-
-# Compare the MT estimated versus modelled
-mt = np.array([0, 0, 0, 1, 0, 0])
-MTMatrix_comparisonplot(mt, mt_at_loc)
-plt.show()
+MTMatrix_comparisonplot(MT_selected, mt_at_loc / np.abs(np.array(mt_at_loc)).max())
 
 ###############################################################################
-# And finally we visualize the estimated kernels both from the adjoint and
-# inverse approaches.
+# Finally we visualize the estimated kernels from the inversion.
 
-clim = 5e-4
-fracspy.visualisation.eventimages.locimage3d(mt_inv[0], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_inv[1], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_inv[2], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_inv[3], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_inv[4], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
-fracspy.visualisation.eventimages.locimage3d(mt_inv[5], int(exp_sloc[0]), int(exp_sloc[1]), int(exp_sloc[2]), clipval=[-clim, clim])
+clim = 1e-4
+
+fracspy.visualisation.eventimages.locimage3d(mt_inv[0], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Mxx')
+fracspy.visualisation.eventimages.locimage3d(mt_inv[1], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Myy')
+fracspy.visualisation.eventimages.locimage3d(mt_inv[2], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Mzz')
+fracspy.visualisation.eventimages.locimage3d(mt_inv[3], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Mxy')
+fracspy.visualisation.eventimages.locimage3d(mt_inv[4], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Mxz')
+fracspy.visualisation.eventimages.locimage3d(mt_inv[5], sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi, 
+                                             clipval=[-clim, clim], title='Mzz')

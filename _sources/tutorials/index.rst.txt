@@ -145,7 +145,7 @@ Below is a series of tutorials which use FraCSPy for microseismic monitoring pur
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">3.2 Waveform-based Moment Tensor Inversion - Multicomponent</div>
+      <div class="sphx-glr-thumbnail-title">3.2 Waveform-based Moment Tensor Inversion</div>
     </div>
 
 

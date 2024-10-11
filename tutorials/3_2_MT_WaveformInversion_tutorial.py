@@ -49,7 +49,8 @@ from pylops.utils.wavelets import ricker
 from fracspy.utils.sofiutils import read_seis
 from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
 from fracspy.mtinversion.mtwi import *
-# sphinx_gallery_thumbnail_number = 8
+from fracspy.visualisation.momenttensor_plots import MTMatrix_comparisonplot
+# sphinx_gallery_thumbnail_number = 11
 
 ###############################################################################
 # Load model and seismic data
@@ -225,6 +226,11 @@ print('MT at expected Source Location (rounded): \n', np.round(mt_at_loc, decima
 mt_at_loc = get_mt_at_loc(mt_inv / np.abs(mt_inv).max(),  [sloc_ind[0]-xsi, sloc_ind[1]-ysi, sloc_ind[2]-zsi])
 print('MT at true Source Location (full): \n', mt_at_loc)
 print('MT at true Source Location (rounded): \n', np.round(mt_at_loc, decimals=2))
+
+# Compare the MT estimated versus modelled
+mt = np.array([0, 0, 0, 1, 0, 0])
+MTMatrix_comparisonplot(mt, mt_at_loc)
+plt.show()
 
 ###############################################################################
 # And finally we visualize the estimated kernels both from the adjoint and

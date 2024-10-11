@@ -1,5 +1,7 @@
 # FraCSPy
 
+[![DOI](https://zenodo.org/badge/619447827.svg)](https://zenodo.org/badge/latestdoi/619447827)
+
 FraCSPy stands for Python Framework for Conventional microSeismic Processing.
 
 ![FraCSPy logo](logo/fracspy_logo.png)
@@ -19,7 +21,7 @@ Some python libraries that are heavily utilised include:
 
 ## Requirements
 
-Installation requires [Conda](https://conda.io) package manager, e.g. one can use [miniforge](https://github.com/conda-forge/miniforge).
+Installation requires either [pip](https://pypi.org/project/pip/) package installer or [Conda](https://conda.io) package manager, e.g. one can use [miniforge](https://github.com/conda-forge/miniforge).
 
 ## Install using pip
 

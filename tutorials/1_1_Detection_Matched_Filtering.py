@@ -5,16 +5,13 @@ r"""
 Overview
 --------
 This part of the code is designed to prepare templates for seismic event detection. 
-It accomplishes this by reading event times from an event catalog and extracting the corresponding data 
-from continuous seismic recordings. The primary aim is to save these extracted templates for each station, 
-enabling their use in subsequent matched filtering analysis.
+It accomplishes this by reading event times from an event catalog and extracting the corresponding data from continuous seismic recordings. The primary aim is to save these extracted templates for each station, enabling their use in subsequent matched filtering analysis.
 
 Methodology
 -----------
 - **Data Preparation**:
     - The script reads continuous waveform data, that should be downloaded using the script in 
-    "ToC2ME_WorkedExamples" directory.
-/preparation", and extracts templates based on the seismic catalog.
+    "ToC2ME_WorkedExamples" directory. In this example the data will be downloaded on the fly
     - A band-pass filter is applied to the continuous data, targeting a frequency range of 1-200 Hz.
     - Event times from the catalog are utilized to extract corresponding templates, which are saved for each station.
     - Each extracted template is normalized to ensure a maximum absolute value of 1.
@@ -40,8 +37,8 @@ from time import time
 from datetime import datetime
 
 from fracspy.detection.matched_filtering import *
+from fracspy.visualisation.Plotting_Detected_Events import *
 # sphinx_gallery_thumbnail_number = 3
-
 
 ###############################################################################
 # Constants
@@ -160,7 +157,7 @@ for tr_i, trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting
-# ^^^^^^^^
+# =====================================
 
 # Select one template to plot; here we take the first one as an example
 example_template = templates[0][0]
@@ -217,7 +214,7 @@ for tr_index,trace in enumerate(trace_array):
 
 ###############################################################################
 # Plotting Detected Events
-# """"""""""""""""""""""""
+# =====================================
 
 if trace_results_dict:  # Check if there are detected events
     # Select the first detected event for demonstration
@@ -264,3 +261,16 @@ associated_events = associate_detected_events(results_dict,time_window=4,num_sta
 
 # Print out the associated events for review
 print(f"\nNumber of associated detected events: {len(associated_events)}")
+
+###############################################################################
+# Plotting Associate Detected Events Across Stations
+# =========================================
+# Preparing the data and the first detected event as an example
+t0 = obspy.UTCDateTime(associated_events[0]['time'])
+# Sample Index of the Detected Time
+sample_index = int((t0-st[0].stats.starttime)*st[0].stats.sampling_rate)
+# Extracting the Data
+tr_data = trace_array[:,sample_index:sample_index+4*int(st[0].stats.sampling_rate)]
+# Plot the data segments.       
+num_stations_to_plot = 6
+plot_station_data(tr_data, station_list, num_stations_to_plot)

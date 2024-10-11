@@ -1,5 +1,5 @@
 r"""
-2.3 Diffraction Stacking: Localisation With Polarity Correction
+2.2 Diffraction Stacking: Localisation With Polarity Correction
 ===============================================================
 This tutorial illustrates how to perform source localisation using 
 diffraction stacking with polarity correction by moment tensor inversion. 
@@ -29,7 +29,7 @@ Diffraction stacking with moment tensor inversion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Basics of the simple diffraction stacking are explained in
-:ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py`.
+:ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py`.
 
 Microseismic events usually have non-explosive radiation pattern, which means that the
 polarities of the P- or S-wave amplitudes can be both positive and negative. 
@@ -53,7 +53,7 @@ derivative of Green's function for receiver :math:`R` and :math:`\mathbf{d}(\mat
 .. math::
         \mathbf{d}(\mathbf{r}) = \sum_{R=1}^{N_R} A_R(t+T_R(\mathbf{r})) \mathbf{G}_R^{\phantom{T}}(\mathbf{r}).
 
-More details on the described inversion including stability issues can be found in Zhebel & Eisner (2012).
+More details on the described inversion including stability issues can be found in Zhebel & Eisner (2014).
         
 The SMT inversion step is done for each potential origin time :math:`t` and each image point :math:`r` 
 as we know neither the location nor the origin time of a microseismic event. 
@@ -80,7 +80,7 @@ Assuming the polarity correction is implemented to the data with moveout correct
 .. math::
         A_R^{EMO+PC}(t,\mathbf{r}) = \phi_R(\mathbf{r}) A_R \left(t + T_R(\mathbf{r})\right).
 
-Hence, all imaging functions described in :ref:`sphx_glr_tutorials_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
+Hence, all imaging functions described in :ref:`sphx_glr_tutorials_2_1_Location_DiffractionStacking_tutorial.py` are extended to the polarity- and moveout-corrected data :math:`A_R^{EMO+PC}`.
 
 Localisation using diffraction stacking with polarity correction by SMT inversion described above is implemented in :py:class:`fracspy.location.migration.diffstack`.
 The polarity correction can also be applied to EMO-corrected data independently using :py:class:`fracspy.location.utils.polarity_correction`, provided the expected event location.
@@ -104,16 +104,13 @@ Computers & Geosciences, 28(8), 887–899. https://doi.org/10.1016/s0098-3004(02
 
 Červený, V. (2001). Seismic ray theory. Cambridge, U.K.: Cambridge University Press.
 
-Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of
-waveform data: synthetic waveforms. Physics of the Earth and Planetary Interiors, 30(2),
-242-259.
+Sipkin, S. A. (1982). Estimation of earthquake source parameters by the inversion of waveform data: synthetic waveforms. 
+Physics of the Earth and Planetary Interiors, 30(2–3), 242–259. https://doi.org/10.1016/0031-9201(82)90111-x
 
 Zhebel, O. (2014). Imaging of seismic events: The role of imaging conditions, acquisition
 geometry and source mechanisms (Doctoral dissertation, Hamburg University).
 
-Zhebel, O., & Eisner, L. (2012). Simultaneous microseismic event localization and source
-mechanism determination: 82nd Annual International Meeting, SEG Technical Program
-Expanded Abstracts, 341, 1–5.
+Zhebel, O., & Eisner, L. (2014). Simultaneous microseismic event localization and source mechanism determination. Geophysics, 80(1), KS1–KS9. https://doi.org/10.1190/geo2014-0055.1
 
 """
 
@@ -143,7 +140,6 @@ from fracspy.location.migration import *
 from fracspy.visualisation.traceviz import traceimage
 from fracspy.visualisation.eventimages import locimage3d
 
-
 # Deal with warnings (for a cleaner code)
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -158,10 +154,10 @@ from time import time
 
 ###############################################################################
 # Load model and seismic data
-# ---------------------------
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # For this example, we will use a toy example of a small homogenous model with 
 # a gridded surface receiver # array, same as 
-# in :ref:`sphx_glr_tutorials_MT_AmplitudeINversion_tutorial.py`.
+# in :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeINversion_tutorial.py`.
 # The data are modelled using the SOFI3D Finite Difference package.
 
 # Directory containing input data
@@ -243,6 +239,7 @@ _ = ax.set_xlabel('x')
 _ = ax.set_ylabel('y')
 
 #%%
+
 ###############################################################################
 # Test basic functions
 # ^^^^^^^^^^^^^^^^^^^^
@@ -279,7 +276,8 @@ plt.tight_layout()
 
 # Compute compute vectorized Green tensor derivatives for the true location
 vgtd_true = vgtd(x=sx,y=sy,z=sz,recs=recs)
-# Compuite the GTG matrix
+
+# Compute the GTG matrix
 gtg_inv_true = mgtdinv(g=vgtd_true)
 
 data_pc = polarity_correction(data = data_mc,
@@ -324,8 +322,6 @@ gx = x[::2] # use every second grid node
 gy = y[::2]
 gz = np.arange(250, 560, gdz) # shift the grid to range 250m-550m
 
-
-
 # Set up the location class
 
 L = Location(gx, gy, gz)
@@ -337,7 +333,6 @@ from fracspy.location.utils import dist2rec
 tt = 1 / vp*dist2rec(recs,gx,gy,gz)
 print(f"Traveltime array shape: {tt.shape}")
 
-
 #%%
 
 ##############################################################################
@@ -348,7 +343,7 @@ print(f"Traveltime array shape: {tt.shape}")
 
 ###############################################################################
 # Perform squared-value diffraction stacking without polarity correction
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Squared-value diffraction stacking without polarity correction...")
@@ -371,7 +366,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 ###############################################################################
 # Perform squared-value diffraction stacking with polarity correction with MTI
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 start_time = time()
 print("Squared-value diffraction stacking with polarity correction based on MTI...")
@@ -421,7 +416,7 @@ print(f"Computation time: {end_time - start_time} seconds")
 
 ###############################################################################
 # Plot resulting image volumes from squared-value diffraction stacking
-# """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 # Get the spatial limits for plotting
 xlim = (min(gx),max(gx))

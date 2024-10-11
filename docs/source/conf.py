@@ -127,6 +127,14 @@ html_theme_options = {
 html_css_files = [
     'css/custom.css',
 ]
+# Custom sidebar settings for specific pages
+html_sidebars = {    
+    'installation': [],    # Hide sidebar on the installation page
+    'contributing': [],    # Hide sidebar on the contributing page
+    'changelog': [],       # Hide sidebar on the changelog page
+    'citing': [],          # Hide sidebar on the citing page
+    'credits': []          # Hide sidebar on the credits page
+}
 
 html_context = {
     "menu_links_name": "Repository",
@@ -135,10 +143,10 @@ html_context = {
             '<i class="fa fa-github fa-fw"></i> Source Code',
             "https://github.com/FraCSPy/FraCSPy",
         ),
-        # (
-        #     '<i class="fa fa-users fa-fw"></i> Contributing',
-        #     "https://github.com/PyLops/pylops/blob/master/CONTRIBUTING.md",
-        # ),
+        (
+            '<i class="fa fa-users fa-fw"></i> Contributing',
+            "https://github.com/FraCSPy/FraCSPy/blob/master/CONTRIBUTING.md",
+        ),
     ],
     # Custom variables to enable "Improve this page"" and "Download notebook"
     # links

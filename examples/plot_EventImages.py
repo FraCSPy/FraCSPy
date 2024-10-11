@@ -1,7 +1,7 @@
 r"""
 Event Volume Plotting 
 =====================
-This example shows how to visualise microseismic event characteristics, i.e., semblence,
+This example shows how to visualise microseismic event characteristics, i.e., semblance or imaging functions
 as a volume.
 """
 import numpy as np

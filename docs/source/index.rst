@@ -3,7 +3,7 @@ Overview
 FraCSPy (Framework for Conventional microSeismic Processing) is an open-source Python library focused on providing conventional microseismic monitoring tools, particularly for the purpose of benchmarking
 newly proposed algorithms and workflows. 
 
-We invite you to visit our `GitHub project page <https://github.com/FraCSPy>`_
+We invite you to visit our `GitHub project page <https://github.com/FraCSPy>`_ https://github.com/FraCSPy.
 
 
 Available Tools
@@ -69,4 +69,5 @@ used methodologies as possible - allowing the users to choose which is right for
 
    Contributing <contributing.rst>
    Changelog <changelog.rst>
+   Citing <citing.rst>
    Credits <credits.rst>

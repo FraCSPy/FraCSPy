@@ -523,6 +523,7 @@ It accomplishes this by reading event times from an event catalog and extracting
 
 <span class="kn">from</span> <span class="nn">fracspy.detection.matched_filtering</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">fracspy.visualisation.Plotting_Detected_Events</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># sphinx_gallery_thumbnail_number = 3</span>
 </pre></div>
 </div>
 </section>
@@ -568,7 +569,7 @@ It accomplishes this by reading event times from an event catalog and extracting
 <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">catalog</span></a> <span class="o">=</span> <a href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sort_values.html#pandas.DataFrame.sort_values" title="pandas.DataFrame.sort_values" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">catalog</span><span class="o">.</span><span class="n">sort_values</span></a><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Magnitude&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NUMBER_OF_TEMPLATES</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:76: FutureWarning: Passing bytes to &#39;read_excel&#39; is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/FraCSPy/FraCSPy/tutorials/1_1_Detection_Matched_Filtering.py:78: FutureWarning: Passing bytes to &#39;read_excel&#39; is deprecated and will be removed in a future version. To read from a byte string, wrap it in a `BytesIO` object.
   df = pd.read_excel(pd.io.excel.ExcelFile(response.content))
 Data was successfully downloaded and loaded into the DataFrame.
 </pre></div>
@@ -614,7 +615,7 @@ Data was successfully downloaded and loaded into the DataFrame.
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Time range: 2016-11-22T01:00:00.000000Z - 2016-11-22T02:04:00.000000Z
-Done! Loading time: 273.2386951446533 seconds
+Done! Loading time: 275.89267683029175 seconds
 </pre></div>
 </div>
 </section>
@@ -790,7 +791,7 @@ the results containing only events detected  by at least two stations within a s
 <span class="n">plot_station_data</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tr_data</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">station_list</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_stations_to_plot</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_1_1_Detection_Matched_Filtering_003.png" srcset="../_images/sphx_glr_1_1_Detection_Matched_Filtering_003.png" alt="1 1 Detection Matched Filtering" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (14 minutes 58.485 seconds)</p>
+<img src="../_images/sphx_glr_1_1_Detection_Matched_Filtering_003.png" srcset="../_images/sphx_glr_1_1_Detection_Matched_Filtering_003.png" alt="1 1 Detection Matched Filtering" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (15 minutes 12.062 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-1-1-detection-matched-filtering-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/efb6036d7a6e48ab4898227b1ee4730d/1_1_Detection_Matched_Filtering.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">1_1_Detection_Matched_Filtering.ipynb</span></code></a></p>

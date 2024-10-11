@@ -71,7 +71,7 @@ To summarize, we will apply the following workflow:
     from fracspy.utils.sofiutils import read_seis
     from fracspy.mtinversion.utils import get_mt_max_locs, get_mt_at_loc
     from fracspy.mtinversion.mtwi import *
-
+    # sphinx_gallery_thumbnail_number = 8
 
 
 
@@ -91,10 +91,12 @@ Finite Difference modelling software. The model is the same that we have used
 in the FD modelling to generate the data. As such, it contains additional
 boundaries, which we need to remove prior to performing localisation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-115
+.. GENERATED FROM PYTHON SOURCE LINES 63-117
 
 .. code-block:: Python
 
+
+    default_cmap = 'seismic'
 
     # Directory containing input data
     input_dir = '../data/pyfrac_SOFIModelling'
@@ -154,21 +156,21 @@ boundaries, which we need to remove prior to performing localisation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 118-121
 
 Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the traces, this is the information that we
 utilise to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-126
+.. GENERATED FROM PYTHON SOURCE LINES 121-128
 
 .. code-block:: Python
 
 
     fig, axs = plt.subplots(3, 1,figsize=[10, 8])
-    axs[0].imshow(vx.T, aspect='auto',cmap='binary_r')
-    axs[1].imshow(vy.T, aspect='auto',cmap='binary_r')
-    axs[2].imshow(vz.T, aspect='auto',cmap='binary_r')
+    axs[0].imshow(vx.T, aspect='auto',cmap=default_cmap)
+    axs[1].imshow(vy.T, aspect='auto',cmap=default_cmap)
+    axs[2].imshow(vz.T, aspect='auto',cmap=default_cmap)
     plt.tight_layout()
 
 
@@ -183,7 +185,7 @@ utilise to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-132
+.. GENERATED FROM PYTHON SOURCE LINES 129-134
 
 Create modelling operator
 -------------------------
@@ -191,7 +193,7 @@ First, we will define a Ricker wavelet with
 peak frequency of 20Hz. This is the same wavelet that we used in modelling;
 in real applications, this will need to be estimated from the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-145
+.. GENERATED FROM PYTHON SOURCE LINES 134-147
 
 .. code-block:: Python
 
@@ -220,13 +222,13 @@ in real applications, this will need to be estimated from the data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-149
+.. GENERATED FROM PYTHON SOURCE LINES 148-151
 
 Second we define an area of interest where we expect the source to be located.
 In fact, whilst in practice one could consider the entire subsurface,
 this comes with a computational and storage burden for the Green's functions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-171
+.. GENERATED FROM PYTHON SOURCE LINES 151-173
 
 .. code-block:: Python
 
@@ -259,11 +261,11 @@ this comes with a computational and storage burden for the Green's functions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-173
+.. GENERATED FROM PYTHON SOURCE LINES 174-175
 
 Next, we create our Kirchhoff-MT operator
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-202
+.. GENERATED FROM PYTHON SOURCE LINES 175-204
 
 .. code-block:: Python
 
@@ -280,9 +282,9 @@ Next, we create our Kirchhoff-MT operator
     for ivc, vc in enumerate([vx, vy, vz]):
         fig, axs = plt.subplots(1, 3, figsize=[15,5],
                                 sharey=True, sharex=True)
-        axs[0].imshow(data[ivc].T, aspect='auto',cmap='RdBu')
-        axs[1].imshow(vc.T, aspect='auto',cmap='RdBu')
-        axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap='RdBu')
+        axs[0].imshow(data[ivc].T, aspect='auto',cmap=default_cmap)
+        axs[1].imshow(vc.T, aspect='auto',cmap=default_cmap)
+        axs[2].imshow(data[ivc].T-vc.T, aspect='auto',cmap=default_cmap)
         axs[2].set_ylim([350,270])
         axs[2].set_xlim([0,20])
         for ax in axs: ax.axhline(300)
@@ -348,13 +350,13 @@ Next, we create our Kirchhoff-MT operator
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-206
+.. GENERATED FROM PYTHON SOURCE LINES 205-208
 
 Joint localisation and MT inversion
 -----------------------------------
 Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-213
+.. GENERATED FROM PYTHON SOURCE LINES 208-215
 
 .. code-block:: Python
 
@@ -414,11 +416,11 @@ Finally, we are ready to invert our waveform data for the 6 MT kernels.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 214-215
+.. GENERATED FROM PYTHON SOURCE LINES 216-217
 
 Let's now extract both the expected location and MT source parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-227
+.. GENERATED FROM PYTHON SOURCE LINES 217-229
 
 .. code-block:: Python
 
@@ -456,12 +458,12 @@ Let's now extract both the expected location and MT source parameters
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-230
+.. GENERATED FROM PYTHON SOURCE LINES 230-232
 
 And finally we visualize the estimated kernels both from the adjoint and
 inverse approaches.
 
-.. GENERATED FROM PYTHON SOURCE LINES 230-237
+.. GENERATED FROM PYTHON SOURCE LINES 232-239
 
 .. code-block:: Python
 
@@ -533,7 +535,7 @@ inverse approaches.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 3.775 seconds)
+   **Total running time of the script:** (2 minutes 7.240 seconds)
 
 
 .. _sphx_glr_download_tutorials_3_2_MT_WaveformInversion_tutorial.py:

@@ -543,7 +543,8 @@ Bulletin of the Seismological Society of America, 88(1), 95–106. <a class="ref
 </section>
 <section id="load-all-necessary-packages">
 <h2>Load all necessary packages<a class="headerlink" href="#load-all-necessary-packages" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 6</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
 <span class="kn">import</span> <span class="nn">cmcrameri.cm</span> <span class="k">as</span> <span class="nn">cmc</span>
@@ -572,6 +573,7 @@ Bulletin of the Seismological Society of America, 88(1), 95–106. <a class="ref
 
 <span class="c1"># Track computation time</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a>
+<span class="c1"># sphinx_gallery_thumbnail_number = 4</span>
 </pre></div>
 </div>
 </section>
@@ -725,7 +727,7 @@ and with different origin times</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computation time: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">end_time</span></a><span class="w"> </span><span class="o">-</span><span class="w"> </span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start_time</span></a><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computation time: 10.020503282546997 seconds
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computation time: 10.198348999023438 seconds
 </pre></div>
 </div>
 </section>
@@ -812,7 +814,7 @@ volume in order to show that it is still possible despite multiple records.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking applied to clean data...
-Computation time: 30.577545881271362 seconds
+Computation time: 30.645760536193848 seconds
 </pre></div>
 </div>
 </section>
@@ -835,7 +837,7 @@ with noise</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking applied to noisy data...
-Computation time: 30.513280153274536 seconds
+Computation time: 30.588239669799805 seconds
 </pre></div>
 </div>
 </section>
@@ -962,7 +964,7 @@ Location error:
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking detection applied to clean data...
-Computation time: 30.208171606063843 seconds
+Computation time: 30.302121877670288 seconds
 </pre></div>
 </div>
 </section>
@@ -1028,7 +1030,7 @@ Origin time estimation error: 0.000 s
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Squared-value diffraction stacking detection applied to noisy data...
-Computation time: 30.191433429718018 seconds
+Computation time: 30.284151077270508 seconds
 </pre></div>
 </div>
 </section>
@@ -1062,7 +1064,7 @@ Computation time: 30.191433429718018 seconds
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Sliding window size in samples: 25
 Semblance-based diffraction stacking detection applied to noisy data...
-Computation time: 33.413222551345825 seconds
+Computation time: 33.60011315345764 seconds
 </pre></div>
 </div>
 </section>
@@ -1361,7 +1363,7 @@ Hypocentre estimation error:
 <li><img src="../_images/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_016.png" srcset="../_images/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_016.png" alt="Location of event 3 with squared-value diffraction stacking: noisy data" class = "sphx-glr-multi-img"/></li>
 <li><img src="../_images/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_017.png" srcset="../_images/sphx_glr_1_2_Detection_DiffractionStacking_tutorial_017.png" alt="Location of event 3 with semblance-based diffraction stacking: noisy data" class = "sphx-glr-multi-img"/></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 49.692 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 50.640 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-1-2-detection-diffractionstacking-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/22db001f747961db1970a7ba68e9b18a/1_2_Detection_DiffractionStacking_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">1_2_Detection_DiffractionStacking_tutorial.ipynb</span></code></a></p>

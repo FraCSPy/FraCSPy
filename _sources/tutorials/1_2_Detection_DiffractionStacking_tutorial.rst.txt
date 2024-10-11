@@ -95,16 +95,17 @@ Withers, M., Aster, R., Young, C., Beiriger, J., Harris, M., Moore, S., & Trujil
 A comparison of select trigger algorithms for automated global seismic phase and event detection. 
 Bulletin of the Seismological Society of America, 88(1), 95–106. https://doi.org/10.1785/bssa0880010095
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-86
+.. GENERATED FROM PYTHON SOURCE LINES 83-85
 
 Load all necessary packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-117
+.. GENERATED FROM PYTHON SOURCE LINES 85-117
 
 .. code-block:: Python
 
 
+    # sphinx_gallery_thumbnail_number = 6
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib.colors as mcolors
@@ -134,7 +135,7 @@ Load all necessary packages
 
     # Track computation time
     from time import time 
-
+    # sphinx_gallery_thumbnail_number = 4
 
 
 
@@ -412,7 +413,7 @@ Apply operator to model data for each event, shift by origin time and store in f
 
  .. code-block:: none
 
-    Computation time: 10.020503282546997 seconds
+    Computation time: 10.198348999023438 seconds
 
 
 
@@ -603,7 +604,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to clean data...
-    Computation time: 30.577545881271362 seconds
+    Computation time: 30.645760536193848 seconds
 
 
 
@@ -644,7 +645,7 @@ Perform squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking applied to noisy data...
-    Computation time: 30.513280153274536 seconds
+    Computation time: 30.588239669799805 seconds
 
 
 
@@ -847,7 +848,7 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to clean data...
-    Computation time: 30.208171606063843 seconds
+    Computation time: 30.302121877670288 seconds
 
 
 
@@ -950,7 +951,7 @@ Perform detection using squared-value diffraction stacking
  .. code-block:: none
 
     Squared-value diffraction stacking detection applied to noisy data...
-    Computation time: 30.191433429718018 seconds
+    Computation time: 30.284151077270508 seconds
 
 
 
@@ -1000,7 +1001,7 @@ Perform detection using semblance-based diffraction stacking
 
     Sliding window size in samples: 25
     Semblance-based diffraction stacking detection applied to noisy data...
-    Computation time: 33.413222551345825 seconds
+    Computation time: 33.60011315345764 seconds
 
 
 
@@ -1447,7 +1448,7 @@ Here we visualise the slices of the resulting image volume for all events
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 49.692 seconds)
+   **Total running time of the script:** (2 minutes 50.640 seconds)
 
 
 .. _sphx_glr_download_tutorials_1_2_Detection_DiffractionStacking_tutorial.py:

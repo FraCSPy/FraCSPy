@@ -136,7 +136,7 @@ Zhebel, O., & Eisner, L. (2014). Simultaneous microseismic event localization an
 Load all necessary packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-152
+.. GENERATED FROM PYTHON SOURCE LINES 122-153
 
 .. code-block:: Python
 
@@ -168,6 +168,7 @@ Load all necessary packages
 
     # Track computation time
     from time import time
+    # sphinx_gallery_thumbnail_number = 9
 
 
 
@@ -177,7 +178,7 @@ Load all necessary packages
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-161
+.. GENERATED FROM PYTHON SOURCE LINES 156-162
 
 Load model and seismic data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -186,7 +187,7 @@ a gridded surface receiver # array, same as
 in :ref:`sphx_glr_tutorials_3_1_MT_AmplitudeINversion_tutorial.py`.
 The data are modelled using the SOFI3D Finite Difference package.
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-214
+.. GENERATED FROM PYTHON SOURCE LINES 162-215
 
 .. code-block:: Python
 
@@ -250,7 +251,7 @@ The data are modelled using the SOFI3D Finite Difference package.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-220
+.. GENERATED FROM PYTHON SOURCE LINES 216-221
 
 Plot input data
 ^^^^^^^^^^^^^^^
@@ -258,7 +259,7 @@ Let's now double-check that the data has been loaded correctly. Observe the
 changes in polarity across the  traces; this is the information that we utilise
 to determine the Moment Tensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-226
+.. GENERATED FROM PYTHON SOURCE LINES 221-227
 
 .. code-block:: Python
 
@@ -280,12 +281,12 @@ to determine the Moment Tensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-229
+.. GENERATED FROM PYTHON SOURCE LINES 228-230
 
 Plot source location and receiver geometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 229-240
+.. GENERATED FROM PYTHON SOURCE LINES 230-241
 
 .. code-block:: Python
 
@@ -312,19 +313,19 @@ Plot source location and receiver geometry
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 243-247
+.. GENERATED FROM PYTHON SOURCE LINES 244-248
 
 Test basic functions
 ^^^^^^^^^^^^^^^^^^^^
 Here we test basic elements of diffraction stacking like moveout and polarity
 correction
 
-.. GENERATED FROM PYTHON SOURCE LINES 249-251
+.. GENERATED FROM PYTHON SOURCE LINES 250-252
 
 Test moveout correction and plot corrected data
 """""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 251-272
+.. GENERATED FROM PYTHON SOURCE LINES 252-273
 
 .. code-block:: Python
 
@@ -373,12 +374,12 @@ Test moveout correction and plot corrected data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 273-275
+.. GENERATED FROM PYTHON SOURCE LINES 274-276
 
 Test polarity correction and plot corrected data
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 275-303
+.. GENERATED FROM PYTHON SOURCE LINES 276-304
 
 .. code-block:: Python
 
@@ -434,13 +435,13 @@ Test polarity correction and plot corrected data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 306-309
+.. GENERATED FROM PYTHON SOURCE LINES 307-310
 
 Prepare for location
 ^^^^^^^^^^^^^^^^^^^^
 Set up the location class and grid, compute traveltimes
 
-.. GENERATED FROM PYTHON SOURCE LINES 311-316
+.. GENERATED FROM PYTHON SOURCE LINES 312-317
 
 Define location class using grid vectors
 """"""""""""""""""""""""""""""""""""""""
@@ -448,7 +449,7 @@ We can use the original velocity model grid for location,
 but for the sake of having more representative image we shift the grid deeper
 Moreover, we reduce the grid step twice for efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 316-328
+.. GENERATED FROM PYTHON SOURCE LINES 317-329
 
 .. code-block:: Python
 
@@ -471,12 +472,12 @@ Moreover, we reduce the grid step twice for efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 329-331
+.. GENERATED FROM PYTHON SOURCE LINES 330-332
 
 Prepare traveltimes
 """""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 331-335
+.. GENERATED FROM PYTHON SOURCE LINES 332-336
 
 .. code-block:: Python
 
@@ -497,19 +498,19 @@ Prepare traveltimes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 338-342
+.. GENERATED FROM PYTHON SOURCE LINES 339-343
 
 Apply diffraction stacking without polarity correction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply a diffraction stacking algorithm without 
 any polarity correction, for reference
 
-.. GENERATED FROM PYTHON SOURCE LINES 344-346
+.. GENERATED FROM PYTHON SOURCE LINES 345-347
 
 Perform squared-value diffraction stacking without polarity correction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 346-358
+.. GENERATED FROM PYTHON SOURCE LINES 347-359
 
 .. code-block:: Python
 
@@ -534,24 +535,24 @@ Perform squared-value diffraction stacking without polarity correction
  .. code-block:: none
 
     Squared-value diffraction stacking without polarity correction...
-    Computation time: 9.990065574645996 seconds
+    Computation time: 10.025240421295166 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 361-365
+.. GENERATED FROM PYTHON SOURCE LINES 362-366
 
 Apply diffraction stacking witth polarity correction using MTI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here we apply various diffraction stacking algorithms with 
 polarity correction using moment tensor inversion
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-369
+.. GENERATED FROM PYTHON SOURCE LINES 368-370
 
 Perform squared-value diffraction stacking with polarity correction with MTI
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 369-382
+.. GENERATED FROM PYTHON SOURCE LINES 370-383
 
 .. code-block:: Python
 
@@ -577,17 +578,17 @@ Perform squared-value diffraction stacking with polarity correction with MTI
  .. code-block:: none
 
     Squared-value diffraction stacking with polarity correction based on MTI...
-    Computation time: 14.887650728225708 seconds
+    Computation time: 15.020200729370117 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 383-385
+.. GENERATED FROM PYTHON SOURCE LINES 384-386
 
 Perform semblance-based diffraction stacking with polarity correction with MTI
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 385-403
+.. GENERATED FROM PYTHON SOURCE LINES 386-404
 
 .. code-block:: Python
 
@@ -619,12 +620,12 @@ Perform semblance-based diffraction stacking with polarity correction with MTI
 
     Sliding window size in samples: 100
     Semblance-based diffraction stacking with polarity correction based on MTI...
-    Computation time: 20.938966751098633 seconds
+    Computation time: 21.121565580368042 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 406-414
+.. GENERATED FROM PYTHON SOURCE LINES 407-415
 
 Visualisation of results
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -635,12 +636,12 @@ resulting images are focused in the correct location which fluctuates in
 depth, reflecting the time-depth tradeoff.
 Uncertainty in depth direction is much higher due to surface acquisition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 417-419
+.. GENERATED FROM PYTHON SOURCE LINES 418-420
 
 Plot resulting image volumes from squared-value diffraction stacking
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. GENERATED FROM PYTHON SOURCE LINES 419-475
+.. GENERATED FROM PYTHON SOURCE LINES 420-476
 
 .. code-block:: Python
 
@@ -756,7 +757,7 @@ Plot resulting image volumes from squared-value diffraction stacking
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 47.749 seconds)
+   **Total running time of the script:** (0 minutes 48.312 seconds)
 
 
 .. _sphx_glr_download_tutorials_2_2_Location_DSMTI_tutorial.py:

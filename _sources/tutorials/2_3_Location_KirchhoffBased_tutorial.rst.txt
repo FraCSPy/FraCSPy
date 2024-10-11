@@ -62,7 +62,7 @@ more complex cases when we deal with heterogenous media.
 
     from fracspy.visualisation.eventimages import locimage3d
     from fracspy.utils.sofiutils import read_seis
-
+    # sphinx_gallery_thumbnail_number = 7
 
 
 
@@ -354,7 +354,7 @@ the adjoint to gain an initial idea on possible source locations. However,
 the source location is likely to be a smoothed product, as opposed
 # to the desired single location.
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-217
+.. GENERATED FROM PYTHON SOURCE LINES 203-218
 
 .. code-block:: Python
 
@@ -365,11 +365,12 @@ the source location is likely to be a smoothed product, as opposed
     print('True Hypo-Center:', [sx,sy,sz])
     print('Migration Hypo-Centers:', mig_hc)
 
+    clim = np.max(abs(migrated))
     fig, axs = locimage3d(migrated,
                           x0=int(np.round(mig_hc[0])),
                           y0=int(np.round(mig_hc[1])),
                           z0=int(np.round(mig_hc[2])),
-                          p=100)
+                          clipval=[-clim, clim])
     plt.tight_layout()
 
 
@@ -391,7 +392,7 @@ the source location is likely to be a smoothed product, as opposed
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-231
+.. GENERATED FROM PYTHON SOURCE LINES 219-232
 
 Source localisation by inversion
 --------------------------------
@@ -407,7 +408,7 @@ source image.
 
 Let's start with the least-squares solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 231-245
+.. GENERATED FROM PYTHON SOURCE LINES 232-248
 
 .. code-block:: Python
 
@@ -418,11 +419,13 @@ Let's start with the least-squares solution
     print('True Hypo-Center:', [sx,sy,sz])
     print('LSQR Inversion Hypo-Centers:', inv_hc)
 
-    fig,axs = locimage3d(inv,
+
+    clim = np.max(abs(inv))
+    fig,axs = locimage3d(abs(inv),
                          x0=int(np.round(inv_hc[0])),
                          y0=int(np.round(inv_hc[1])),
                          z0=int(np.round(inv_hc[2])),
-                         p=100)
+                         clipval=[-clim, clim])
     plt.tight_layout()
 
 
@@ -444,11 +447,11 @@ Let's start with the least-squares solution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 246-247
+.. GENERATED FROM PYTHON SOURCE LINES 249-250
 
 We move on now to the sparsity-promoting solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 247-261
+.. GENERATED FROM PYTHON SOURCE LINES 250-265
 
 .. code-block:: Python
 
@@ -459,11 +462,12 @@ We move on now to the sparsity-promoting solution
     print('True Hypo-Center:', [sx, sy, sz])
     print('FISTA Inversion Hypo-Centers:', fista_hc)
 
-    fig, axs = locimage3d(fista,
+    clim = np.max(abs(fista))
+    fig, axs = locimage3d(abs(fista),
                           x0=int(np.round(fista_hc[0])),
                           y0=int(np.round(fista_hc[1])),
                           z0=int(np.round(fista_hc[2])),
-                          p=100)
+                          clipval=[-clim, clim])
     plt.tight_layout()
 
 
@@ -488,7 +492,7 @@ We move on now to the sparsity-promoting solution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 48.943 seconds)
+   **Total running time of the script:** (3 minutes 17.041 seconds)
 
 
 .. _sphx_glr_download_tutorials_2_3_Location_KirchhoffBased_tutorial.py:

@@ -9,7 +9,7 @@ def locimage3d(image,
                title='', 
                p=99.9, 
                clipval=None, 
-               cmap='cmc.batlow_r',               
+               cmap='cmc.bilbao_r',               
                xlim=None,
                ylim=None, 
                zlim=None, 
@@ -73,7 +73,10 @@ def locimage3d(image,
     for adjusting color maps, intensity scaling, and axis limits.
     """
 
-
+    # Select different colorbar if going from [-max(A):max(A)]
+    if clipval:
+        if clipval[0]<0:
+            cmap = cmc.vik
     
     linespec = dict(ls='-', lw=1.5, color=intersect_linecol)
     secondcrosslinespec = dict(ls='--', lw=1.5, color=intersect_linecol)

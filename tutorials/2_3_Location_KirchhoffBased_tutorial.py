@@ -40,7 +40,7 @@ import fracspy
 
 from fracspy.visualisation.eventimages import locimage3d
 from fracspy.utils.sofiutils import read_seis
-
+# sphinx_gallery_thumbnail_number = 7
 
 ###############################################################################
 # Load model and seismic data
@@ -207,11 +207,12 @@ migrated, mig_hc = L.apply(vz, kind="kmigration", Op=Op, nforhc=10)
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', mig_hc)
 
+clim = np.max(abs(migrated))
 fig, axs = locimage3d(migrated,
                       x0=int(np.round(mig_hc[0])),
                       y0=int(np.round(mig_hc[1])),
                       z0=int(np.round(mig_hc[2])),
-                      p=100)
+                      clipval=[-clim, clim])
 plt.tight_layout()
 
 ###############################################################################
@@ -235,11 +236,13 @@ inv, inv_hc = L.apply(vz, kind="lsi", Op=Op,
 print('True Hypo-Center:', [sx,sy,sz])
 print('LSQR Inversion Hypo-Centers:', inv_hc)
 
-fig,axs = locimage3d(inv,
+
+clim = np.max(abs(inv))
+fig,axs = locimage3d(abs(inv),
                      x0=int(np.round(inv_hc[0])),
                      y0=int(np.round(inv_hc[1])),
                      z0=int(np.round(inv_hc[2])),
-                     p=100)
+                     clipval=[-clim, clim])
 plt.tight_layout()
 
 ###############################################################################
@@ -251,10 +254,11 @@ fista, fista_hc = L.apply(frwddata, kind="sparselsi", Op=Op,
 print('True Hypo-Center:', [sx, sy, sz])
 print('FISTA Inversion Hypo-Centers:', fista_hc)
 
-fig, axs = locimage3d(fista,
+clim = np.max(abs(fista))
+fig, axs = locimage3d(abs(fista),
                       x0=int(np.round(fista_hc[0])),
                       y0=int(np.round(fista_hc[1])),
                       z0=int(np.round(fista_hc[2])),
-                      p=100)
+                      clipval=[-clim, clim])
 plt.tight_layout()
 

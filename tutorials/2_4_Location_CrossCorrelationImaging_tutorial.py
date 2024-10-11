@@ -44,7 +44,7 @@ import fracspy
 
 from fracspy.visualisation.eventimages import locimage3d
 from fracspy.utils.sofiutils import read_seis
-
+# sphinx_gallery_thumbnail_number = 5
 
 ###############################################################################
 # Load model and seismic data
@@ -203,7 +203,7 @@ xc_inv, xci_hc = L.apply(vz, kind="xcorri", Op=Op, nforhc=10)
 print('True Hypo-Center:', [sx,sy,sz])
 print('Migration Hypo-Centers:', xci_hc)
 
-fig, axs = locimage3d(xc_inv,
+fig, axs = locimage3d(abs(xc_inv),
                       x0=int(np.round(xci_hc[0])),
                       y0=int(np.round(xci_hc[1])),
                       z0=int(np.round(xci_hc[2])),

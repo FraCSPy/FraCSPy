@@ -460,15 +460,17 @@ def detection_curves(msf:np.ndarray,
     # Set title
     fig.suptitle(title, fontsize=titlefontsize, fontweight='bold', y=0.94)
 
-    # Create axes grid
-    gs = fig.add_gridspec(2, 1, 
-                          left=0.1, right=0.9, bottom=0.1, top=0.9,
-                          wspace=0.0, hspace=0.0)
-    
-    # Initiate axes
-    ax_msf = fig.add_subplot(gs[0, 0])
+    # Create axes grid based on whether slf is provided
     if slf is not None:
+        gs = fig.add_gridspec(2, 1, 
+                            left=0.1, right=0.9, bottom=0.1, top=0.9,
+                            wspace=0.0, hspace=0.0)
+        ax_msf = fig.add_subplot(gs[0, 0])
         ax_slf = fig.add_subplot(gs[1, 0], sharex=ax_msf)
+    else:
+        gs = fig.add_gridspec(1, 1, 
+                            left=0.1, right=0.9, bottom=0.1, top=0.9)
+        ax_msf = fig.add_subplot(gs[0, 0])
     
     # Plot MSF on the top axes
     ax_msf.plot(t, msf, **linespec)

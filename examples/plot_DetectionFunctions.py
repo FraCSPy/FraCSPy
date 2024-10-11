@@ -47,7 +47,7 @@ signal += random_noise
 ###############################################################################
 # Plot the function
 # ^^^^^^^^^^^^^^^^^
-fig,axs = detection_curves(msf=signal,t=t,msflabel='Signal')
+fig,axs = detection_curves(msf=signal,t=t,msflabel='Signal',figsize=(8, 6))
 
 #%
 
